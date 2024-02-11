@@ -15,7 +15,7 @@ class Evenements extends StatelessWidget {
       ),
       body: const Center(
         child: Text(
-          "Bonsoir",
+          "Bonjour",
           textDirection: TextDirection.ltr,
         ),
       ),
