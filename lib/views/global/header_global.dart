@@ -15,7 +15,8 @@ class HeaderGlobal extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: [
         PopupMenuButton(
-          offset: const Offset(0, 48),
+          position: PopupMenuPosition.under,
+          offset: Offset(0, 8),
           itemBuilder: (BuildContext context) {
             return [
               PopupMenuItem(
