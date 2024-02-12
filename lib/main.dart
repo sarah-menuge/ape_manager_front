@@ -1,4 +1,7 @@
+import 'package:ape_manager_front/providers/article_provider.dart';
 import 'package:flutter/material.dart';
+
+import 'models/Article.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +17,32 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: LoginScreen(),
+    );
+  }
+}
+
+class TestAPI extends StatelessWidget {
+  ArticleProvider articleProvider = ArticleProvider();
+
+  @override
+  Widget build(BuildContext context) {
+    articleProvider.fetchData();
+
+    return Scaffold(
+      backgroundColor: Color(0xffEED9C4),
+      body: Center(
+        child: ArticleItem(),
+      ),
+    );
+  }
+}
+
+class ArticleItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "Un article",
+      textDirection: TextDirection.ltr,
     );
   }
 }
@@ -150,8 +179,7 @@ class ForgotPasswordButton extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () {
-        },
+        onPressed: () {},
         child: Text('Mot de passe oublié'),
       ),
     );
@@ -162,8 +190,7 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-      },
+      onPressed: () {},
       child: Text('Se connecter'),
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
@@ -187,8 +214,7 @@ class SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-      },
+      onPressed: () {},
       child: Text('S\'inscrire'),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.red,
