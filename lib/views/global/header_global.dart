@@ -14,23 +14,34 @@ class HeaderGlobal extends StatelessWidget implements PreferredSizeWidget {
       title: Text(titre),
       centerTitle: true,
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
+        PopupMenuButton(
+          offset: const Offset(0, 48),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                child: Text("Mode Parents"),
+              ),
+              PopupMenuItem(
+                child: Text("Mode Organisateurs"),
+              ),
+              PopupMenuItem(
+                child: Text("Mode Administrateur"),
+              ),
+              PopupMenuItem(
+                child: Text("Mon profil"),
+              ),
+              PopupMenuItem(
+                child: Text("Se déconnecter"),
+              ),
+            ];
+          },
+          child: Icon(
             Icons.person,
             size: 40,
           ),
         ),
       ],
-      flexibleSpace: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0.9, 1.0],
-              colors: [BEIGE_FONCE, BEIGE_CLAIR]),
-        ),
-      ),
+      backgroundColor: BEIGE_FONCE,
     );
   }
 
