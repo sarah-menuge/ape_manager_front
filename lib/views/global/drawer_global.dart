@@ -7,7 +7,7 @@ class DrawerGlobal extends StatelessWidget {
   const DrawerGlobal({super.key});
 
   static const List<String> liens = [
-    "Mes événement",
+    "Mes événements",
     "Mes commandes",
     "Mon panier"
   ];
@@ -23,7 +23,7 @@ class DrawerGlobal extends StatelessWidget {
           ),
           ListView.separated(
             shrinkWrap: true,
-            itemCount: liens.length,
+            itemCount: liens.length + 1,
             separatorBuilder: (BuildContext context, int index) => Divider(
               thickness: 0.2,
             ),
