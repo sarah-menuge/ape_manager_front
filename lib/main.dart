@@ -1,22 +1,21 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:ape_manager_front/views/evenements/evenements.dart';
 import 'package:flutter/material.dart';
 
+import 'views/loginpage/LoginScreen.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(LogPage());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class LogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Événements",
-      home: Evenements(),
+      title: 'Écran de connexion',
+      theme: ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: LoginScreen(),
     );
   }
 }
