@@ -5,9 +5,11 @@ class FontUtils {
   static TextStyle getOswald(
       {double fontSize = 30,
       Color color = Colors.white,
-      bool shadows = false}) {
+      bool shadows = false,
+      FontWeight fontWeight = FontWeight.normal}) {
     // Cette fonction permet de réutiliser la police principale
     return GoogleFonts.oswald(
+      fontWeight: fontWeight,
       fontSize: fontSize,
       color: color,
       shadows: shadows
