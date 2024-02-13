@@ -18,6 +18,29 @@ class AccueilView extends StatelessWidget {
         children: [
           ImageAccueil(),
           ParagraphePresentation(),
+          Container(
+            padding: EdgeInsets.all(15.0),
+            child: Column(children: [
+              Text(
+                "Description de l'application",
+                style: FontUtils.getOswald(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                child: Text(
+                  "L'application APE Manager vise à organiser des ventes éphémères dans le but de récolter de l'argent qui servira à l'école et aux enfants. Les parents et membre de l'association pourront commander via cette application.",
+                  style: FontUtils.getOswald(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+              )
+            ]),
+          ),
         ],
       ),
       drawer: DrawerGlobal(),
