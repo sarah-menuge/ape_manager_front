@@ -1,4 +1,4 @@
-import 'package:ape_manager_front/views/evenements/evenements.dart';
+import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,11 +10,11 @@ class LogPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Événements',
+      title: 'Accueil',
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Evenements(),
+      home: AccueilView(),
     );
   }
 }

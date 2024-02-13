@@ -16,7 +16,7 @@ class Evenements extends StatelessWidget {
       ),
       body: Column(
         children: [
-          ImageAccueil(),
+          ImageEvenements(),
         ],
       ),
       drawer: DrawerGlobal(),
@@ -24,7 +24,7 @@ class Evenements extends StatelessWidget {
   }
 }
 
-class ImageAccueil extends StatelessWidget {
+class ImageEvenements extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(

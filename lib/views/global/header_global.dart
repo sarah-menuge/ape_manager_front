@@ -17,6 +17,7 @@ class HeaderGlobal extends StatelessWidget implements PreferredSizeWidget {
         PopupMenuButton(
           position: PopupMenuPosition.under,
           offset: Offset(0, 8),
+          padding: EdgeInsets.zero,
           itemBuilder: (BuildContext context) {
             return [
               PopupMenuItem(
