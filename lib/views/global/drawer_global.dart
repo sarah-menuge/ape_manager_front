@@ -23,7 +23,7 @@ class DrawerGlobal extends StatelessWidget {
           ),
           ListView.separated(
             shrinkWrap: true,
-            itemCount: liens.length + 1,
+            itemCount: liens.length,
             separatorBuilder: (BuildContext context, int index) => Divider(
               thickness: 0.2,
             ),
@@ -37,6 +37,9 @@ class DrawerGlobal extends StatelessWidget {
                 ),
               );
             },
+          ),
+          Divider(
+            thickness: 0.2,
           ),
         ],
       ),
