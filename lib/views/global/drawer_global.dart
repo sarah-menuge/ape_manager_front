@@ -61,7 +61,7 @@ class DrawerHeaderGlobal extends StatelessWidget {
           width: 50,
         ),
         Container(
-          padding: EdgeInsets.only(left: 10),
+          padding: EdgeInsets.only(left: 5),
           child: Text.rich(
             TextSpan(
                 text: "Association des parents d'élèves \n",
