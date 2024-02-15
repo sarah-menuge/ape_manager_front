@@ -79,7 +79,7 @@ class ParagraphePresentation extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(bottom: 10),
             child: Text(
-              "Le bureau de l'APEL est composé de six membres élus parmi les parents d'élèves. Tous les parents sont membres de l'APEL et sont les bienvenus aux réunions du CA.",
+              "Le bureau de l'APEL (Association des parents d'élèves de l'enseignement libre) est composé de six membres élus parmi les parents d'élèves. Tous les parents sont membres de l'APEL et sont les bienvenus aux réunions du CA.",
               style: FontUtils.getOswald(
                 fontSize: 15,
                 color: Colors.black,
@@ -120,7 +120,7 @@ class ParagrapheApplication extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: 10, bottom: 10),
           child: Text(
-            "L'application APE Manager vise à organiser des ventes éphémères dans le but de récolter de l'argent qui servira à l'école et aux enfants. Les parents et membre de l'association pourront commander via cette application.",
+            "L'application APE Manager vise à organiser des ventes éphémères dans le but de récolter de l'argent qui servira à l'école et aux enfants. Les parents et membres de l'association pourront commander via cette application.",
             style: FontUtils.getOswald(
               fontSize: 15,
               color: Colors.black,

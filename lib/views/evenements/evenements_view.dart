@@ -5,8 +5,8 @@ import 'package:ape_manager_front/views/global/header_global.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Evenements extends StatelessWidget {
-  const Evenements({super.key});
+class EvenementsView extends StatelessWidget {
+  const EvenementsView({super.key});
 
   @override
   Widget build(BuildContext context) {
