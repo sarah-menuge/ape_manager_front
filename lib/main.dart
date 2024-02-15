@@ -1,3 +1,4 @@
+import 'package:ape_manager_front/widgets/NotFound.dart';
 import 'package:flutter/material.dart';
 
 import 'views/loginpage/LoginScreen.dart';
@@ -11,11 +12,15 @@ class LogPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Écran de connexion',
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: LoginScreen(),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginScreen(),
+      },
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (BuildContext context) {
+          return const NotFound();
+        });
+      },
     );
   }
 }
