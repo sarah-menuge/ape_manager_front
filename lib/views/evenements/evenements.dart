@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Evenements extends StatelessWidget {
+  static String routeName = '/evenements';
+
   const Evenements({super.key});
 
   @override
