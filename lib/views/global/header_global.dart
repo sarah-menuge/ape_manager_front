@@ -45,7 +45,9 @@ class HeaderGlobalMobile extends StatelessWidget {
       ),
       title: Text(
         titre,
-        style: FontUtils.getOswald(),
+        style: FontUtils.getOswald(
+          color: Colors.black,
+        ),
       ),
       centerTitle: true,
       actions: [
