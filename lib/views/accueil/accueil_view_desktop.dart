@@ -2,7 +2,7 @@
 
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/views/global/header_global.dart';
+import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'LoginCard.dart';
 
 class LoginScreen extends StatelessWidget {
+  static String routeName = '/login';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

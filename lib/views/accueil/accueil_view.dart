@@ -4,6 +4,8 @@ import 'package:ape_manager_front/views/accueil/accueil_view_mobile.dart';
 import 'package:flutter/material.dart';
 
 class AccueilView extends StatelessWidget {
+  static String routeName = '/accueil';
+
   const AccueilView({super.key});
 
   @override
