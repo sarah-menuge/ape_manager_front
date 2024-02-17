@@ -159,7 +159,7 @@ class Footer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 50),
-      height: 60,
+      height: 80,
       color: GRIS_FONCE,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -173,7 +173,11 @@ class Footer extends StatelessWidget {
                   image: AssetImage("assets/images/logoEcole.png"),
                   width: 40,
                 ),
-                Text("Site de l'école / collège \n Sainte Marie Pérenchies"),
+                Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text(
+                      "Site de l'école / collège \nSainte Marie Pérenchies"),
+                ),
               ],
             ),
           ),
@@ -185,7 +189,10 @@ class Footer extends StatelessWidget {
                   image: AssetImage("assets/images/APELogo.png"),
                   width: 40,
                 ),
-                Text("Site de l'APEL national"),
+                Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text("Site de l'APEL national"),
+                ),
               ],
             ),
           ),
