@@ -4,6 +4,8 @@ import '../../proprietes/couleurs.dart';
 import 'login_card.dart';
 
 class LoginScreenView extends StatelessWidget {
+  static String routeName = '/login';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

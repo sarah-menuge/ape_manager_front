@@ -10,8 +10,7 @@ class ResponsiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        bool isMobile = MediaQuery.of(context).size.width < 600;
-        if (isMobile) {
+        if (constraints.maxWidth < 600) {
           return mobileBody;
         }
         return desktopBody;
@@ -21,11 +20,11 @@ class ResponsiveLayout extends StatelessWidget {
 }
 
 class ResponsiveConstraint {
-  static getResponsiveValue(BuildContext context, mobileValue, desktopValue){
+  static getResponsiveValue(BuildContext context, mobileValue, desktopValue) {
     bool isMobile = MediaQuery.of(context).size.width < 600;
     if (isMobile) {
       return mobileValue;
     }
-   return desktopValue;
+    return desktopValue;
   }
 }
