@@ -40,7 +40,7 @@ class HeaderGlobalMobile extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.topRight,
-              colors: [BEIGE_FONCE, BEIGE_CLAIR]),
+              colors: [HEADER_FONCE, HEADER_CLAIR]),
         ),
       ),
       title: Text(
@@ -98,7 +98,7 @@ class HeaderGlobalDesktop extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.topRight,
-              colors: [BEIGE_FONCE, BEIGE_CLAIR]),
+              colors: [HEADER_FONCE, HEADER_CLAIR]),
         ),
       ),
       title: Text(
