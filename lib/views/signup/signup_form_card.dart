@@ -1,4 +1,4 @@
-import 'package:ape_manager_front/views/loginpage/logo_header.dart';
+import 'package:ape_manager_front/views/login/logo_header.dart';
 import 'package:flutter/material.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
@@ -19,7 +19,9 @@ class SignUpFormCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        constraints: BoxConstraints(maxWidth: ResponsiveConstraint.getResponsiveValue(context, double.infinity, 1000)),
+        constraints: BoxConstraints(
+            maxWidth: ResponsiveConstraint.getResponsiveValue(
+                context, double.infinity, 1000)),
         margin: EdgeInsets.all(20.0),
         padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
@@ -34,25 +36,27 @@ class SignUpFormCard extends StatelessWidget {
             ),
           ],
         ),
-        child:Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              LogoHeader(),
-              SizedBox(height: 10),
-              NomFormField(),
-              SizedBox(height: 10),
-              PrenomFormField(),
-              SizedBox(height: 10),
-              EmailFormField(),
-              SizedBox(height: 10),
-              TelephoneFormField(),
-              SizedBox(height: 20),
-              PasswordFormField(),
-              SizedBox(height: 20),
-              SubmitButton(formKey: formKey,),
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            LogoHeader(),
+            SizedBox(height: 10),
+            NomFormField(),
+            SizedBox(height: 10),
+            PrenomFormField(),
+            SizedBox(height: 10),
+            EmailFormField(),
+            SizedBox(height: 10),
+            TelephoneFormField(),
+            SizedBox(height: 20),
+            PasswordFormField(),
+            SizedBox(height: 20),
+            SubmitButton(
+              formKey: formKey,
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
