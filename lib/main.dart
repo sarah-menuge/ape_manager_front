@@ -1,3 +1,4 @@
+import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/evenements/evenements.dart';
 import 'package:ape_manager_front/widgets/NotFound.dart';
 import 'package:flutter/material.dart';
