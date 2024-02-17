@@ -8,7 +8,7 @@ class ForgotPasswordButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {
         },
-        child: Text('Mot de passe oublié'),
+        child: Text('Mot de passe oublié ?'),
       ),
     );
   }

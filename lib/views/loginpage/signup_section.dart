@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'SignupButton.dart';
-import 'SignupPrompt.dart';
+import 'signup_button.dart';
+import 'signup_prompt.dart';
 
 class SignUpSection extends StatelessWidget {
   @override
@@ -10,8 +10,12 @@ class SignUpSection extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 50),
-        SignUpPrompt(),
+         Column(
+          children: [
+            SignUpPrompt(),
+            SizedBox(height: 20),
+          ],
+        ),
         SignUpButton(),
       ],
     );

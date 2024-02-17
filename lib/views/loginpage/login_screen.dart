@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'LoginCard.dart';
+import '../../proprietes/couleurs.dart';
+import 'login_card.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffEED9C4),
+      backgroundColor: BEIGE_FONCE,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

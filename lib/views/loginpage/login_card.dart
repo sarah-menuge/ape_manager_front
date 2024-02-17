@@ -1,20 +1,20 @@
+import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:flutter/material.dart';
+import 'package:ape_manager_front/responsive/responsive_layout.dart';
 
-import 'LoginForm.dart';
-import 'SignupSection.dart';
+import 'login_form.dart';
+import 'signup_section.dart';
 
 class LoginCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bool isScreenNarrow = MediaQuery.of(context).size.width < 600;
-
     return Center(
       child: Container(
-        constraints: BoxConstraints(maxWidth: isScreenNarrow ? double.infinity : 1000),
+        constraints: BoxConstraints(maxWidth:ResponsiveConstraint.getResponsiveValue(context, double.infinity, 1000)),
         margin: EdgeInsets.all(20.0),
         padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-          color: Color(0xFFFFF6ED),
+          color: BEIGE_CLAIR,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -25,22 +25,21 @@ class LoginCard extends StatelessWidget {
             ),
           ],
         ),
-        child: isScreenNarrow ? Column(
+        child: ResponsiveLayout(
+          mobileBody:  Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             LoginForm(),
-            SizedBox(height: 20), // Espacement entre les formulaires de connexion et d'inscription
-            SignUpSection(),
           ],
-        ) : IntrinsicHeight(
-          child: Row(
+        ) ,
+          desktopBody : Row(
             children: <Widget>[
               Expanded(
                 flex: 1,
                 child: LoginForm(),
               ),
               VerticalDivider(
-                color: Colors.grey,
+                color: GRIS,
                 thickness: 1,
               ),
               Expanded(
