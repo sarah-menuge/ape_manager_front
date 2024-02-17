@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:ape_manager_front/views/global/drawer_global.dart';
-import 'package:ape_manager_front/views/global/header_global.dart';
+import 'package:ape_manager_front/widgets/drawer_appli.dart';
+import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

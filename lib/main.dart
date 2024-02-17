@@ -1,6 +1,6 @@
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
-import 'package:ape_manager_front/views/evenements/evenements.dart';
-import 'package:ape_manager_front/widgets/NotFound.dart';
+import 'package:ape_manager_front/views/evenements/evenements_view.dart';
+import 'package:ape_manager_front/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 
 import 'views/loginpage/LoginScreen.dart';
@@ -18,8 +18,10 @@ class MainApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         if (settings.name == LoginScreen.routeName) {
           return MaterialPageRoute(builder: (_) => LoginScreen());
-        } else if (settings.name == Evenements.routeName) {
-          return MaterialPageRoute(builder: (_) => Evenements());
+        } else if (settings.name == AccueilView.routeName) {
+          return MaterialPageRoute(builder: (_) => LoginScreen());
+        } else if (settings.name == EvenementsView.routeName) {
+          return MaterialPageRoute(builder: (_) => EvenementsView());
         }
       },
       onUnknownRoute: (settings) {
