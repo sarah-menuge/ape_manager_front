@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../proprietes/couleurs.dart';
 import 'signup_button.dart';
-import 'signup_prompt.dart';
 
 class SignupSection extends StatelessWidget {
   @override
@@ -9,7 +9,10 @@ class SignupSection extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SignUpPrompt(),
+        const Text(
+          'Pas de compte ?',
+          style: TextStyle(color: NOIR, fontSize: 17),
+        ),
         const SizedBox(height: 20),
         SignUpButton(),
       ],

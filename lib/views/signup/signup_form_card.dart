@@ -1,7 +1,5 @@
-import 'package:ape_manager_front/views/login/logo_header.dart';
 import 'package:flutter/material.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
-import 'package:ape_manager_front/responsive/responsive_layout.dart';
 
 import 'password_form_field.dart';
 import 'prenom_form_field.dart';

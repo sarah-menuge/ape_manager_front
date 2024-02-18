@@ -8,48 +8,34 @@ import 'signup_section.dart';
 class LoginCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        constraints: BoxConstraints(
-            maxWidth: ResponsiveConstraint.getResponsiveValue(
-                context, double.infinity, 1000)),
-        margin: EdgeInsets.all(20.0),
-        padding: EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          color: BEIGE_CLAIR,
-          borderRadius: BorderRadius.circular(8.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
+    return ResponsiveLayout(
+      mobileBody: LoginSection(),
+      desktopBody: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal:
+              ResponsiveConstraint.getResponsiveValue(context, 20.0, 0.0),
         ),
-        child: ResponsiveLayout(
-          mobileBody: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              LoginSection(),
-            ],
-          ),
-          desktopBody: Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100),
                 child: LoginSection(),
               ),
-              VerticalDivider(
-                color: GRIS,
-                thickness: 1,
-              ),
-              Expanded(
-                flex: 1,
+            ),
+            Container(
+              color: Colors.grey,
+              child: const SizedBox(height: 200, width: 2),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 100),
                 child: SignupSection(),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

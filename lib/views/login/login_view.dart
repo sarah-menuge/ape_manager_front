@@ -34,37 +34,7 @@ class LoginView extends StatelessWidget {
                 ),
               ],
             ),
-            child: ResponsiveLayout(
-              mobileBody: LoginSection(),
-              desktopBody: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: ResponsiveConstraint.getResponsiveValue(
-                      context, 20.0, 0.0),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 100),
-                        child: LoginSection(),
-                      ),
-                    ),
-                    Container(
-                      color: Colors.grey,
-                      child: const SizedBox(height: 200, width: 2),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 100),
-                        child: SignupSection(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            child: LoginCard(),
           ),
         ),
       ),
