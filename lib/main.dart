@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/evenements/evenements_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
-import 'package:ape_manager_front/views/login/login_screen.dart';
+import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
 
 void main() {
@@ -15,10 +15,10 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: LoginScreenView.routeName,
+      initialRoute: LoginView.routeName,
       onGenerateRoute: (settings) {
-        if (settings.name == LoginScreenView.routeName) {
-          return MaterialPageRoute(builder: (_) => LoginScreenView());
+        if (settings.name == LoginView.routeName) {
+          return MaterialPageRoute(builder: (_) => LoginView());
         } else if (settings.name == SignupView.routeName) {
           return MaterialPageRoute(builder: (_) => SignupView());
         } else if (settings.name == AccueilView.routeName) {

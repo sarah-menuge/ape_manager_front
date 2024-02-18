@@ -2,7 +2,7 @@ import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:flutter/material.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 
-import 'login_form.dart';
+import 'login_section.dart';
 import 'signup_section.dart';
 
 class LoginCard extends StatelessWidget {
@@ -10,7 +10,9 @@ class LoginCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        constraints: BoxConstraints(maxWidth:ResponsiveConstraint.getResponsiveValue(context, double.infinity, 1000)),
+        constraints: BoxConstraints(
+            maxWidth: ResponsiveConstraint.getResponsiveValue(
+                context, double.infinity, 1000)),
         margin: EdgeInsets.all(20.0),
         padding: EdgeInsets.all(20.0),
         decoration: BoxDecoration(
@@ -26,17 +28,17 @@ class LoginCard extends StatelessWidget {
           ],
         ),
         child: ResponsiveLayout(
-          mobileBody:  Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            LoginForm(),
-          ],
-        ) ,
-          desktopBody : Row(
+          mobileBody: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              LoginSection(),
+            ],
+          ),
+          desktopBody: Row(
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: LoginForm(),
+                child: LoginSection(),
               ),
               VerticalDivider(
                 color: GRIS,
@@ -44,7 +46,7 @@ class LoginCard extends StatelessWidget {
               ),
               Expanded(
                 flex: 1,
-                child: SignUpSection(),
+                child: SignupSection(),
               ),
             ],
           ),
