@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../proprietes/couleurs.dart';
+
 class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-      },
-      child: Text('Se connecter'),
+      onPressed: () {},
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.blue,
+        foregroundColor: BLANC,
+        backgroundColor: BLEU,
       ),
+      child: const Text('Se connecter'),
     );
   }
 }

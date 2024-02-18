@@ -40,14 +40,12 @@ class HeaderGlobalMobile extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.topRight,
-              colors: [BEIGE_FONCE, BEIGE_CLAIR]),
+              colors: [HEADER_FONCE, HEADER_CLAIR]),
         ),
       ),
       title: Text(
         titre,
-        style: FontUtils.getOswald(
-          color: Colors.black,
-        ),
+        style: FontUtils.getFontApp(),
       ),
       centerTitle: true,
       actions: [
@@ -98,12 +96,12 @@ class HeaderGlobalDesktop extends StatelessWidget {
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.topRight,
-              colors: [BEIGE_FONCE, BEIGE_CLAIR]),
+              colors: [HEADER_FONCE, HEADER_CLAIR]),
         ),
       ),
       title: Text(
         titre,
-        style: FontUtils.getOswald(color: Colors.black),
+        style: FontUtils.getFontApp(),
       ),
       centerTitle: true,
       actions: [
@@ -113,7 +111,7 @@ class HeaderGlobalDesktop extends StatelessWidget {
               padding: EdgeInsets.only(right: 10),
               child: Text(
                 "Événements",
-                style: FontUtils.getOswald(color: Colors.black, fontSize: 15),
+                style: FontUtils.getFontApp(fontSize: 15),
               ),
             ),
             VerticalDivider(
@@ -123,7 +121,7 @@ class HeaderGlobalDesktop extends StatelessWidget {
               padding: EdgeInsets.only(left: 10, right: 10),
               child: Text(
                 "Mes commandes",
-                style: FontUtils.getOswald(color: Colors.black, fontSize: 15),
+                style: FontUtils.getFontApp(fontSize: 15),
               ),
             ),
             VerticalDivider(
@@ -133,7 +131,7 @@ class HeaderGlobalDesktop extends StatelessWidget {
               padding: EdgeInsets.only(left: 10, right: 40),
               child: Text(
                 "Mon panier",
-                style: FontUtils.getOswald(color: Colors.black, fontSize: 15),
+                style: FontUtils.getFontApp(fontSize: 15),
               ),
             ),
             PopupMenuButton(
