@@ -1,5 +1,4 @@
 import 'package:ape_manager_front/proprietes/couleurs.dart';
-import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 
 import 'email_form_field.dart';
@@ -31,57 +30,52 @@ class SignUpFormCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset('assets/images/logoEcole.png',
-                      width: 80, height: 80),
-                ),
-                const SizedBox(width: 12),
-                Flexible(
-                  child: Text.rich(
-                    TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Association des parents d\'élèves \n',
-                          style: FontUtils.getFontApp(
-                            fontSize: 15,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'École et Collège\nSte Marie Perenchies',
-                          style: FontUtils.getFontApp(
-                            fontWeight: FontWeight.w100,
-                            fontSize: 12.5,
-                          ),
-                        ),
-                      ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Image.asset('assets/images/logoEcole.png',
+                        width: 80, height: 80),
+                  ),
+                  const SizedBox(width: 12),
+                  const Flexible(
+                    child: Text.rich(
+                      TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: 'Association des parents d\'élèves \n',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(
+                              text: 'École et Collège\nSte Marie Perenchies',
+                              style: TextStyle(fontWeight: FontWeight.normal)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            const NomFormField(),
-            const SizedBox(height: 20),
-            const PrenomFormField(),
-            const SizedBox(height: 20),
-            const EmailFormField(),
-            const SizedBox(height: 20),
-            const TelephoneFormField(),
-            const SizedBox(height: 20),
-            const PasswordFormField(),
-            const SizedBox(height: 20),
-            SubmitButton(
-              formKey: formKey,
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: 30),
+              const NomFormField(),
+              const SizedBox(height: 20),
+              const PrenomFormField(),
+              const SizedBox(height: 20),
+              const EmailFormField(),
+              const SizedBox(height: 20),
+              const TelephoneFormField(),
+              const SizedBox(height: 20),
+              const PasswordFormField(),
+              const SizedBox(height: 20),
+              SubmitButton(
+                formKey: formKey,
+              ),
+            ],
+          ),
         ),
       ),
     );
