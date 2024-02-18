@@ -5,6 +5,8 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 
+import '../views/profile/profile_view.dart';
+
 class HeaderGlobal extends StatelessWidget implements PreferredSizeWidget {
   final String titre;
 
@@ -66,11 +68,17 @@ class HeaderGlobalMobile extends StatelessWidget {
               ),
               PopupMenuItem(
                 child: Text("Mon profil"),
+                value: "profile",
               ),
               PopupMenuItem(
                 child: Text("Se déconnecter"),
               ),
             ];
+          },
+          onSelected: (value) {
+            if (value == 'profile') {
+              Navigator.pushNamed(context, '/profile');
+            }
           },
           child: Icon(
             Icons.person,
@@ -151,11 +159,17 @@ class HeaderGlobalDesktop extends StatelessWidget {
                   ),
                   PopupMenuItem(
                     child: Text("Mon profil"),
+                    value: "profile",
                   ),
                   PopupMenuItem(
                     child: Text("Se déconnecter"),
                   ),
                 ];
+              },
+              onSelected: (value) {
+                if (value == 'profile') {
+                  Navigator.pushNamed(context, '/profile');
+                }
               },
               child: Icon(
                 Icons.person,
