@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/login/signup_button.dart';
 import 'package:flutter/material.dart';
 
@@ -29,16 +32,23 @@ class LoginSection extends StatelessWidget {
                       width: 80, height: 80),
                 ),
                 const SizedBox(width: 12),
-                const Flexible(
+                Flexible(
                   child: Text.rich(
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: 'Association des parents d\'élèves \n',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                          text: 'Association des parents d\'élèves \n',
+                          style: FontUtils.getFontApp(
+                            fontSize: 15,
+                          ),
+                        ),
                         TextSpan(
-                            text: 'École et Collège\nSte Marie Perenchies',
-                            style: TextStyle(fontWeight: FontWeight.normal)),
+                          text: 'École et Collège\nSte Marie Perenchies',
+                          style: FontUtils.getFontApp(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 12.5,
+                          ),
+                        ),
                       ],
                     ),
                   ),

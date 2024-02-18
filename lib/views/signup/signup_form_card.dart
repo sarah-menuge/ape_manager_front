@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:flutter/material.dart';
 
+import 'email_form_field.dart';
+import 'nom_form_field.dart';
 import 'password_form_field.dart';
 import 'prenom_form_field.dart';
 import 'submit_button.dart';
 import 'telephone_form_field.dart';
-import 'email_form_field.dart';
-import 'nom_form_field.dart';
 
 class SignUpFormCard extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -43,16 +44,23 @@ class SignUpFormCard extends StatelessWidget {
                       width: 80, height: 80),
                 ),
                 const SizedBox(width: 12),
-                const Flexible(
+                Flexible(
                   child: Text.rich(
                     TextSpan(
                       children: <TextSpan>[
                         TextSpan(
-                            text: 'Association des parents d\'élèves \n',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                          text: 'Association des parents d\'élèves \n',
+                          style: FontUtils.getFontApp(
+                            fontSize: 15,
+                          ),
+                        ),
                         TextSpan(
-                            text: 'École et Collège\nSte Marie Perenchies',
-                            style: TextStyle(fontWeight: FontWeight.normal)),
+                          text: 'École et Collège\nSte Marie Perenchies',
+                          style: FontUtils.getFontApp(
+                            fontWeight: FontWeight.w100,
+                            fontSize: 12.5,
+                          ),
+                        ),
                       ],
                     ),
                   ),

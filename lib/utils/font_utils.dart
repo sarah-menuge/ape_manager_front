@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FontUtils {
-  static TextStyle getOswald(
+  static TextStyle getFontApp(
       {double fontSize = 30,
-      Color color = Colors.white,
+      Color color = Colors.black,
       bool shadows = false,
       FontWeight fontWeight = FontWeight.normal}) {
     // Cette fonction permet de réutiliser la police principale

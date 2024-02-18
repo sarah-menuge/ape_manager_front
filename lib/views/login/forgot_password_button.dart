@@ -1,3 +1,4 @@
+import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordButton extends StatelessWidget {
@@ -9,7 +10,12 @@ class ForgotPasswordButton extends StatelessWidget {
         alignment: Alignment.centerRight,
         child: TextButton(
           onPressed: () {},
-          child: const Text('Mot de passe oublié ?'),
+          child: Text(
+            'Mot de passe oublié ?',
+            style: FontUtils.getFontApp(
+              fontSize: 15,
+            ),
+          ),
         ),
       ),
     );

@@ -47,7 +47,9 @@ class ImageAccueil extends StatelessWidget {
             child: Text(
               "Bienvenue sur \n APE Manager",
               textDirection: TextDirection.ltr,
-              style: FontUtils.getOswald(),
+              style: FontUtils.getFontApp(
+                color: Colors.white,
+              ),
             ),
           ),
         ),
@@ -70,9 +72,8 @@ class ParagraphePresentation extends StatelessWidget {
             padding: EdgeInsets.only(top: 10, bottom: 10),
             child: Text(
               "Qui sommes nous ?",
-              style: FontUtils.getOswald(
+              style: FontUtils.getFontApp(
                 fontSize: 20,
-                color: Colors.black,
               ),
             ),
           ),
@@ -80,9 +81,8 @@ class ParagraphePresentation extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 10),
             child: Text(
               "Le bureau de l'APEL (Association des parents d'élèves de l'enseignement libre) est composé de six membres élus parmi les parents d'élèves. Tous les parents sont membres de l'APEL et sont les bienvenus aux réunions du CA.",
-              style: FontUtils.getOswald(
+              style: FontUtils.getFontApp(
                 fontSize: 15,
-                color: Colors.black,
                 fontWeight: FontWeight.w200,
               ),
             ),
@@ -90,9 +90,8 @@ class ParagraphePresentation extends StatelessWidget {
 
           Text(
             "L'APEL organise chaque année divers événements pour financer les activités des enfants, y compris des manifestations annuelles comme le marché de Noël et des opérations ponctuelles comme la vente de viennoiseries.",
-            style: FontUtils.getOswald(
+            style: FontUtils.getFontApp(
               fontSize: 15,
-              color: Colors.black,
               fontWeight: FontWeight.w100,
             ),
           ),
@@ -112,18 +111,16 @@ class ParagrapheApplication extends StatelessWidget {
       child: Column(children: [
         Text(
           "Description de l'application",
-          style: FontUtils.getOswald(
+          style: FontUtils.getFontApp(
             fontSize: 20,
-            color: Colors.black,
           ),
         ),
         Padding(
           padding: EdgeInsets.only(top: 10, bottom: 10),
           child: Text(
             "L'application APE Manager vise à organiser des ventes éphémères dans le but de récolter de l'argent qui servira à l'école et aux enfants. Les parents et membres de l'association pourront commander via cette application.",
-            style: FontUtils.getOswald(
+            style: FontUtils.getFontApp(
               fontSize: 15,
-              color: Colors.black,
               fontWeight: FontWeight.w200,
             ),
           ),

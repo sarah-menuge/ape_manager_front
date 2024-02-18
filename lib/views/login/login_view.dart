@@ -1,10 +1,8 @@
-import 'package:ape_manager_front/views/login/signup_section.dart';
 import 'package:flutter/material.dart';
 
 import '../../proprietes/couleurs.dart';
 import '../../responsive/responsive_layout.dart';
 import 'login_card.dart';
-import 'login_section.dart';
 
 class LoginView extends StatelessWidget {
   static String routeName = '/login';
@@ -16,7 +14,8 @@ class LoginView extends StatelessWidget {
       body: Center(
         // Div principale
         child: FractionallySizedBox(
-          widthFactor: 0.9,
+          widthFactor:
+              ResponsiveConstraint.getResponsiveValue(context, 0.9, 0.6),
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,

@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/evenements/evenements_view.dart';
-import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
+import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MainApp());
@@ -13,6 +13,9 @@ void main() {
 class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: LoginView.routeName,

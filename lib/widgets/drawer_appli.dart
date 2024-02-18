@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -65,14 +66,14 @@ class DrawerHeaderGlobal extends StatelessWidget {
           child: Text.rich(
             TextSpan(
                 text: "Association des parents d'élèves \n",
-                style: GoogleFonts.oswald(
+                style: FontUtils.getFontApp(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
                 ),
                 children: [
                   TextSpan(
                     text: "École et collège \nSte Marie Pérenchies",
-                    style: GoogleFonts.oswald(
+                    style: FontUtils.getFontApp(
                       fontWeight: FontWeight.w100,
                       fontSize: 12.5,
                     ),
