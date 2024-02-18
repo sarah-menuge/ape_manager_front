@@ -6,18 +6,22 @@ class PrenomFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Prénom',
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.person_outline),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 450),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Prénom',
+          border: OutlineInputBorder(),
+          prefixIcon: Icon(Icons.person_outline),
+        ),
+        style: const TextStyle(height: 1),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your first name';
+          }
+          return null;
+        },
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your first name';
-        }
-        return null;
-      },
     );
   }
 }

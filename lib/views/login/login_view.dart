@@ -20,7 +20,7 @@ class LoginView extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
-              vertical: 40,
+              vertical: 20,
             ),
             decoration: BoxDecoration(
               color: BEIGE_CLAIR,

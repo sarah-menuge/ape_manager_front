@@ -17,7 +17,8 @@ class _SignupViewState extends State<SignupView> {
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
       body: Center(
-        child: SingleChildScrollView(
+        child: FractionallySizedBox(
+          widthFactor: 0.9,
           child: SignUpFormCard(formKey: _formKey),
         ),
       ),

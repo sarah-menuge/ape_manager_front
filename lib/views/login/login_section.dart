@@ -46,7 +46,7 @@ class LoginSection extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 30, width: 10),
+          const SizedBox(height: 60, width: 10),
 
           // Formulaire de connexion
           Form(
@@ -59,7 +59,7 @@ class LoginSection extends StatelessWidget {
                   PasswordFormField(),
                   ForgotPasswordButton(),
                   // Boutons se connecter / s'inscrire
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 50),
                   ResponsiveLayout(
                     mobileBody: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

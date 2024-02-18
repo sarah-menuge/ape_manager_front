@@ -5,18 +5,22 @@ class NomFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Nom',
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.person),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 450),
+      child: TextFormField(
+        decoration: const InputDecoration(
+          labelText: 'Nom',
+          border: OutlineInputBorder(),
+          prefixIcon: Icon(Icons.person),
+        ),
+        style: const TextStyle(height: 1),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your last name';
+          }
+          return null;
+        },
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your last name';
-        }
-        return null;
-      },
     );
   }
 }

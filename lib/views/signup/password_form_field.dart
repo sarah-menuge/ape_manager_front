@@ -5,19 +5,23 @@ class PasswordFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'Mot de passe',
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.lock_outline),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 450),
+      child: TextFormField(
+        obscureText: true,
+        decoration: const InputDecoration(
+          labelText: 'Mot de passe',
+          border: OutlineInputBorder(),
+          prefixIcon: Icon(Icons.lock_outline),
+        ),
+        style: const TextStyle(height: 1),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your password';
+          }
+          return null;
+        },
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your password';
-        }
-        return null;
-      },
     );
   }
 }
