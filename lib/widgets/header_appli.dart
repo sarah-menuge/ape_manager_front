@@ -5,18 +5,20 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 
-class HeaderGlobal extends StatelessWidget implements PreferredSizeWidget {
+import '../views/login/login_view.dart';
+
+class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
   final String titre;
 
-  const HeaderGlobal({required this.titre});
+  const HeaderAppli({required this.titre});
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout(
-      mobileBody: HeaderGlobalMobile(
+      mobileBody: HeaderAppliMobile(
         titre: titre,
       ),
-      desktopBody: HeaderGlobalDesktop(
+      desktopBody: HeaderAppliDesktop(
         titre: titre,
       ),
     );
@@ -26,10 +28,10 @@ class HeaderGlobal extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => Size.fromHeight(80);
 }
 
-class HeaderGlobalMobile extends StatelessWidget {
+class HeaderAppliMobile extends StatelessWidget {
   final String titre;
 
-  const HeaderGlobalMobile({required this.titre});
+  const HeaderAppliMobile({required this.titre});
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +70,9 @@ class HeaderGlobalMobile extends StatelessWidget {
                 child: Text("Mon profil"),
               ),
               PopupMenuItem(
-                child: Text("Se déconnecter"),
-              ),
+                  child: Text("Se déconnecter"),
+                  onTap: () =>
+                      Navigator.pushNamed(context, LoginView.routeName)),
             ];
           },
           child: Icon(
@@ -82,10 +85,10 @@ class HeaderGlobalMobile extends StatelessWidget {
   }
 }
 
-class HeaderGlobalDesktop extends StatelessWidget {
+class HeaderAppliDesktop extends StatelessWidget {
   final String titre;
 
-  const HeaderGlobalDesktop({required this.titre});
+  const HeaderAppliDesktop({required this.titre});
 
   @override
   Widget build(BuildContext context) {
@@ -153,8 +156,9 @@ class HeaderGlobalDesktop extends StatelessWidget {
                     child: Text("Mon profil"),
                   ),
                   PopupMenuItem(
-                    child: Text("Se déconnecter"),
-                  ),
+                      child: Text("Se déconnecter"),
+                      onTap: () =>
+                          Navigator.pushNamed(context, LoginView.routeName)),
                 ];
               },
               child: Icon(
