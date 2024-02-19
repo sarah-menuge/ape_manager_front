@@ -11,7 +11,7 @@ class AccueilViewMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderGlobal(
+      appBar: HeaderAppli(
         titre: 'Accueil',
       ),
       body: ListView(
@@ -21,7 +21,7 @@ class AccueilViewMobile extends StatelessWidget {
           ParagrapheApplication(),
         ],
       ),
-      drawer: DrawerGlobal(),
+      drawer: DrawerAppli(),
     );
   }
 }
