@@ -12,7 +12,7 @@ class AccueilViewDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderGlobal(
+      appBar: HeaderAppli(
         titre: 'Accueil',
       ),
       body: CustomScrollView(
@@ -167,9 +167,11 @@ class Footer extends StatelessWidget {
                 launchUrlString('https://www.saintemarieperenchies.fr/'),
             child: Row(
               children: [
-                Image(
-                  image: AssetImage("assets/images/logoEcole.png"),
-                  width: 40,
+                InkWell(
+                  child: Image(
+                    image: AssetImage("assets/images/logoEcole.png"),
+                    width: 40,
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 20),

@@ -13,7 +13,7 @@ class EvenementsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderGlobal(
+      appBar: HeaderAppli(
         titre: 'Liste des événements',
       ),
       body: Column(
@@ -21,7 +21,7 @@ class EvenementsView extends StatelessWidget {
           ImageEvenements(),
         ],
       ),
-      drawer: DrawerGlobal(),
+      drawer: DrawerAppli(),
     );
   }
 }
