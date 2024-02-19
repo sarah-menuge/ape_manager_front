@@ -16,6 +16,8 @@ class EvenementsView extends StatelessWidget {
         mobileBody: EvenementsViewMobile(
           profil: "Parent",
         ),
-        desktopBody: EvenementViewDesktop());
+        desktopBody: EvenementViewDesktop(
+          profil: "Parent",
+        ));
   }
 }

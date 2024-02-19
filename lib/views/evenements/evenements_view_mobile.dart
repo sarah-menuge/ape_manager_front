@@ -22,7 +22,7 @@ class EvenementsViewMobile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ImageEvenements(),
-          profil == "Parent" ? ParentView() : OrganisateurView(),
+          profil == "Parent" ? ParentMobileView() : OrganisateurMobileView(),
         ],
       ),
       drawer: DrawerGlobal(),

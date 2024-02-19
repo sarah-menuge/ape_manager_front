@@ -1,8 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 
-class ParentMobileView extends StatelessWidget {
-  const ParentMobileView({super.key});
+class ParentDesktopView extends StatelessWidget {
+  const ParentDesktopView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class ParentMobileView extends StatelessWidget {
             child: Text(
               "Événements à venir",
               style: FontUtils.getFontApp(
-                fontSize: 20,
+                fontSize: 30,
               ),
               textAlign: TextAlign.left,
             ),
@@ -24,7 +26,7 @@ class ParentMobileView extends StatelessWidget {
             child: Text(
               "Événements en cours",
               style: FontUtils.getFontApp(
-                fontSize: 20,
+                fontSize: 30,
               ),
               textAlign: TextAlign.left,
             ),

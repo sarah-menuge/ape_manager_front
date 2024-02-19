@@ -1,8 +1,8 @@
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 
-class OrganisateurView extends StatelessWidget {
-  const OrganisateurView({super.key});
+class OrganisateurMobileView extends StatelessWidget {
+  const OrganisateurMobileView({super.key});
 
   @override
   Widget build(BuildContext context) {
