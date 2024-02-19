@@ -15,7 +15,7 @@ class EvenementsViewMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderGlobal(
+      appBar: HeaderAppli(
         titre: "Liste des événements",
       ),
       body: Column(
@@ -25,7 +25,7 @@ class EvenementsViewMobile extends StatelessWidget {
           profil == "Parent" ? ParentMobileView() : OrganisateurMobileView(),
         ],
       ),
-      drawer: DrawerGlobal(),
+      drawer: DrawerAppli(),
     );
   }
 }
