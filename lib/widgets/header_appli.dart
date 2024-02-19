@@ -4,6 +4,7 @@ import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/evenements_view.dart';
+import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
 
 import '../views/login/login_view.dart';
@@ -94,6 +95,8 @@ class HeaderAppliDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading: LogoAppli(),
+      leadingWidth: 300,
       toolbarHeight: 200,
       flexibleSpace: Container(
         decoration: const BoxDecoration(
