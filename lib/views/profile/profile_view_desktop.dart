@@ -25,17 +25,34 @@ class ProfileViewDesktop extends StatelessWidget {
             child: Column(
               children: [
                 TextTitre(),
-                AllFields(),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    BoutonModifier(),
-                    SizedBox(width: 20),
-                    BoutonSupprimer()
+                    Column(
+                      children: [
+                        AllFields(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            BoutonModifier(),
+                            SizedBox(width: 30,),
+                            BoutonSupprimer()
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                      color: Colors.grey,
+                      child: const SizedBox(height: 500, width: 3),
+                    ),
+                    Column(
+                      children: [TableEnfants(),SizedBox(height: 20,), BoutonAjouterEnfant()],
+                    )
                   ],
                 ),
-                TableEnfants(),
-                BoutonAjouterEnfant()
               ],
             ),
           ),
@@ -77,28 +94,24 @@ class AllFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: 350,
       child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                NomField(),
-                SizedBox(width: 20),
-                PrenomField(),
-              ],
+            NomField(),
+            SizedBox(
+              height: 10,
             ),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                EmailField(),
-                SizedBox(width: 20),
-                TelephoneField(),
-              ],
+            PrenomField(),
+            SizedBox(
+              height: 10,
             ),
+            EmailField(),
+            SizedBox(
+              height: 10,
+            ),
+            TelephoneField(),
           ],
         ),
       ),
@@ -134,6 +147,7 @@ class _TableEnfantsState extends State<TableEnfants> {
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: DataTable(
+          headingRowColor: MaterialStateProperty.all(BEIGE_FONCE),
           columns: const [
             DataColumn(
                 label: Text(

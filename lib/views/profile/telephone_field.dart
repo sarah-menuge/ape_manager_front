@@ -10,7 +10,7 @@ class TelephoneField extends StatelessWidget {
         child: Column(
           children: [
             const Text(
-              'Nom',
+              'Téléphone',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             TextFormField(
