@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:flutter/material.dart';
 
 class LogoAppli extends StatelessWidget {
@@ -11,9 +12,12 @@ class LogoAppli extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 10),
       child: Row(children: [
-        Image(
-          image: const AssetImage("assets/images/logoEcole.png"),
-          width: 50,
+        InkWell(
+          child: Image(
+            image: const AssetImage("assets/images/logoEcole.png"),
+            width: 50,
+          ),
+          onTap: () => Navigator.pushNamed(context, AccueilView.routeName),
         ),
         Container(
           padding: EdgeInsets.only(left: 10),
