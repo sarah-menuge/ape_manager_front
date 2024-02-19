@@ -3,6 +3,7 @@
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
 
 class HeaderGlobal extends StatelessWidget implements PreferredSizeWidget {
@@ -49,32 +50,33 @@ class HeaderGlobalMobile extends StatelessWidget {
       ),
       centerTitle: true,
       actions: [
-        PopupMenuButton(
-          position: PopupMenuPosition.under,
-          offset: Offset(0, 8),
-          padding: EdgeInsets.zero,
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(
-                child: Text("Mode Parents"),
-              ),
-              PopupMenuItem(
-                child: Text("Mode Organisateurs"),
-              ),
-              PopupMenuItem(
-                child: Text("Mode Administrateur"),
-              ),
-              PopupMenuItem(
-                child: Text("Mon profil"),
-              ),
-              PopupMenuItem(
-                child: Text("Se déconnecter"),
-              ),
-            ];
-          },
-          child: Icon(
-            Icons.person,
-            size: 40,
+        Padding(
+          padding: EdgeInsets.only(right: 10),
+          child: PopupMenuButton(
+            position: PopupMenuPosition.under,
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  child: Text("Mode Parents"),
+                ),
+                PopupMenuItem(
+                  child: Text("Mode Organisateurs"),
+                ),
+                PopupMenuItem(
+                  child: Text("Mode Administrateur"),
+                ),
+                PopupMenuItem(
+                  child: Text("Mon profil"),
+                ),
+                PopupMenuItem(
+                  child: Text("Se déconnecter"),
+                ),
+              ];
+            },
+            child: Icon(
+              Icons.person,
+              size: 40,
+            ),
           ),
         ),
       ],
@@ -90,6 +92,8 @@ class HeaderGlobalDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading: LogoAppli(),
+      leadingWidth: 300,
       toolbarHeight: 200,
       flexibleSpace: Container(
         decoration: const BoxDecoration(
