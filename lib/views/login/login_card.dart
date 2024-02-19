@@ -20,20 +20,14 @@ class LoginCard extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100),
-                child: LoginSection(),
-              ),
+              child: LoginSection(),
             ),
             Container(
               color: Colors.grey,
               child: const SizedBox(height: 200, width: 2),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100),
-                child: SignupSection(),
-              ),
+              child: SignupSection(),
             ),
           ],
         ),

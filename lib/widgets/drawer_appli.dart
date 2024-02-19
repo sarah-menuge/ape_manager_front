@@ -1,16 +1,27 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/evenements/evenements_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DrawerGlobal extends StatelessWidget {
-  const DrawerGlobal({super.key});
+import '../views/accueil/accueil_view.dart';
 
-  static const List<String> liens = [
-    "Mes événements",
-    "Mes commandes",
-    "Mon panier"
+class BoutonOnglet {
+  final String libelle;
+  final String routeName;
+
+  const BoutonOnglet({required this.libelle, required this.routeName});
+}
+
+class DrawerAppli extends StatelessWidget {
+  const DrawerAppli({super.key});
+
+  static List<BoutonOnglet> boutonsOnglets = [
+    BoutonOnglet(
+        libelle: "Mes événements", routeName: EvenementsView.routeName),
+    BoutonOnglet(libelle: "Mes commandes", routeName: ""),
+    BoutonOnglet(libelle: "Mon panier", routeName: ""),
   ];
 
   @override
@@ -20,18 +31,22 @@ class DrawerGlobal extends StatelessWidget {
         children: [
           SizedBox(
             height: 100,
-            child: DrawerHeaderGlobal(),
+            child: DrawerHeaderAppli(),
           ),
           ListView.separated(
             shrinkWrap: true,
-            itemCount: liens.length,
+            itemCount: boutonsOnglets.length,
             separatorBuilder: (BuildContext context, int index) => Divider(
               thickness: 0.2,
             ),
             itemBuilder: (BuildContext context, int index) {
-              var lien = liens[index];
+              var boutonOnglet = boutonsOnglets[index];
               return ListTile(
-                title: Text(lien),
+                title: InkWell(
+                  onTap: () =>
+                      Navigator.pushNamed(context, boutonOnglet.routeName),
+                  child: Text(boutonOnglet.libelle),
+                ),
                 titleTextStyle: GoogleFonts.oswald(
                   fontSize: 15,
                   color: Colors.black,
@@ -48,8 +63,8 @@ class DrawerGlobal extends StatelessWidget {
   }
 }
 
-class DrawerHeaderGlobal extends StatelessWidget {
-  const DrawerHeaderGlobal({super.key});
+class DrawerHeaderAppli extends StatelessWidget {
+  const DrawerHeaderAppli({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +72,12 @@ class DrawerHeaderGlobal extends StatelessWidget {
       padding: EdgeInsets.only(right: 3),
       margin: EdgeInsets.all(0),
       child: Row(children: [
-        Image(
-          image: const AssetImage("assets/images/logoEcole.png"),
-          width: 50,
+        InkWell(
+          onTap: () => Navigator.pushNamed(context, AccueilView.routeName),
+          child: Image(
+            image: const AssetImage("assets/images/logoEcole.png"),
+            width: 50,
+          ),
         ),
         Container(
           padding: EdgeInsets.only(left: 10),
