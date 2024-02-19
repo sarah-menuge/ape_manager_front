@@ -70,7 +70,7 @@ class LoginSection extends StatelessWidget {
                     const SizedBox(height: 40),
                     ResponsiveLayout(
                       mobileBody: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           LoginButton(),
                           SignUpButton(),
