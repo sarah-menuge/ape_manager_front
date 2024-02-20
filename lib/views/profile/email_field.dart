@@ -16,7 +16,7 @@ class EmailField extends StatelessWidget {
             TextFormField(
               readOnly: true,
               keyboardType: TextInputType.emailAddress,
-              initialValue: 'pipouFifou@popo.com',
+              initialValue: 'pipouFifou@popojocomomopipipopoupopopomamemimomumuma.com',
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.email),

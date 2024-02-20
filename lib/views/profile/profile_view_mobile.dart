@@ -1,169 +1,104 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/views/profile/prenom_field.dart';
-import 'package:ape_manager_front/views/profile/telephone_field.dart';
 import 'package:ape_manager_front/widgets/drawer_appli.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
 
 import '../../proprietes/couleurs.dart';
-import 'email_field.dart';
-import 'nom_field.dart';
+import '../../widgets/TextTitre.dart';
+import 'AllFields.dart';
+import 'BoutonAjouterEnfant.dart';
+import 'BoutonModifier.dart';
+import 'BoutonSupprimer.dart';
+import 'TableEnfants.dart';
 
 class ProfileViewMobile extends StatelessWidget {
   const ProfileViewMobile({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: HeaderGlobal(
+    return NavigationBar();
+  }
+}
+
+class NavigationBar extends StatefulWidget {
+  const NavigationBar({super.key});
+
+  @override
+  State<NavigationBar> createState() => _NavigationBarState();
+}
+
+class _NavigationBarState extends State<NavigationBar> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static List<Widget> _widgetOptions = <Widget>[
+    //Moi
+    Scaffold(
+      appBar: HeaderAppli(
         titre: 'Profil',
       ),
       body: ListView(
         children: [
-          TextProfil(),
+        TextTitre(titre: 'Mon Profil',),
           AllFields(),
           SizedBox(height: 40,),
-          TableEnfants(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children :[
+          BoutonModifier(),
+          BoutonSupprimer(),],)
         ],
       ),
-      drawer: DrawerGlobal(),
-    );
-  }
-}
-
-class TextProfil extends StatelessWidget {
-  const TextProfil({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-          height: 160,
-          child: Center(
-            child: Text(
-              "Mon Profil",
-              textDirection: TextDirection.ltr,
-              style: FontUtils.getFontApp(
-                color: Colors.black,
-              ),
-            ),
-          ),
-        );
-  }
-}
-
-class AllFields extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 50),
-      height: 350,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            NomField(),
-            SizedBox(
-              height: 10,
-            ),
-            PrenomField(),
-            SizedBox(
-              height: 10,
-            ),
-            EmailField(),
-            SizedBox(
-              height: 10,
-            ),
-            TelephoneField(),
-          ],
-        ),
+      drawer: DrawerAppli(),
+    ),
+    //Mes Enfants
+    Scaffold(
+      appBar: HeaderAppli(
+        titre: 'Profil',
       ),
-    );
-  }
-}
-
-
-class TableEnfants extends StatefulWidget {
-  @override
-  _TableEnfantsState createState() => _TableEnfantsState();
-}
-
-class _TableEnfantsState extends State<TableEnfants> {
-  List<Child> children = [
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'Doe', firstName: 'Johnny', classe: 'CP'),
-    Child(name: 'pipou', firstName: 'poupi', classe: 'CE4')
+      body: ListView(
+        children: [
+          TextTitre(titre: 'Mes Enfants',),
+          TableEnfants(),
+          SizedBox(height: 40,),
+          Center(child : BoutonAjouterEnfant()),
+        ],
+      ),
+      drawer: DrawerAppli(),
+    ),
   ];
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5),
-      height: 300,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: DataTable(
-          headingRowColor: MaterialStateProperty.all(BEIGE_FONCE),
-          columns: const [
-            DataColumn(
-                label: Text(
-                  'Nom',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-            DataColumn(
-                label: Text(
-                  'Prénom',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-            DataColumn(
-                label: Text(
-                  'Classe',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-            DataColumn(
-                label: Text(
-                  '',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-            DataColumn(
-                label: Text(
-                  '',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
-          ],
-          rows: children
-              .map((child) => DataRow(cells: [
-            DataCell(Text(child.name)),
-            DataCell(Text(child.firstName)),
-            DataCell(Text(child.classe)),
-            DataCell(Icon(Icons.edit), onTap: () {}),
-            DataCell(Icon(Icons.delete), onTap: () {
-              setState(() {
-                children.remove(child);
-              });
-            }),
-          ]))
-              .toList(),
-        ),
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Moi',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.child_care),
+            label: 'Mes Enfants',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: BEIGE_TRES_FONCE,
+        onTap: _onItemTapped,
       ),
     );
   }
 }
 
-class Child {
-  String name;
-  String firstName;
-  String classe;
 
-  Child({required this.name, required this.firstName, required this.classe});
-}
+

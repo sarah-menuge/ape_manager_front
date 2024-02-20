@@ -11,6 +11,7 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout(
+      width: 1230,
       mobileBody: ProfileViewMobile(),
       desktopBody: ProfileViewDesktop(),
     );
