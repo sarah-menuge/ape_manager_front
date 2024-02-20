@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import '../../proprietes/couleurs.dart';
 
 class LoginButton extends StatelessWidget {
+  final Function envoiFormulaireLogin;
+
+  const LoginButton({required this.envoiFormulaireLogin});
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        Navigator.pushNamed(
-          context,
-          AccueilView.routeName,
-        );
+        envoiFormulaireLogin();
       },
       style: ElevatedButton.styleFrom(
         foregroundColor: BLANC,

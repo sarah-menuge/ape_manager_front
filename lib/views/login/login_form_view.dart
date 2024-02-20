@@ -1,0 +1,171 @@
+import 'package:ape_manager_front/forms/login_form.dart';
+import 'package:ape_manager_front/providers/authentification_provider.dart';
+import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/login/signup_button.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../accueil/accueil_view.dart';
+import 'login_button.dart';
+
+class LoginFormView extends StatefulWidget {
+  const LoginFormView({super.key});
+
+  @override
+  State<LoginFormView> createState() => _LoginFormViewState();
+}
+
+class _LoginFormViewState extends State<LoginFormView> {
+  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  late LoginForm loginForm;
+  String? erreur;
+
+  FormState get form => loginFormKey.currentState!;
+
+  @override
+  void initState() {
+    loginForm = LoginForm(
+      email: "",
+      password: "",
+    );
+    super.initState();
+  }
+
+  Future<void> envoiFormulaireLogin() async {
+    if (form.validate()) {
+      form.save();
+      final response =
+          await Provider.of<AuthentificationProvider>(context, listen: false)
+              .signin(loginForm);
+      if (response["statusCode"] == 200 && mounted) {
+        Navigator.pushNamed(context, AccueilView.routeName);
+      } else {
+        setState(() {
+          erreur = response['message'];
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: loginFormKey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          children: [
+            getMessageErreur(),
+            getEmailInput(),
+            const SizedBox(height: 20),
+            getPasswordInput(),
+            getForgotPasswordText(),
+            ResponsiveLayout(
+              mobileBody: getBoutonsMobile(),
+              desktopBody: getBoutonsDesktop(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getEmailInput() {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 300),
+      child: TextFormField(
+        onSaved: (value) {
+          loginForm.email = value!;
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Veuillez renseigner ce champ.';
+          }
+          return null;
+        },
+        decoration: const InputDecoration(
+          labelText: 'Email',
+          border: OutlineInputBorder(),
+        ),
+        style: const TextStyle(height: 1),
+        keyboardType: TextInputType.emailAddress,
+      ),
+    );
+  }
+
+  Widget getPasswordInput() {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 300),
+      child: TextFormField(
+        onSaved: (value) {
+          loginForm.password = value!;
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Veuillez renseigner ce champ.';
+          }
+          return null;
+        },
+        decoration: const InputDecoration(
+          labelText: 'Mot de passe',
+          border: OutlineInputBorder(),
+        ),
+        style: const TextStyle(height: 1),
+        obscureText: true,
+      ),
+    );
+  }
+
+  Widget getForgotPasswordText() {
+    return SizedBox(
+      width: 300,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: TextButton(
+          onPressed: () {},
+          child: Text(
+            'Mot de passe oublié ?',
+            style: FontUtils.getFontApp(
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget getMessageErreur() {
+    if (erreur == null) {
+      return const SizedBox(height: 40);
+    } else {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        child: Text(
+          erreur!,
+          textAlign: TextAlign.start,
+          style: TextStyle(color: Colors.red[900]),
+        ),
+      );
+    }
+  }
+
+  Widget getBoutonsMobile() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        LoginButton(envoiFormulaireLogin: envoiFormulaireLogin),
+        SignUpButton(),
+      ],
+    );
+  }
+
+  Widget getBoutonsDesktop() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        LoginButton(envoiFormulaireLogin: envoiFormulaireLogin),
+      ],
+    );
+  }
+}
