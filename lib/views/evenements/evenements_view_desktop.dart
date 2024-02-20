@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/desktop/evenements_view_organisateurs.dart';
 import 'package:ape_manager_front/views/evenements/desktop/evenements_view_parents.dart';
+import 'package:ape_manager_front/widgets/footer_appli.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
 
@@ -17,11 +18,36 @@ class EvenementViewDesktop extends StatelessWidget {
       appBar: HeaderAppli(
         titre: "Liste des événements",
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ImageEvenements(),
-          profil == "Parent" ? ParentDesktopView() : OrganisateurDesktopView(),
+      body: CustomScrollView(
+        shrinkWrap: true,
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ImageEvenements(),
+                      profil == "Parent"
+                          ? ParentDesktopView()
+                          : OrganisateurDesktopView(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Footer(),
+              ],
+            ),
+          ),
         ],
       ),
     );

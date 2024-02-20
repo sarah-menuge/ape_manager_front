@@ -11,3 +11,4 @@ const Color BLEU = Colors.blue;
 const Color BLANC = Colors.white;
 const Color ROUGE = Colors.red;
 const Color NOIR = Colors.black;
+const Color CONTOUR_RECTANGLE = Color.fromRGBO(204, 204, 204, 100);
