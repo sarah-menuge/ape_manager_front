@@ -1,15 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ape_manager_front/proprietes/couleurs.dart';
-import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/evenements/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/expansion_tile_appli.dart';
 import 'package:flutter/material.dart';
 
-enum TypeBouton { Detail, Notification, Modifier }
-
-class OrganisateurDesktopView extends StatelessWidget {
-  const OrganisateurDesktopView({super.key});
+class EvenementsViewOrganisateur extends StatelessWidget {
+  const EvenementsViewOrganisateur({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +44,12 @@ class OrganisateurDesktopView extends StatelessWidget {
             EvenementWidget(
               periode: "jeu. 1 avri. 2024",
               operation: "Opération serviettes",
-              type_button: TypeBouton.Notification,
+              type_button: TypeBouton.Modifier,
             ),
             EvenementWidget(
               periode: "mer. 30 juin. 2024",
               operation: "Opération pique-nique",
-              type_button: TypeBouton.Notification,
+              type_button: TypeBouton.Modifier,
             ),
           ],
         ),
@@ -87,71 +85,6 @@ class OrganisateurDesktopView extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class EvenementWidget extends StatelessWidget {
-  final String periode;
-  final String operation;
-  final String? lieu;
-  final TypeBouton type_button;
-
-  const EvenementWidget({
-    required this.periode,
-    required this.operation,
-    required this.type_button,
-    this.lieu,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 60),
-      child: Column(
-        children: [
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  operation,
-                  style: FontUtils.getFontApp(
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  periode,
-                  style: FontUtils.getFontApp(
-                    fontSize: 18,
-                  ),
-                ),
-                if (type_button == TypeBouton.Detail)
-                  ButtonAppli(
-                      text: "Plus de détail",
-                      background: BLEU,
-                      foreground: BLANC,
-                      routeName: ""),
-                if (type_button == TypeBouton.Notification)
-                  ButtonAppli(
-                      text: "Recevoir une notification",
-                      background: ROUGE,
-                      foreground: BLANC,
-                      routeName: ""),
-                if (type_button == TypeBouton.Modifier)
-                  ButtonAppli(
-                      text: "Modifier l'événement",
-                      background: ROUGE,
-                      foreground: BLANC,
-                      routeName: ""),
-              ],
-            ),
-          ),
-          Divider(
-            thickness: 0.2,
-          ),
-        ],
-      ),
     );
   }
 }

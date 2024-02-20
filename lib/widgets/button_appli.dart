@@ -25,7 +25,10 @@ class ButtonAppli extends StatelessWidget {
         foregroundColor: foreground,
         backgroundColor: background,
       ),
-      child: Text(text),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }

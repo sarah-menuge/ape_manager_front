@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -29,9 +30,9 @@ class _ExpansionTileAppliState extends State<ExpansionTileAppli> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        left: 60,
-        right: 60,
-        top: 40,
+        left: ResponsiveConstraint.getResponsiveValue(context, 20.0, 60.0),
+        right: ResponsiveConstraint.getResponsiveValue(context, 20.0, 60.0),
+        top: ResponsiveConstraint.getResponsiveValue(context, 20.0, 40.0),
       ),
       width: MediaQuery.of(context).size.width,
       child: ExpansionTile(
@@ -45,12 +46,22 @@ class _ExpansionTileAppliState extends State<ExpansionTileAppli> {
         title: Text(
           widget.titre,
           style: FontUtils.getFontApp(
+            fontSize:
+                ResponsiveConstraint.getResponsiveValue(context, 20.0, 30.0),
             letterSpacing: 2,
           ),
         ),
         leading: _isExpanded
-            ? Icon(Icons.keyboard_arrow_up, size: 40)
-            : Icon(Icons.keyboard_arrow_down, size: 40),
+            ? Icon(
+                Icons.keyboard_arrow_up,
+                size: ResponsiveConstraint.getResponsiveValue(
+                    context, 25.0, 40.0),
+              )
+            : Icon(
+                Icons.keyboard_arrow_down,
+                size: ResponsiveConstraint.getResponsiveValue(
+                    context, 25.0, 40.0),
+              ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
           side: BorderSide(
