@@ -7,15 +7,23 @@ import 'package:flutter/material.dart';
 class ExpansionTileAppli extends StatefulWidget {
   final String titre;
   final List<Widget> listeWidget;
+  final bool expanded;
 
-  const ExpansionTileAppli({required this.titre, required this.listeWidget});
+  const ExpansionTileAppli(
+      {required this.titre, required this.listeWidget, this.expanded = true});
 
   @override
   State<ExpansionTileAppli> createState() => _ExpansionTileAppliState();
 }
 
 class _ExpansionTileAppliState extends State<ExpansionTileAppli> {
-  bool _isExpanded = true;
+  late bool _isExpanded;
+
+  @override
+  void initState() {
+    _isExpanded = widget.expanded;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
