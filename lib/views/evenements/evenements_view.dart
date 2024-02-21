@@ -125,36 +125,59 @@ class EvenementWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          operation,
-          style: FontUtils.getFontApp(
-            fontSize: 18,
+        Container(
+          width: MediaQuery.of(context).size.width / 4,
+          alignment: Alignment.centerLeft,
+          child: Column(
+            children: [
+              Text(
+                operation,
+                style: FontUtils.getFontApp(
+                  fontSize: 18,
+                ),
+              ),
+            ],
           ),
         ),
-        Text(
-          periode,
-          style: FontUtils.getFontApp(
-            fontSize: 18,
+        Container(
+          width: MediaQuery.of(context).size.width / 4,
+          child: Column(
+            children: [
+              Text(
+                periode,
+                style: FontUtils.getFontApp(
+                  fontSize: 18,
+                ),
+              ),
+            ],
           ),
         ),
-        if (type_button == TypeBouton.Detail)
-          ButtonAppli(
-              text: "Plus de détail",
-              background: BLEU,
-              foreground: BLANC,
-              routeName: ""),
-        if (type_button == TypeBouton.Notification)
-          ButtonAppli(
-              text: "Me notifier",
-              background: ROUGE,
-              foreground: BLANC,
-              routeName: ""),
-        if (type_button == TypeBouton.Modifier)
-          ButtonAppli(
-              text: "Modifier",
-              background: ROUGE,
-              foreground: BLANC,
-              routeName: ""),
+        Container(
+          width: MediaQuery.of(context).size.width / 4,
+          alignment: Alignment.centerRight,
+          child: Column(
+            children: [
+              if (type_button == TypeBouton.Detail)
+                ButtonAppli(
+                    text: "Plus de détail",
+                    background: BLEU,
+                    foreground: BLANC,
+                    routeName: ""),
+              if (type_button == TypeBouton.Notification)
+                ButtonAppli(
+                    text: "Me notifier",
+                    background: ROUGE,
+                    foreground: BLANC,
+                    routeName: ""),
+              if (type_button == TypeBouton.Modifier)
+                ButtonAppli(
+                    text: "Modifier",
+                    background: ROUGE,
+                    foreground: BLANC,
+                    routeName: ""),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -36,7 +36,8 @@ class EvenementsViewParents extends StatelessWidget {
             ),
             EvenementWidget(
               periode: "ven. 24 févr. 2024",
-              operation: "Opération chocolat",
+              operation:
+                  "Opération chocolatine djeh jzjdzbjbd kjahzjf dhzkjgfezjhfk zedffhkjs hehkjfhjhf",
               type_button: TypeBouton.Detail,
             ),
           ],
