@@ -6,6 +6,7 @@ import 'package:ape_manager_front/views/evenements/evenements_view_parents.dart'
 import 'package:ape_manager_front/widgets/footer_appli.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
+import 'package:sticky_footer_scrollview/sticky_footer_scrollview.dart';
 
 class EvenementViewDesktop extends StatelessWidget {
   final Profil profil;
@@ -18,27 +19,36 @@ class EvenementViewDesktop extends StatelessWidget {
       appBar: HeaderAppli(
         titre: "Liste des événements",
       ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ImageEvenements(),
-                    profil == Profil.Parent
-                        ? EvenementsViewParents()
-                        : EvenementsViewOrganisateur(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Footer(),
-        ],
+      body: StickyFooterScrollView(
+        footer: Footer(),
+        itemBuilder: (BuildContext context, int index) {
+          return BodyEvenementsViewDesktop(profil: profil);
+        },
+        itemCount: 1,
+      ),
+    );
+  }
+}
+
+class BodyEvenementsViewDesktop extends StatelessWidget {
+  final Profil profil;
+
+  const BodyEvenementsViewDesktop({super.key, required this.profil});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ImageEvenements(),
+            profil == Profil.Parent
+                ? EvenementsViewParents()
+                : EvenementsViewOrganisateur(),
+          ],
+        ),
       ),
     );
   }

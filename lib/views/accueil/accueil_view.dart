@@ -29,7 +29,7 @@ class ImageAccueil extends StatelessWidget {
       children: [
         Container(
           height:
-              ResponsiveConstraint.getResponsiveValue(context, 160.0, 400.0),
+              ResponsiveConstraint.getResponsiveValue(context, 160.0, 325.0),
           width: double.infinity,
           child: Image(
             image: AssetImage("assets/images/ecole.jpg"),
@@ -38,7 +38,7 @@ class ImageAccueil extends StatelessWidget {
         ),
         Container(
           height:
-              ResponsiveConstraint.getResponsiveValue(context, 160.0, 400.0),
+              ResponsiveConstraint.getResponsiveValue(context, 160.0, 325.0),
           child: Center(
             child: Text(
               "Bienvenue sur \n APE Manager",

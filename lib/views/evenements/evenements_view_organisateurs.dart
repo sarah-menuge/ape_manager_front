@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/views/evenements/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/expansion_tile_appli.dart';
@@ -15,7 +16,10 @@ class EvenementsViewOrganisateur extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Padding(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.only(
+            top: 20,
+            right: 20,
+          ),
           child: ButtonAppli(
             text: "Créer un événement",
             background: VERT,
@@ -68,21 +72,26 @@ class EvenementsViewOrganisateur extends StatelessWidget {
             )
           ],
         ),
-        ExpansionTileAppli(
-          titre: "Événements clôturés",
-          expanded: false,
-          listeWidget: [
-            EvenementWidget(
-              periode: "lun. 20 févr. 2024",
-              operation: "Opération fleurs",
-              type_button: TypeBouton.Detail,
-            ),
-            EvenementWidget(
-              periode: "ven. 24 févr. 2024",
-              operation: "Opération chocolat",
-              type_button: TypeBouton.Detail,
-            )
-          ],
+        Padding(
+          padding: EdgeInsets.only(
+            bottom: ResponsiveConstraint.getResponsiveValue(context, 20.0, 0.0),
+          ),
+          child: ExpansionTileAppli(
+            titre: "Événements clôturés",
+            expanded: false,
+            listeWidget: [
+              EvenementWidget(
+                periode: "lun. 20 févr. 2024",
+                operation: "Opération fleurs",
+                type_button: TypeBouton.Detail,
+              ),
+              EvenementWidget(
+                periode: "ven. 24 févr. 2024",
+                operation: "Opération chocolat",
+                type_button: TypeBouton.Detail,
+              )
+            ],
+          ),
         ),
       ],
     );

@@ -21,7 +21,7 @@ class EvenementsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveLayout(
         mobileBody: EvenementsViewMobile(
-          profil: Profil.Parent,
+          profil: Profil.Organisateur,
         ),
         desktopBody: EvenementViewDesktop(
           profil: Profil.Parent,
@@ -36,7 +36,7 @@ class ImageEvenements extends StatelessWidget {
       children: [
         Container(
           height:
-              ResponsiveConstraint.getResponsiveValue(context, 160.0, 400.0),
+              ResponsiveConstraint.getResponsiveValue(context, 160.0, 325.0),
           width: double.infinity,
           child: Image(
             image: AssetImage("assets/images/casiers.jpg"),
@@ -45,7 +45,7 @@ class ImageEvenements extends StatelessWidget {
         ),
         Container(
           height:
-              ResponsiveConstraint.getResponsiveValue(context, 160.0, 400.0),
+              ResponsiveConstraint.getResponsiveValue(context, 160.0, 325.0),
           child: Center(
             child: Text(
               "Événements",
@@ -53,6 +53,8 @@ class ImageEvenements extends StatelessWidget {
               style: FontUtils.getFontApp(
                 color: Colors.white,
                 shadows: true,
+                fontSize: ResponsiveConstraint.getResponsiveValue(
+                    context, 30.0, 60.0),
               ),
             ),
           ),
