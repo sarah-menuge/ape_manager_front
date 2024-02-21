@@ -9,6 +9,7 @@ import 'BoutonAjouterEnfant.dart';
 import 'BoutonModifier.dart';
 import 'BoutonSupprimer.dart';
 import 'TableEnfants.dart';
+import 'change_password.dart';
 class ProfileViewDesktop extends StatelessWidget {
   const ProfileViewDesktop({super.key});
 
@@ -42,6 +43,10 @@ class ProfileViewDesktop extends StatelessWidget {
                             BoutonSupprimer()
                           ],
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Center(child : BoutonChangerMDP()),
                       ],
                     ),
                     Container(

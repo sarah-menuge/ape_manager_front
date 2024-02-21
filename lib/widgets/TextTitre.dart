@@ -10,7 +10,7 @@ class TextTitre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: ResponsiveConstraint.getResponsiveValue(context,100.0,200.0),
       child: Center(
         child: Text(
           titre,
