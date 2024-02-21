@@ -33,13 +33,14 @@ class _LoginFormViewState extends State<LoginFormView> {
   }
 
   Future<void> envoiFormulaireLogin() async {
+    print(Provider.of<AuthentificationProvider>(context, listen: false).token);
     if (form.validate()) {
       form.save();
       final response =
           await Provider.of<AuthentificationProvider>(context, listen: false)
               .signin(loginForm);
       if (response["statusCode"] == 200 && mounted) {
-        Navigator.pushNamed(context, AccueilView.routeName);
+        Navigator.pushReplacementNamed(context, AccueilView.routeName);
       } else {
         setState(() {
           erreur = response['message'];

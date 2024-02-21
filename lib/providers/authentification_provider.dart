@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:http/http.dart' as http;
 import '../forms/login_form.dart';
 import '../proprietes/constantes.dart';
+import '../views/login/login_view.dart';
 
 class AuthentificationProvider with ChangeNotifier {
   final FlutterSecureStorage storage = const FlutterSecureStorage();
@@ -13,6 +13,7 @@ class AuthentificationProvider with ChangeNotifier {
   bool isLoading = false;
   bool isLoggedIn = false;
 
+  // Pas utilisé pour le moment
   Future<void> initAuth() async {
     try {
       String? oldToken = await storage.read(key: "token");
@@ -27,6 +28,7 @@ class AuthentificationProvider with ChangeNotifier {
     }
   }
 
+  // Permet d'interroger l'API pour s'athentifier
   Future<dynamic> signin(LoginForm loginForm) async {
     try {
       // Appel à l'API pour tenter de s'authentifier
@@ -61,8 +63,11 @@ class AuthentificationProvider with ChangeNotifier {
     }
   }
 
-  void logout() {
+  // Permet d'interroger l'API pour se déconnecter
+  void logout(context) {
     token = null;
     isLoggedIn = false;
+    print("LOGOUT");
+    Navigator.pushReplacementNamed(context, LoginView.routeName);
   }
 }
