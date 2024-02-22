@@ -33,7 +33,7 @@ class ProfileViewDesktop extends StatelessWidget {
                       children: [
                         AllFields(),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

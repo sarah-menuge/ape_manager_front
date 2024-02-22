@@ -7,7 +7,7 @@ class BoutonSupprimer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {},
-      child: Text('Suprimer'),
+      child: Text('Supprimer'),
       style: ElevatedButton.styleFrom(
         backgroundColor: ROUGE,
         foregroundColor: BLANC,

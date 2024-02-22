@@ -8,22 +8,16 @@ class PrenomField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 450),
-        child: Column(
-          children: [
-            const Text(
-              'Prénom',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
+        child: TextFormField(
               readOnly: true,
               initialValue: "Fifou",
               decoration: const InputDecoration(
+                labelText: "Prénom",
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.person_outline),
               ),
               style: const TextStyle(height: 1),
             ),
-          ],
-        ));
+          );
   }
 }

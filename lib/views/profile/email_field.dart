@@ -7,23 +7,17 @@ class EmailField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 450),
-        child: Column(
-          children: [
-            const Text(
-              'Adresse e-mail',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
+        child: TextFormField(
               readOnly: true,
               keyboardType: TextInputType.emailAddress,
               initialValue: 'pipouFifou@popojocomomopipipopoupopopomamemimomumuma.com',
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.email),
+                labelText: 'Email'
               ),
               style: const TextStyle(height: 1),
             ),
-          ],
-        ));
+          );
   }
 }

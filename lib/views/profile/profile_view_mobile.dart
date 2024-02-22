@@ -43,7 +43,7 @@ class _NavigationBarState extends State<NavigationBar> {
         children: [
         TextTitre(titre: 'Mon Profil',),
           AllFields(),
-          SizedBox(height: 40,),
+          SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children :[

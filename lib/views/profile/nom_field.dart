@@ -7,22 +7,16 @@ class NomField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 450),
-        child: Column(
-          children: [
-            const Text(
-              'Nom',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
+        child: TextFormField(
               readOnly: true,
               initialValue: "pipou",
               decoration: const InputDecoration(
+                labelText: "Nom",
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.person),
               ),
               style: const TextStyle(height: 1),
             ),
-          ],
-        ));
+          );
   }
 }

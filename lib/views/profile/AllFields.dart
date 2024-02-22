@@ -17,15 +17,15 @@ class AllFields extends StatelessWidget {
           children: [
             NomField(),
             SizedBox(
-              height: 10,
+              height: 30,
             ),
             PrenomField(),
             SizedBox(
-              height: 10,
+              height: 30,
             ),
             EmailField(),
             SizedBox(
-              height: 10,
+              height: 30,
             ),
             TelephoneField(),
           ],

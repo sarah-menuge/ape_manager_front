@@ -7,23 +7,17 @@ class TelephoneField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 450),
-        child: Column(
-          children: [
-            const Text(
-              'Téléphone',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            TextFormField(
+        child: TextFormField(
               readOnly: true,
               keyboardType: TextInputType.phone,
               initialValue: "0785497852",
               decoration: const InputDecoration(
+                labelText: "Téléphone",
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.phone),
               ),
               style: const TextStyle(height: 1),
             ),
-          ],
-        ));
+          );
   }
 }
