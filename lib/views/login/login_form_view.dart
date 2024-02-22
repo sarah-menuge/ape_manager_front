@@ -6,8 +6,9 @@ import 'package:ape_manager_front/views/login/signup_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../proprietes/couleurs.dart';
+import '../../widgets/loader.dart';
 import '../accueil/accueil_view.dart';
-import 'login_button.dart';
 
 class LoginFormView extends StatefulWidget {
   const LoginFormView({super.key});
@@ -21,6 +22,8 @@ class _LoginFormViewState extends State<LoginFormView> {
   late LoginForm loginForm;
   String? erreur;
 
+  late AuthentificationProvider authentificationProvider;
+
   FormState get form => loginFormKey.currentState!;
 
   @override
@@ -29,16 +32,19 @@ class _LoginFormViewState extends State<LoginFormView> {
       email: "",
       password: "",
     );
+    authentificationProvider =
+        Provider.of<AuthentificationProvider>(context, listen: false);
     super.initState();
   }
 
   Future<void> envoiFormulaireLogin() async {
-    print(Provider.of<AuthentificationProvider>(context, listen: false).token);
+    print("token : ${authentificationProvider.token}");
     if (form.validate()) {
       form.save();
-      final response =
-          await Provider.of<AuthentificationProvider>(context, listen: false)
-              .signin(loginForm);
+      setState(() {
+        authentificationProvider.isLoading = true;
+      });
+      final response = await authentificationProvider.signin(loginForm);
       if (response["statusCode"] == 200 && mounted) {
         Navigator.pushReplacementNamed(context, AccueilView.routeName);
       } else {
@@ -51,25 +57,54 @@ class _LoginFormViewState extends State<LoginFormView> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: loginFormKey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          children: [
-            getMessageErreur(),
-            getEmailInput(),
-            const SizedBox(height: 20),
-            getPasswordInput(),
-            getForgotPasswordText(),
-            ResponsiveLayout(
-              mobileBody: getBoutonsMobile(),
-              desktopBody: getBoutonsDesktop(),
+    bool isLoading = authentificationProvider.isLoading;
+    return Stack(
+      children: [
+        isLoading == true ? const Loader() : const SizedBox(),
+        Form(
+          key: loginFormKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              children: [
+                getMessageErreur(),
+                getEmailInput(),
+                const SizedBox(height: 20),
+                getPasswordInput(),
+                getForgotPasswordText(),
+                ResponsiveLayout(
+                  mobileBody: getBoutonsMobile(),
+                  desktopBody: getBoutonsDesktop(),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        )
+      ],
     );
+    isLoading == true
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : Form(
+            key: loginFormKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                children: [
+                  getMessageErreur(),
+                  getEmailInput(),
+                  const SizedBox(height: 20),
+                  getPasswordInput(),
+                  getForgotPasswordText(),
+                  ResponsiveLayout(
+                    mobileBody: getBoutonsMobile(),
+                    desktopBody: getBoutonsDesktop(),
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 
   Widget getEmailInput() {
@@ -155,7 +190,7 @@ class _LoginFormViewState extends State<LoginFormView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        LoginButton(envoiFormulaireLogin: envoiFormulaireLogin),
+        getBoutonLogin(),
         SignUpButton(),
       ],
     );
@@ -165,8 +200,25 @@ class _LoginFormViewState extends State<LoginFormView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        LoginButton(envoiFormulaireLogin: envoiFormulaireLogin),
+        getBoutonLogin(),
       ],
+    );
+  }
+
+  Widget getBoutonLogin() {
+    bool isLoggedIn = authentificationProvider.isLoggedIn;
+    bool isLoading = authentificationProvider.isLoading;
+    return ElevatedButton(
+      onPressed: () {
+        if (isLoading == false && isLoggedIn == false) {
+          envoiFormulaireLogin();
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: BLANC,
+        backgroundColor: BLEU,
+      ),
+      child: const Text('Se connecter'),
     );
   }
 }

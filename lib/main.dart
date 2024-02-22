@@ -4,11 +4,14 @@ import 'package:ape_manager_front/views/evenements/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: ".env");
   runApp(MainApp());
 }
 
