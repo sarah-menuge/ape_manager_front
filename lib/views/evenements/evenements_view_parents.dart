@@ -17,27 +17,32 @@ class EvenementsViewParents extends StatelessWidget {
             EvenementWidget(
               periode: "lun. 20 févr. 2024",
               operation: "Opération fleurs",
+              shortDescription: "Vente de fleurs",
               type_button: TypeBouton.Detail,
             ),
             EvenementWidget(
               periode: "ven. 24 févr. 2024",
               operation: "Opération chocolat",
+              shortDescription: "Vente de chocolat",
               type_button: TypeBouton.Detail,
             ),
             EvenementWidget(
               periode: "ven. 24 févr. 2024",
               operation: "Opération chocolat",
+              shortDescription: "Vente de chocolat",
               type_button: TypeBouton.Detail,
             ),
             EvenementWidget(
               periode: "ven. 24 févr. 2024",
               operation: "Opération chocolat",
+              shortDescription: "Vente de chocolat",
               type_button: TypeBouton.Detail,
             ),
             EvenementWidget(
               periode: "ven. 24 févr. 2024",
-              operation:
-                  "Opération chocolatine djeh jzjdzbjbd kjahzjf dhzkjgfezjhfk zedffhkjs hehkjfhjhf",
+              operation: "Opération chocolatine",
+              shortDescription:
+                  "Vente de pique-nique pour la sortie dans la forêt",
               type_button: TypeBouton.Detail,
             ),
           ],
@@ -48,11 +53,14 @@ class EvenementsViewParents extends StatelessWidget {
             EvenementWidget(
               periode: "jeu. 1 avri. 2024",
               operation: "Opération serviettes",
+              shortDescription: "Vente de serviettes personnalisées",
               type_button: TypeBouton.Notification,
             ),
             EvenementWidget(
               periode: "mer. 30 juin. 2024",
               operation: "Opération pique-nique",
+              shortDescription:
+                  "Vente de pique-nique pour la sortie dans la forêt",
               type_button: TypeBouton.Notification,
             ),
           ],

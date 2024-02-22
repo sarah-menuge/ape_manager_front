@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
@@ -28,53 +29,56 @@ class _ExpansionTileAppliState extends State<ExpansionTileAppli> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        left: ResponsiveConstraint.getResponsiveValue(context, 20.0, 60.0),
-        right: ResponsiveConstraint.getResponsiveValue(context, 20.0, 60.0),
-        top: ResponsiveConstraint.getResponsiveValue(context, 20.0, 40.0),
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: ExpansionTile(
-        initiallyExpanded: _isExpanded,
-        onExpansionChanged: (bool expanded) {
-          setState(() {
-            _isExpanded = expanded;
-          });
-        },
-        controlAffinity: ListTileControlAffinity.leading,
-        title: Text(
-          widget.titre,
-          style: FontUtils.getFontApp(
-            fontSize:
-                ResponsiveConstraint.getResponsiveValue(context, 20.0, 30.0),
-            letterSpacing: 2,
-          ),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: EXPANDED_TILE_WIDTH),
+      child: Container(
+        margin: EdgeInsets.only(
+          left: ResponsiveConstraint.getResponsiveValue(context, 10.0, 60.0),
+          right: ResponsiveConstraint.getResponsiveValue(context, 10.0, 60.0),
+          top: ResponsiveConstraint.getResponsiveValue(context, 10.0, 40.0),
         ),
-        leading: _isExpanded
-            ? Icon(
-                Icons.keyboard_arrow_up,
-                size: ResponsiveConstraint.getResponsiveValue(
-                    context, 25.0, 40.0),
-              )
-            : Icon(
-                Icons.keyboard_arrow_down,
-                size: ResponsiveConstraint.getResponsiveValue(
-                    context, 25.0, 40.0),
-              ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          side: BorderSide(
-            color: CONTOUR_RECTANGLE,
+        width: MediaQuery.of(context).size.width,
+        child: ExpansionTile(
+          initiallyExpanded: _isExpanded,
+          onExpansionChanged: (bool expanded) {
+            setState(() {
+              _isExpanded = expanded;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,
+          title: Text(
+            widget.titre,
+            style: FontUtils.getFontApp(
+              fontSize:
+                  ResponsiveConstraint.getResponsiveValue(context, 20.0, 30.0),
+              letterSpacing: 2,
+            ),
           ),
-        ),
-        collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-          side: BorderSide(
-            color: CONTOUR_RECTANGLE,
+          leading: _isExpanded
+              ? Icon(
+                  Icons.keyboard_arrow_down,
+                  size: ResponsiveConstraint.getResponsiveValue(
+                      context, 25.0, 40.0),
+                )
+              : Icon(
+                  Icons.keyboard_arrow_right,
+                  size: ResponsiveConstraint.getResponsiveValue(
+                      context, 25.0, 40.0),
+                ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            side: BorderSide(
+              color: CONTOUR_RECTANGLE,
+            ),
           ),
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            side: BorderSide(
+              color: CONTOUR_RECTANGLE,
+            ),
+          ),
+          children: widget.listeWidget,
         ),
-        children: widget.listeWidget,
       ),
     );
   }
