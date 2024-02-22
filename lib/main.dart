@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
+import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_view.dart';
 import 'package:ape_manager_front/views/evenements/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AccueilView.routeName,
+      initialRoute: ForgotPasswordView.routeName,
       onGenerateRoute: (settings) {
         if (settings.name == LoginView.routeName) {
           return MaterialPageRoute(builder: (_) => LoginView());
@@ -28,6 +29,8 @@ class MainApp extends StatelessWidget {
           return MaterialPageRoute(builder: (_) => AccueilView());
         } else if (settings.name == EvenementsView.routeName) {
           return MaterialPageRoute(builder: (_) => EvenementsView());
+        } else if (settings.name == ForgotPasswordView.routeName) {
+          return MaterialPageRoute(builder: (_) => ForgotPasswordView());
         }
       },
       onUnknownRoute: (settings) {
