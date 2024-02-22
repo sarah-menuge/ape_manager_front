@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:flutter/material.dart';
 
 import 'confirm_new_password.dart';
@@ -9,13 +10,14 @@ import 'submit_button.dart';
 class ForgotPasswordFormCard extends StatelessWidget {
   final GlobalKey<FormState> formKey;
 
-  const ForgotPasswordFormCard({Key? key, required this.formKey}) : super(key: key);
+  const ForgotPasswordFormCard({Key? key, required this.formKey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           color: BEIGE_CLAIR,
           borderRadius: BorderRadius.circular(8.0),
@@ -32,6 +34,16 @@ class ForgotPasswordFormCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.black),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, LoginView.routeName)),
+                ],
+              ),
+              const SizedBox(height: 20),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
