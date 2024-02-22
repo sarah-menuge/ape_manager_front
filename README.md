@@ -66,7 +66,7 @@ au serveur local en utilisant localhost ou 10.0.2.2.
 
    Pour vérifier que cela a fonctionné, lancer la commande suivante :
    `adb reverse --list`
-   Pour relancer : `adb kill-server; adb start-server`
+   Si besoin, pour relancer : `adb kill-server; adb start-server`
 
    Si la commande adb n'est pas trouvée, il faut l'ajouter dans le fichier .bashrc ou .zshrc sur
    mac :
@@ -79,7 +79,8 @@ au serveur local en utilisant localhost ou 10.0.2.2.
    export PATH=$PATH:$ANDROID_HOME/platform-tools
    ```
 
-5. Connecter le smartphone à l'ordinateur en USB, et lancer l'application Flutter.
+5. Connecter le smartphone à l'ordinateur en USB, et lancer l'application Flutter depuis le
+   terminal.
 
 ## Quelques guides sympas
 

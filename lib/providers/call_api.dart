@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:universal_html/html.dart' as html;
 
 import '../proprietes/constantes.dart';
 
@@ -26,29 +28,51 @@ class ReponseAPI {
 Future<ReponseAPI> callAPI({
   required String uri,
   required Object jsonBody,
-  int timeoutSec = 1,
+  int timeoutSec = 3,
 }) async {
-  // Premier appel avec l'adresse de l'API renseignée en var d'environnement
-  ReponseAPI reponseApi = await _tentativeAppelAPI(
-    rootURL: URL_API,
-    uri: uri,
-    jsonBody: jsonBody,
-    timeoutSec: timeoutSec,
-  );
+  var isPhysicalDevice;
+  var isNavigator;
+  await DeviceInfoPlugin().deviceInfo.then((value) {
+    isPhysicalDevice = value.data['isPhysicalDevice'];
+    isNavigator = html.window.navigator.userAgent.contains('Mozilla') &&
+        html.window.navigator.userAgent.contains('Gecko');
+  });
+  print("is physical device : $isPhysicalDevice");
+  print("is navigator : $isNavigator");
 
-  // Si la connexion a été établie, on retourne la réponse obtenue
-  if (reponseApi.connexionAPIEtablie) return reponseApi;
-
-  // Si on est en prod et qu'on n'a pas réussi à contacter l'API, on s'arrête là
-  if (PROD == "true") return reponseApi;
-
-  // Si on est en phase de test, on tente de se connecter à l'API depuis localhost
-  return await _tentativeAppelAPI(
-    rootURL: 'http://localhost:8080',
-    uri: uri,
-    jsonBody: jsonBody,
-    timeoutSec: timeoutSec,
-  );
+  if (PROD == "true") {
+    print("in prod.");
+    return await _tentativeAppelAPI(
+      rootURL: URL_API,
+      uri: uri,
+      jsonBody: jsonBody,
+      timeoutSec: timeoutSec,
+    );
+  } else if (isNavigator == true) {
+    print("is navigator.");
+    return await _tentativeAppelAPI(
+      rootURL: "http://localhost:8080",
+      uri: uri,
+      jsonBody: jsonBody,
+      timeoutSec: timeoutSec,
+    );
+  } else if (isPhysicalDevice == true) {
+    print("is smartphone.");
+    return await _tentativeAppelAPI(
+      rootURL: "http://localhost:8080",
+      uri: uri,
+      jsonBody: jsonBody,
+      timeoutSec: timeoutSec,
+    );
+  } else {
+    print("is emulator.");
+    return await _tentativeAppelAPI(
+      rootURL: "http://10.0.2.2:8080",
+      uri: uri,
+      jsonBody: jsonBody,
+      timeoutSec: timeoutSec,
+    );
+  }
 }
 
 // Méthode privée permettant d'appeler l'API depuis un URL particulier
