@@ -2,14 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PrenomField extends StatelessWidget {
-  const PrenomField({Key? key}) : super(key: key);
+  final bool readOnly;
+
+  const PrenomField({Key? key, this.readOnly = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 450),
         child: TextFormField(
-              readOnly: true,
+              readOnly: readOnly,
               initialValue: "Fifou",
               decoration: const InputDecoration(
                 labelText: "Prénom",

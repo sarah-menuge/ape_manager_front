@@ -4,72 +4,70 @@ import 'package:ape_manager_front/views/profile/change_password.dart';
 import 'package:ape_manager_front/widgets/drawer_appli.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
-
 import '../../proprietes/couleurs.dart';
 import '../../widgets/TextTitre.dart';
 import 'AllFields.dart';
 import 'BoutonAjouterEnfant.dart';
-import 'BoutonModifier.dart';
 import 'BoutonSupprimer.dart';
 import 'TableEnfants.dart';
 
-class ProfileViewMobile extends StatelessWidget {
-  const ProfileViewMobile({super.key});
+class ProfileViewMobile extends StatefulWidget {
+  const ProfileViewMobile({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return NavigationBar();
-  }
+  State<ProfileViewMobile> createState() => _ProfileViewMobileState();
 }
 
-class NavigationBar extends StatefulWidget {
-  const NavigationBar({super.key});
-
-  @override
-  State<NavigationBar> createState() => _NavigationBarState();
-}
-
-class _NavigationBarState extends State<NavigationBar> {
+class _ProfileViewMobileState extends State<ProfileViewMobile> {
+  bool readOnly = true;
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    //Moi
-    Scaffold(
-      appBar: HeaderAppli(
-        titre: 'Profil',
+
+  List<Widget> getWidgetOptions() {
+    return <Widget>[
+      Scaffold(
+        appBar: HeaderAppli(titre: 'Profil'),
+        body: ListView(
+          children: [
+            TextTitre(titre: 'Mon Profil'),
+            AllFields(readOnly: readOnly),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      readOnly = !readOnly;
+                    });
+                  },
+                  child: Text(readOnly ? 'Modifier' : 'Sauvegarder'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: BLEU,
+                    foregroundColor: BLANC,
+                  ),
+                ),
+                BoutonSupprimer(),
+              ],
+            ),
+            BoutonChangerMDP(),
+          ],
+        ),
+        drawer: DrawerAppli(),
       ),
-      body: ListView(
-        children: [
-        TextTitre(titre: 'Mon Profil',),
-          AllFields(),
-          SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children :[
-          BoutonModifier(),
-          BoutonSupprimer(),],),
-          BoutonChangerMDP(),
-        ],
+      Scaffold(
+        appBar: HeaderAppli(titre: 'Mes Enfants'),
+        body: ListView(
+          children: [
+            TextTitre(titre: 'Mes Enfants'),
+            TableEnfants(),
+            SizedBox(height: 40),
+            Center(child: BoutonAjouterEnfant()),
+          ],
+        ),
+        drawer: DrawerAppli(),
       ),
-      drawer: DrawerAppli(),
-    ),
-    //Mes Enfants
-    Scaffold(
-      appBar: HeaderAppli(
-        titre: 'Profil',
-      ),
-      body: ListView(
-        children: [
-          TextTitre(titre: 'Mes Enfants',),
-          TableEnfants(),
-          SizedBox(height: 40,),
-          Center(child : BoutonAjouterEnfant()),
-        ],
-      ),
-      drawer: DrawerAppli(),
-    ),
-  ];
+    ];
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -79,6 +77,7 @@ class _NavigationBarState extends State<NavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> _widgetOptions = getWidgetOptions();
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -101,6 +100,3 @@ class _NavigationBarState extends State<NavigationBar> {
     );
   }
 }
-
-
-

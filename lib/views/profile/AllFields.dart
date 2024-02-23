@@ -6,6 +6,11 @@ import 'email_field.dart';
 import 'nom_field.dart';
 
 class AllFields extends StatelessWidget {
+  final bool readOnly;
+
+  const AllFields({this.readOnly = true});
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,19 +20,19 @@ class AllFields extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            NomField(),
+            NomField(readOnly: readOnly),
             SizedBox(
               height: 30,
             ),
-            PrenomField(),
+            PrenomField(readOnly: readOnly),
             SizedBox(
               height: 30,
             ),
-            EmailField(),
+            EmailField(readOnly: readOnly),
             SizedBox(
               height: 30,
             ),
-            TelephoneField(),
+            TelephoneField(readOnly: readOnly),
           ],
         ),
       ),

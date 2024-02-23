@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class TelephoneField extends StatelessWidget {
-  const TelephoneField({Key? key}) : super(key: key);
+  final bool readOnly;
+
+  const TelephoneField({Key? key, this.readOnly = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 450),
         child: TextFormField(
-              readOnly: true,
+              readOnly: readOnly,
               keyboardType: TextInputType.phone,
               initialValue: "0785497852",
               decoration: const InputDecoration(
