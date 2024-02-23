@@ -40,62 +40,57 @@ Future<ReponseAPI> callAPI({
   print("is physical device : $isPhysicalDevice");
   print("is navigator : $isNavigator");
 
+  String rootURL = URL_API;
   if (PROD == "true") {
     print("in prod.");
-    return await _tentativeAppelAPI(
-      rootURL: URL_API,
-      uri: uri,
-      jsonBody: jsonBody,
-      timeoutSec: timeoutSec,
-    );
+    rootURL = URL_API;
   } else if (isNavigator == true) {
     print("is navigator.");
-    return await _tentativeAppelAPI(
-      rootURL: "http://localhost:8080",
-      uri: uri,
-      jsonBody: jsonBody,
-      timeoutSec: timeoutSec,
-    );
+    rootURL = "http://localhost:8080";
   } else if (isPhysicalDevice == true) {
     print("is smartphone.");
-    return await _tentativeAppelAPI(
-      rootURL: "http://localhost:8080",
-      uri: uri,
-      jsonBody: jsonBody,
-      timeoutSec: timeoutSec,
-    );
+    rootURL = "http://localhost:8080";
   } else {
     print("is emulator.");
-    return await _tentativeAppelAPI(
-      rootURL: "http://10.0.2.2:8080",
-      uri: uri,
-      jsonBody: jsonBody,
-      timeoutSec: timeoutSec,
-    );
+    rootURL = "http://10.0.2.2:8080";
   }
+  return await _tentativeAppelAPIPOST(
+    rootURL: rootURL,
+    uri: uri,
+    jsonBody: jsonBody,
+    timeoutSec: timeoutSec,
+  );
 }
 
-// Méthode privée permettant d'appeler l'API depuis un URL particulier
-Future<ReponseAPI> _tentativeAppelAPI({
+// Méthode privée permettant d'appeler l'API depuis un URL particulier, en méthode POST
+Future<ReponseAPI> _tentativeAppelAPIPOST({
   required String rootURL,
   required String uri,
   required Object jsonBody,
   required int timeoutSec,
 }) async {
-  try {
-    ReponseAPI repAPI = ReponseAPI.connexionOk(
-      response: await http
-          .post(
-            Uri.parse('$rootURL$uri'),
-            headers: {'Content-type': 'application/json'},
-            body: json.encode(jsonBody),
-          )
-          .timeout(
-            Duration(seconds: timeoutSec),
-          ),
-    );
-    return repAPI;
-  } catch (e) {
+  //try {
+  ReponseAPI repAPI = ReponseAPI.connexionOk(
+    response: await http
+        .post(
+          Uri.parse('$rootURL$uri'),
+          headers: {
+            'Content-type': 'application/json',
+            //'Access-Control-Allow-Origin': "*",
+            //'Accept': '*/*',
+            //'Access-Control-Allow-Methods':
+            //    'POST, GET, OPTIONS, PUT, DELETE, HEAD',
+            //'Access-Control-Allow-Headers':
+            //    'Origin, X-Requested-With, Content-Type, Accept'
+          },
+          body: json.encode(jsonBody),
+        )
+        .timeout(
+          Duration(seconds: timeoutSec),
+        ),
+  );
+  return repAPI;
+  /*} catch (e) {
     return ReponseAPI.connexionKO();
-  }
+  }*/
 }

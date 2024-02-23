@@ -54,7 +54,13 @@ au serveur local en utilisant localhost ou 10.0.2.2.
 2. Lancer l'API en indiquant d'ouvrir les ports sur le réseau local :
    `./mvnw quarkus:dev -Dquarkus.http.host=0.0.0.0`
 
-3. Vérifier que la constante PROD vaut false dans le fichier .env.
+3. S'il n'existe pas, créer un fichier .env avec les données suivantes :
+   ```
+    # URL_API permet de renseigner l'URL de l'API associée au projet APE Manager
+    URL_API=http://10.0.2.2:8080
+    # PROD permet d'indiquer si on est dans un environnement de production
+    PROD=false
+   ```
 
 4. Rediriger les requêtes provenant de l'appareil Android vers le serveur local, en
    contournant les restrictions habituelles d'accès aux ressources locales.
