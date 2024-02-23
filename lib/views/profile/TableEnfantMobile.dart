@@ -41,22 +41,22 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
     );
 
     showMenu(
-      color: BEIGE_FONCE,
-
+      color: BEIGE_FONCE.withOpacity(1.0),
       context: context,
       position: position,
       items: <PopupMenuEntry>[
         PopupMenuItem(
           child: TextButton(
-            child: const Text('Edit', style: TextStyle(color: Colors.black)),
+            child: const Text('Modifier', style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
         ),
+        const CustomPopupMenuDivider(color: NOIR,),
         PopupMenuItem(
           child: TextButton(
-            child: const Text('Delete', style: TextStyle(color: Colors.black)),
+            child: const Text('Supprimer', style: TextStyle(color: Colors.black)),
             onPressed: () {
               setState(() {
                 children.remove(child);
@@ -104,6 +104,40 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CustomPopupMenuDivider extends PopupMenuDivider {
+
+  final double? thickness;
+  final double? indent;
+  final double? endIndent;
+  final Color? color;
+
+  const CustomPopupMenuDivider({
+    super.height,
+    super.key,
+    this.thickness,
+    this.indent,
+    this.endIndent,
+    this.color,
+  }) : super();
+
+  @override
+  State<CustomPopupMenuDivider> createState() => _CustomPopupMenuDividerState();
+}
+
+class _CustomPopupMenuDividerState extends State<CustomPopupMenuDivider> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      height: widget.height,
+      thickness: widget.thickness,
+      indent: widget.indent,
+      endIndent: widget.endIndent,
+      color: widget.color,
     );
   }
 }

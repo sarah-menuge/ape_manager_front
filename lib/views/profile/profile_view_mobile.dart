@@ -8,7 +8,6 @@ import '../../proprietes/couleurs.dart';
 import '../../widgets/TextTitre.dart';
 import 'AllFields.dart';
 import 'BoutonAjouterEnfant.dart';
-import 'BoutonSupprimer.dart';
 import 'TableEnfants.dart';
 
 class ProfileViewMobile extends StatefulWidget {
@@ -25,7 +24,7 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
   List<Widget> getWidgetOptions() {
     return <Widget>[
       Scaffold(
-        appBar: HeaderAppli(titre: 'Profil'),
+        appBar: HeaderAppli(titre: ''),
         body: ListView(
           children: [
             TextTitre(titre: 'Mon Profil'),
@@ -46,7 +45,52 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
                     foregroundColor: BLANC,
                   ),
                 ),
-                BoutonSupprimer(),
+                ElevatedButton(
+                  onPressed: () {
+                    if (readOnly) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: BEIGE_FONCE.withOpacity(1.0),
+                            title: Text('Suppression du compte'),
+                            content: Text(
+                                'Êtes-vous sûr de vouloir supprimer votre compte ?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  'Annuler',
+                                  style: TextStyle(color: NOIR),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  'Supprimer',
+                                  style: TextStyle(color: ROUGE),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      setState(() {
+                        readOnly = !readOnly;
+                      });
+                    }
+                  },
+                  child: Text(readOnly ? 'Supprimer' : 'Annuler'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ROUGE,
+                    foregroundColor: BLANC,
+                  ),
+                ),
               ],
             ),
             BoutonChangerMDP(),
@@ -55,11 +99,23 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
         drawer: DrawerAppli(),
       ),
       Scaffold(
-        appBar: HeaderAppli(titre: 'Mes Enfants'),
+        appBar: HeaderAppli(titre: ''),
         body: ListView(
           children: [
             TextTitre(titre: 'Mes Enfants'),
             TableEnfants(),
+            SizedBox(height: 20),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.info_outline, color: GRIS),
+                  SizedBox(width: 5),
+                  Text("Restez appuyé pour modifier ou supprimer un enfant",
+                      style: TextStyle(fontStyle: FontStyle.italic)),
+                ],
+              ),
+            ),
             SizedBox(height: 40),
             Center(child: BoutonAjouterEnfant()),
           ],
