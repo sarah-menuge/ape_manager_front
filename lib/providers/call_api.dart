@@ -69,28 +69,28 @@ Future<ReponseAPI> _tentativeAppelAPIPOST({
   required Object jsonBody,
   required int timeoutSec,
 }) async {
-  //try {
-  ReponseAPI repAPI = ReponseAPI.connexionOk(
-    response: await http
-        .post(
-          Uri.parse('$rootURL$uri'),
-          headers: {
-            'Content-type': 'application/json',
-            //'Access-Control-Allow-Origin': "*",
-            //'Accept': '*/*',
-            //'Access-Control-Allow-Methods':
-            //    'POST, GET, OPTIONS, PUT, DELETE, HEAD',
-            //'Access-Control-Allow-Headers':
-            //    'Origin, X-Requested-With, Content-Type, Accept'
-          },
-          body: json.encode(jsonBody),
-        )
-        .timeout(
-          Duration(seconds: timeoutSec),
-        ),
-  );
-  return repAPI;
-  /*} catch (e) {
+  try {
+    ReponseAPI repAPI = ReponseAPI.connexionOk(
+      response: await http
+          .post(
+            Uri.parse('$rootURL$uri'),
+            headers: {
+              'Content-type': 'application/json',
+              //'Access-Control-Allow-Origin': "*",
+              //'Accept': '*/*',
+              //'Access-Control-Allow-Methods':
+              //    'POST, GET, OPTIONS, PUT, DELETE, HEAD',
+              //'Access-Control-Allow-Headers':
+              //    'Origin, X-Requested-With, Content-Type, Accept'
+            },
+            body: json.encode(jsonBody),
+          )
+          .timeout(
+            Duration(seconds: timeoutSec),
+          ),
+    );
+    return repAPI;
+  } catch (e) {
     return ReponseAPI.connexionKO();
-  }*/
+  }
 }
