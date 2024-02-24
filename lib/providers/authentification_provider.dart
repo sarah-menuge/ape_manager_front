@@ -34,6 +34,7 @@ class AuthentificationProvider with ChangeNotifier {
     ReponseAPI reponseApi = await callAPI(
       uri: '/auth/login',
       jsonBody: loginForm.toJson(),
+      typeRequeteHttp: TypeRequeteHttp.POST,
     );
     isLoading = false;
 
@@ -69,7 +70,7 @@ class AuthentificationProvider with ChangeNotifier {
     };
   }
 
-  // Permet d'interroger l'API pour se déconnecter
+  // Permet de se déconnecter
   void logout(context) {
     token = null;
     isLoggedIn = false;

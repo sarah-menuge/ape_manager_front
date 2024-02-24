@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:device_info_plus/device_info_plus.dart';
@@ -24,10 +25,14 @@ class ReponseAPI {
   });
 }
 
+enum TypeRequeteHttp {GET, POST,}
+
 /// Méthode permettant d'interroger l'API en fonction de l'environnement de test / production
 Future<ReponseAPI> callAPI({
   required String uri,
-  required Object jsonBody,
+  required TypeRequeteHttp typeRequeteHttp,
+  Object? jsonBody,
+  String? token,
   int timeoutSec = 3,
 }) async {
   var isPhysicalDevice;
@@ -48,11 +53,20 @@ Future<ReponseAPI> callAPI({
   } else {
     rootURL = "http://10.0.2.2:8080";
   }
-  return await _tentativeAppelAPIPOST(
+  if(typeRequeteHttp == TypeRequeteHttp.POST){
+    return await _tentativeAppelAPIPOST(
+      rootURL: rootURL,
+      uri: uri,
+      jsonBody: jsonBody as Object,
+      timeoutSec: timeoutSec,
+      token: token,
+    );
+  }
+  return await _tentativeAppelAPIGET(
     rootURL: rootURL,
     uri: uri,
-    jsonBody: jsonBody,
     timeoutSec: timeoutSec,
+    token: token,
   );
 }
 
@@ -62,20 +76,54 @@ Future<ReponseAPI> _tentativeAppelAPIPOST({
   required String uri,
   required Object jsonBody,
   required int timeoutSec,
+  String? token,
 }) async {
   try {
+    var headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    if(token != null) headers.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
+
     ReponseAPI repAPI = ReponseAPI.connexionOk(
       response: await http
-          .post(
-            Uri.parse('$rootURL$uri'),
-            headers: {
-              'Content-type': 'application/json',
-            },
-            body: json.encode(jsonBody),
-          )
-          .timeout(
-            Duration(seconds: timeoutSec),
-          ),
+        .post(
+          Uri.parse('$rootURL$uri'),
+          headers: headers,
+          body: json.encode(jsonBody),
+        )
+        .timeout(
+          Duration(seconds: timeoutSec),
+        ),
+    );
+    return repAPI;
+  } catch (e) {
+    return ReponseAPI.connexionKO();
+  }
+}
+
+
+// Méthode privée permettant d'appeler l'API depuis un URL particulier, en méthode GET
+Future<ReponseAPI> _tentativeAppelAPIGET({
+  required String rootURL,
+  required String uri,
+  required int timeoutSec,
+  String? token,
+}) async {
+  try {
+    var headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    if(token != null) headers.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
+
+    ReponseAPI repAPI = ReponseAPI.connexionOk(
+      response: await http
+        .get(
+          Uri.parse('$rootURL$uri'),
+          headers: headers,
+        )
+        .timeout(
+          Duration(seconds: timeoutSec),
+      ),
     );
     return repAPI;
   } catch (e) {
