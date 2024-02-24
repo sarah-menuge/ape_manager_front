@@ -81,29 +81,6 @@ class _LoginFormViewState extends State<LoginFormView> {
         )
       ],
     );
-    isLoading == true
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : Form(
-            key: loginFormKey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                children: [
-                  getMessageErreur(),
-                  getEmailInput(),
-                  const SizedBox(height: 20),
-                  getPasswordInput(),
-                  getForgotPasswordText(),
-                  ResponsiveLayout(
-                    mobileBody: getBoutonsMobile(),
-                    desktopBody: getBoutonsDesktop(),
-                  ),
-                ],
-              ),
-            ),
-          );
   }
 
   Widget getEmailInput() {
