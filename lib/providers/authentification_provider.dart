@@ -4,17 +4,19 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../forms/login_form.dart';
 import '../forms/signup_form.dart';
+import '../models/utilisateur.dart';
 import '../utils/stockage_hardware.dart';
 import '../views/login/login_view.dart';
 import 'call_api.dart';
 
 class AuthentificationProvider with ChangeNotifier {
-  String? token;
   bool isLoading = false;
   bool isLoggedIn = false;
 
+  Utilisateur? utilisateur;
+
   // Pas utilisé pour le moment
-  Future<void> initAuth() async {
+  /*Future<void> initAuth() async {
     try {
       String? oldToken = getValueInHardwareMemory(key: "token");
       if (oldToken == null) {
@@ -26,9 +28,7 @@ class AuthentificationProvider with ChangeNotifier {
     } catch (e) {
       rethrow;
     }
-  }
-
-
+  }*/
 
   // Permet d'interroger l'API pour s'authentifier
   Future<dynamic> signin(LoginForm loginForm) async {
@@ -47,7 +47,6 @@ class AuthentificationProvider with ChangeNotifier {
       return {
         "statusCode": ReponseAPI.STATUS_CODE_API_KO,
         "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
-        "token": null,
       };
     }
 
@@ -56,20 +55,19 @@ class AuthentificationProvider with ChangeNotifier {
     // Authentification OK
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
-      token = body["token"];
-      setValueInHardwareMemory(key: "token", value: token);
+      utilisateur = Utilisateur(nom: body["nom"], prenom: body["prenom"], role: body["role"], token: body["token"]);
+      setValueInHardwareMemory(key: "token", value: body["token"]);
       isLoggedIn = true;
       return {
         "statusCode": 200,
         "message": null,
-        "token": token,
       };
     }
     // Authentification KO
+    isLoggedIn = false;
     return {
       "statusCode": response.statusCode,
       "message": json.decode(response.body)["message"],
-      "token": null,
     };
   }
 
@@ -112,7 +110,7 @@ class AuthentificationProvider with ChangeNotifier {
 
   // Permet de se déconnecter
   void logout(context) {
-    token = null;
+    utilisateur = null;
     isLoggedIn = false;
     Navigator.pushReplacementNamed(context, LoginView.routeName);
   }

@@ -1,12 +1,11 @@
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import '../../forms/signup_form.dart';
 import '../../proprietes/couleurs.dart';
-import '../../widgets/loader.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../accueil/accueil_view.dart';
+import '../../utils/afficher_message.dart';
 import '../profile/profile_view.dart';
 
 
@@ -37,13 +36,10 @@ class _SignupFormViewState extends State<SignupFormView> {
   Future<void> envoiFormulaireSignup() async {
     if (form.validate()) {
       form.save();
-      setState(() {
-        authentificationProvider.isLoading = true;
-      });
       final response = await authentificationProvider.signup(signupForm);
       if (response["statusCode"] == 200 && mounted) {
         Navigator.pushReplacementNamed(context, ProfileView.routeName);
-        print("Le compte a bien été créé");
+        afficherMessageSucces(context: context, message: "Compte créé avec succès.");
       } else {
         setState(() {
           erreur = response['message'];
