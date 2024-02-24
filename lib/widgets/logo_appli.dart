@@ -17,7 +17,11 @@ class LogoAppli extends StatelessWidget {
             image: const AssetImage("assets/images/logoEcole.png"),
             width: 50,
           ),
-          onTap: () => Navigator.pushNamed(context, AccueilView.routeName),
+          onTap: () => Navigator.pushNamedAndRemoveUntil(
+            context,
+            AccueilView.routeName,
+            (Route<dynamic> route) => false,
+          ),
         ),
         Container(
           padding: EdgeInsets.only(left: 10),
