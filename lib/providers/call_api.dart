@@ -25,7 +25,7 @@ class ReponseAPI {
   });
 }
 
-enum TypeRequeteHttp {GET, POST,}
+enum TypeRequeteHttp { GET, POST }
 
 /// Méthode permettant d'interroger l'API en fonction de l'environnement de test / production
 Future<ReponseAPI> callAPI({
