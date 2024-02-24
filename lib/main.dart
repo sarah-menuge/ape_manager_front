@@ -1,6 +1,7 @@
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/evenements/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
+import 'package:ape_manager_front/views/profile/profile_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: EvenementsView.routeName,
+      initialRoute: ProfileView.routeName,
       onGenerateRoute: (settings) {
         if (settings.name == LoginView.routeName) {
           return MaterialPageRoute(builder: (_) => LoginView());
@@ -28,6 +29,8 @@ class MainApp extends StatelessWidget {
           return MaterialPageRoute(builder: (_) => AccueilView());
         } else if (settings.name == EvenementsView.routeName) {
           return MaterialPageRoute(builder: (_) => EvenementsView());
+        } else if (settings.name == ProfileView.routeName) {
+          return MaterialPageRoute(builder: (_) => ProfileView());
         }
       },
       onUnknownRoute: (settings) {
