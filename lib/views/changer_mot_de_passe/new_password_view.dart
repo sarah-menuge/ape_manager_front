@@ -20,7 +20,7 @@ class _NewPasswordViewState extends State<NewPasswordView> {
       body: Center(
         child: FractionallySizedBox(
           widthFactor: 0.9,
-          child: NewPasswordFormCard(formKey: _formKey),
+          child: NewPasswordFormCard(),
         ),
       ),
     );
