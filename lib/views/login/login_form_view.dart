@@ -38,7 +38,6 @@ class _LoginFormViewState extends State<LoginFormView> {
   }
 
   Future<void> envoiFormulaireLogin() async {
-    print("token : ${authentificationProvider.token}");
     if (form.validate()) {
       form.save();
       setState(() {

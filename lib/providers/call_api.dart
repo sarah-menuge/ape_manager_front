@@ -37,21 +37,15 @@ Future<ReponseAPI> callAPI({
     isNavigator = html.window.navigator.userAgent.contains('Mozilla') &&
         html.window.navigator.userAgent.contains('Gecko');
   });
-  print("is physical device : $isPhysicalDevice");
-  print("is navigator : $isNavigator");
 
   String rootURL = URL_API;
   if (PROD == "true") {
-    print("in prod.");
     rootURL = URL_API;
   } else if (isNavigator == true) {
-    print("is navigator.");
     rootURL = "http://localhost:8080";
   } else if (isPhysicalDevice == true) {
-    print("is smartphone.");
     rootURL = "http://localhost:8080";
   } else {
-    print("is emulator.");
     rootURL = "http://10.0.2.2:8080";
   }
   return await _tentativeAppelAPIPOST(
@@ -76,12 +70,6 @@ Future<ReponseAPI> _tentativeAppelAPIPOST({
             Uri.parse('$rootURL$uri'),
             headers: {
               'Content-type': 'application/json',
-              //'Access-Control-Allow-Origin': "*",
-              //'Accept': '*/*',
-              //'Access-Control-Allow-Methods':
-              //    'POST, GET, OPTIONS, PUT, DELETE, HEAD',
-              //'Access-Control-Allow-Headers':
-              //    'Origin, X-Requested-With, Content-Type, Accept'
             },
             body: json.encode(jsonBody),
           )

@@ -54,13 +54,7 @@ au serveur local en utilisant localhost ou 10.0.2.2.
 2. Lancer l'API en indiquant d'ouvrir les ports sur le réseau local :
    `./mvnw quarkus:dev -Dquarkus.http.host=0.0.0.0`
 
-3. S'il n'existe pas, créer un fichier .env avec les données suivantes :
-   ```
-    # URL_API permet de renseigner l'URL de l'API associée au projet APE Manager
-    URL_API=http://10.0.2.2:8080
-    # PROD permet d'indiquer si on est dans un environnement de production
-    PROD=false
-   ```
+3. S'il n'existe pas, créer un fichier .env à l'image du fichier .env_template
 
 4. Rediriger les requêtes provenant de l'appareil Android vers le serveur local, en
    contournant les restrictions habituelles d'accès aux ressources locales.
@@ -71,11 +65,11 @@ au serveur local en utilisant localhost ou 10.0.2.2.
    hôte.
 
    Pour vérifier que cela a fonctionné, lancer la commande suivante :
-   `adb reverse --list`
+   `adb reverse --list` -> cela affiche une ligne avec le port et le smartphone
    Si besoin, pour relancer : `adb kill-server; adb start-server`
 
-   Si la commande adb n'est pas trouvée, il faut l'ajouter dans le fichier .bashrc ou .zshrc sur
-   mac :
+   Si la commande adb n'est pas trouvée, il faut l'ajouter dans le fichier .bashrc (ou .zshrc sur
+   mac) :
    ``` 
    export ANDROID_HOME=$HOME/Library/Android/sdk
    export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
@@ -85,8 +79,7 @@ au serveur local en utilisant localhost ou 10.0.2.2.
    export PATH=$PATH:$ANDROID_HOME/platform-tools
    ```
 
-5. Connecter le smartphone à l'ordinateur en USB, et lancer l'application Flutter depuis le
-   terminal.
+5. Lancer l'application Flutter sur le smartphone.
 
 ## Quelques guides sympas
 
