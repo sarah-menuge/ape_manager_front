@@ -1,7 +1,7 @@
 import 'package:ape_manager_front/proprietes/couleurs.dart';
-import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:flutter/material.dart';
 
+import '../login/login_view.dart';
 import 'confirm_new_password.dart';
 import 'email_form_field.dart';
 import 'new_password_form_field.dart';
@@ -20,11 +20,10 @@ class ForgotPasswordFormCard extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints constraints) {
           double maxWidth = 600;
           double width =
-              constraints.maxWidth > maxWidth ? maxWidth : constraints.maxWidth;
-
+          constraints.maxWidth > maxWidth ? maxWidth : constraints.maxWidth;
           return Container(
             width: width,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
               color: BEIGE_CLAIR,
               borderRadius: BorderRadius.circular(8.0),
@@ -50,7 +49,6 @@ class ForgotPasswordFormCard extends StatelessWidget {
                               context, LoginView.routeName)),
                     ],
                   ),
-                  const SizedBox(height: 20),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -68,12 +66,12 @@ class ForgotPasswordFormCard extends StatelessWidget {
                               TextSpan(
                                   text: 'Association des parents d\'élèves \n',
                                   style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                  TextStyle(fontWeight: FontWeight.bold)),
                               TextSpan(
                                   text:
-                                      'École et Collège\nSte Marie Perenchies',
+                                  'École et Collège\nSte Marie Perenchies',
                                   style:
-                                      TextStyle(fontWeight: FontWeight.normal)),
+                                  TextStyle(fontWeight: FontWeight.normal)),
                             ],
                           ),
                         ),
@@ -90,7 +88,6 @@ class ForgotPasswordFormCard extends StatelessWidget {
                   SubmitButton(
                     formKey: formKey,
                   ),
-                  const SizedBox(height: 20),
                 ],
               ),
             ),
