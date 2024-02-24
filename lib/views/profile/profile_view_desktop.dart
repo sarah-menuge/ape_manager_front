@@ -29,7 +29,7 @@ class _ProfileViewDesktopState extends State<ProfileViewDesktop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderAppli(titre: 'Profil'),
+      appBar: HeaderAppli(titre: ''),
       body: CustomScrollView(
         shrinkWrap: true,
         slivers: [
