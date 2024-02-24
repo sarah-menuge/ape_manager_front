@@ -7,7 +7,9 @@ import 'package:ape_manager_front/views/evenements/evenements_view.dart';
 import 'package:ape_manager_front/views/profile/profile_view.dart';
 import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/authentification_provider.dart';
 import '../views/login/login_view.dart';
 
 class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
@@ -74,9 +76,12 @@ class HeaderAppliMobile extends StatelessWidget {
                 onTap: () => Navigator.pushNamed(context, ProfileView.routeName),
               ),
               PopupMenuItem(
-                  child: Text("Se déconnecter"),
-                  onTap: () =>
-                      Navigator.pushNamed(context, LoginView.routeName)),
+                child: Text("Se déconnecter"),
+                onTap: () {
+                  Provider.of<AuthentificationProvider>(context, listen: false)
+                      .logout(context);
+                },
+              ),
             ];
           },
           child: Icon(
@@ -168,9 +173,13 @@ class HeaderAppliDesktop extends StatelessWidget {
                         Navigator.pushNamed(context, ProfileView.routeName),
                   ),
                   PopupMenuItem(
-                      child: Text("Se déconnecter"),
-                      onTap: () =>
-                          Navigator.pushNamed(context, LoginView.routeName)),
+                    child: Text("Se déconnecter"),
+                    onTap: () {
+                      Provider.of<AuthentificationProvider>(context,
+                              listen: false)
+                          .logout(context);
+                    },
+                  ),
                 ];
               },
               child: Icon(
