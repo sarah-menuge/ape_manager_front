@@ -60,7 +60,7 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
             },
           ),
         ),
-        const CustomPopupMenuDivider(color: NOIR,),
+        const CustomPopupMenuDivider(color: GRIS,),
         PopupMenuItem(
           child: TextButton(
             style: TextButton.styleFrom(
