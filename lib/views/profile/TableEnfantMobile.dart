@@ -47,7 +47,14 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
       items: <PopupMenuEntry>[
         PopupMenuItem(
           child: TextButton(
-            child: const Text('Modifier', style: TextStyle(color: Colors.black)),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: const Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Modifier', style: TextStyle(color: Colors.black)),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -56,7 +63,14 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
         const CustomPopupMenuDivider(color: NOIR,),
         PopupMenuItem(
           child: TextButton(
-            child: const Text('Supprimer', style: TextStyle(color: Colors.black)),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: const Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Supprimer', style: TextStyle(color: Colors.black)),
+            ),
             onPressed: () {
               setState(() {
                 children.remove(child);
