@@ -64,20 +64,20 @@ au serveur local en utilisant localhost ou 10.0.2.2.
    Le premier tcp:8080 fait référence au port 8080 du smartphone ; le second à celui de la machine
    hôte.
 
+   Si une erreur est rencontrée à cette étape : "adb server version (41) doesn't match this client (
+   39); killing..."
+   Cela signifie que la version d'adb n'est pas la bonne pour cela il suffit d'exécuter les
+   commandes suivantes dans un terminal :
+    ```
+    wget https://developer.android.com/studio/releases/platform-tools.html
+    unzip platform-tools_r35.0.0-linux.zip
+   sudo cp -r ~/Téléchargements/platform-tools/* /usr/bin/
+   adb version
+   ```
+
    Pour vérifier que cela a fonctionné, lancer la commande suivante :
    `adb reverse --list` -> cela affiche une ligne avec le port et le smartphone
    Si besoin, pour relancer : `adb kill-server; adb start-server`
-
-   Si , il faut l'ajouter dans le fichier .bashrc (ou .zshrc sur
-   mac) :
-   ``` 
-   export ANDROID_HOME=$HOME/Library/Android/sdk
-   export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
-   export PATH=$PATH:$ANDROID_HOME/emulator
-   export PATH=$PATH:$ANDROID_HOME/tools
-   export PATH=$PATH:$ANDROID_HOME/tools/bin
-   export PATH=$PATH:$ANDROID_HOME/platform-tools
-   ```
 
 5. Lancer l'application Flutter sur le smartphone.
 
