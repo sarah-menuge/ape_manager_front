@@ -1,5 +1,6 @@
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
-import 'package:ape_manager_front/views/evenements/evenements_view.dart';
+import 'package:ape_manager_front/views/evenements/details/evenements_details_view.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: AccueilView.routeName,
+      initialRoute: EvenementsDetailsView.routeName,
       onGenerateRoute: (settings) {
         if (settings.name == LoginView.routeName) {
           return MaterialPageRoute(builder: (_) => LoginView());
@@ -28,6 +29,8 @@ class MainApp extends StatelessWidget {
           return MaterialPageRoute(builder: (_) => AccueilView());
         } else if (settings.name == EvenementsView.routeName) {
           return MaterialPageRoute(builder: (_) => EvenementsView());
+        } else if (settings.name == EvenementsDetailsView.routeName) {
+          return MaterialPageRoute(builder: (_) => EvenementsDetailsView());
         }
       },
       onUnknownRoute: (settings) {

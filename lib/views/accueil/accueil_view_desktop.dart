@@ -13,7 +13,7 @@ class AccueilViewDesktop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HeaderAppli(
-        titre: 'Accueil',
+        titre: '',
       ),
       body: StickyFooterScrollView(
         footer: Footer(),
