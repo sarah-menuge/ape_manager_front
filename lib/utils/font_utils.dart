@@ -6,12 +6,14 @@ class FontUtils {
       {double fontSize = 30,
       Color color = Colors.black,
       bool shadows = false,
+      double letterSpacing = 0,
       FontWeight fontWeight = FontWeight.normal}) {
     // Cette fonction permet de réutiliser la police principale
     return GoogleFonts.oswald(
       fontWeight: fontWeight,
       fontSize: fontSize,
       color: color,
+      letterSpacing: letterSpacing,
       shadows: shadows
           ? [
               BoxShadow(
