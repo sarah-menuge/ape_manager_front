@@ -68,7 +68,7 @@ au serveur local en utilisant localhost ou 10.0.2.2.
    `adb reverse --list` -> cela affiche une ligne avec le port et le smartphone
    Si besoin, pour relancer : `adb kill-server; adb start-server`
 
-   Si la commande adb n'est pas trouvée, il faut l'ajouter dans le fichier .bashrc (ou .zshrc sur
+   Si , il faut l'ajouter dans le fichier .bashrc (ou .zshrc sur
    mac) :
    ``` 
    export ANDROID_HOME=$HOME/Library/Android/sdk

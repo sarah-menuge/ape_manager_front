@@ -25,10 +25,13 @@ class ReponseAPI {
   });
 }
 
+enum TypeRequeteHttp {GET, POST,}
+
 /// Méthode permettant d'interroger l'API en fonction de l'environnement de test / production
 Future<ReponseAPI> callAPI({
   required String uri,
-  required Object jsonBody,
+  required TypeRequeteHttp typeRequeteHttp,
+  Object? jsonBody,
   String? token,
   int timeoutSec = 3,
 }) async {
@@ -50,10 +53,18 @@ Future<ReponseAPI> callAPI({
   } else {
     rootURL = "http://10.0.2.2:8080";
   }
-  return await _tentativeAppelAPIPOST(
+  if(typeRequeteHttp == TypeRequeteHttp.POST){
+    return await _tentativeAppelAPIPOST(
+      rootURL: rootURL,
+      uri: uri,
+      jsonBody: jsonBody as Object,
+      timeoutSec: timeoutSec,
+      token: token,
+    );
+  }
+  return await _tentativeAppelAPIGET(
     rootURL: rootURL,
     uri: uri,
-    jsonBody: jsonBody,
     timeoutSec: timeoutSec,
     token: token,
   );
@@ -95,7 +106,6 @@ Future<ReponseAPI> _tentativeAppelAPIPOST({
 Future<ReponseAPI> _tentativeAppelAPIGET({
   required String rootURL,
   required String uri,
-  required Object jsonBody,
   required int timeoutSec,
   String? token,
 }) async {

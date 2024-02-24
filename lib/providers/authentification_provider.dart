@@ -34,6 +34,7 @@ class AuthentificationProvider with ChangeNotifier {
     ReponseAPI reponseApi = await callAPI(
       uri: '/auth/login',
       jsonBody: loginForm.toJson(),
+      typeRequeteHttp: TypeRequeteHttp.POST,
     );
     isLoading = false;
 
