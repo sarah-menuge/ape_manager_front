@@ -2,6 +2,8 @@ import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/views/signup/signup_form_view.dart';
 import 'package:flutter/material.dart';
 
+import '../login/login_view.dart';
+
 class SignUpCard extends StatelessWidget {
   const SignUpCard({super.key});
 
@@ -9,6 +11,9 @@ class SignUpCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        constraints: const BoxConstraints(
+          maxWidth: 600,
+        ),
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
           color: BEIGE_CLAIR,
@@ -26,6 +31,15 @@ class SignUpCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.black),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, LoginView.routeName)),
+                ],
+              ),
               getHeader(),
               SignupFormView(),
             ],
