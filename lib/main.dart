@@ -1,6 +1,7 @@
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
-import 'package:ape_manager_front/views/evenements/details/evenements_details_view.dart';
+import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_view.dart';
+import 'package:ape_manager_front/views/changer_mot_de_passe/new_password_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:ape_manager_front/views/profile/profile_view.dart';
@@ -46,6 +47,12 @@ class MainApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => EvenementsDetailsView());
           } else if (settings.name == ProfileView.routeName) {
             return MaterialPageRoute(builder: (_) => ProfileView());
+          } else if (settings.name == ForgotPasswordView.routeName) {
+          return MaterialPageRoute(builder: (_) => ForgotPasswordView());
+          } else if (settings.name == NewPasswordView.routeName) {
+            return MaterialPageRoute(builder: (_) => NewPasswordView());
+          } else if (settings.name == ProfileView.routeName) {
+          return MaterialPageRoute(builder: (_) => ProfileView());
           }
         },
         onUnknownRoute: (settings) {
