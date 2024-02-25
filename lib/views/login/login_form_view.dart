@@ -3,12 +3,13 @@ import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/login/signup_button.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../../proprietes/couleurs.dart';
+import '../../utils/afficher_message.dart';
 import '../../widgets/loader.dart';
 import '../accueil/accueil_view.dart';
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginFormView extends StatefulWidget {
   const LoginFormView({super.key});
@@ -40,12 +41,10 @@ class _LoginFormViewState extends State<LoginFormView> {
   Future<void> envoiFormulaireLogin() async {
     if (form.validate()) {
       form.save();
-      setState(() {
-        authentificationProvider.isLoading = true;
-      });
       final response = await authentificationProvider.signin(loginForm);
       if (response["statusCode"] == 200 && mounted) {
         Navigator.pushReplacementNamed(context, AccueilView.routeName);
+        afficherMessageSucces(context: context, message: "Connexion établie avec succès.");
       } else {
         setState(() {
           erreur = response['message'];
