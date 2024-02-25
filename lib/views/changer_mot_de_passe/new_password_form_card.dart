@@ -12,47 +12,58 @@ class NewPasswordFormCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         double maxWidth = 600;
-        return Container(
-          width: constraints.maxWidth > maxWidth ? maxWidth : constraints.maxWidth,
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset('assets/images/logoEcole.png', width: 80, height: 80),
-              const SizedBox(height: 12),
-              const Text.rich(
-                TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Association des parents d\'élèves \n',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+        return SingleChildScrollView(
+          child: Container(
+            width: constraints.maxWidth > maxWidth ? maxWidth : constraints.maxWidth,
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back),
                     ),
-                    TextSpan(
-                      text: 'École et Collège\nSte Marie Perenchies',
-                      style: TextStyle(fontWeight: FontWeight.normal),
-                    ),
+                    const Text('Retour'),
                   ],
                 ),
-              ),
-              const SizedBox(height: 20),
-              const EmailFormField(),
-              const SizedBox(height: 10),
-              const FormerPasswordFormField(),
-              const SizedBox(height: 10),
-              const NewPasswordFormField(),
-              const SizedBox(height: 10),
-              const ConfirmPasswordFormField(),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => print('submit'),
-                child: const Text('Valider'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: BLEU,
-                  foregroundColor: BLANC,
-                  minimumSize: const Size(200, 50),
+                Image.asset('assets/images/logoEcole.png', width: 80, height: 80),
+                const SizedBox(height: 12),
+                const Text.rich(
+                  TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Association des parents d\'élèves \n',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(
+                        text: 'École et Collège\nSte Marie Perenchies',
+                        style: TextStyle(fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 20),
+                const EmailFormField(),
+                const SizedBox(height: 10),
+                const FormerPasswordFormField(),
+                const SizedBox(height: 10),
+                const NewPasswordFormField(),
+                const SizedBox(height: 10),
+                const ConfirmPasswordFormField(),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () => print('submit'),
+                  child: const Text('Valider'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: BLEU,
+                    foregroundColor: BLANC,
+                    minimumSize: const Size(200, 50),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
