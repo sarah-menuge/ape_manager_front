@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/authentification_provider.dart';
-import '../views/login/login_view.dart';
 
 class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
   final String titre;
@@ -74,7 +73,8 @@ class HeaderAppliMobile extends StatelessWidget {
               ),
               PopupMenuItem(
                 child: Text("Mon profil"),
-                onTap: () => Navigator.pushNamed(context, ProfileView.routeName),
+                onTap: () =>
+                    Navigator.pushNamed(context, ProfileView.routeName),
               ),
               PopupMenuItem(
                 child: Text("Se déconnecter"),
@@ -85,9 +85,12 @@ class HeaderAppliMobile extends StatelessWidget {
               ),
             ];
           },
-          child: Icon(
-            Icons.person,
-            size: 40,
+          child: Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: Icon(
+              Icons.person,
+              size: 40,
+            ),
           ),
         ),
       ],
@@ -183,9 +186,12 @@ class HeaderAppliDesktop extends StatelessWidget {
                   ),
                 ];
               },
-              child: Icon(
-                Icons.person,
-                size: 40,
+              child: Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: Icon(
+                  Icons.person,
+                  size: 40,
+                ),
               ),
             ),
           ],
