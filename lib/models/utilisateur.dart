@@ -1,22 +1,31 @@
 enum RoleUtilisateur { parent, organisateur, administrateur }
 
 class Utilisateur {
-  String nom;
-  String prenom;
+  late String nom;
+  late String prenom;
   late RoleUtilisateur role;
-  String token;
+  late String token;
 
-  Utilisateur({required this.nom, required this.prenom, required String role, required this.token}){
-    if(role == "PARENT") {
-      this.role = RoleUtilisateur.parent;
-    } else if(role == "ORGANISATEUR") {
-      this.role = RoleUtilisateur.organisateur;
+  Utilisateur.fromJson(Map<String, dynamic> json){
+    nom = json["nom"];
+    prenom = json["prenom"];
+    token = json["token"];
+
+    if(json["role"] == "PARENT") {
+      role = RoleUtilisateur.parent;
+    } else if(json["role"] == "ORGANISATEUR") {
+      role = RoleUtilisateur.organisateur;
     }
-    else if (role == "ADMINISTRATEUR") {
-      this.role = RoleUtilisateur.administrateur;
+    else if (json["role"] == "ADMINISTRATEUR") {
+      role = RoleUtilisateur.administrateur;
     }
     else {
-      this.role = RoleUtilisateur.parent;
+      role = RoleUtilisateur.parent;
     }
+  }
+
+  @override
+  String toString(){
+    return "$prenom $nom - $role";
   }
 }

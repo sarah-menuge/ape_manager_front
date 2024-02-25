@@ -55,7 +55,7 @@ class AuthentificationProvider with ChangeNotifier {
     // Authentification OK
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
-      utilisateur = Utilisateur(nom: body["nom"], prenom: body["prenom"], role: body["role"], token: body["token"]);
+      utilisateur = Utilisateur.fromJson(body);
       setValueInHardwareMemory(key: "token", value: body["token"]);
       isLoggedIn = true;
       return {
