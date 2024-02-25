@@ -32,6 +32,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
                 getStatutEvenement(context),
                 const Divider(thickness: 0.5),
                 listeView,
+                getBoutonFinaliserCommande(context),
                 getBoutonPartagerEvenement(context),
               ],
             ),
@@ -106,13 +107,32 @@ class EvenementsDetailsWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical:
-              ResponsiveConstraint.getResponsiveValue(context, 30.0, 50.0)),
+              ResponsiveConstraint.getResponsiveValue(context, 30.0, 20.0)),
       child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ButtonAppli(
             text: "Partager l'événement",
             background: ROUGE,
+            foreground: BLANC,
+            routeName: "",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getBoutonFinaliserCommande(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          vertical:
+              ResponsiveConstraint.getResponsiveValue(context, 30.0, 20.0)),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ButtonAppli(
+            text: "Finaliser la commande",
+            background: VERT,
             foreground: BLANC,
             routeName: "",
           ),
