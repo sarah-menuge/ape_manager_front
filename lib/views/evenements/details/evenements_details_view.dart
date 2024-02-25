@@ -19,7 +19,8 @@ class EvenementsDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayout(
-      mobileBody: const EvenementsDetailsViewMobile(
+      mobileBody: EvenementsDetailsViewMobile(
+        evenement: evenement,
         profil: Profil.Parent,
       ),
       desktopBody: EvenementsDetailsViewDesktop(

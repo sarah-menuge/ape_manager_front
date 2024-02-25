@@ -3,7 +3,9 @@ import 'package:ape_manager_front/models/Evenement.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/evenements/details/bouton_quantite.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
+import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
 
@@ -146,72 +148,24 @@ class EvenementsDetailsViewDesktop extends StatelessWidget {
                     );
                   }).toList(),
                 ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ButtonAppli(
+                        text: "Partager l'événement",
+                        background: ROUGE,
+                        foreground: BLANC,
+                        routeName: "",
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class QuantiteBouton extends StatefulWidget {
-  const QuantiteBouton({Key? key}) : super(key: key);
-
-  @override
-  State<QuantiteBouton> createState() => _QuantiteBoutonState();
-}
-
-class _QuantiteBoutonState extends State<QuantiteBouton> {
-  int quantity = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: quantity == 0 ? BLEU : VERT,
-      child: SizedBox(
-        height: 50,
-        width: 100,
-        child: quantity == 0
-            ? TextButton(
-                child: const Text(
-                  'Quantité',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {
-                  setState(() {
-                    quantity++;
-                  });
-                },
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.remove),
-                    onPressed: () {
-                      setState(() {
-                        quantity--;
-                      });
-                    },
-                  ),
-                  Text(
-                    quantity.toString(),
-                    style: const TextStyle(color: BLANC),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: () {
-                      setState(() {
-                        quantity++;
-                      });
-                    },
-                  ),
-                ],
-              ),
       ),
     );
   }
