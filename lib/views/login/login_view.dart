@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../proprietes/couleurs.dart';
-import '../../responsive/responsive_layout.dart';
 import 'login_card.dart';
 
 class LoginView extends StatelessWidget {
@@ -9,6 +8,7 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
       body: Center(
