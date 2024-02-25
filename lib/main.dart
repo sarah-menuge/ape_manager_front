@@ -19,7 +19,7 @@ class MainApp extends StatelessWidget {
     ]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: EvenementsDetailsView.routeName,
+      initialRoute: LoginView.routeName,
       onGenerateRoute: (settings) {
         if (settings.name == LoginView.routeName) {
           return MaterialPageRoute(builder: (_) => LoginView());

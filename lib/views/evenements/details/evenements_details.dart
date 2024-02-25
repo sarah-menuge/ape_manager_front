@@ -1,4 +1,3 @@
-import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/models/Evenement.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
@@ -9,14 +8,10 @@ import 'package:flutter/material.dart';
 
 class EvenementsDetailsWidget extends StatelessWidget {
   final Evenement evenement;
-  final List<Article> liste_articles;
   final Widget listeView;
 
   const EvenementsDetailsWidget(
-      {super.key,
-      required this.evenement,
-      required this.liste_articles,
-      required this.listeView});
+      {super.key, required this.evenement, required this.listeView});
 
   @override
   Widget build(BuildContext context) {

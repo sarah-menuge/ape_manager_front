@@ -1,4 +1,3 @@
-import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/models/Evenement.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
@@ -13,13 +12,9 @@ import 'package:sticky_footer_scrollview/sticky_footer_scrollview.dart';
 class EvenementsDetailsViewDesktop extends StatelessWidget {
   final Profil profil;
   final Evenement evenement;
-  final List<Article> liste_articles;
 
   const EvenementsDetailsViewDesktop(
-      {super.key,
-      required this.profil,
-      required this.evenement,
-      required this.liste_articles});
+      {super.key, required this.profil, required this.evenement});
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +27,9 @@ class EvenementsDetailsViewDesktop extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return EvenementsDetailsWidget(
             evenement: evenement,
-            liste_articles: liste_articles,
             listeView: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: liste_articles.map((article) {
+              children: evenement.liste_articles.map((article) {
                 return Column(
                   children: [
                     ListTile(

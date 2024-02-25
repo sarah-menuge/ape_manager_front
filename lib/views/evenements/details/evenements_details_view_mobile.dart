@@ -1,4 +1,3 @@
-import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/models/Evenement.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
@@ -12,13 +11,9 @@ import 'package:flutter/material.dart';
 class EvenementsDetailsViewMobile extends StatelessWidget {
   final Profil profil;
   final Evenement evenement;
-  final List<Article> liste_articles;
 
   const EvenementsDetailsViewMobile(
-      {super.key,
-      required this.profil,
-      required this.evenement,
-      required this.liste_articles});
+      {super.key, required this.profil, required this.evenement});
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +23,9 @@ class EvenementsDetailsViewMobile extends StatelessWidget {
       ),
       body: EvenementsDetailsWidget(
         evenement: evenement,
-        liste_articles: liste_articles,
         listeView: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: liste_articles.map((article) {
+          children: evenement.liste_articles.map((article) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

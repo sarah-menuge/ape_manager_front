@@ -13,7 +13,8 @@ class EvenementsDetailsView extends StatelessWidget {
       titre: "Opération sortie bowling + pique-nique dans la forêt",
       description:
           "Vente de boîte de chocolat noir, au lait et blanc. Pralinés ou fourrés, avec cette opération vous trouverez le chocolat de vos rêves !",
-      statut: "En cours");
+      statut: "En cours",
+      liste_articles: liste_articles);
 
   static Article article1 = Article(
     id: 1,
@@ -108,12 +109,10 @@ class EvenementsDetailsView extends StatelessWidget {
       mobileBody: EvenementsDetailsViewMobile(
         evenement: evenement,
         profil: Profil.Parent,
-        liste_articles: liste_articles,
       ),
       desktopBody: EvenementsDetailsViewDesktop(
         evenement: evenement,
         profil: Profil.Parent,
-        liste_articles: liste_articles,
       ),
     );
   }
