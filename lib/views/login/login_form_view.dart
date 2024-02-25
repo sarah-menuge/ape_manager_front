@@ -3,6 +3,7 @@ import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/login/signup_button.dart';
+import '../../proprietes/constantes.dart';
 import '../../proprietes/couleurs.dart';
 import '../../utils/afficher_message.dart';
 import '../../widgets/loader.dart';
@@ -22,6 +23,7 @@ class _LoginFormViewState extends State<LoginFormView> {
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   late LoginForm loginForm;
   String? erreur;
+  bool passerVerification = false;
 
   late AuthentificationProvider authentificationProvider;
 
@@ -35,12 +37,20 @@ class _LoginFormViewState extends State<LoginFormView> {
     );
     authentificationProvider =
         Provider.of<AuthentificationProvider>(context, listen: false);
+
+    // Permet l'autologin dans un environnement hors production
+    if(PROD == "false" && AUTO_LOGIN_TEST == "true"){
+      loginForm.email = EMAIL_AUTO_LOGIN_TEST;
+      loginForm.password = PASSWORD_AUTO_LOGIN_TEST;
+      passerVerification = true;
+      envoiFormulaireLogin();
+    }
     super.initState();
   }
 
   Future<void> envoiFormulaireLogin() async {
-    if (form.validate()) {
-      form.save();
+    if (passerVerification == true || form.validate()) {
+      if(passerVerification == false) form.save();
       final response = await authentificationProvider.signin(loginForm);
       if (response["statusCode"] == 200 && mounted) {
         Navigator.pushReplacementNamed(context, AccueilView.routeName);
