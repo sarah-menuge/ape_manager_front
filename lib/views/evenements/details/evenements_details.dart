@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 class EvenementsDetailsWidget extends StatelessWidget {
   final Evenement evenement;
   final Widget listeView;
+  static double prixTotal = 23.99;
 
   const EvenementsDetailsWidget(
       {super.key, required this.evenement, required this.listeView});
@@ -30,10 +31,11 @@ class EvenementsDetailsWidget extends StatelessWidget {
                 getTitreEvenement(context),
                 getDescriptionEvenement(context),
                 getStatutEvenement(context),
+                getBoutonPartagerEvenement(context),
                 const Divider(thickness: 0.5),
                 listeView,
+                getPrixTotal(context),
                 getBoutonFinaliserCommande(context),
-                getBoutonPartagerEvenement(context),
               ],
             ),
           ),
@@ -74,7 +76,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
 
   Widget getStatutEvenement(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Text.rich(
         TextSpan(
           children: [
@@ -103,11 +105,26 @@ class EvenementsDetailsWidget extends StatelessWidget {
     );
   }
 
+  Widget getPrixTotal(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Text(
+          "Prix total : ${prixTotal}€",
+          style: FontUtils.getFontApp(
+            fontSize: ResponsiveConstraint.getResponsiveValue(
+                context, POLICE_MOBILE_NORMAL, POLICE_DESKTOP_NORMAL),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget getBoutonPartagerEvenement(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-          vertical:
-              ResponsiveConstraint.getResponsiveValue(context, 30.0, 20.0)),
+      padding: EdgeInsets.only(
+          bottom: ResponsiveConstraint.getResponsiveValue(context, 0.0, 10.0)),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
@@ -126,7 +143,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
           vertical:
-              ResponsiveConstraint.getResponsiveValue(context, 30.0, 20.0)),
+              ResponsiveConstraint.getResponsiveValue(context, 10.0, 10.0)),
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
