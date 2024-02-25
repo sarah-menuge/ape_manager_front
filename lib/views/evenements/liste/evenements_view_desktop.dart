@@ -38,17 +38,14 @@ class BodyEvenementsViewDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.only(bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ImageEvenements(),
-            profil == Profil.Parent
-                ? EvenementsViewParents()
-                : EvenementsViewOrganisateur(),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ImageEvenements(),
+          profil == Profil.Parent
+              ? EvenementsViewParents()
+              : EvenementsViewOrganisateur(),
+        ],
       ),
     );
   }
