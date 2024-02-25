@@ -7,6 +7,9 @@ import 'package:ape_manager_front/views/evenements/evenements_view_desktop.dart'
 import 'package:ape_manager_front/views/evenements/evenements_view_mobile.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/evenement_provider.dart';
 
 enum Profil { Parent, Organisateur }
 
@@ -19,6 +22,9 @@ class EvenementsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EvenementProvider evenementProvider =
+        Provider.of<EvenementProvider>(context, listen: false);
+    evenementProvider.fetchData();
     return ResponsiveLayout(
         mobileBody: EvenementsViewMobile(
           profil: Profil.Parent,
