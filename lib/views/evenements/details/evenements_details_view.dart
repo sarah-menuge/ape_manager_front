@@ -13,7 +13,7 @@ class EvenementsDetailsView extends StatelessWidget {
       titre: "Opération sortie bowling + pique-nique dans la forêt",
       description:
           "Vente de boîte de chocolat noir, au lait et blanc. Pralinés ou fourrés, avec cette opération vous trouverez le chocolat de vos rêves !",
-      statut: "Clôturé",
+      statut: "En cours",
       liste_articles: liste_articles);
 
   static Article article1 = Article(

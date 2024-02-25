@@ -20,49 +20,35 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
         child: SizedBox(
           height: 50,
           width: ResponsiveConstraint.getResponsiveValue(context, 115.0, 100.0),
-          child: quantity == 0
-              ? TextButton(
-                  child: const Text(
-                    'Quantité',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      quantity++;
-                    });
-                  },
-                )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.remove),
-                      onPressed: () {
-                        setState(() {
-                          quantity--;
-                        });
-                      },
-                    ),
-                    Expanded(
-                      child: Text(
-                        quantity.toString(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: BLANC),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      onPressed: () {
-                        setState(() {
-                          quantity++;
-                        });
-                      },
-                    ),
-                  ],
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.remove),
+                onPressed: () {
+                  setState(() {
+                    quantity--;
+                  });
+                },
+              ),
+              Expanded(
+                child: Text(
+                  quantity.toString(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: BLANC),
                 ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  setState(() {
+                    quantity++;
+                  });
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
