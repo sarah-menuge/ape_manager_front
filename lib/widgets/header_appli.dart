@@ -5,10 +5,13 @@ import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
+import 'package:ape_manager_front/views/evenements/evenements_view.dart';
+import 'package:ape_manager_front/views/profile/profile_view.dart';
 import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../views/login/login_view.dart';
+import '../providers/authentification_provider.dart';
 
 class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
   final String titre;
@@ -71,16 +74,24 @@ class HeaderAppliMobile extends StatelessWidget {
               ),
               PopupMenuItem(
                 child: Text("Mon profil"),
+                onTap: () =>
+                    Navigator.pushNamed(context, ProfileView.routeName),
               ),
               PopupMenuItem(
-                  child: Text("Se déconnecter"),
-                  onTap: () =>
-                      Navigator.pushNamed(context, LoginView.routeName)),
+                child: Text("Se déconnecter"),
+                onTap: () {
+                  Provider.of<AuthentificationProvider>(context, listen: false)
+                      .logout(context);
+                },
+              ),
             ];
           },
-          child: Icon(
-            Icons.person,
-            size: 40,
+          child: Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: Icon(
+              Icons.person,
+              size: 40,
+            ),
           ),
         ),
       ],
@@ -163,16 +174,25 @@ class HeaderAppliDesktop extends StatelessWidget {
                   ),
                   PopupMenuItem(
                     child: Text("Mon profil"),
+                    onTap: () =>
+                        Navigator.pushNamed(context, ProfileView.routeName),
                   ),
                   PopupMenuItem(
-                      child: Text("Se déconnecter"),
-                      onTap: () =>
-                          Navigator.pushNamed(context, LoginView.routeName)),
+                    child: Text("Se déconnecter"),
+                    onTap: () {
+                      Provider.of<AuthentificationProvider>(context,
+                              listen: false)
+                          .logout(context);
+                    },
+                  ),
                 ];
               },
-              child: Icon(
-                Icons.person,
-                size: 40,
+              child: Padding(
+                padding: EdgeInsets.only(right: 20),
+                child: Icon(
+                  Icons.person,
+                  size: 40,
+                ),
               ),
             ),
           ],

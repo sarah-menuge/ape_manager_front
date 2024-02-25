@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+const Color BEIGE_TRES_FONCE = Color.fromRGBO(166, 123, 91, 100);
 const Color BEIGE_FONCE = Color.fromRGBO(238, 217, 196, 100);
 const Color BEIGE_CLAIR = Color.fromRGBO(254, 250, 246, 100);
 const Color HEADER_FONCE = Color.fromRGBO(182, 162, 142, 100);

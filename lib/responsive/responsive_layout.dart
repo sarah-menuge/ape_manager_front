@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 class ResponsiveLayout extends StatelessWidget {
   final Widget mobileBody;
   final Widget desktopBody;
+  final int width;
 
-  const ResponsiveLayout({required this.mobileBody, required this.desktopBody});
+  const ResponsiveLayout({required this.mobileBody, required this.desktopBody,this.width = 600});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (MediaQuery.of(context).size.width < 600) {
+        if (MediaQuery.of(context).size.width < width) {
           return mobileBody;
         }
         return desktopBody;
