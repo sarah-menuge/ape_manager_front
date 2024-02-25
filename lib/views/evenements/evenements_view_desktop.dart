@@ -1,13 +1,15 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/views/evenements/desktop/evenements_view_organisateurs.dart';
-import 'package:ape_manager_front/views/evenements/desktop/evenements_view_parents.dart';
+import 'package:ape_manager_front/views/evenements/evenements_view.dart';
+import 'package:ape_manager_front/views/evenements/evenements_view_organisateurs.dart';
+import 'package:ape_manager_front/views/evenements/evenements_view_parents.dart';
+import 'package:ape_manager_front/widgets/footer_appli.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
+import 'package:sticky_footer_scrollview/sticky_footer_scrollview.dart';
 
 class EvenementViewDesktop extends StatelessWidget {
-  final String profil;
+  final Profil profil;
 
   const EvenementViewDesktop({super.key, required this.profil});
 
@@ -17,45 +19,37 @@ class EvenementViewDesktop extends StatelessWidget {
       appBar: HeaderAppli(
         titre: "Liste des événements",
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ImageEvenements(),
-          profil == "Parent" ? ParentDesktopView() : OrganisateurDesktopView(),
-        ],
+      body: StickyFooterScrollView(
+        footer: Footer(),
+        itemBuilder: (BuildContext context, int index) {
+          return BodyEvenementsViewDesktop(profil: profil);
+        },
+        itemCount: 1,
       ),
     );
   }
 }
 
-class ImageEvenements extends StatelessWidget {
+class BodyEvenementsViewDesktop extends StatelessWidget {
+  final Profil profil;
+
+  const BodyEvenementsViewDesktop({super.key, required this.profil});
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 400,
-          width: double.infinity,
-          child: Image(
-            image: AssetImage("assets/images/casiers.jpg"),
-            fit: BoxFit.cover,
-          ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ImageEvenements(),
+            profil == Profil.Parent
+                ? EvenementsViewParents()
+                : EvenementsViewOrganisateur(),
+          ],
         ),
-        Container(
-          height: 400,
-          child: Center(
-            child: Text(
-              "Événements",
-              textDirection: TextDirection.ltr,
-              style: FontUtils.getFontApp(
-                fontSize: 60,
-                color: Colors.white,
-                shadows: true,
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

@@ -69,7 +69,7 @@ class DrawerHeaderAppli extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DrawerHeader(
-      padding: EdgeInsets.only(right: 3),
+      padding: EdgeInsets.only(left: 20),
       margin: EdgeInsets.all(0),
       child: Row(children: [
         InkWell(
