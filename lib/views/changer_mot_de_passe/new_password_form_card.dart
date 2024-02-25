@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'confirm_new_password.dart';
 import 'email_form_field.dart';
 import 'new_password_form_field.dart';
-import 'submit_button.dart';
 
 class NewPasswordFormCard extends StatelessWidget {
   @override
@@ -13,58 +12,47 @@ class NewPasswordFormCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         double maxWidth = 600;
-        double width =
-            constraints.maxWidth > maxWidth ? maxWidth : constraints.maxWidth;
         return Container(
-          width:
-              constraints.maxWidth > maxWidth ? maxWidth : constraints.maxWidth,
+          width: constraints.maxWidth > maxWidth ? maxWidth : constraints.maxWidth,
           padding: const EdgeInsets.all(20.0),
-          decoration: BoxDecoration(
-            color: BEIGE_CLAIR,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: SingleChildScrollView(
-            child: Image.asset('assets/images/logoEcole.png',
-                          width: 80, height: 80),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset('assets/images/logoEcole.png', width: 80, height: 80),
+              const SizedBox(height: 12),
+              const Text.rich(
+                TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: 'Association des parents d\'élèves \n',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(width: 12),
-                    const Flexible(
-                      child: Text.rich(
-                        TextSpan(
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Association des parents d\'élèves \n',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: 'École et Collège\nSte Marie Perenchies',
-                                style:
-                                    TextStyle(fontWeight: FontWeight.normal)),
-                          ],
-                        ),
-                      ),
+                    TextSpan(
+                      text: 'École et Collège\nSte Marie Perenchies',
+                      style: TextStyle(fontWeight: FontWeight.normal),
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
-                const EmailFormField(),
-                const SizedBox(height: 20),
-                const FormerPasswordFormField(),
-                const SizedBox(height: 20),
-                const NewPasswordFormField(),
-                const SizedBox(height: 20),
-                const ConfirmPasswordFormField(),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => print('submit'),
-                  child: const Text('Valider'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: BLEU,
-                    foregroundColor: BLANC,
-                    minimumSize: const Size(200, 50),
-                  ),
+              ),
+              const SizedBox(height: 20),
+              const EmailFormField(),
+              const SizedBox(height: 10),
+              const FormerPasswordFormField(),
+              const SizedBox(height: 10),
+              const NewPasswordFormField(),
+              const SizedBox(height: 10),
+              const ConfirmPasswordFormField(),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => print('submit'),
+                child: const Text('Valider'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: BLEU,
+                  foregroundColor: BLANC,
+                  minimumSize: const Size(200, 50),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
