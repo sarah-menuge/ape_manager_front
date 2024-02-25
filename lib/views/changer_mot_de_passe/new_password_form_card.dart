@@ -33,21 +33,24 @@ class NewPasswordFormCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/logoEcole.png',
-                        width: 80, height: 80),
+                    Image.asset('assets/images/logoEcole.png', width: 80, height: 80),
                     SizedBox(width: 12),
-                    const Text.rich(
-                      TextSpan(
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Association des parents d\'élèves \n',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: 'École et Collège\nSte Marie Perenchies',
-                            style: TextStyle(fontWeight: FontWeight.normal),
-                          ),
-                        ],
+                    Flexible(
+                      child: Text.rich(
+                        TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Association des parents d\'élèves \n',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: 'École et Collège\nSte Marie Perenchies',
+                              style: TextStyle(fontWeight: FontWeight.normal),
+                            ),
+                          ],
+                        ),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
                       ),
                     ),
                   ],
