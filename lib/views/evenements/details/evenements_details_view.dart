@@ -9,7 +9,7 @@ class EvenementsDetailsView extends StatelessWidget {
   static String routeName = '/evenements/details';
 
   final Evenement evenement = Evenement(
-      titre: "Opération chocolat",
+      titre: "Opération sortie bowling + pique et nique dans la forêt",
       description:
           "Vente de boîte de chocolat noir, au lait et blanc. Pralinés ou fourrés, avec cette opération vous trouverez le chocolat de vos rêves !",
       statut: "En cours");
