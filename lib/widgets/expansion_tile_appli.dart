@@ -11,8 +11,11 @@ class ExpansionTileAppli extends StatefulWidget {
   final List<Widget> listeWidget;
   final bool expanded;
 
-  const ExpansionTileAppli(
-      {required this.titre, required this.listeWidget, this.expanded = true});
+  const ExpansionTileAppli({
+    required this.titre,
+    required this.listeWidget,
+    this.expanded = true,
+  });
 
   @override
   State<ExpansionTileAppli> createState() => _ExpansionTileAppliState();
@@ -32,10 +35,11 @@ class _ExpansionTileAppliState extends State<ExpansionTileAppli> {
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: EXPANDED_TILE_WIDTH),
       child: Container(
-        margin: EdgeInsets.only(
-          left: ResponsiveConstraint.getResponsiveValue(context, 10.0, 60.0),
-          right: ResponsiveConstraint.getResponsiveValue(context, 10.0, 60.0),
-          top: ResponsiveConstraint.getResponsiveValue(context, 10.0, 40.0),
+        margin: EdgeInsets.symmetric(
+          horizontal:
+              ResponsiveConstraint.getResponsiveValue(context, 10.0, 60.0),
+          vertical:
+              ResponsiveConstraint.getResponsiveValue(context, 20.0, 40.0),
         ),
         width: MediaQuery.of(context).size.width,
         child: ExpansionTile(

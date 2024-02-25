@@ -19,7 +19,10 @@ class EvenementsDetailsWidget extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: PAGE_WIDTH),
         child: Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(
+              left: 20,
+              right:
+                  ResponsiveConstraint.getResponsiveValue(context, 20.0, 0.0)),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,6 +90,10 @@ class EvenementsDetailsWidget extends StatelessWidget {
               style: FontUtils.getFontApp(
                 fontSize: ResponsiveConstraint.getResponsiveValue(
                     context, POLICE_MOBILE_NORMAL, POLICE_DESKTOP_NORMAL),
+                color: evenement.statut == "En cours"
+                    ? const Color.fromRGBO(0, 86, 27, 100)
+                    : GRIS_TRES_FONCE,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
