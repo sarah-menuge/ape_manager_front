@@ -24,14 +24,23 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                icon: const Icon(Icons.remove),
-                onPressed: () {
-                  setState(() {
-                    quantity--;
-                  });
-                },
-              ),
+              if (quantity > 0)
+                IconButton(
+                  icon: const Icon(Icons.remove),
+                  onPressed: () {
+                    setState(() {
+                      if (quantity > 0) quantity--;
+                    });
+                  },
+                ),
+              if (quantity <= 0)
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 7),
+                  child: Icon(
+                    Icons.remove,
+                    color: Colors.transparent,
+                  ),
+                ),
               Expanded(
                 child: Text(
                   quantity.toString(),
