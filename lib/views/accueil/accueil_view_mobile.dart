@@ -12,7 +12,7 @@ class AccueilViewMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: HeaderAppli(
-        titre: 'Accueil',
+        titre: '',
       ),
       body: ListView(
         children: [
