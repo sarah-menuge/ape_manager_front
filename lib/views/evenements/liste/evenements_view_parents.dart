@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:ape_manager_front/views/evenements/evenements_view.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/widgets/expansion_tile_appli.dart';
 import 'package:flutter/material.dart';
 

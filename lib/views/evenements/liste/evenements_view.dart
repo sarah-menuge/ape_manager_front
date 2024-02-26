@@ -3,9 +3,11 @@
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/views/evenements/evenements_view_desktop.dart';
-import 'package:ape_manager_front/views/evenements/evenements_view_mobile.dart';
+import 'package:ape_manager_front/views/evenements/details/evenements_details_view.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view_organisateurs.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view_parents.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
+import 'package:ape_manager_front/widgets/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,21 +19,28 @@ enum TypeBouton { Detail, Notification, Modifier }
 
 class EvenementsView extends StatelessWidget {
   static String routeName = '/evenements';
+  static Profil profil = Profil.Parent;
 
   const EvenementsView({super.key});
 
   @override
   Widget build(BuildContext context) {
     EvenementProvider evenementProvider =
-        Provider.of<EvenementProvider>(context, listen: false);
+    Provider.of<EvenementProvider>(context, listen: false);
     evenementProvider.fetchData();
-    return ResponsiveLayout(
-        mobileBody: EvenementsViewMobile(
-          profil: Profil.Parent,
+    return ScaffoldAppli(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ImageEvenements(),
+            profil == Profil.Parent
+                ? EvenementsViewParents()
+                : EvenementsViewOrganisateur(),
+          ],
         ),
-        desktopBody: EvenementViewDesktop(
-          profil: Profil.Parent,
-        ));
+      ),
+    );
   }
 }
 
@@ -149,9 +158,9 @@ class EvenementWidget extends StatelessWidget {
         if (type_button == TypeBouton.Detail)
           ButtonAppli(
               text: "Plus de détail",
-              background: BLEU,
+              background: BLEU_CLAIR,
               foreground: BLANC,
-              routeName: ""),
+              routeName: EvenementsDetailsView.routeName),
         if (type_button == TypeBouton.Notification)
           ButtonAppli(
               text: "Me notifier",
@@ -222,9 +231,9 @@ class EvenementWidget extends StatelessWidget {
             if (type_button == TypeBouton.Detail)
               ButtonAppli(
                   text: "Plus de détail",
-                  background: BLEU,
+                  background: BLEU_CLAIR,
                   foreground: BLANC,
-                  routeName: ""),
+                  routeName: EvenementsDetailsView.routeName),
             if (type_button == TypeBouton.Notification)
               ButtonAppli(
                   text: "Me notifier",
