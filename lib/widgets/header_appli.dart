@@ -104,7 +104,7 @@ class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
             onTap: () => Navigator.pushNamed(context, EvenementsView.routeName),
           ),
         ),
-        Container(height: 25, child: VerticalDivider(color: GRIS_FONCE)),
+        SizedBox(height: 25, child: VerticalDivider(color: GRIS_FONCE)),
         Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Text(
