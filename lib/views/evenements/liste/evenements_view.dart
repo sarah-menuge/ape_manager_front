@@ -25,7 +25,7 @@ class EvenementsView extends StatelessWidget {
           profil: Profil.Parent,
         ),
         desktopBody: EvenementViewDesktop(
-          profil: Profil.Organisateur,
+          profil: Profil.Parent,
         ));
   }
 }

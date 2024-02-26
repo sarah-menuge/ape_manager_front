@@ -11,44 +11,41 @@ class EvenementsViewParents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: ExpansionTileAppli(
-            titre: "Événements en cours",
-            listeWidget: [
-              EvenementWidget(
-                periode: "lun. 20 févr. 2024",
-                operation: "Opération fleurs",
-                shortDescription: "Vente de fleurs",
-                type_button: TypeBouton.Detail,
-              ),
-              EvenementWidget(
-                periode: "ven. 24 févr. 2024",
-                operation: "Opération chocolat",
-                shortDescription: "Vente de chocolat",
-                type_button: TypeBouton.Detail,
-              ),
-              EvenementWidget(
-                periode: "ven. 24 févr. 2024",
-                operation: "Opération chocolat",
-                shortDescription: "Vente de chocolat",
-                type_button: TypeBouton.Detail,
-              ),
-              EvenementWidget(
-                periode: "ven. 24 févr. 2024",
-                operation: "Opération chocolat",
-                shortDescription: "Vente de chocolat",
-                type_button: TypeBouton.Detail,
-              ),
-              EvenementWidget(
-                periode: "ven. 24 févr. 2024",
-                operation: "Opération chocolatine",
-                shortDescription:
-                    "Vente de pique-nique pour la sortie dans la forêt",
-                type_button: TypeBouton.Detail,
-              ),
-            ],
-          ),
+        ExpansionTileAppli(
+          titre: "Événements en cours",
+          listeWidget: [
+            EvenementWidget(
+              periode: "lun. 20 févr. 2024",
+              operation: "Opération fleurs",
+              shortDescription: "Vente de fleurs",
+              type_button: TypeBouton.Detail,
+            ),
+            EvenementWidget(
+              periode: "ven. 24 févr. 2024",
+              operation: "Opération chocolat",
+              shortDescription: "Vente de chocolat",
+              type_button: TypeBouton.Detail,
+            ),
+            EvenementWidget(
+              periode: "ven. 24 févr. 2024",
+              operation: "Opération chocolat",
+              shortDescription: "Vente de chocolat",
+              type_button: TypeBouton.Detail,
+            ),
+            EvenementWidget(
+              periode: "ven. 24 févr. 2024",
+              operation: "Opération chocolat",
+              shortDescription: "Vente de chocolat",
+              type_button: TypeBouton.Detail,
+            ),
+            EvenementWidget(
+              periode: "ven. 24 févr. 2024",
+              operation: "Opération chocolatine",
+              shortDescription:
+                  "Vente de pique-nique pour la sortie dans la forêt",
+              type_button: TypeBouton.Detail,
+            ),
+          ],
         ),
         ExpansionTileAppli(
           titre: "Événements à venir",
