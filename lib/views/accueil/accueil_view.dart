@@ -12,26 +12,14 @@ class AccueilView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveLayout(
-      mobileBody: ScaffoldAppli(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [
-            ImageAccueil(),
-            ParagraphePresentation(),
-            ParagrapheApplication(),
-          ],
-        ),
-      ),
-      desktopBody: ScaffoldAppli(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [
-            ImageAccueil(),
-            ParagraphePresentation(),
-            ParagrapheApplication(),
-          ],
-        ),
+    return ScaffoldAppli(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: const [
+          ImageAccueil(),
+          ParagraphePresentation(),
+          ParagrapheApplication(),
+        ],
       ),
     );
   }
