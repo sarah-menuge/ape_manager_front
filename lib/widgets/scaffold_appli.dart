@@ -28,13 +28,14 @@ class ScaffoldAppli extends StatelessWidget {
 
   Widget getScaffoldDesktop() {
     return Scaffold(
-        appBar: const HeaderAppli(),
-        body: StickyFooterScrollView(
-          itemBuilder: (BuildContext context, int index) {
-            return body;
-          },
-          itemCount: 1,
-          footer: Footer(),
-        ));
+      appBar: const HeaderAppli(),
+      body: StickyFooterScrollView(
+        itemBuilder: (BuildContext context, int index) {
+          return body;
+        },
+        itemCount: 1,
+        footer: const Footer(),
+      ),
+    );
   }
 }
