@@ -3,8 +3,9 @@
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/views/evenements/evenements_view_desktop.dart';
-import 'package:ape_manager_front/views/evenements/evenements_view_mobile.dart';
+import 'package:ape_manager_front/views/evenements/details/evenements_details_view.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view_desktop.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view_mobile.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
@@ -145,7 +146,7 @@ class EvenementWidget extends StatelessWidget {
               text: "Plus de détail",
               background: BLEU_CLAIR,
               foreground: BLANC,
-              routeName: ""),
+              routeName: EvenementsDetailsView.routeName),
         if (type_button == TypeBouton.Notification)
           ButtonAppli(
               text: "Me notifier",
@@ -218,7 +219,7 @@ class EvenementWidget extends StatelessWidget {
                   text: "Plus de détail",
                   background: BLEU_CLAIR,
                   foreground: BLANC,
-                  routeName: ""),
+                  routeName: EvenementsDetailsView.routeName),
             if (type_button == TypeBouton.Notification)
               ButtonAppli(
                   text: "Me notifier",
