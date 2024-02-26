@@ -35,11 +35,10 @@ class _ExpansionTileAppliState extends State<ExpansionTileAppli> {
     return ConstrainedBox(
       constraints: BoxConstraints(maxWidth: EXPANDED_TILE_WIDTH),
       child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal:
-              ResponsiveConstraint.getResponsiveValue(context, 10.0, 60.0),
-          vertical:
-              ResponsiveConstraint.getResponsiveValue(context, 10.0, 10.0),
+        margin: EdgeInsets.only(
+          top: ResponsiveConstraint.getResponsiveValue(context, 10.0, 30.0),
+          left: 10.0,
+          right: 10.0,
         ),
         width: MediaQuery.of(context).size.width,
         child: ExpansionTile(

@@ -12,9 +12,7 @@ class AccueilViewDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderAppli(
-        titre: '',
-      ),
+      appBar: HeaderAppli(),
       body: StickyFooterScrollView(
         footer: Footer(),
         itemBuilder: (BuildContext context, int index) {

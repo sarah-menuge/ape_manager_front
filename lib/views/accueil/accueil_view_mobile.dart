@@ -11,9 +11,7 @@ class AccueilViewMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderAppli(
-        titre: '',
-      ),
+      appBar: HeaderAppli(),
       body: ListView(
         children: [
           ImageAccueil(),

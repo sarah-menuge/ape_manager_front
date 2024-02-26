@@ -18,9 +18,7 @@ class EvenementsDetailsViewMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderAppli(
-        titre: "",
-      ),
+      appBar: const HeaderAppli(),
       body: EvenementsDetailsWidget(
         evenement: evenement,
         listeView: Column(

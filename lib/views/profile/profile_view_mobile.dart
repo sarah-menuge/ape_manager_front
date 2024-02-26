@@ -25,7 +25,7 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
   List<Widget> getWidgetOptions() {
     return <Widget>[
       Scaffold(
-        appBar: HeaderAppli(titre: ''),
+        appBar: HeaderAppli(),
         body: ListView(
           children: [
             TextTitre(titre: 'Mon Profil'),
@@ -100,7 +100,7 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
         drawer: DrawerAppli(),
       ),
       Scaffold(
-        appBar: HeaderAppli(titre: ''),
+        appBar: HeaderAppli(),
         body: ListView(
           children: [
             TextTitre(titre: 'Mes Enfants'),

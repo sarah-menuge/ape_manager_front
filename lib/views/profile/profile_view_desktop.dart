@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 import '../../widgets/TextTitre.dart';
 import 'AllFields.dart';
 import 'BoutonAjouterEnfant.dart';
@@ -29,7 +30,7 @@ class _ProfileViewDesktopState extends State<ProfileViewDesktop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HeaderAppli(titre: ''),
+      appBar: HeaderAppli(),
       body: CustomScrollView(
         shrinkWrap: true,
         slivers: [
