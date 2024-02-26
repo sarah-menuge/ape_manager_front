@@ -20,10 +20,8 @@ class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       // Logo de l'application situé à gauche du header pour le Desktop
-      leading:
-          ResponsiveConstraint.getResponsiveValue(context, null, LogoAppli()),
-      leadingWidth:
-          ResponsiveConstraint.getResponsiveValue(context, 0.0, 300.0),
+      leading: MediaQuery.of(context).size.width > 600 ? LogoAppli() : null,
+      leadingWidth: MediaQuery.of(context).size.width > 600 ? 300.0 : 50.0,
       // Hauteur du header
       toolbarHeight:
           ResponsiveConstraint.getResponsiveValue(context, 100.0, 200.0),
