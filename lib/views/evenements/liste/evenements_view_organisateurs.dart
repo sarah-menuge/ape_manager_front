@@ -22,8 +22,8 @@ class EvenementsViewOrganisateur extends StatelessWidget {
           ),
           child: ButtonAppli(
             text: "Créer un événement",
-            background: VERT,
-            foreground: NOIR,
+            background: BOUTON_CREATION,
+            foreground: BLANC,
             routeName: "",
           ),
         ),

@@ -25,7 +25,7 @@ class EvenementsView extends StatelessWidget {
           profil: Profil.Parent,
         ),
         desktopBody: EvenementViewDesktop(
-          profil: Profil.Parent,
+          profil: Profil.Organisateur,
         ));
   }
 }
@@ -144,7 +144,7 @@ class EvenementWidget extends StatelessWidget {
         if (type_button == TypeBouton.Detail)
           ButtonAppli(
               text: "Plus de détail",
-              background: BLEU,
+              background: BLEU_CLAIR,
               foreground: BLANC,
               routeName: EvenementsDetailsView.routeName),
         if (type_button == TypeBouton.Notification)
@@ -217,7 +217,7 @@ class EvenementWidget extends StatelessWidget {
             if (type_button == TypeBouton.Detail)
               ButtonAppli(
                   text: "Plus de détail",
-                  background: BLEU,
+                  background: BLEU_CLAIR,
                   foreground: BLANC,
                   routeName: EvenementsDetailsView.routeName),
             if (type_button == TypeBouton.Notification)
