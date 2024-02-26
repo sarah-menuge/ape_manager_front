@@ -19,9 +19,7 @@ class EvenementsDetailsViewDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderAppli(
-        titre: "",
-      ),
+      appBar: const HeaderAppli(),
       body: StickyFooterScrollView(
         footer: const Footer(),
         itemBuilder: (BuildContext context, int index) {
