@@ -38,6 +38,8 @@ class _ExpansionTileAppliState extends State<ExpansionTileAppli> {
         margin: EdgeInsets.symmetric(
           horizontal:
               ResponsiveConstraint.getResponsiveValue(context, 10.0, 60.0),
+          vertical:
+              ResponsiveConstraint.getResponsiveValue(context, 10.0, 10.0),
         ),
         width: MediaQuery.of(context).size.width,
         child: ExpansionTile(
