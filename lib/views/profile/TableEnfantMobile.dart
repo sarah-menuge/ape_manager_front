@@ -30,11 +30,14 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
   Offset? _tapPosition;
 
   String truncateWithEllipsis(String text, int maxLength) {
-    return text.length > maxLength ? '${text.substring(0, maxLength)}...' : text;
+    return text.length > maxLength
+        ? '${text.substring(0, maxLength)}...'
+        : text;
   }
 
   void _showCustomMenu({required Child child}) {
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
     final RelativeRect position = RelativeRect.fromRect(
       _tapPosition! & const Size(0, 0),
       Offset.zero & overlay.size,
@@ -60,7 +63,9 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
             },
           ),
         ),
-        const CustomPopupMenuDivider(color: GRIS,),
+        const CustomPopupMenuDivider(
+          color: GRIS_FONCE,
+        ),
         PopupMenuItem(
           child: TextButton(
             style: TextButton.styleFrom(
@@ -99,9 +104,15 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
             columnSpacing: 1.0,
             headingRowColor: MaterialStateProperty.all(BEIGE_FONCE),
             columns: const [
-              DataColumn(label: Text('Nom', style: TextStyle(fontWeight: FontWeight.bold))),
-              DataColumn(label: Text('Prénom', style: TextStyle(fontWeight: FontWeight.bold))),
-              DataColumn(label: Text('Classe', style: TextStyle(fontWeight: FontWeight.bold))),
+              DataColumn(
+                  label: Text('Nom',
+                      style: TextStyle(fontWeight: FontWeight.bold))),
+              DataColumn(
+                  label: Text('Prénom',
+                      style: TextStyle(fontWeight: FontWeight.bold))),
+              DataColumn(
+                  label: Text('Classe',
+                      style: TextStyle(fontWeight: FontWeight.bold))),
             ],
             rows: children.map((child) {
               return DataRow(
@@ -123,7 +134,6 @@ class _TableEnfantsMobileState extends State<TableEnfantsMobile> {
 }
 
 class CustomPopupMenuDivider extends PopupMenuDivider {
-
   final double? thickness;
   final double? indent;
   final double? endIndent;
@@ -143,7 +153,6 @@ class CustomPopupMenuDivider extends PopupMenuDivider {
 }
 
 class _CustomPopupMenuDividerState extends State<CustomPopupMenuDivider> {
-
   @override
   Widget build(BuildContext context) {
     return Divider(

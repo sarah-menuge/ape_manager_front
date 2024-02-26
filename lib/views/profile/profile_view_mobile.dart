@@ -4,6 +4,7 @@ import 'package:ape_manager_front/views/profile/change_password.dart';
 import 'package:ape_manager_front/widgets/drawer_appli.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:flutter/material.dart';
+
 import '../../proprietes/couleurs.dart';
 import '../../widgets/TextTitre.dart';
 import 'AllFields.dart';
@@ -109,7 +110,7 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.info_outline, color: GRIS),
+                  Icon(Icons.info_outline, color: GRIS_FONCE),
                   SizedBox(width: 5),
                   Text("Restez appuyé pour modifier ou supprimer un enfant",
                       style: TextStyle(fontStyle: FontStyle.italic)),
