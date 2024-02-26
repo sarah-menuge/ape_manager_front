@@ -2,6 +2,7 @@ import 'package:ape_manager_front/forms/login_form.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/login/reinitialisation_form_view.dart';
 import 'package:ape_manager_front/views/login/signup_button.dart';
 import '../../proprietes/constantes.dart';
 import '../../proprietes/couleurs.dart';
@@ -43,12 +44,12 @@ class _LoginFormViewState extends State<LoginFormView> {
       loginForm.email = EMAIL_AUTO_LOGIN_TEST;
       loginForm.password = PASSWORD_AUTO_LOGIN_TEST;
       passerVerification = true;
-      envoiFormulaireLogin();
+      _envoiFormulaireLogin();
     }
     super.initState();
   }
 
-  Future<void> envoiFormulaireLogin() async {
+  Future<void> _envoiFormulaireLogin() async {
     if (passerVerification == true || form.validate()) {
       if(passerVerification == false) form.save();
       final response = await authentificationProvider.signin(loginForm);
@@ -196,7 +197,7 @@ class _LoginFormViewState extends State<LoginFormView> {
     return ElevatedButton(
       onPressed: () {
         if (isLoading == false && isLoggedIn == false) {
-          envoiFormulaireLogin();
+          _envoiFormulaireLogin();
         }
       },
       style: ElevatedButton.styleFrom(
@@ -218,40 +219,8 @@ class _LoginFormViewState extends State<LoginFormView> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Text("Veuillez entrer votre mail pour demander une réinitialisation du mot de passe",style: FontUtils.getFontApp(fontSize: 15),),
-                SizedBox(height: 20,),
-                Form(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 450),
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.mail),
-                            ),
-                            style: const TextStyle(height: 1),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: BLEU,
-                          ),
-                          child: Text("Envoyer",style: TextStyle(color: BLANC),),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                const SizedBox(height: 20),
+                ReinitialisationFormView(),
               ],
             ),
           ),

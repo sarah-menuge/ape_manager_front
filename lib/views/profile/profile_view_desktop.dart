@@ -132,7 +132,11 @@ class _ProfileViewDesktopState extends State<ProfileViewDesktop> {
           SliverFillRemaining(
             hasScrollBody: false,
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.end, children: [Footer()]),
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Footer(),
+                ],
+            ),
           ),
         ],
       ),
