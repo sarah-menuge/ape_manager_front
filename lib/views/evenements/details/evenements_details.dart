@@ -95,7 +95,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
                     context, POLICE_MOBILE_NORMAL, POLICE_DESKTOP_NORMAL),
                 color: evenement.statut == "En cours"
                     ? const Color.fromRGBO(0, 86, 27, 100)
-                    : GRIS_TRES_FONCE,
+                    : GRIS_CLAIR,
                 fontWeight: FontWeight.bold,
               ),
             ),
