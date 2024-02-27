@@ -72,7 +72,11 @@ class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
                     onTap: () {
                       Provider.of<AuthentificationProvider>(context,
                               listen: false)
-                          .logout(context);
+                          .logout(
+                        context,
+                        Provider.of<UtilisateurProvider>(context,
+                            listen: false),
+                      );
                     },
                   ),
                 ];

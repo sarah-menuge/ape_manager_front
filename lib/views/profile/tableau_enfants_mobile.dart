@@ -128,7 +128,7 @@ class _TableauEnfantsMobileState extends State<TableauEnfantsMobile> {
       items: <PopupMenuEntry>[
         _getItemPopupModifier(enfant),
         const CustomPopupMenuDivider(
-          color: GRIS,
+          color: Colors.grey,
         ),
         _getItemPopupSupprimer(enfant),
       ],

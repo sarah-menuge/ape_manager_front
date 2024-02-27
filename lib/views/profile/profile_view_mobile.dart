@@ -46,7 +46,7 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
 
   Widget getOngletInfos() {
     return Scaffold(
-      appBar: HeaderAppli(titre: ''),
+      appBar: HeaderAppli(),
       body: ListView(
         children: [
           TextTitre(titre: 'Mon Profil'),
@@ -59,7 +59,7 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
 
   Widget getOngletEnfants() {
     return Scaffold(
-      appBar: HeaderAppli(titre: ''),
+      appBar: HeaderAppli(),
       body: ListView(
         children: [
           TextTitre(titre: 'Mes Enfants'),
