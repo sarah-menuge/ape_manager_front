@@ -1,3 +1,4 @@
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -13,25 +14,9 @@ class AuthentificationProvider with ChangeNotifier {
   bool isLoading = false;
   bool isLoggedIn = false;
 
-  Utilisateur? utilisateur;
-
-  // Pas utilisé pour le moment
-  /*Future<void> initAuth() async {
-    try {
-      String? oldToken = getValueInHardwareMemory(key: "token");
-      if (oldToken == null) {
-        isLoggedIn = false;
-      } else {
-        isLoggedIn = true;
-        token = oldToken;
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }*/
-
   // Permet d'interroger l'API pour s'authentifier
-  Future<dynamic> signin(LoginForm loginForm) async {
+  Future<dynamic> signin(
+      LoginForm loginForm, UtilisateurProvider utilisateurProvider) async {
     // Appel à l'API pour tenter de s'authentifier
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
@@ -55,7 +40,7 @@ class AuthentificationProvider with ChangeNotifier {
     // Authentification OK
     if (response.statusCode == 200) {
       var body = json.decode(response.body);
-      utilisateur = Utilisateur(nom: body["nom"], prenom: body["prenom"], role: body["role"], token: body["token"]);
+      utilisateurProvider.updateUser(Utilisateur.fromJson(body));
       setValueInHardwareMemory(key: "token", value: body["token"]);
       isLoggedIn = true;
       return {
@@ -71,10 +56,9 @@ class AuthentificationProvider with ChangeNotifier {
     };
   }
 
-
-
   // Permet d'interroger l'API pour s'authentifier
-  Future<dynamic> signup(SignupForm signupForm) async {
+  Future<dynamic> signup(
+      SignupForm signupForm, UtilisateurProvider utilisateurProvider) async {
     // Appel à l'API pour tenter de s'authentifier
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
@@ -97,7 +81,10 @@ class AuthentificationProvider with ChangeNotifier {
 
     // Authentification OK
     if (response.statusCode == 200) {
-      return signin(LoginForm(email: signupForm.email, password: signupForm.password));
+      return signin(
+        LoginForm(email: signupForm.email, password: signupForm.password),
+        utilisateurProvider,
+      );
     }
     // Authentification KO
     return {
@@ -106,12 +93,25 @@ class AuthentificationProvider with ChangeNotifier {
     };
   }
 
-
-
   // Permet de se déconnecter
-  void logout(context) {
-    utilisateur = null;
+  void logout(context, UtilisateurProvider utilisateurProvider) {
+    utilisateurProvider.updateUser(null);
     isLoggedIn = false;
     Navigator.pushReplacementNamed(context, LoginView.routeName);
   }
+
+// Pas utilisé pour le moment
+/*Future<void> initAuth() async {
+    try {
+      String? oldToken = getValueInHardwareMemory(key: "token");
+      if (oldToken == null) {
+        isLoggedIn = false;
+      } else {
+        isLoggedIn = true;
+        token = oldToken;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }*/
 }

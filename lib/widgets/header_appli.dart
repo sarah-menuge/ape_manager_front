@@ -2,6 +2,7 @@
 
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/evenements_view.dart';
@@ -80,7 +81,10 @@ class HeaderAppliMobile extends StatelessWidget {
                 child: Text("Se déconnecter"),
                 onTap: () {
                   Provider.of<AuthentificationProvider>(context, listen: false)
-                      .logout(context);
+                      .logout(
+                    context,
+                    Provider.of<UtilisateurProvider>(context, listen: false),
+                  );
                 },
               ),
             ];
@@ -181,7 +185,11 @@ class HeaderAppliDesktop extends StatelessWidget {
                     onTap: () {
                       Provider.of<AuthentificationProvider>(context,
                               listen: false)
-                          .logout(context);
+                          .logout(
+                        context,
+                        Provider.of<UtilisateurProvider>(context,
+                            listen: false),
+                      );
                     },
                   ),
                 ];

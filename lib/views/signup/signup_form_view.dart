@@ -5,9 +5,9 @@ import '../../proprietes/couleurs.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/utilisateur_provider.dart';
 import '../../utils/afficher_message.dart';
 import '../profile/profile_view.dart';
-
 
 class SignupFormView extends StatefulWidget {
   const SignupFormView({super.key});
@@ -36,10 +36,14 @@ class _SignupFormViewState extends State<SignupFormView> {
   Future<void> envoiFormulaireSignup() async {
     if (form.validate()) {
       form.save();
-      final response = await authentificationProvider.signup(signupForm);
+      final response = await authentificationProvider.signup(
+        signupForm,
+        Provider.of<UtilisateurProvider>(context, listen: false),
+      );
       if (response["statusCode"] == 200 && mounted) {
         Navigator.pushReplacementNamed(context, ProfileView.routeName);
-        afficherMessageSucces(context: context, message: "Compte créé avec succès.");
+        afficherMessageSucces(
+            context: context, message: "Compte créé avec succès.");
       } else {
         setState(() {
           erreur = response['message'];
@@ -96,7 +100,7 @@ class _SignupFormViewState extends State<SignupFormView> {
     }
   }
 
-  Widget getChampNom(){
+  Widget getChampNom() {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 450),
       child: TextFormField(
@@ -115,12 +119,11 @@ class _SignupFormViewState extends State<SignupFormView> {
           prefixIcon: Icon(Icons.person),
         ),
         style: const TextStyle(height: 1),
-
       ),
     );
   }
 
-  Widget getChampPrenom(){
+  Widget getChampPrenom() {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 450),
       child: TextFormField(
@@ -143,7 +146,7 @@ class _SignupFormViewState extends State<SignupFormView> {
     );
   }
 
-  Widget getChampEmail(){
+  Widget getChampEmail() {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 450),
       child: TextFormField(
@@ -169,7 +172,7 @@ class _SignupFormViewState extends State<SignupFormView> {
     );
   }
 
-  Widget getChampTelephone(){
+  Widget getChampTelephone() {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 450),
       child: TextFormField(
@@ -193,7 +196,7 @@ class _SignupFormViewState extends State<SignupFormView> {
     );
   }
 
-  Widget getChampMotDePasse(){
+  Widget getChampMotDePasse() {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 450),
       child: TextFormField(
@@ -217,7 +220,7 @@ class _SignupFormViewState extends State<SignupFormView> {
     );
   }
 
-  Widget getBoutonSignup(){
+  Widget getBoutonSignup() {
     bool isLoggedIn = authentificationProvider.isLoggedIn;
     bool isLoading = authentificationProvider.isLoading;
 

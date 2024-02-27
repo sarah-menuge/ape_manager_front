@@ -10,7 +10,8 @@ class ReinitialisationFormView extends StatefulWidget {
   const ReinitialisationFormView({super.key});
 
   @override
-  State<ReinitialisationFormView> createState() => _ReinitialisationFormViewState();
+  State<ReinitialisationFormView> createState() =>
+      _ReinitialisationFormViewState();
 }
 
 class _ReinitialisationFormViewState extends State<ReinitialisationFormView> {
@@ -25,7 +26,8 @@ class _ReinitialisationFormViewState extends State<ReinitialisationFormView> {
   @override
   void initState() {
     reinitForm = ReinitialisationForm(email: '');
-    utilisateurProvider = Provider.of<UtilisateurProvider>(context, listen: false);
+    utilisateurProvider =
+        Provider.of<UtilisateurProvider>(context, listen: false);
     super.initState();
   }
 
@@ -33,15 +35,16 @@ class _ReinitialisationFormViewState extends State<ReinitialisationFormView> {
     print("ENVOI FORMULAIRE REINITIALISATION");
     if (form.validate()) {
       form.save();
-      afficherMessageErreur(context: context, message: "Envoi formulaire de réinitialisation non géré.");
-      /*final response = await utilisateurProvider.reinitialiserMotDePasse(reinitForm);
+      // afficherMessageErreur(context: context, message: "Envoi formulaire de réinitialisation non géré.");
+      final response =
+          await utilisateurProvider.reinitialiserMotDePasse(reinitForm);
       if (response["statusCode"] == 200 && mounted) {
         Navigator.of(context).pop();
       } else {
         setState(() {
           erreur = response['message'];
         });
-      }*/
+      }
     }
   }
 
@@ -75,7 +78,7 @@ class _ReinitialisationFormViewState extends State<ReinitialisationFormView> {
     }
   }
 
-  Widget getChampEmail(){
+  Widget getChampEmail() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
@@ -103,14 +106,14 @@ class _ReinitialisationFormViewState extends State<ReinitialisationFormView> {
     );
   }
 
-  Widget getBoutonEnvoyer(){
+  Widget getBoutonEnvoyer() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: BLEU,
         ),
-        child: const Text("Envoyer",style: TextStyle(color: BLANC)),
+        child: const Text("Envoyer", style: TextStyle(color: BLANC)),
         onPressed: () {
           _envoiFormulaireReinitialisation();
         },
