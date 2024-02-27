@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import '../models/evenement.dart';
 import 'call_api.dart';
 
-class EvenementProvider with ChangeNotifier {
+class EvenementProvider extends ChangeNotifier {
   List<Evenement> _evenements = [];
-  UnmodifiableListView<Evenement> get evenements => UnmodifiableListView(_evenements);
 
-  List<Evenement> getEvenements() => evenements;
+  UnmodifiableListView<Evenement> get evenements =>
+      UnmodifiableListView(_evenements);
 
   Future<void> fetchData() async {
     ReponseAPI reponseApi = await callAPI(
@@ -18,11 +18,24 @@ class EvenementProvider with ChangeNotifier {
       typeRequeteHttp: TypeRequeteHttp.GET,
     );
 
-    if(!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) return;
 
     _evenements = (jsonDecode(reponseApi.response!.body) as List)
         .map((e) => Evenement.fromJson(e))
         .toList();
+
     notifyListeners();
+  }
+
+  List<Evenement> getEvenementsAVenir() {
+    return _evenements
+        .where((evenement) => evenement.statut == StatutEvenement.A_VENIR)
+        .toList();
+  }
+
+  List<Evenement> getEvenementsEnCours() {
+    return _evenements
+        .where((evenement) => evenement.statut == StatutEvenement.EN_COURS)
+        .toList();
   }
 }
