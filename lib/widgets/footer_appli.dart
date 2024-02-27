@@ -14,7 +14,7 @@ class Footer extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 50),
       height: FOOTER_HEIGHT,
-      color: GRIS_FONCE,
+      color: FOOTER,
       child: Column(
         children: [
           Padding(

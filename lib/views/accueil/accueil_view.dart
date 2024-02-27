@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/views/accueil/accueil_view_desktop.dart';
-import 'package:ape_manager_front/views/accueil/accueil_view_mobile.dart';
+import 'package:ape_manager_front/widgets/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 
 class AccueilView extends StatelessWidget {
@@ -13,9 +13,15 @@ class AccueilView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveLayout(
-      mobileBody: AccueilViewMobile(),
-      desktopBody: AccueilViewDesktop(),
+    return ScaffoldAppli(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: const [
+          ImageAccueil(),
+          ParagraphePresentation(),
+          ParagrapheApplication(),
+        ],
+      ),
     );
   }
 }
@@ -45,7 +51,7 @@ class ImageAccueil extends StatelessWidget {
               textDirection: TextDirection.ltr,
               style: FontUtils.getFontApp(
                 fontSize: ResponsiveConstraint.getResponsiveValue(
-                    context, 30.0, 60.0),
+                    context, POLICE_MOBILE_H1, POLICE_DESKTOP_H1),
                 color: Colors.white,
               ),
             ),
@@ -75,7 +81,7 @@ class ParagraphePresentation extends StatelessWidget {
               "Qui sommes nous ?",
               style: FontUtils.getFontApp(
                 fontSize: ResponsiveConstraint.getResponsiveValue(
-                    context, 20.0, 30.0),
+                    context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
               ),
             ),
           ),
@@ -85,7 +91,7 @@ class ParagraphePresentation extends StatelessWidget {
               "Le bureau de l'APEL (Association des parents d'élèves de l'enseignement libre) est composé de six membres élus parmi les parents d'élèves. Tous les parents sont membres de l'APEL et sont les bienvenus aux réunions du CA.",
               style: FontUtils.getFontApp(
                 fontSize: ResponsiveConstraint.getResponsiveValue(
-                    context, 15.0, 20.0),
+                    context, POLICE_MOBILE_NORMAL_1, POLICE_DESKTOP_NORMAL_1),
                 fontWeight: ResponsiveConstraint.getResponsiveValue(
                     context, FontWeight.w200, FontWeight.w300),
               ),
@@ -95,8 +101,8 @@ class ParagraphePresentation extends StatelessWidget {
           Text(
             "L'APEL organise chaque année divers événements pour financer les activités des enfants, y compris des manifestations annuelles comme le marché de Noël et des opérations ponctuelles comme la vente de viennoiseries.",
             style: FontUtils.getFontApp(
-              fontSize:
-                  ResponsiveConstraint.getResponsiveValue(context, 15.0, 20.0),
+              fontSize: ResponsiveConstraint.getResponsiveValue(
+                  context, POLICE_MOBILE_NORMAL_1, POLICE_DESKTOP_NORMAL_1),
               fontWeight: ResponsiveConstraint.getResponsiveValue(
                   context, FontWeight.w200, FontWeight.w300),
             ),
@@ -124,8 +130,8 @@ class ParagrapheApplication extends StatelessWidget {
           child: Text(
             "Description de l'application",
             style: FontUtils.getFontApp(
-              fontSize:
-                  ResponsiveConstraint.getResponsiveValue(context, 20.0, 30.0),
+              fontSize: ResponsiveConstraint.getResponsiveValue(
+                  context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
             ),
           ),
         ),
@@ -134,8 +140,8 @@ class ParagrapheApplication extends StatelessWidget {
           child: Text(
             "L'application APE Manager vise à organiser des ventes éphémères dans le but de récolter de l'argent qui servira à l'école et aux enfants. Les parents et membres de l'association pourront commander via cette application.",
             style: FontUtils.getFontApp(
-              fontSize:
-                  ResponsiveConstraint.getResponsiveValue(context, 15.0, 20.0),
+              fontSize: ResponsiveConstraint.getResponsiveValue(
+                  context, POLICE_MOBILE_NORMAL_1, POLICE_DESKTOP_NORMAL_1),
               fontWeight: ResponsiveConstraint.getResponsiveValue(
                   context, FontWeight.w200, FontWeight.w300),
             ),

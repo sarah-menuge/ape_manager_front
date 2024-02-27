@@ -14,7 +14,9 @@ class NewPasswordFormCard extends StatelessWidget {
         double maxWidth = 600;
         return SingleChildScrollView(
           child: Container(
-            width: constraints.maxWidth > maxWidth ? maxWidth : constraints.maxWidth,
+            width: constraints.maxWidth > maxWidth
+                ? maxWidth
+                : constraints.maxWidth,
             padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -28,21 +30,30 @@ class NewPasswordFormCard extends StatelessWidget {
                     const Text('Retour'),
                   ],
                 ),
-                Image.asset('assets/images/logoEcole.png', width: 80, height: 80),
-                const SizedBox(height: 12),
-                const Text.rich(
-                  TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Association des parents d\'élèves \n',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/images/logoEcole.png', width: 80, height: 80),
+                    SizedBox(width: 12),
+                    Flexible(
+                      child: Text.rich(
+                        TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'Association des parents d\'élèves \n',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: 'École et Collège\nSte Marie Perenchies',
+                              style: TextStyle(fontWeight: FontWeight.normal),
+                            ),
+                          ],
+                        ),
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
                       ),
-                      TextSpan(
-                        text: 'École et Collège\nSte Marie Perenchies',
-                        style: TextStyle(fontWeight: FontWeight.normal),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 const EmailFormField(),

@@ -1,5 +1,9 @@
+import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:flutter/material.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
 import 'package:sticky_footer_scrollview/sticky_footer_scrollview.dart';
 import '../../widgets/TextTitre.dart';
 import '../../widgets/footer_appli.dart';
