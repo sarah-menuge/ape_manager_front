@@ -27,6 +27,12 @@ class EvenementProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<Evenement> getEvenementsBrouillon() {
+    return _evenements
+        .where((evenement) => evenement.statut == StatutEvenement.BROUILLON)
+        .toList();
+  }
+
   List<Evenement> getEvenementsAVenir() {
     return _evenements
         .where((evenement) => evenement.statut == StatutEvenement.A_VENIR)
@@ -36,6 +42,12 @@ class EvenementProvider extends ChangeNotifier {
   List<Evenement> getEvenementsEnCours() {
     return _evenements
         .where((evenement) => evenement.statut == StatutEvenement.EN_COURS)
+        .toList();
+  }
+
+  List<Evenement> getEvenementsCloture() {
+    return _evenements
+        .where((evenement) => evenement.statut == StatutEvenement.CLOTURE)
         .toList();
   }
 }

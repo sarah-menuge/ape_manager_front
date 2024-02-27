@@ -23,7 +23,7 @@ class EvenementsView extends StatefulWidget {
 }
 
 class _EvenementsViewState extends State<EvenementsView> {
-  static Profil profil = Profil.Parent;
+  static Profil profil = Profil.Organisateur;
   final EvenementProvider evenementProvider = EvenementProvider();
 
   @override
@@ -39,9 +39,13 @@ class _EvenementsViewState extends State<EvenementsView> {
 
   @override
   Widget build(BuildContext context) {
+    List<Evenement> evenementsBrouillon =
+        evenementProvider.getEvenementsBrouillon();
     List<Evenement> evenementsAVenir = evenementProvider.getEvenementsAVenir();
     List<Evenement> evenementsEnCours =
         evenementProvider.getEvenementsEnCours();
+    List<Evenement> evenementsCloture =
+        evenementProvider.getEvenementsCloture();
 
     return ScaffoldAppli(
       body: SingleChildScrollView(
@@ -51,7 +55,8 @@ class _EvenementsViewState extends State<EvenementsView> {
             ImageEvenements(),
             profil == Profil.Parent
                 ? getVueParents(evenementsEnCours, evenementsAVenir)
-                : getVueOrganisateur(),
+                : getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
+                    evenementsEnCours, evenementsCloture),
           ],
         ),
       ),
@@ -95,7 +100,7 @@ class _EvenementsViewState extends State<EvenementsView> {
                     dateDebut: formattedDateDebut,
                     dateFin: formattedDateFin,
                     description: evenement.description,
-                    typeBouton: TypeBouton.Detail),
+                    typeBouton: TypeBouton.Notification),
               );
             }).toList()
           ],
@@ -104,11 +109,15 @@ class _EvenementsViewState extends State<EvenementsView> {
     );
   }
 
-  Widget getVueOrganisateur() {
-    return const Column(
+  Widget getVueOrganisateur(
+      List<Evenement> evenementsBrouillon,
+      List<Evenement> evenementsAVenir,
+      List<Evenement> evenementsEnCours,
+      List<Evenement> evenementsCloture) {
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(
             top: 20,
             right: 20,
@@ -121,21 +130,81 @@ class _EvenementsViewState extends State<EvenementsView> {
           ),
         ),
         ExpansionTileAppli(
-          titre: "Événément brouillons",
-          listeWidget: [],
+          titre: "Événéments brouillons",
+          listeWidget: [
+            ...evenementsBrouillon.map((evenement) {
+              String formattedDateDebut =
+                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
+              String formattedDateFin =
+                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
+              return ListTile(
+                title: WidgetEvenement(
+                    titreEvenement: evenement.titre,
+                    dateDebut: formattedDateDebut,
+                    dateFin: formattedDateFin,
+                    description: evenement.description,
+                    typeBouton: TypeBouton.Modifier),
+              );
+            }).toList()
+          ],
         ),
         ExpansionTileAppli(
-          titre: "Événément à venir",
-          listeWidget: [],
+          titre: "Événéments à venir",
+          listeWidget: [
+            ...evenementsAVenir.map((evenement) {
+              String formattedDateDebut =
+                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
+              String formattedDateFin =
+                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
+              return ListTile(
+                title: WidgetEvenement(
+                    titreEvenement: evenement.titre,
+                    dateDebut: formattedDateDebut,
+                    dateFin: formattedDateFin,
+                    description: evenement.description,
+                    typeBouton: TypeBouton.Modifier),
+              );
+            }).toList()
+          ],
         ),
         ExpansionTileAppli(
-          titre: "Événément en cours",
-          listeWidget: [],
+          titre: "Événéments en cours",
+          listeWidget: [
+            ...evenementsEnCours.map((evenement) {
+              String formattedDateDebut =
+                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
+              String formattedDateFin =
+                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
+              return ListTile(
+                title: WidgetEvenement(
+                    titreEvenement: evenement.titre,
+                    dateDebut: formattedDateDebut,
+                    dateFin: formattedDateFin,
+                    description: evenement.description,
+                    typeBouton: TypeBouton.Detail),
+              );
+            }).toList()
+          ],
         ),
         ExpansionTileAppli(
           titre: "Événements clôturés",
           expanded: false,
-          listeWidget: [],
+          listeWidget: [
+            ...evenementsCloture.map((evenement) {
+              String formattedDateDebut =
+                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
+              String formattedDateFin =
+                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
+              return ListTile(
+                title: WidgetEvenement(
+                    titreEvenement: evenement.titre,
+                    dateDebut: formattedDateDebut,
+                    dateFin: formattedDateFin,
+                    description: evenement.description,
+                    typeBouton: TypeBouton.Detail),
+              );
+            }).toList()
+          ],
         ),
       ],
     );

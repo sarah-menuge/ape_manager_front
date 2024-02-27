@@ -129,6 +129,7 @@ class WidgetEvenement extends StatelessWidget {
             textAlign: TextAlign.left,
             style: FontUtils.getFontApp(
               fontSize: POLICE_DESKTOP_NORMAL_2,
+              fontWeight: FontWeight.w300,
             ),
           ),
         ),
