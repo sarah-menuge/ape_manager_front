@@ -54,7 +54,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
           textAlign: TextAlign.center,
           style: FontUtils.getFontApp(
               fontSize: ResponsiveConstraint.getResponsiveValue(
-                  context, POLICE_MOBILE_TITRE, POLICE_DESKTOP_TITRE)),
+                  context, POLICE_MOBILE_H1, POLICE_DESKTOP_H1)),
         ),
       ),
     );
@@ -68,7 +68,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
         textAlign: TextAlign.left,
         style: FontUtils.getFontApp(
             fontSize: ResponsiveConstraint.getResponsiveValue(
-                context, POLICE_MOBILE_NORMAL, POLICE_DESKTOP_NORMAL),
+                context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
             fontWeight: FONT_WEIGHT_NORMAL),
       ),
     );
@@ -84,7 +84,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
               text: "Statut : ",
               style: FontUtils.getFontApp(
                 fontSize: ResponsiveConstraint.getResponsiveValue(
-                    context, POLICE_MOBILE_NORMAL, POLICE_DESKTOP_NORMAL),
+                    context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
                 fontWeight: FONT_WEIGHT_NORMAL,
               ),
             ),
@@ -92,7 +92,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
               text: evenement.statut,
               style: FontUtils.getFontApp(
                 fontSize: ResponsiveConstraint.getResponsiveValue(
-                    context, POLICE_MOBILE_NORMAL, POLICE_DESKTOP_NORMAL),
+                    context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
                 color: evenement.statut == "En cours"
                     ? const Color.fromRGBO(0, 86, 27, 100)
                     : GRIS_CLAIR,
@@ -114,7 +114,7 @@ class EvenementsDetailsWidget extends StatelessWidget {
           "Prix total : ${prixTotal}€",
           style: FontUtils.getFontApp(
             fontSize: ResponsiveConstraint.getResponsiveValue(
-                context, POLICE_MOBILE_NORMAL, POLICE_DESKTOP_NORMAL),
+                context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
           ),
         ),
       ),

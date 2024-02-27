@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
@@ -12,19 +11,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
+  static double _screenWidth = 0.0;
+
   const HeaderAppli({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    _screenWidth = MediaQuery.of(context).size.width;
     return AppBar(
       // Logo de l'application situé à gauche du header pour le Desktop
       leading: MediaQuery.of(context).size.width > 600 ? LogoAppli() : null,
       leadingWidth: MediaQuery.of(context).size.width > 600 ? 300.0 : 50.0,
       // Hauteur du header
       toolbarHeight:
-          ResponsiveConstraint.getResponsiveValue(context, 100.0, 200.0),
+          MediaQuery.of(context).size.width > 600 ? 80 : kToolbarHeight,
       // Linéar gradient du header
       flexibleSpace: Container(
         decoration: const BoxDecoration(
@@ -87,7 +89,13 @@ class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(HEADER_HEIGHT);
+  Size get preferredSize {
+    if (_screenWidth > 600) {
+      return Size.fromHeight(80);
+    } else {
+      return Size.fromHeight(kToolbarHeight);
+    }
+  }
 
   Widget getMenuHeaderDesktop(BuildContext context) {
     return Row(

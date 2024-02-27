@@ -34,12 +34,12 @@ class EvenementsDetailsViewMobile extends StatelessWidget {
                       Text(
                         article.nom,
                         style: FontUtils.getFontApp(
-                            fontSize: POLICE_MOBILE_NORMAL),
+                            fontSize: POLICE_MOBILE_NORMAL_2),
                       ),
                       Text(
                         article.description,
                         style: FontUtils.getFontApp(
-                          fontSize: POLICE_MOBILE_NORMAL,
+                          fontSize: POLICE_MOBILE_NORMAL_2,
                           fontWeight: FONT_WEIGHT_NORMAL,
                         ),
                       ),
@@ -49,7 +49,7 @@ class EvenementsDetailsViewMobile extends StatelessWidget {
                           Text(
                             "${article.prix}€",
                             style: FontUtils.getFontApp(
-                              fontSize: POLICE_MOBILE_NORMAL,
+                              fontSize: POLICE_MOBILE_NORMAL_2,
                             ),
                           ),
                           const QuantiteBouton(),

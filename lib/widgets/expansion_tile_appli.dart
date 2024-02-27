@@ -52,8 +52,8 @@ class _ExpansionTileAppliState extends State<ExpansionTileAppli> {
           title: Text(
             widget.titre,
             style: FontUtils.getFontApp(
-              fontSize:
-                  ResponsiveConstraint.getResponsiveValue(context, 20.0, 30.0),
+              fontSize: ResponsiveConstraint.getResponsiveValue(
+                  context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
               letterSpacing: 2,
             ),
           ),

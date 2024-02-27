@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/providers/authentification_provider.dart';
+import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_view.dart';
 import 'package:ape_manager_front/views/changer_mot_de_passe/new_password_view.dart';
@@ -19,8 +20,8 @@ void main() async {
 }
 
 class MainApp extends StatelessWidget {
-  final AuthentificationProvider authentificationProvider =
-      AuthentificationProvider();
+  final AuthentificationProvider authentificationProvider = AuthentificationProvider();
+  final EvenementProvider evenementProvider = EvenementProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class MainApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: authentificationProvider),
+        ChangeNotifierProvider.value(value: evenementProvider),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -56,9 +58,7 @@ class MainApp extends StatelessWidget {
           }
         },
         onUnknownRoute: (settings) {
-          return MaterialPageRoute(builder: (BuildContext context) {
-            return const NotFound();
-          });
+          return MaterialPageRoute(builder: (_) => NotFound());
         },
       ),
     );

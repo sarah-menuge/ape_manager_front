@@ -41,13 +41,13 @@ class EvenementsDetailsViewDesktop extends StatelessWidget {
                                   TextSpan(
                                     text: "${article.nom}\n",
                                     style: FontUtils.getFontApp(
-                                      fontSize: POLICE_DESKTOP_NORMAL,
+                                      fontSize: POLICE_DESKTOP_NORMAL_2,
                                     ),
                                   ),
                                   TextSpan(
                                     text: article.description,
                                     style: FontUtils.getFontApp(
-                                      fontSize: POLICE_DESKTOP_NORMAL,
+                                      fontSize: POLICE_DESKTOP_NORMAL_2,
                                       fontWeight: FONT_WEIGHT_NORMAL,
                                     ),
                                   ),
@@ -58,7 +58,7 @@ class EvenementsDetailsViewDesktop extends StatelessWidget {
                           Text(
                             "${article.prix}€",
                             style: FontUtils.getFontApp(
-                              fontSize: POLICE_DESKTOP_NORMAL,
+                              fontSize: POLICE_DESKTOP_NORMAL_2,
                             ),
                           ),
                           const Padding(
