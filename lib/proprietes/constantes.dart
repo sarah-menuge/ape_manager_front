@@ -10,8 +10,8 @@ String PASSWORD_AUTO_LOGIN_TEST = "${dotenv.env['PASSWORD_AUTO_LOGIN_TEST']}";
 
 // HEADER
 const double HEADER_HEIGHT = 80;
-const double HEADER_HEIGHT_MOBILE = 100;
-const double HEADER_HEIGHT_DESKTOP = 200;
+const double HEADER_HEIGHT_MOBILE = 60;
+const double HEADER_HEIGHT_DESKTOP = 80;
 
 const double FOOTER_HEIGHT = 80;
 const double EXPANDED_TILE_WIDTH = 1750;
