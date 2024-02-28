@@ -1,4 +1,4 @@
-import 'package:ape_manager_front/models/Evenement.dart';
+import 'package:ape_manager_front/models/event.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/bouton_quantite.dart';

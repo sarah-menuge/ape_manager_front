@@ -1,5 +1,5 @@
 import 'package:ape_manager_front/models/Article.dart';
-import 'package:ape_manager_front/models/Evenement.dart';
+import 'package:ape_manager_front/models/event.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/views/evenements/details/evenements_details_view_desktop.dart';
 import 'package:ape_manager_front/views/evenements/details/evenements_details_view_mobile.dart';

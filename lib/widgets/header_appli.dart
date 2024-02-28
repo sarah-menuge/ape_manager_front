@@ -2,6 +2,7 @@
 
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
@@ -9,6 +10,8 @@ import 'package:ape_manager_front/views/profile/profile_view.dart';
 import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/authentification_provider.dart';
 
 class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
   static double _screenWidth = 0.0;
@@ -69,7 +72,11 @@ class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
                     onTap: () {
                       Provider.of<AuthentificationProvider>(context,
                               listen: false)
-                          .logout(context);
+                          .logout(
+                        context,
+                        Provider.of<UtilisateurProvider>(context,
+                            listen: false),
+                      );
                     },
                   ),
                 ];

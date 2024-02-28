@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/providers/authentification_provider.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_view.dart';
@@ -22,6 +23,8 @@ void main() async {
 class MainApp extends StatelessWidget {
   final AuthentificationProvider authentificationProvider = AuthentificationProvider();
   final EvenementProvider evenementProvider = EvenementProvider();
+  final UtilisateurProvider utilisateurProvider =
+  UtilisateurProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class MainApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: authentificationProvider),
+        ChangeNotifierProvider.value(value: utilisateurProvider),
         ChangeNotifierProvider.value(value: evenementProvider),
       ],
       child: MaterialApp(
