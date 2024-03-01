@@ -1,29 +1,32 @@
+import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/views/evenements/details/evenements_details_view.dart';
+import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class WidgetEvenement extends StatelessWidget {
-  final String titreEvenement;
-  final String dateDebut;
-  final String dateFin;
-  final String description;
+  final Evenement evenement;
   final TypeBouton typeBouton;
 
   const WidgetEvenement(
-      {super.key,
-      required this.titreEvenement,
-      required this.dateDebut,
-      required this.dateFin,
-      required this.description,
-      required this.typeBouton});
+      {super.key, required this.typeBouton, required this.evenement});
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('fr_FR');
+    String filtreDate = MediaQuery.of(context).size.width > 600
+        ? 'E dd MMM yyyy'
+        : 'dd MMM yyyy';
+    String formattedDateDebut =
+        DateFormat(filtreDate, 'fr_FR').format(evenement.dateDebut);
+    String formattedDateFin =
+        DateFormat(filtreDate, 'fr_FR').format(evenement.dateFin);
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal:
@@ -38,7 +41,7 @@ class WidgetEvenement extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    titreEvenement,
+                    evenement.titre,
                     textAlign: TextAlign.left,
                     style: FontUtils.getFontApp(
                       fontSize: ResponsiveConstraint.getResponsiveValue(context,
@@ -49,7 +52,10 @@ class WidgetEvenement extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "$dateDebut - $dateFin",
+                    ResponsiveConstraint.getResponsiveValue(
+                        context,
+                        "Du $formattedDateDebut \nAu $formattedDateFin",
+                        "$formattedDateDebut - $formattedDateFin"),
                     textAlign: TextAlign.left,
                     style: FontUtils.getFontApp(
                       fontWeight: FONT_WEIGHT_NORMAL,
@@ -62,22 +68,24 @@ class WidgetEvenement extends StatelessWidget {
             ),
           ),
           (MediaQuery.of(context).size.width > 600)
-              ? getDescriptionDesktop(description)
-              : getDescriptionMobile(context, description),
+              ? getDescriptionDesktop(evenement.description)
+              : getDescriptionMobile(context, evenement.description),
           if (typeBouton == TypeBouton.Detail)
-            ButtonAppli(
-                text: "Plus de détail",
-                background: BLEU_CLAIR,
-                foreground: BLANC,
-                routeName: EvenementsDetailsView.routeName),
+            BoutonNavigation(
+              text: "Plus de détails",
+              background: BLEU_CLAIR,
+              foreground: BLANC,
+              routeName: DetailEvenementView.routeName,
+              arguments: evenement,
+            ),
           if (typeBouton == TypeBouton.Notification)
-            const ButtonAppli(
+            const BoutonNavigation(
                 text: "Me notifier",
                 background: ROUGE,
                 foreground: BLANC,
                 routeName: ""),
           if (typeBouton == TypeBouton.Modifier)
-            const ButtonAppli(
+            const BoutonNavigation(
                 text: "Modifier",
                 background: ROUGE,
                 foreground: BLANC,

@@ -1,3 +1,6 @@
+import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/models/commande.dart';
+
 import 'organisateur.dart';
 
 enum StatutEvenement { BROUILLON, A_VENIR, EN_COURS, CLOTURE, NON_DEFINI }
@@ -12,17 +15,21 @@ class Evenement {
   late String description;
   late StatutEvenement statut;
   late List<Organisateur> organisateurs;
+  List<Article> articles = [];
+  List<Commande> commandes = [];
 
-  Evenement(
-      {required this.id,
-      required this.titre,
-      required this.lieu,
-      required this.dateDebut,
-      required this.dateFin,
-      required this.dateFinPaiement,
-      required this.statut,
-      required this.description,
-      required this.organisateurs});
+  Evenement({
+    required this.id,
+    required this.titre,
+    required this.lieu,
+    required this.dateDebut,
+    required this.dateFin,
+    required this.dateFinPaiement,
+    required this.description,
+    required this.organisateurs,
+    required this.articles,
+    required this.commandes,
+  });
 
   Evenement.fromJson(Map<String, dynamic> json) {
     id = json["id"];
@@ -55,6 +62,14 @@ class Evenement {
         .toList();
   }
 
+  void setArticles(listeArticles) {
+    articles = listeArticles;
+  }
+
+  void setCommandes(listeCommandes) {
+    commandes = listeCommandes;
+  }
+
   @override
   String toString() {
     return "$titre - $lieu ($dateDebut -> $dateFin -> $dateFinPaiement) : $description [$statut]";
@@ -62,11 +77,9 @@ class Evenement {
 
   String getStatut() {
     if (statut == StatutEvenement.BROUILLON) return "Brouillon";
-    if (statut == StatutEvenement.A_VENIR) return "A venir";
+    if (statut == StatutEvenement.A_VENIR) return "À venir";
     if (statut == StatutEvenement.EN_COURS) return "En cours";
-    if (statut == StatutEvenement.CLOTURE)
-      return "Clôturé";
-    else
-      return "Non défini";
+    if (statut == StatutEvenement.CLOTURE) return "Clôturé";
+    return "Non défini";
   }
 }

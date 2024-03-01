@@ -22,4 +22,9 @@ class Article {
         prix = json['prix'],
         description = json['description'],
         categorie = json['categorie'];
+
+  @override
+  String toString() {
+    return nom;
+  }
 }

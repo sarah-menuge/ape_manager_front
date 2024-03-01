@@ -80,7 +80,7 @@ class AuthentificationProvider with ChangeNotifier {
     http.Response response = reponseApi.response as http.Response;
 
     // Authentification OK
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return signin(
         LoginForm(email: signupForm.email, password: signupForm.password),
         utilisateurProvider,
