@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'enfant.dart';
 
-enum RoleUtilisateur { parent, organisateur, administrateur }
+enum RoleUtilisateur { parent, organisateur, administrateur, inactif }
 
 class Utilisateur {
   late String nom;
@@ -28,7 +28,7 @@ class Utilisateur {
     } else if (json["role"] == "ADMINISTRATEUR") {
       role = RoleUtilisateur.administrateur;
     } else {
-      role = RoleUtilisateur.parent;
+      role = RoleUtilisateur.inactif;
     }
 
     enfants

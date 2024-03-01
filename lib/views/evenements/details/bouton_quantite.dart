@@ -1,9 +1,18 @@
+import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:flutter/material.dart';
 
 class QuantiteBouton extends StatefulWidget {
-  const QuantiteBouton({Key? key}) : super(key: key);
+  final Article article;
+  final Function ajouterArticle;
+  final Function retirerArticle;
+
+  const QuantiteBouton(
+      {super.key,
+      required this.ajouterArticle,
+      required this.article,
+      required this.retirerArticle});
 
   @override
   State<QuantiteBouton> createState() => _QuantiteBoutonState();
@@ -30,6 +39,7 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
                   onPressed: () {
                     setState(() {
                       if (quantity > 0) quantity--;
+                      widget.retirerArticle(widget.article);
                     });
                   },
                 ),
@@ -53,6 +63,7 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
                 onPressed: () {
                   setState(() {
                     quantity++;
+                    widget.ajouterArticle(widget.article);
                   });
                 },
               ),

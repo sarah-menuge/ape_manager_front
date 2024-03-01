@@ -1,15 +1,15 @@
 import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/views/evenements/liste/image_evenements.dart';
 import 'package:ape_manager_front/views/evenements/liste/widget_evenement.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/expansion_tile_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold_appli.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-enum Profil { Parent, Organisateur, Administrateur }
+import 'package:provider/provider.dart';
 
 enum TypeBouton { Detail, Notification, Modifier }
 
@@ -23,12 +23,16 @@ class EvenementsView extends StatefulWidget {
 }
 
 class _EvenementsViewState extends State<EvenementsView> {
-  static Profil profil = Profil.Organisateur;
   final EvenementProvider evenementProvider = EvenementProvider();
+  late UtilisateurProvider utilisateurProvider;
+  late RoleUtilisateur roleUtilisateur;
 
   @override
   void initState() {
     super.initState();
+    utilisateurProvider =
+        Provider.of<UtilisateurProvider>(context, listen: false);
+    roleUtilisateur = utilisateurProvider.utilisateur!.role;
     fetchData();
   }
 
@@ -53,10 +57,11 @@ class _EvenementsViewState extends State<EvenementsView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ImageEvenements(),
-            profil == Profil.Parent
-                ? getVueParents(evenementsEnCours, evenementsAVenir)
-                : getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
-                    evenementsEnCours, evenementsCloture),
+            if (roleUtilisateur == RoleUtilisateur.parent)
+              getVueParents(evenementsEnCours, evenementsAVenir),
+            if (roleUtilisateur == RoleUtilisateur.organisateur)
+              getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
+                  evenementsEnCours, evenementsCloture),
           ],
         ),
       ),
@@ -71,17 +76,9 @@ class _EvenementsViewState extends State<EvenementsView> {
           titre: "Événements en cours",
           listeWidget: [
             ...evenementsEnCours.map((evenement) {
-              String formattedDateDebut =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
-              String formattedDateFin =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
               return ListTile(
                 title: WidgetEvenement(
-                    titreEvenement: evenement.titre,
-                    dateDebut: formattedDateDebut,
-                    dateFin: formattedDateFin,
-                    description: evenement.description,
-                    typeBouton: TypeBouton.Detail),
+                    evenement: evenement, typeBouton: TypeBouton.Detail),
               );
             }).toList()
           ],
@@ -90,17 +87,9 @@ class _EvenementsViewState extends State<EvenementsView> {
           titre: "Événements à venir",
           listeWidget: [
             ...evenementsAVenir.map((evenement) {
-              String formattedDateDebut =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
-              String formattedDateFin =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
               return ListTile(
                 title: WidgetEvenement(
-                    titreEvenement: evenement.titre,
-                    dateDebut: formattedDateDebut,
-                    dateFin: formattedDateFin,
-                    description: evenement.description,
-                    typeBouton: TypeBouton.Notification),
+                    evenement: evenement, typeBouton: TypeBouton.Notification),
               );
             }).toList()
           ],
@@ -122,7 +111,7 @@ class _EvenementsViewState extends State<EvenementsView> {
             top: 20,
             right: 20,
           ),
-          child: ButtonAppli(
+          child: BoutonNavigation(
             text: "Créer un événement",
             background: BOUTON_CREATION,
             foreground: BLANC,
@@ -130,58 +119,34 @@ class _EvenementsViewState extends State<EvenementsView> {
           ),
         ),
         ExpansionTileAppli(
-          titre: "Événéments brouillons",
+          titre: "Événements brouillons",
           listeWidget: [
             ...evenementsBrouillon.map((evenement) {
-              String formattedDateDebut =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
-              String formattedDateFin =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
               return ListTile(
                 title: WidgetEvenement(
-                    titreEvenement: evenement.titre,
-                    dateDebut: formattedDateDebut,
-                    dateFin: formattedDateFin,
-                    description: evenement.description,
-                    typeBouton: TypeBouton.Modifier),
+                    evenement: evenement, typeBouton: TypeBouton.Modifier),
               );
             }).toList()
           ],
         ),
         ExpansionTileAppli(
-          titre: "Événéments à venir",
+          titre: "Événements à venir",
           listeWidget: [
             ...evenementsAVenir.map((evenement) {
-              String formattedDateDebut =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
-              String formattedDateFin =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
               return ListTile(
                 title: WidgetEvenement(
-                    titreEvenement: evenement.titre,
-                    dateDebut: formattedDateDebut,
-                    dateFin: formattedDateFin,
-                    description: evenement.description,
-                    typeBouton: TypeBouton.Modifier),
+                    evenement: evenement, typeBouton: TypeBouton.Modifier),
               );
             }).toList()
           ],
         ),
         ExpansionTileAppli(
-          titre: "Événéments en cours",
+          titre: "Événements en cours",
           listeWidget: [
             ...evenementsEnCours.map((evenement) {
-              String formattedDateDebut =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
-              String formattedDateFin =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
               return ListTile(
                 title: WidgetEvenement(
-                    titreEvenement: evenement.titre,
-                    dateDebut: formattedDateDebut,
-                    dateFin: formattedDateFin,
-                    description: evenement.description,
-                    typeBouton: TypeBouton.Detail),
+                    evenement: evenement, typeBouton: TypeBouton.Detail),
               );
             }).toList()
           ],
@@ -191,21 +156,16 @@ class _EvenementsViewState extends State<EvenementsView> {
           expanded: false,
           listeWidget: [
             ...evenementsCloture.map((evenement) {
-              String formattedDateDebut =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateDebut);
-              String formattedDateFin =
-                  DateFormat("dd/MM/yyyy").format(evenement.dateFin);
               return ListTile(
                 title: WidgetEvenement(
-                    titreEvenement: evenement.titre,
-                    dateDebut: formattedDateDebut,
-                    dateFin: formattedDateFin,
-                    description: evenement.description,
-                    typeBouton: TypeBouton.Detail),
+                    evenement: evenement, typeBouton: TypeBouton.Detail),
               );
             }).toList()
           ],
         ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 20),
+        )
       ],
     );
   }
