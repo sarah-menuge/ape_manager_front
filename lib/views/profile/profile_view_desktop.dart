@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
-
+import 'package:flutter/material.dart';
 import 'package:sticky_footer_scrollview/sticky_footer_scrollview.dart';
+
 import '../../widgets/TextTitre.dart';
 import '../../widgets/footer_appli.dart';
 import 'modification_enfants_form_view.dart';
@@ -16,7 +16,10 @@ class ProfileViewDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HeaderAppli(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: HeaderAppli(),
+      ),
       body: StickyFooterScrollView(
         footer: const Footer(),
         itemBuilder: (BuildContext context, int index) {

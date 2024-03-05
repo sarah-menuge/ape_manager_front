@@ -46,7 +46,10 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
 
   Widget getOngletInfos() {
     return Scaffold(
-      appBar: HeaderAppli(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: HeaderAppli(),
+      ),
       body: ListView(
         children: [
           TextTitre(titre: 'Mon Profil'),
@@ -59,7 +62,10 @@ class _ProfileViewMobileState extends State<ProfileViewMobile> {
 
   Widget getOngletEnfants() {
     return Scaffold(
-      appBar: HeaderAppli(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: HeaderAppli(),
+      ),
       body: ListView(
         children: [
           TextTitre(titre: 'Mes Enfants'),
