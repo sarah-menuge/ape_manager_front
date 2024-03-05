@@ -42,6 +42,7 @@ class HeaderAppli extends StatelessWidget {
       // Menu déroulant à droite de l'écran
       actions: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ResponsiveLayout(
               mobileBody: Container(),
@@ -49,7 +50,8 @@ class HeaderAppli extends StatelessWidget {
             ),
             PopupMenuButton(
               position: PopupMenuPosition.under,
-              offset: Offset(0, 15),
+              offset: ResponsiveConstraint.getResponsiveValue(
+                  context, Offset(0, 4), Offset(0, 20)),
               padding: EdgeInsets.zero,
               itemBuilder: (BuildContext context) {
                 return [
