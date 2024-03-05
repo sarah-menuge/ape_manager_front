@@ -11,18 +11,18 @@ import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/authentification_provider.dart';
-
-class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
+class HeaderAppli extends StatelessWidget {
   static double _screenWidth = 0.0;
+  static double _screenHeight = 0.0;
 
-  const HeaderAppli({
+  HeaderAppli({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     _screenWidth = MediaQuery.of(context).size.width;
+    _screenHeight = MediaQuery.of(context).size.height;
     return AppBar(
       // Logo de l'application situé à gauche du header pour le Desktop
       leading: MediaQuery.of(context).size.width > 600 ? LogoAppli() : null,
@@ -93,15 +93,6 @@ class HeaderAppli extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
     );
-  }
-
-  @override
-  Size get preferredSize {
-    if (_screenWidth > 600) {
-      return Size.fromHeight(80);
-    } else {
-      return Size.fromHeight(kToolbarHeight);
-    }
   }
 
   Widget getMenuHeaderDesktop(BuildContext context) {

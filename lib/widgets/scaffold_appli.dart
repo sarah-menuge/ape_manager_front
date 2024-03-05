@@ -20,7 +20,10 @@ class ScaffoldAppli extends StatelessWidget {
 
   Widget getScaffoldMobile() {
     return Scaffold(
-      appBar: const HeaderAppli(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: HeaderAppli(),
+      ),
       body: body,
       drawer: const DrawerAppli(),
     );
@@ -28,7 +31,10 @@ class ScaffoldAppli extends StatelessWidget {
 
   Widget getScaffoldDesktop() {
     return Scaffold(
-      appBar: const HeaderAppli(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: HeaderAppli(),
+      ),
       body: StickyFooterScrollView(
         itemBuilder: (BuildContext context, int index) {
           return body;

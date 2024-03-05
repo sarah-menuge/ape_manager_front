@@ -14,13 +14,15 @@ class AccueilView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldAppli(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: const [
-          ImageAccueil(),
-          ParagraphePresentation(),
-          ParagrapheApplication(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: const [
+            ImageAccueil(),
+            ParagraphePresentation(),
+            ParagrapheApplication(),
+          ],
+        ),
       ),
     );
   }
@@ -136,7 +138,7 @@ class ParagrapheApplication extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.only(top: 10),
           child: Text(
             "L'application APE Manager vise à organiser des ventes éphémères dans le but de récolter de l'argent qui servira à l'école et aux enfants. Les parents et membres de l'association pourront commander via cette application.",
             style: FontUtils.getFontApp(

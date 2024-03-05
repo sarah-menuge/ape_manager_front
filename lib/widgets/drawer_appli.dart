@@ -29,10 +29,7 @@ class DrawerAppli extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          SizedBox(
-            height: 100,
-            child: DrawerHeaderAppli(),
-          ),
+          SizedBox(height: 100, child: DrawerHeaderAppli()),
           ListView.separated(
             shrinkWrap: true,
             itemCount: boutonsOnglets.length,
@@ -79,24 +76,26 @@ class DrawerHeaderAppli extends StatelessWidget {
             width: 50,
           ),
         ),
-        Container(
-          padding: EdgeInsets.only(left: 10),
-          child: Text.rich(
-            TextSpan(
-                text: "Association des parents d'élèves \n",
-                style: FontUtils.getFontApp(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-                children: [
-                  TextSpan(
-                    text: "École et collège \nSte Marie Pérenchies",
-                    style: FontUtils.getFontApp(
-                      fontWeight: FontWeight.w100,
-                      fontSize: 12.5,
-                    ),
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(left: 10),
+            child: Text.rich(
+              TextSpan(
+                  text: "Association des parents d'élèves \n",
+                  style: FontUtils.getFontApp(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
                   ),
-                ]),
+                  children: [
+                    TextSpan(
+                      text: "École et collège \nSte Marie Pérenchies",
+                      style: FontUtils.getFontApp(
+                        fontWeight: FontWeight.w100,
+                        fontSize: 12.5,
+                      ),
+                    ),
+                  ]),
+            ),
           ),
         ),
       ]),
