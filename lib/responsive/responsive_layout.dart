@@ -30,3 +30,11 @@ class ResponsiveConstraint {
     return desktopValue;
   }
 }
+
+bool estDesktop(BuildContext context, int width) {
+  return MediaQuery.of(context).size.width >= width;
+}
+
+bool estMobile(BuildContext context, int width) {
+  return !estDesktop(context, width);
+}

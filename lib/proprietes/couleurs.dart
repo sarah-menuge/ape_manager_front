@@ -5,10 +5,11 @@ const Color ROUGE = Colors.red;
 const Color BLEU_CLAIR = Color.fromRGBO(83, 153, 194, 1.0);
 const Color BLEU_FONCE = Color.fromRGBO(13, 50, 110, 1.0);
 const Color BLANC = Colors.white;
+const Color BLANC_CASSE = Color.fromRGBO(241, 241, 241, 1.0);
 const Color NOIR = Colors.black;
 const Color BEIGE_TRES_FONCE = Color.fromRGBO(182, 162, 142, 100);
 const Color BEIGE_FONCE = Color.fromRGBO(238, 217, 196, 1.0);
-const Color BEIGE_CLAIR = Color.fromRGBO(254, 250, 246, 1.0);
+const Color BEIGE_CLAIR = BLANC_CASSE; //Color.fromRGBO(251, 251, 244, 1.0);
 const Color CONTOUR_RECTANGLE = Color.fromRGBO(204, 204, 204, 1.0);
 
 const Color GRIS_CLAIR = Color.fromRGBO(204, 204, 204, 1.0);

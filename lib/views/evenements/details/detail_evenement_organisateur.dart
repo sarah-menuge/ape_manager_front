@@ -61,21 +61,21 @@ class DetailEvenementOrganisateur extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       getBoutonFonctionStatut(context, commande),
-                      const BoutonNavigation(
-                          text: "Plus de détails",
-                          background: BLEU,
-                          foreground: BLANC,
-                          routeName: ""),
+                      BoutonNavigation(
+                        text: "Plus de détails",
+                        routeName: "",
+                        themeCouleur: ThemeCouleur.bleu,
+                      ),
                     ],
                   )
                 : Column(
                     children: [
                       getBoutonFonctionStatut(context, commande),
-                      const BoutonNavigation(
-                          text: "Plus de détails",
-                          background: BLEU,
-                          foreground: BLANC,
-                          routeName: ""),
+                      BoutonNavigation(
+                        text: "Plus de détails",
+                        routeName: "",
+                        themeCouleur: ThemeCouleur.bleu,
+                      ),
                     ],
                   ),
           ),
@@ -89,13 +89,13 @@ class DetailEvenementOrganisateur extends StatelessWidget {
 
   Widget getBoutonFonctionStatut(BuildContext context, Commande commande) {
     if (commande.getStatut() == "Validée") {
-      return const Padding(
-        padding: EdgeInsets.only(right: 10.0),
+      return Padding(
+        padding: const EdgeInsets.only(right: 10.0),
         child: BoutonNavigation(
-            text: "Valider le paiement",
-            background: VERT,
-            foreground: BLANC,
-            routeName: ""),
+          text: "Valider le paiement",
+          routeName: "",
+          themeCouleur: ThemeCouleur.vert,
+        ),
       );
     }
     if (commande.getStatut() == "Annulée") {
@@ -116,13 +116,13 @@ class DetailEvenementOrganisateur extends StatelessWidget {
       );
     }
     if (commande.getStatut() == "À retirer") {
-      return const Padding(
-        padding: EdgeInsets.only(right: 10.0),
+      return Padding(
+        padding: const EdgeInsets.only(right: 10.0),
         child: BoutonNavigation(
-            text: "Valider le retrait",
-            background: VERT,
-            foreground: BLANC,
-            routeName: ""),
+          text: "Valider le retrait",
+          routeName: "",
+          themeCouleur: ThemeCouleur.vert,
+        ),
       );
     }
     if (commande.getStatut() == "Retirée") {

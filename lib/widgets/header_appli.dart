@@ -6,23 +6,21 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
-import 'package:ape_manager_front/views/profile/profile_view.dart';
+import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HeaderAppli extends StatelessWidget {
   static double _screenWidth = 0.0;
-  static double _screenHeight = 0.0;
 
-  HeaderAppli({
+  const HeaderAppli({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     _screenWidth = MediaQuery.of(context).size.width;
-    _screenHeight = MediaQuery.of(context).size.height;
     return AppBar(
       // Logo de l'application situé à gauche du header pour le Desktop
       leading: MediaQuery.of(context).size.width > 600 ? LogoAppli() : null,
@@ -42,7 +40,6 @@ class HeaderAppli extends StatelessWidget {
       // Menu déroulant à droite de l'écran
       actions: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ResponsiveLayout(
               mobileBody: Container(),
@@ -67,7 +64,7 @@ class HeaderAppli extends StatelessWidget {
                   PopupMenuItem(
                     child: Text("Mon profil"),
                     onTap: () =>
-                        Navigator.pushNamed(context, ProfileView.routeName),
+                        Navigator.pushNamed(context, ProfilView.routeName),
                   ),
                   PopupMenuItem(
                     child: Text("Se déconnecter"),

@@ -5,6 +5,7 @@ import 'enfant.dart';
 enum RoleUtilisateur { parent, organisateur, administrateur, inactif }
 
 class Utilisateur {
+  late int id;
   late String nom;
   late String prenom;
   late String email;
@@ -14,12 +15,23 @@ class Utilisateur {
 
   List<Enfant> enfants = [];
 
+  Utilisateur.copie(Utilisateur other) {
+    id = other.id;
+    nom = other.nom;
+    prenom = other.prenom;
+    email = other.email;
+    telephone = other.telephone;
+    role = other.role;
+    token = other.token;
+  }
+
   Utilisateur.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
     nom = json["nom"];
     prenom = json["prenom"];
+    email = json["mail"];
+    telephone = json["telephone"];
     token = json["token"];
-    email = "";
-    telephone = "";
 
     if (json["role"] == "PARENT") {
       role = RoleUtilisateur.parent;
@@ -30,24 +42,19 @@ class Utilisateur {
     } else {
       role = RoleUtilisateur.inactif;
     }
-
-    enfants
-        .add(Enfant(id: 1, nom: 'Pepin', prenom: 'Alexandre', classe: 'CM1'));
-    enfants.add(Enfant(id: 2, nom: 'Menuge', prenom: 'Sarah', classe: 'CM0'));
   }
 
-  Utilisateur.copie(Utilisateur other) {
-    nom = other.nom;
-    prenom = other.prenom;
-    email = other.email;
-    telephone = other.telephone;
-    role = other.role;
-    token = other.token;
+  void setEnfants(json) {
+    enfants = (json as List<dynamic>).map((e) => Enfant.fromJson(e)).toList();
   }
 
-  @override
-  String toString() {
-    return "$prenom $nom - $role";
+  Map<String, dynamic> toJsonModifDetails() {
+    return {
+      "email": email,
+      "nom": nom,
+      "prenom": prenom,
+      "telephone": telephone,
+    };
   }
 
   TextEditingController getNomController() => TextEditingController(text: nom);
@@ -60,4 +67,20 @@ class Utilisateur {
 
   TextEditingController getTelephoneController() =>
       TextEditingController(text: telephone);
+
+  @override
+  String toString() {
+    return "$prenom $nom";
+  }
+
+  bool equals(Object o) {
+    if (identical(this, o)) return true;
+    if (o.runtimeType != this.runtimeType) return false;
+    Utilisateur other = o as Utilisateur;
+    return id == other.id &&
+        nom == other.nom &&
+        prenom == other.prenom &&
+        email == other.email &&
+        telephone == other.telephone;
+  }
 }

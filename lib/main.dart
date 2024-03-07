@@ -1,13 +1,12 @@
 import 'package:ape_manager_front/providers/authentification_provider.dart';
-import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_view.dart';
-import 'package:ape_manager_front/views/changer_mot_de_passe/new_password_view.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
-import 'package:ape_manager_front/views/profile/profile_view.dart';
+import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +25,7 @@ class MainApp extends StatelessWidget {
   final AuthentificationProvider authentificationProvider =
       AuthentificationProvider();
   final EvenementProvider evenementProvider = EvenementProvider();
-  final UtilisateurProvider utilisateurProvider =
-  UtilisateurProvider();
+  final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +56,10 @@ class MainApp extends StatelessWidget {
                 builder: (_) => DetailEvenementView(
                       evenement: evenement,
                     ));
-          } else if (settings.name == ProfileView.routeName) {
-            return MaterialPageRoute(builder: (_) => ProfileView());
+          } else if (settings.name == ProfilView.routeName) {
+            return MaterialPageRoute(builder: (_) => ProfilView());
           } else if (settings.name == ForgotPasswordView.routeName) {
             return MaterialPageRoute(builder: (_) => ForgotPasswordView());
-          } else if (settings.name == NewPasswordView.routeName) {
-            return MaterialPageRoute(builder: (_) => NewPasswordView());
-          } else if (settings.name == ProfileView.routeName) {
-            return MaterialPageRoute(builder: (_) => ProfileView());
           }
         },
         onUnknownRoute: (settings) {
