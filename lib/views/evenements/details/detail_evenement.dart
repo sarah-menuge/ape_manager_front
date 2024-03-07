@@ -27,7 +27,7 @@ class DetailEvenementWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const BoutonRetour(),
+          BoutonRetour(),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: PAGE_WIDTH),
             child: Padding(
@@ -138,14 +138,13 @@ class DetailEvenementWidget extends StatelessWidget {
       padding: EdgeInsets.only(
           bottom: ResponsiveConstraint.getResponsiveValue(context, 0.0, 10.0),
           right: 10),
-      child: const Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           BoutonNavigation(
             text: "Partager l'événement",
-            background: ROUGE,
-            foreground: BLANC,
             routeName: "",
+            themeCouleur: ThemeCouleur.rouge,
           ),
         ],
       ),
@@ -161,17 +160,15 @@ class DetailEvenementWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           panier.articles.isEmpty
-              ? const BoutonAction(
+              ? BoutonAction(
                   text: "Finaliser la commande",
-                  background: GRIS_FONCE,
-                  foreground: BLANC,
                   disable: true,
                   fonction: null,
+                  themeCouleur: ThemeCouleur.gris,
                 )
               : BoutonAction(
                   text: "Finaliser la commande",
-                  background: VERT,
-                  foreground: BLANC,
+                  themeCouleur: ThemeCouleur.vert,
                   fonction: () {
                     print("Finaliser");
                   },

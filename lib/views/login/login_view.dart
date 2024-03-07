@@ -1,41 +1,68 @@
+import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/views/login/login_form_view.dart';
+import 'package:ape_manager_front/widgets/button_appli.dart';
+import 'package:ape_manager_front/widgets/conteneur/div_principale.dart';
+import 'package:ape_manager_front/widgets/conteneur/header_div_principale.dart';
 import 'package:flutter/material.dart';
 
 import '../../proprietes/couleurs.dart';
-import 'login_card.dart';
 
 class LoginView extends StatelessWidget {
   static String routeName = '/login';
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
-      body: Center(
-        child: Container(
-          constraints: const BoxConstraints(
-            maxWidth: 1000,
-            maxHeight: 600,
-          ),
-          margin: const EdgeInsets.symmetric(
-            horizontal: 10,
-            vertical: 20,
-          ),
-          decoration: BoxDecoration(
-            color: BEIGE_CLAIR,
-            borderRadius: BorderRadius.circular(8.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: LoginCard(),
-        ),
+      body: DivPrincipale(
+        maxWidth: 800,
+        body: getContenuLoginResponsive(context),
       ),
+    );
+  }
+
+  Widget getContenuLoginResponsive(BuildContext context) {
+    return ResponsiveLayout(
+      mobileBody: getSectionLogin(),
+      desktopBody: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(flex: 1, child: getSectionLogin()),
+          Container(
+            color: Colors.grey,
+            child: const SizedBox(height: 200, width: 2),
+          ),
+          Expanded(child: getSectionSignup(context)),
+        ],
+      ),
+    );
+  }
+
+  Widget getSectionLogin() {
+    return const SingleChildScrollView(
+      child: LoginFormView(),
+    );
+  }
+
+  Widget getSectionSignup(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Text(
+          'Pas de compte ?',
+          style: TextStyle(color: NOIR, fontSize: 17),
+        ),
+        const SizedBox(height: 20),
+        getBoutonSignup(context),
+      ],
+    );
+  }
+
+  Widget getBoutonSignup(BuildContext context) {
+    return BoutonAction(
+      text: "S'inscrire",
+      fonction: () => Navigator.pushNamed(context, '/signup'),
+      themeCouleur: ThemeCouleur.rouge,
     );
   }
 }

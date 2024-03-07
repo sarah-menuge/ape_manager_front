@@ -106,16 +106,12 @@ class _EvenementsViewState extends State<EvenementsView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(
-            top: 20,
-            right: 20,
-          ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20, right: 20),
           child: BoutonNavigation(
             text: "Créer un événement",
-            background: BOUTON_CREATION,
-            foreground: BLANC,
             routeName: "",
+            themeCouleur: ThemeCouleur.vert,
           ),
         ),
         ExpansionTileAppli(

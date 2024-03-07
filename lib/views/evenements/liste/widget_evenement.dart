@@ -73,23 +73,22 @@ class WidgetEvenement extends StatelessWidget {
           if (typeBouton == TypeBouton.Detail)
             BoutonNavigation(
               text: "Plus de détails",
-              background: BLEU_CLAIR,
-              foreground: BLANC,
               routeName: DetailEvenementView.routeName,
               arguments: evenement,
+              themeCouleur: ThemeCouleur.bleu_clair,
             ),
           if (typeBouton == TypeBouton.Notification)
-            const BoutonNavigation(
-                text: "Me notifier",
-                background: ROUGE,
-                foreground: BLANC,
-                routeName: ""),
+            BoutonNavigation(
+              text: "Me notifier",
+              routeName: "",
+              themeCouleur: ThemeCouleur.rouge,
+            ),
           if (typeBouton == TypeBouton.Modifier)
-            const BoutonNavigation(
-                text: "Modifier",
-                background: ROUGE,
-                foreground: BLANC,
-                routeName: ""),
+            BoutonNavigation(
+              text: "Modifier",
+              routeName: "",
+              themeCouleur: ThemeCouleur.rouge,
+            ),
         ],
       ),
     );

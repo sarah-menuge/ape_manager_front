@@ -11,8 +11,6 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +18,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       body: Center(
         child: FractionallySizedBox(
           widthFactor: 0.9,
-          child: ForgotPasswordFormCard(formKey: _formKey),
+          child: ForgotPasswordFormCard(),
         ),
       ),
     );
