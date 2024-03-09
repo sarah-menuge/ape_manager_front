@@ -46,11 +46,11 @@ class WidgetCommandeMobile extends StatelessWidget {
             ),
           ],
         ),
-        Align(
+        const Align(
           alignment: Alignment.center,
-          child: BoutonNavigation(
+          child: BoutonNavigationGoRouter(
             text: "Plus de détails",
-            routeName: "",
+            routeName: "/commandes/0",
           ),
         ),
       ],

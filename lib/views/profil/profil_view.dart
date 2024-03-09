@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfilView extends StatefulWidget {
-  static String routeName = '/mon-profil';
+  static String routeURL = '/mon-profil';
 
   const ProfilView({super.key});
 
@@ -52,13 +52,13 @@ class _ProfilViewState extends State<ProfilView> {
         BarreNavigationItem(
           titre: "Mon profil",
           label: 'Moi',
-          icon: Icon(Icons.person),
+          icon: const Icon(Icons.person),
           onglet: getTuileFormulaireProfil(context),
         ),
         BarreNavigationItem(
           titre: "Mon profil",
           label: 'Mes enfants',
-          icon: Icon(Icons.child_care),
+          icon: const Icon(Icons.child_care),
           onglet: getTuileTableauEnfants(context),
         ),
       ],

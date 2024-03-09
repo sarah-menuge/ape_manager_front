@@ -106,11 +106,11 @@ class WidgetCommande extends StatelessWidget {
   }
 
   Widget getBoutonDetail() {
-    return Align(
+    return const Align(
       alignment: Alignment.centerRight,
-      child: BoutonNavigation(
+      child: BoutonNavigationGoRouter(
         text: "Plus de détails",
-        routeName: "",
+        routeName: "/commandes/0",
       ),
     );
   }

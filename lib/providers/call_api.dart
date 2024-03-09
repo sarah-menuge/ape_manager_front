@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:http/http.dart' as http;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:universal_html/html.dart' as html;
@@ -103,8 +104,9 @@ Future<ReponseAPI> _tentativeAppelAPIPOST({
     var headers = {
       HttpHeaders.contentTypeHeader: 'application/json',
     };
-    if (token != null)
+    if (token != null) {
       headers.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
+    }
 
     ReponseAPI repAPI = ReponseAPI.connexionOk(
       response: await http
@@ -119,6 +121,7 @@ Future<ReponseAPI> _tentativeAppelAPIPOST({
     );
     return repAPI;
   } catch (e) {
+    afficherLogCritical("La tentative de connexion à l'API a échoué.");
     return ReponseAPI.connexionKO();
   }
 }

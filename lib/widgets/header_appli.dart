@@ -5,6 +5,7 @@ import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
@@ -65,18 +66,20 @@ class HeaderAppli extends StatelessWidget {
                   ),
                   PopupMenuItem(
                     child: Text("Mon profil"),
-                    onTap: () =>
-                        Navigator.pushNamed(context, ProfilView.routeName),
+                    onTap: () => naviguerVersPage(context, ProfilView.routeURL),
                   ),
                   PopupMenuItem(
                     child: Text("Se déconnecter"),
                     onTap: () {
-                      Provider.of<AuthentificationProvider>(context,
-                              listen: false)
-                          .logout(
+                      Provider.of<AuthentificationProvider>(
                         context,
-                        Provider.of<UtilisateurProvider>(context,
-                            listen: false),
+                        listen: false,
+                      ).logout(
+                        context,
+                        Provider.of<UtilisateurProvider>(
+                          context,
+                          listen: false,
+                        ),
                       );
                     },
                   ),
@@ -106,7 +109,7 @@ class HeaderAppli extends StatelessWidget {
               "Événements",
               style: FontUtils.getFontApp(fontSize: 15),
             ),
-            onTap: () => Navigator.pushNamed(context, EvenementsView.routeName),
+            onTap: () => naviguerVersPage(context, EvenementsView.routeURL),
           ),
         ),
         SizedBox(height: 25, child: VerticalDivider(color: GRIS_FONCE)),
@@ -117,8 +120,7 @@ class HeaderAppli extends StatelessWidget {
               "Mes commandes",
               style: FontUtils.getFontApp(fontSize: 15),
             ),
-            onTap: () =>
-                Navigator.pushNamed(context, MesCommandesView.routeName),
+            onTap: () => naviguerVersPage(context, MesCommandesView.routeURL),
           ),
         ),
       ],

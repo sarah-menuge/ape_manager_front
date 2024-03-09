@@ -1,6 +1,8 @@
 import 'package:ape_manager_front/forms/signup_form.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
+import 'package:ape_manager_front/utils/logs.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_email.dart';
@@ -10,6 +12,7 @@ import 'package:ape_manager_front/widgets/formulaire/champ_telephone.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class SignupFormView extends StatefulWidget {
@@ -99,7 +102,7 @@ class _SignupFormViewState extends FormulaireState<SignupFormView> {
       utilisateurProvider,
     );
     if (response["statusCode"] == 200 && mounted) {
-      Navigator.pushReplacementNamed(context, ProfilView.routeName);
+      naviguerVersPage(context, ProfilView.routeURL);
       afficherMessageSucces(
           context: context, message: "Compte créé avec succès.");
     } else {

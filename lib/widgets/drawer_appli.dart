@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +20,9 @@ class DrawerAppli extends StatelessWidget {
   const DrawerAppli({super.key});
 
   static List<BoutonOnglet> boutonsOnglets = [
+    BoutonOnglet(libelle: "Mes événements", routeName: EvenementsView.routeURL),
     BoutonOnglet(
-        libelle: "Mes événements", routeName: EvenementsView.routeName),
-    BoutonOnglet(
-        libelle: "Mes commandes", routeName: MesCommandesView.routeName),
+        libelle: "Mes commandes", routeName: MesCommandesView.routeURL),
   ];
 
   @override
@@ -42,7 +42,7 @@ class DrawerAppli extends StatelessWidget {
               return ListTile(
                 title: InkWell(
                   onTap: () =>
-                      Navigator.pushNamed(context, boutonOnglet.routeName),
+                      naviguerVersPage(context, boutonOnglet.routeName),
                   child: Text(boutonOnglet.libelle),
                 ),
                 titleTextStyle: GoogleFonts.oswald(
@@ -71,7 +71,7 @@ class DrawerHeaderAppli extends StatelessWidget {
       margin: EdgeInsets.all(0),
       child: Row(children: [
         InkWell(
-          onTap: () => Navigator.pushNamed(context, AccueilView.routeName),
+          onTap: () => naviguerVersPage(context, AccueilView.routeURL),
           child: Image(
             image: const AssetImage("assets/images/logoEcole.png"),
             width: 50,

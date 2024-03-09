@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:flutter/material.dart';
 
@@ -18,11 +19,7 @@ class LogoAppli extends StatelessWidget {
               image: const AssetImage("assets/images/logoEcole.png"),
               width: 50,
             ),
-            onTap: () => Navigator.pushNamedAndRemoveUntil(
-              context,
-              AccueilView.routeName,
-              (Route<dynamic> route) => false,
-            ),
+            onTap: () => naviguerVersPage(context, AccueilView.routeURL),
           ),
           Expanded(
             child: Container(

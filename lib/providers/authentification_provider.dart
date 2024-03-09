@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -39,6 +40,8 @@ class AuthentificationProvider with ChangeNotifier {
 
     // Authentification OK
     if (response.statusCode == 200) {
+      afficherLogInfo(
+          "L'utilisateur [${loginForm.email}] s'est authentifié avec succès.");
       var body = json.decode(response.body);
       utilisateurProvider.updateUser(Utilisateur.fromJson(body));
       setValueInHardwareMemory(key: "token", value: body["token"]);
@@ -50,6 +53,8 @@ class AuthentificationProvider with ChangeNotifier {
     }
     // Authentification KO
     isLoggedIn = false;
+    afficherLogInfo(
+        "L'utilisateur [${loginForm.email}] n'a pas pu s'authentifier.");
     return {
       "statusCode": response.statusCode,
       "message": json.decode(response.body)["message"],
@@ -80,12 +85,16 @@ class AuthentificationProvider with ChangeNotifier {
     http.Response response = reponseApi.response as http.Response;
     // Authentification OK
     if (response.statusCode == 201) {
+      afficherLogInfo(
+          "Le compte de l'utilisateur [${signupForm.prenom} ${signupForm.nom}] a été créé avec succès.");
       return signin(
         LoginForm(email: signupForm.email, password: signupForm.password),
         utilisateurProvider,
       );
     }
     // Authentification KO
+    afficherLogInfo(
+        "La tentative de création d'un compte pour [${signupForm.prenom} ${signupForm.nom}] a échoué.");
     return {
       "statusCode": response.statusCode,
       "message": json.decode(response.body)["message"],
@@ -96,7 +105,7 @@ class AuthentificationProvider with ChangeNotifier {
   void logout(context, UtilisateurProvider utilisateurProvider) {
     utilisateurProvider.updateUser(null);
     isLoggedIn = false;
-    Navigator.pushReplacementNamed(context, LoginView.routeName);
+    Navigator.pushReplacementNamed(context, LoginView.routeURL);
   }
 
 // Pas utilisé pour le moment

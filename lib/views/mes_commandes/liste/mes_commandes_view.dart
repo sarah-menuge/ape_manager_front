@@ -8,7 +8,7 @@ import 'package:ape_manager_front/widgets/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 
 class MesCommandesView extends StatelessWidget {
-  static String routeName = '/mes-commandes';
+  static String routeURL = '/mes-commandes';
 
   const MesCommandesView({super.key});
 
