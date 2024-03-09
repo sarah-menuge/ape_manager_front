@@ -4,7 +4,9 @@ import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'forgot_password_form_card.dart';
 
 class ForgotPasswordView extends StatefulWidget {
-  static String routeName = '/forgot_pass';
+  static String routeURL = '/forgot_pass';
+
+  const ForgotPasswordView({super.key});
 
   @override
   _ForgotPasswordViewState createState() => _ForgotPasswordViewState();

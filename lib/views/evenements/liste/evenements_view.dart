@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 enum TypeBouton { Detail, Notification, Modifier }
 
 class EvenementsView extends StatefulWidget {
-  static String routeName = '/evenements';
+  static String routeURL = '/evenements';
 
   const EvenementsView({super.key});
 
@@ -36,7 +36,7 @@ class _EvenementsViewState extends State<EvenementsView> {
   }
 
   Future<void> fetchData() async {
-    await evenementProvider.fetchData();
+    await evenementProvider.fetchEvenements();
     setState(() {});
   }
 
@@ -107,11 +107,11 @@ class _EvenementsViewState extends State<EvenementsView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20, right: 20),
-          child: BoutonNavigation(
+        const Padding(
+          padding: EdgeInsets.only(top: 20, right: 20),
+          child: BoutonNavigationGoRouter(
             text: "Créer un événement",
-            routeName: "",
+            routeName: "/creer-evenement",
             themeCouleur: ThemeCouleur.vert,
           ),
         ),

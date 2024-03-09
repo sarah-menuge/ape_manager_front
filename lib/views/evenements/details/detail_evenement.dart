@@ -5,7 +5,9 @@ import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_organisateur.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
@@ -27,14 +29,18 @@ class DetailEvenementWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          BoutonRetour(),
+          BoutonRetour(nomUrlRetour: EvenementsView.routeURL),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: PAGE_WIDTH),
             child: Padding(
               padding: EdgeInsets.only(
-                  left: 20,
-                  right: ResponsiveConstraint.getResponsiveValue(
-                      context, 20.0, 0.0)),
+                left: 20,
+                right: ResponsiveConstraint.getResponsiveValue(
+                  context,
+                  20.0,
+                  0.0,
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -121,7 +127,7 @@ class DetailEvenementWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Text(
           "Prix total : ${panier.getPrixTotal().toStringAsFixed(2)} €",
           style: FontUtils.getFontApp(
@@ -141,9 +147,9 @@ class DetailEvenementWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          BoutonNavigation(
+          BoutonNavigationGoRouter(
             text: "Partager l'événement",
-            routeName: "",
+            routeName: "/evenements/${evenement.id}/partager",
             themeCouleur: ThemeCouleur.rouge,
           ),
         ],
@@ -160,7 +166,7 @@ class DetailEvenementWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           panier.articles.isEmpty
-              ? BoutonAction(
+              ? const BoutonAction(
                   text: "Finaliser la commande",
                   disable: true,
                   fonction: null,
@@ -170,7 +176,8 @@ class DetailEvenementWidget extends StatelessWidget {
                   text: "Finaliser la commande",
                   themeCouleur: ThemeCouleur.vert,
                   fonction: () {
-                    print("Finaliser");
+                    afficherLogCritical(
+                        "Finaliser la commande : non pris en charge");
                   },
                 ),
         ],

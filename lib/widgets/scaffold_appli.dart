@@ -42,7 +42,7 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
 
   Widget getScaffoldMobile() {
     return Scaffold(
-      appBar: PreferredSize(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: HeaderAppli(),
       ),
