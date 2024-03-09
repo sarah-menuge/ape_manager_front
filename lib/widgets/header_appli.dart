@@ -41,6 +41,7 @@ class HeaderAppli extends StatelessWidget {
       // Menu déroulant à droite de l'écran
       actions: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             ResponsiveLayout(
               mobileBody: Container(),

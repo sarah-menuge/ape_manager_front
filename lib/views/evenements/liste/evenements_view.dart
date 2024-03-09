@@ -58,8 +58,11 @@ class _EvenementsViewState extends State<EvenementsView> {
             ImageEvenements(),
             if (roleUtilisateur == RoleUtilisateur.parent)
               getVueParents(evenementsEnCours, evenementsAVenir),
-            getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
-                evenementsEnCours, evenementsCloture),
+            // TODO remplacer le if quand le token sera prit en compte
+            // if (roleUtilisateur == RoleUtilisateur.organisateur)
+            if (roleUtilisateur != RoleUtilisateur.parent)
+              getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
+                  evenementsEnCours, evenementsCloture),
           ],
         ),
       ),
