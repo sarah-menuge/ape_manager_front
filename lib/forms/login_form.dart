@@ -2,7 +2,7 @@ class LoginForm {
   String? email;
   String? password;
 
-  LoginForm({this.email, this.password});
+  LoginForm({this.email = "", this.password = ""});
 
   @override
   String toString() {

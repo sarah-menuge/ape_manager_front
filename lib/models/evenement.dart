@@ -25,6 +25,7 @@ class Evenement {
     required this.dateDebut,
     required this.dateFin,
     required this.dateFinPaiement,
+    required this.statut,
     required this.description,
     required this.organisateurs,
     required this.articles,

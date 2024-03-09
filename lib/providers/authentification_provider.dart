@@ -78,7 +78,6 @@ class AuthentificationProvider with ChangeNotifier {
     }
 
     http.Response response = reponseApi.response as http.Response;
-
     // Authentification OK
     if (response.statusCode == 201) {
       return signin(

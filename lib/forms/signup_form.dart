@@ -4,15 +4,16 @@ class SignupForm {
   String? email;
   String? telephone;
   String? password;
+  String? confirmerPassword;
 
-  SignupForm({this.nom, this.prenom, this.email, this.telephone, this.password});
-  SignupForm.vide(){
-    nom = "";
-    prenom = "";
-    email = "";
-    telephone = "";
-    password = "";
-  }
+  SignupForm({
+    this.nom = "",
+    this.prenom = "",
+    this.email = "",
+    this.telephone = "",
+    this.password = "",
+    this.confirmerPassword = "",
+  });
 
   @override
   String toString() {
@@ -20,6 +21,12 @@ class SignupForm {
   }
 
   Map<String, dynamic> toJson() {
-    return {'nom': nom, 'prenom': prenom, 'email': email, 'telephone': telephone, 'password': password};
+    return {
+      'nom': nom,
+      'prenom': prenom,
+      'email': email,
+      'telephone': telephone,
+      'password': password
+    };
   }
 }

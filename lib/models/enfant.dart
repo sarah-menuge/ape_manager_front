@@ -1,4 +1,6 @@
-class Enfant {
+import 'package:ape_manager_front/models/donnee_tableau.dart';
+
+class Enfant extends DonneeTableau {
   late int id;
   late String nom;
   late String prenom;
@@ -17,17 +19,37 @@ class Enfant {
     classe = json["classe"];
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "nom": nom,
+      "prenom": prenom,
+      "classe": classe,
+    };
+  }
+
   @override
   String toString() {
     return "$prenom $nom ($classe)";
   }
 
-  Map<String, dynamic> toJson() {
+  @override
+  Map<String, dynamic> pourTableau() {
     return {
-      "id": id,
-      "nom": nom,
-      "prenom": prenom,
-      "classe": classe,
+      "Nom": nom,
+      "Prénom": prenom,
+      "Classe": classe,
     };
+  }
+
+  @override
+  List<String> intitulesHeader() {
+    return ["Nom", "Prénom", "Classe"];
+  }
+
+  @override
+  getValeur(String nom_colonne) {
+    if (nom_colonne == "Nom") return nom;
+    if (nom_colonne == "Prénom") return prenom;
+    if (nom_colonne == "Classe") return classe;
   }
 }
