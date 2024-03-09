@@ -6,6 +6,7 @@ import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_vie
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
+import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
@@ -60,6 +61,8 @@ class MainApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => ProfilView());
           } else if (settings.name == ForgotPasswordView.routeName) {
             return MaterialPageRoute(builder: (_) => ForgotPasswordView());
+          } else if (settings.name == MesCommandesView.routeName) {
+            return MaterialPageRoute(builder: (_) => MesCommandesView());
           }
         },
         onUnknownRoute: (settings) {

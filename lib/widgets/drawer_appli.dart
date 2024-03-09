@@ -2,6 +2,7 @@
 
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
+import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,8 +21,8 @@ class DrawerAppli extends StatelessWidget {
   static List<BoutonOnglet> boutonsOnglets = [
     BoutonOnglet(
         libelle: "Mes événements", routeName: EvenementsView.routeName),
-    BoutonOnglet(libelle: "Mes commandes", routeName: ""),
-    BoutonOnglet(libelle: "Mon panier", routeName: ""),
+    BoutonOnglet(
+        libelle: "Mes commandes", routeName: MesCommandesView.routeName),
   ];
 
   @override
