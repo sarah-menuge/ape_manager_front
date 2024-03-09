@@ -6,6 +6,7 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
+import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
@@ -110,9 +111,13 @@ class HeaderAppli extends StatelessWidget {
         SizedBox(height: 25, child: VerticalDivider(color: GRIS_FONCE)),
         Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
-          child: Text(
-            "Mes commandes",
-            style: FontUtils.getFontApp(fontSize: 15),
+          child: InkWell(
+            child: Text(
+              "Mes commandes",
+              style: FontUtils.getFontApp(fontSize: 15),
+            ),
+            onTap: () =>
+                Navigator.pushNamed(context, MesCommandesView.routeName),
           ),
         ),
       ],
