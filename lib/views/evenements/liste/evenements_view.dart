@@ -1,7 +1,10 @@
 import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/models/utilisateur.dart';
+import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
+import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/liste/image_evenements.dart';
 import 'package:ape_manager_front/views/evenements/liste/widget_evenement.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
@@ -76,23 +79,28 @@ class _EvenementsViewState extends State<EvenementsView> {
         ExpansionTileAppli(
           titre: "Événements en cours",
           listeWidget: [
-            ...evenementsEnCours.map((evenement) {
-              return ListTile(
-                title: WidgetEvenement(
-                    evenement: evenement, typeBouton: TypeBouton.Detail),
-              );
-            }).toList()
+            if (evenementsEnCours.isEmpty) afficherAucuneDonnees(),
+            if (evenementsEnCours.isNotEmpty)
+              ...evenementsEnCours.map((evenement) {
+                return ListTile(
+                  title: WidgetEvenement(
+                      evenement: evenement, typeBouton: TypeBouton.Detail),
+                );
+              }).toList()
           ],
         ),
         ExpansionTileAppli(
           titre: "Événements à venir",
           listeWidget: [
-            ...evenementsAVenir.map((evenement) {
-              return ListTile(
-                title: WidgetEvenement(
-                    evenement: evenement, typeBouton: TypeBouton.Notification),
-              );
-            }).toList()
+            if (evenementsAVenir.isEmpty) afficherAucuneDonnees(),
+            if (evenementsAVenir.isNotEmpty)
+              ...evenementsAVenir.map((evenement) {
+                return ListTile(
+                  title: WidgetEvenement(
+                      evenement: evenement,
+                      typeBouton: TypeBouton.Notification),
+                );
+              }).toList()
           ],
         ),
       ],
@@ -106,7 +114,7 @@ class _EvenementsViewState extends State<EvenementsView> {
       List<Evenement> evenementsCloture) {
     return Column(
       children: [
-        Align(
+        const Align(
           alignment: Alignment.centerRight,
           child: Padding(
             padding: const EdgeInsets.only(top: 20, right: 20),
@@ -120,52 +128,76 @@ class _EvenementsViewState extends State<EvenementsView> {
         ExpansionTileAppli(
           titre: "Événements brouillons",
           listeWidget: [
-            ...evenementsBrouillon.map((evenement) {
-              return ListTile(
-                title: WidgetEvenement(
-                    evenement: evenement, typeBouton: TypeBouton.Modifier),
-              );
-            }).toList()
+            if (evenementsBrouillon.isEmpty) afficherAucuneDonnees(),
+            if (evenementsBrouillon.isNotEmpty)
+              ...evenementsBrouillon.map((evenement) {
+                return ListTile(
+                  title: WidgetEvenement(
+                      evenement: evenement, typeBouton: TypeBouton.Modifier),
+                );
+              }).toList()
           ],
         ),
         ExpansionTileAppli(
           titre: "Événements à venir",
           listeWidget: [
-            ...evenementsAVenir.map((evenement) {
-              return ListTile(
-                title: WidgetEvenement(
-                    evenement: evenement, typeBouton: TypeBouton.Modifier),
-              );
-            }).toList()
+            if (evenementsAVenir.isEmpty) afficherAucuneDonnees(),
+            if (evenementsAVenir.isNotEmpty)
+              ...evenementsAVenir.map((evenement) {
+                return ListTile(
+                  title: WidgetEvenement(
+                      evenement: evenement, typeBouton: TypeBouton.Modifier),
+                );
+              }).toList()
           ],
         ),
         ExpansionTileAppli(
           titre: "Événements en cours",
           listeWidget: [
-            ...evenementsEnCours.map((evenement) {
-              return ListTile(
-                title: WidgetEvenement(
-                    evenement: evenement, typeBouton: TypeBouton.Detail),
-              );
-            }).toList()
+            if (evenementsEnCours.isEmpty) afficherAucuneDonnees(),
+            if (evenementsEnCours.isNotEmpty)
+              ...evenementsEnCours.map((evenement) {
+                return ListTile(
+                  title: WidgetEvenement(
+                      evenement: evenement, typeBouton: TypeBouton.Detail),
+                );
+              }).toList()
           ],
         ),
         ExpansionTileAppli(
           titre: "Événements clôturés",
           expanded: false,
           listeWidget: [
-            ...evenementsCloture.map((evenement) {
-              return ListTile(
-                title: WidgetEvenement(
-                    evenement: evenement, typeBouton: TypeBouton.Detail),
-              );
-            }).toList()
+            if (evenementsCloture.isEmpty) afficherAucuneDonnees(),
+            if (evenementsCloture.isNotEmpty)
+              ...evenementsCloture.map((evenement) {
+                return ListTile(
+                  title: WidgetEvenement(
+                      evenement: evenement, typeBouton: TypeBouton.Detail),
+                );
+              }).toList()
           ],
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(bottom: 20),
         )
       ],
+    );
+  }
+
+  Widget afficherAucuneDonnees() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Aucun événement à afficher",
+          style: FontUtils.getFontApp(
+            fontSize: ResponsiveConstraint.getResponsiveValue(
+                context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
+          ),
+        ),
+      ),
     );
   }
 }
