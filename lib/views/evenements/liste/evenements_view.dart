@@ -105,14 +105,16 @@ class _EvenementsViewState extends State<EvenementsView> {
       List<Evenement> evenementsEnCours,
       List<Evenement> evenementsCloture) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(top: 20, right: 20),
-          child: BoutonNavigationGoRouter(
-            text: "Créer un événement",
-            routeName: "/creer-evenement",
-            themeCouleur: ThemeCouleur.vert,
+        Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20, right: 20),
+            child: BoutonNavigation(
+              text: "Créer un événement",
+              routeName: "",
+              themeCouleur: ThemeCouleur.vert,
+            ),
           ),
         ),
         ExpansionTileAppli(
