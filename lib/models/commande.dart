@@ -6,7 +6,7 @@ enum StatutCommande {
   ANNULEE,
   A_RETIRER,
   RETIREE,
-  TERMINE,
+  CLOTUREE,
   NON_DEFINI
 }
 
@@ -44,22 +44,30 @@ class Commande {
 
   Commande.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    estPaye = json["estPaye"];
-    dateRetrait = DateTime.parse(json["date_retrait"]);
-    lieuRetrait = json["lieu_retrait"];
-    libelleEvenement = json["libelle_evenement"];
-    listeArticles = json["listeArticles"];
+    estPaye = json["isPaid"] == "true" ? true : false;
+    dateRetrait = DateTime.parse(json["pickUpDate"]);
+    lieuRetrait = json["pickUpPlace"];
+
+    try{
+      libelleEvenement = json["event"];
+    } catch(e){
+      libelleEvenement = "?";
+    }
+
+    // listeArticles = json["listeArticles"];
+    // listeLigneCommandes =
+
     try {
-      if (json["statut"] == "VALIDEE") {
+      if (json["status"] == "VALIDATED") {
         statut = StatutCommande.VALIDEE;
-      } else if (json["statut"] == "ANNULEE") {
+      } else if (json["status"] == "CANCELED") {
         statut = StatutCommande.ANNULEE;
-      } else if (json["statut"] == "A_RETIRER") {
+      } else if (json["status"] == "TO_COLLECT") {
         statut = StatutCommande.A_RETIRER;
-      } else if (json["statut"] == "RETIREE") {
+      } else if (json["status"] == "COLLECTED") {
         statut = StatutCommande.RETIREE;
-      } else if (json["statut"] == "TERMINE") {
-        statut = StatutCommande.TERMINE;
+      } else if (json["status"] == "CLOSED") {
+        statut = StatutCommande.CLOTUREE;
       } else {
         statut = StatutCommande.NON_DEFINI;
       }
@@ -75,7 +83,7 @@ class Commande {
     if (statut == StatutCommande.ANNULEE) return "Annulée";
     if (statut == StatutCommande.A_RETIRER) return "À retirer";
     if (statut == StatutCommande.RETIREE) return "Retirée";
-    if (statut == StatutCommande.TERMINE) return "Terminée";
+    if (statut == StatutCommande.CLOTUREE) return "Clôturée";
     if (statut == StatutCommande.NON_DEFINI) return "Non défini";
     return "Non défini";
   }

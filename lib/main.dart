@@ -24,6 +24,33 @@ void main() async {
   runApp(MainApp());
 }
 
+class MainApp extends StatelessWidget {
+  final AuthentificationProvider authentificationProvider =
+      AuthentificationProvider();
+  final EvenementProvider evenementProvider = EvenementProvider();
+  final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
+
+  MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: authentificationProvider),
+        ChangeNotifierProvider.value(value: utilisateurProvider),
+        ChangeNotifierProvider.value(value: evenementProvider),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        routerConfig: _router,
+      ),
+    );
+  }
+}
+
 final _router = GoRouter(
   initialLocation: AccueilView.routeURL,
   routes: [
@@ -92,30 +119,3 @@ final _router = GoRouter(
     }
   },
 );
-
-class MainApp extends StatelessWidget {
-  final AuthentificationProvider authentificationProvider =
-      AuthentificationProvider();
-  final EvenementProvider evenementProvider = EvenementProvider();
-  final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
-
-  MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: authentificationProvider),
-        ChangeNotifierProvider.value(value: utilisateurProvider),
-        ChangeNotifierProvider.value(value: evenementProvider),
-      ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerConfig: _router,
-      ),
-    );
-  }
-}

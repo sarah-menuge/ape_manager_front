@@ -36,7 +36,7 @@ class _EvenementsViewState extends State<EvenementsView> {
   }
 
   Future<void> fetchData() async {
-    await evenementProvider.fetchEvenements();
+    await evenementProvider.fetchEvenements(utilisateurProvider.token!);
     setState(() {});
   }
 

@@ -38,7 +38,7 @@ class _ProfilViewState extends State<ProfilView> {
   }
 
   Future<void> fetchEnfants() async {
-    await utilisateurProvider.fetchEnfants();
+    await utilisateurProvider.fetchEnfants(utilisateurProvider.token!);
     setState(() {
       enfants = utilisateurProvider.enfants;
     });

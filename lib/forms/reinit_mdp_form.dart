@@ -14,7 +14,7 @@ class ReinitMdpForm {
   Map<String, dynamic> toJson() {
     return {
       'email': email,
-      'nouveauMdp': nouveauMdp,
+      'newPassword': nouveauMdp,
       'encoreNouveauMdp': encoreNouveauMdp,
     };
   }

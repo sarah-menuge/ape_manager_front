@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ape_manager_front/forms/reinit_mdp_form.dart';
 import 'package:ape_manager_front/models/enfant.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,17 +18,20 @@ class UtilisateurProvider with ChangeNotifier {
 
   List<Enfant> get enfants => _utilisateur!.enfants;
 
+  String? get token => _utilisateur?.token;
+
   void updateUser(Utilisateur? u) {
     _utilisateur = u;
     notifyListeners();
   }
 
-  Future<dynamic> fetchEnfants() async {
+  Future<dynamic> fetchEnfants(String token) async {
     // Appel à l'API
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
-      uri: '/utilisateurs/${_utilisateur?.id}/children',
+      uri: '/users/user-children',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
     );
     isLoading = false;
     // Cas où la connexion avec l'API n'a pas pu être établie
@@ -44,7 +48,8 @@ class UtilisateurProvider with ChangeNotifier {
   // Appel à l'API pour demander la réinitialisation du mot de passe d'un compte
   Future<dynamic> demandeReinitMdp(String? email) async {
     isLoading = true;
-    print("[PROVIDER] => DEMANDE REINIT MDP - non pris en charge");
+    afficherLogCritical(
+        "[PROVIDER] => DEMANDE REINIT MDP - non pris en charge");
     isLoading = false;
     return {
       "statusCode": 400,
@@ -56,7 +61,7 @@ class UtilisateurProvider with ChangeNotifier {
   // Redirigé ici par l'API après une demande de réinitialisation du mdp
   Future<dynamic> reinitMdp(ReinitMdpForm reinitMdpForm) async {
     isLoading = true;
-    print("[PROVIDER] => REINIT MDP - non pris en charge");
+    afficherLogCritical("[PROVIDER] => REINIT MDP - non pris en charge");
     isLoading = false;
     return {
       "statusCode": 400,
@@ -67,12 +72,15 @@ class UtilisateurProvider with ChangeNotifier {
   // Appel à l'API pour modifier le mot de passe
   // Accessible en étant connecté dans "Mon profil"
   Future<dynamic> modifierMotDePasse(
-      ModificationMdpForm modificationMdpForm) async {
+    String token,
+    ModificationMdpForm modificationMdpForm,
+  ) async {
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
       uri: '/auth/change_password',
       jsonBody: modificationMdpForm.toJson(),
       typeRequeteHttp: TypeRequeteHttp.PUT,
+      token: token,
     );
     isLoading = false;
 
@@ -101,12 +109,15 @@ class UtilisateurProvider with ChangeNotifier {
   }
 
   Future<dynamic> modifierInformationsUtilisateur(
-      Utilisateur utilisateurModifie) async {
+    String token,
+    Utilisateur utilisateurModifie,
+  ) async {
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
-      uri: '/utilisateurs/${_utilisateur!.id}',
+      uri: '/users',
       jsonBody: utilisateurModifie.toJsonModifDetails(),
       typeRequeteHttp: TypeRequeteHttp.PUT,
+      token: token,
     );
     isLoading = false;
 
@@ -119,6 +130,7 @@ class UtilisateurProvider with ChangeNotifier {
     }
 
     http.Response response = reponseApi.response as http.Response;
+
     // Authentification OK
     if (response.statusCode == 200) {
       return {
@@ -134,9 +146,10 @@ class UtilisateurProvider with ChangeNotifier {
     };
   }
 
-  Future<dynamic> supprimerCompte() async {
+  Future<dynamic> supprimerCompte(String token) async {
     isLoading = true;
-    print("[PROVIDER] => SUPPRIMER COMPTE UTILISATEUR - non pris en charge");
+    afficherLogCritical(
+        "[PROVIDER] => SUPPRIMER COMPTE UTILISATEUR - non pris en charge");
     isLoading = false;
 
     return {
@@ -145,12 +158,13 @@ class UtilisateurProvider with ChangeNotifier {
     };
   }
 
-  Future<dynamic> ajouterEnfant(Enfant enfant) async {
+  Future<dynamic> ajouterEnfant(String token, Enfant enfant) async {
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
-      uri: '/utilisateurs/${_utilisateur!.id}/child',
+      uri: '/users/child',
       jsonBody: enfant.toJson(),
       typeRequeteHttp: TypeRequeteHttp.POST,
+      token: token,
     );
     isLoading = false;
 
@@ -164,10 +178,10 @@ class UtilisateurProvider with ChangeNotifier {
 
     http.Response response = reponseApi.response as http.Response;
     // Authentification OK
-    if (response.statusCode == 200) {
-      fetchEnfants();
+    if (response.statusCode == 201) {
+      fetchEnfants(token);
       return {
-        "statusCode": 200,
+        "statusCode": response.statusCode,
         "message": "L'enfant a bien été ajouté.",
       };
     }
@@ -179,12 +193,13 @@ class UtilisateurProvider with ChangeNotifier {
     };
   }
 
-  Future<dynamic> modifierEnfant(Enfant enfant) async {
+  Future<dynamic> modifierEnfant(String token, Enfant enfant) async {
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
-      uri: '/utilisateurs/${_utilisateur!.id}/enfants/${enfant.id}',
+      uri: '/users/children/${enfant.id}',
       jsonBody: enfant.toJson(),
       typeRequeteHttp: TypeRequeteHttp.PUT,
+      token: token,
     );
     isLoading = false;
 
@@ -199,7 +214,7 @@ class UtilisateurProvider with ChangeNotifier {
     http.Response response = reponseApi.response as http.Response;
     // Authentification OK
     if (response.statusCode == 200) {
-      fetchEnfants();
+      fetchEnfants(token);
       return {
         "statusCode": 200,
         "message": "Les informations de l'enfant ont bien été mises à jour.",
@@ -213,11 +228,12 @@ class UtilisateurProvider with ChangeNotifier {
     };
   }
 
-  Future<dynamic> supprimerEnfant(Enfant enfant) async {
+  Future<dynamic> supprimerEnfant(String token, Enfant enfant) async {
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
-      uri: '/utilisateurs/${_utilisateur!.id}/enfants/${enfant.id}',
+      uri: '/users/children/${enfant.id}',
       typeRequeteHttp: TypeRequeteHttp.DELETE,
+      token: token,
     );
     isLoading = false;
 

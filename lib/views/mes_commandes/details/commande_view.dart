@@ -5,8 +5,10 @@ import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/evenements/details/bouton_quantite.dart';
 import 'package:ape_manager_front/views/mes_commandes/details/pop_up_suppression_commande.dart';
+import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold_appli.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +46,7 @@ class _CommandeViewState extends State<CommandeView> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          BoutonRetour(),
+          BoutonRetour(nomUrlRetour: MesCommandesView.routeURL),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: PAGE_WIDTH),
             child: Padding(
@@ -253,7 +255,7 @@ class _CommandeViewState extends State<CommandeView> {
                   if (disabledQuantite) {
                     switchEtatAfficherQuantite();
                   } else {
-                    print("A implémenter");
+                    afficherLogCritical("A implémenter");
                   }
                 },
               ),
@@ -286,7 +288,7 @@ class _CommandeViewState extends State<CommandeView> {
                 if (disabledQuantite) {
                   switchEtatAfficherQuantite();
                 } else {
-                  print("A implémenter");
+                  afficherLogCritical("A implémenter");
                 }
               },
             ),
@@ -341,10 +343,10 @@ class _CommandeViewState extends State<CommandeView> {
   }
 
   void ajouterArticle(Article article) {
-    print("À implémenter");
+    afficherLogCritical("À implémenter");
   }
 
   void retirerArticle(Article article) {
-    print("À implémenter");
+    afficherLogCritical("À implémenter");
   }
 }

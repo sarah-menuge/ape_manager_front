@@ -1,10 +1,10 @@
 class Article {
-  int id;
-  String nom;
-  int quantiteMax;
-  double prix;
-  String description;
-  String categorie;
+  late int id;
+  late String nom;
+  late int quantiteMax;
+  late double prix;
+  late String description;
+  late String categorie;
 
   Article({
     required this.id,
@@ -15,13 +15,14 @@ class Article {
     required this.categorie,
   });
 
-  Article.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        nom = json['nom'],
-        quantiteMax = json['quantiteMax'],
-        prix = json['prix'],
-        description = json['description'],
-        categorie = json['categorie'];
+  Article.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    nom = json['name'];
+    quantiteMax = json['maxQuantity'];
+    prix = json['price'];
+    description = json['description'];
+    categorie = json['category'];
+  }
 
   @override
   String toString() {

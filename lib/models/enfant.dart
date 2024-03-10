@@ -9,21 +9,17 @@ class Enfant extends DonneeTableau {
   Enfant({this.id = -1, this.nom = "", this.prenom = "", this.classe = ""});
 
   Enfant.fromJson(Map<String, dynamic> json) {
-    try {
-      id = json["id"];
-    } catch (e) {
-      id = -1;
-    }
-    nom = json["nom"];
-    prenom = json["prenom"];
-    classe = json["classe"];
+    id = json["id"];
+    nom = json["surname"];
+    prenom = json["firstname"];
+    classe = json["level"];
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "nom": nom,
-      "prenom": prenom,
-      "classe": classe,
+      "surname": nom,
+      "firstname": prenom,
+      "level": classe,
     };
   }
 

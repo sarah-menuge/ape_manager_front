@@ -67,7 +67,8 @@ class _SuppressionCompteFormViewState
   }
 
   Future<void> supprimerCompte() async {
-    final response = await utilisateurProvider.supprimerCompte();
+    final response =
+        await utilisateurProvider.supprimerCompte(utilisateurProvider.token!);
     if (mounted && response["statusCode"] == 200) {
       authentificationProvider.logout(
         context,
