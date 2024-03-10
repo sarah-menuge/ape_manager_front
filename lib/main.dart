@@ -11,6 +11,7 @@ import 'package:ape_manager_front/views/mes_commandes/details/commande_view.dart
 import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
+import 'package:ape_manager_front/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,7 +21,7 @@ import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
-  setPathUrlStrategy();
+  setHashUrlStrategy();
   runApp(MainApp());
 }
 
@@ -30,7 +31,9 @@ class MainApp extends StatelessWidget {
   final EvenementProvider evenementProvider = EvenementProvider();
   final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
 
-  MainApp({super.key});
+  MainApp({super.key}) {
+    print("Constructeur MainApp");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,7 @@ class MainApp extends StatelessWidget {
 
 final _router = GoRouter(
   initialLocation: AccueilView.routeURL,
+  errorBuilder: (context, state) => const NotFound(),
   routes: [
     GoRoute(
       path: LoginView.routeURL,
@@ -95,7 +99,7 @@ final _router = GoRouter(
         int id = int.tryParse(state.pathParameters['idCommande'] ?? '')!;
         return CommandeView(idCommande: id);
       },
-    )
+    ),
   ],
   // Permet d'imposer l'authentification
   redirect: (BuildContext context, GoRouterState state) {
