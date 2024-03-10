@@ -30,6 +30,7 @@ class BoutonNavigation extends Bouton {
   Widget build(BuildContext context) {
     return BoutonAction(
       text: text,
+      themeCouleur: themeCouleur,
       fonction: () {
         Navigator.pushNamed(
           context,

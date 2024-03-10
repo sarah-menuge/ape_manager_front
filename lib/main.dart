@@ -7,6 +7,7 @@ import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_vie
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
+import 'package:ape_manager_front/views/mes_commandes/details/commande_view.dart';
 import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
@@ -61,6 +62,13 @@ final _router = GoRouter(
       path: MesCommandesView.routeURL,
       builder: (context, state) => const MesCommandesView(),
     ),
+    GoRoute(
+      path: CommandeView.routeURL,
+      builder: (context, state) {
+        int id = int.tryParse(state.pathParameters['idCommande'] ?? '')!;
+        return CommandeView(idCommande: id);
+      },
+    )
   ],
   // Permet d'imposer l'authentification
   redirect: (BuildContext context, GoRouterState state) {
