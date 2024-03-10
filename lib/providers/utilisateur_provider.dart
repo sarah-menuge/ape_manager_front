@@ -10,15 +10,35 @@ import '../forms/modification_mdp_form.dart';
 import '../models/utilisateur.dart';
 import 'call_api.dart';
 
+enum Perspective { ADMIN, ORGANISATEUR, PARENT }
+
 class UtilisateurProvider with ChangeNotifier {
   bool isLoading = false;
   Utilisateur? _utilisateur;
+  Perspective _perspective = Perspective.PARENT;
 
   Utilisateur? get utilisateur => _utilisateur;
+
+  Perspective get perspective => _perspective;
+
+  void setPerspective(Perspective p) {
+    _perspective = p;
+  }
 
   List<Enfant> get enfants => _utilisateur!.enfants;
 
   String? get token => _utilisateur?.token;
+
+  bool get estParent =>
+      _utilisateur?.role == RoleUtilisateur.parent ||
+      _utilisateur?.role == RoleUtilisateur.prof;
+
+  bool get estProf => _utilisateur?.role == RoleUtilisateur.prof;
+
+  bool get estOrganisateur =>
+      _utilisateur?.role == RoleUtilisateur.organisateur;
+
+  bool get estAdmin => _utilisateur?.role == RoleUtilisateur.administrateur;
 
   void updateUser(Utilisateur? u) {
     _utilisateur = u;

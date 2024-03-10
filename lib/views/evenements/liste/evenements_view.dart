@@ -59,11 +59,9 @@ class _EvenementsViewState extends State<EvenementsView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ImageEvenements(),
-            if (roleUtilisateur == RoleUtilisateur.parent)
+            if (utilisateurProvider.perspective == Perspective.PARENT)
               getVueParents(evenementsEnCours, evenementsAVenir),
-            // TODO remplacer le if quand le token sera prit en compte
-            // if (roleUtilisateur == RoleUtilisateur.organisateur)
-            if (roleUtilisateur != RoleUtilisateur.parent)
+            if (utilisateurProvider.perspective == Perspective.ORGANISATEUR)
               getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
                   evenementsEnCours, evenementsCloture),
           ],

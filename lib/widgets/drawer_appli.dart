@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
@@ -17,16 +18,26 @@ class BoutonOnglet {
 }
 
 class DrawerAppli extends StatelessWidget {
-  const DrawerAppli({super.key});
+  final UtilisateurProvider utilisateurProvider;
 
-  static List<BoutonOnglet> boutonsOnglets = [
-    BoutonOnglet(libelle: "Mes événements", routeName: EvenementsView.routeURL),
-    BoutonOnglet(
-        libelle: "Mes commandes", routeName: MesCommandesView.routeURL),
-  ];
+  const DrawerAppli({
+    super.key,
+    required this.utilisateurProvider,
+  });
 
   @override
   Widget build(BuildContext context) {
+    List<BoutonOnglet> boutonsOnglets = [
+      if (utilisateurProvider.perspective == Perspective.PARENT ||
+          utilisateurProvider.perspective == Perspective.ORGANISATEUR)
+        BoutonOnglet(libelle: "Événements", routeName: EvenementsView.routeURL),
+      if (utilisateurProvider.perspective == Perspective.PARENT)
+        BoutonOnglet(
+            libelle: "Mes commandes", routeName: MesCommandesView.routeURL),
+      if (utilisateurProvider.perspective == Perspective.ADMIN)
+        BoutonOnglet(libelle: "Gestion des utilisateurs", routeName: ""),
+    ];
+
     return Drawer(
       child: ListView(
         children: [
