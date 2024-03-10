@@ -26,10 +26,16 @@ class QuantiteBouton extends StatefulWidget {
 }
 
 class _QuantiteBoutonState extends State<QuantiteBouton> {
+  late int quantity;
+
+  @override
+  void initState() {
+    super.initState();
+    quantity = widget.quantity;
+  }
+
   @override
   Widget build(BuildContext context) {
-    int quantity = widget.quantity;
-
     return Container(
       child: Card(
         color: widget.disabled
