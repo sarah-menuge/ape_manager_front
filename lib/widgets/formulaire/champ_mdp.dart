@@ -7,6 +7,7 @@ class ChampMdp extends Champ {
     super.key,
     super.label = "Mot de passe",
     super.onSavedMethod,
+    super.onChangedMethod,
     super.paddingVertical,
     super.valeurInitiale,
     super.controller,
@@ -25,6 +26,7 @@ class ChampMdp extends Champ {
           controller: controller,
           keyboardType: TextInputType.visiblePassword,
           onSaved: onSavedMethod ?? defaultOnSavedMethod,
+          onChanged: onChangedMethod ?? defaultOnChangedMethod,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Veuillez renseigner ce champ.';

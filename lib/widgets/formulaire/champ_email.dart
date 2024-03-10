@@ -7,6 +7,7 @@ class ChampEmail extends Champ {
     super.key,
     super.label = "Email",
     super.onSavedMethod,
+    super.onChangedMethod,
     super.paddingVertical,
     super.valeurInitiale,
     super.controller,
@@ -25,6 +26,7 @@ class ChampEmail extends Champ {
           readOnly: readOnly,
           keyboardType: TextInputType.emailAddress,
           onSaved: onSavedMethod ?? defaultOnSavedMethod,
+          onChanged: onChangedMethod ?? defaultOnChangedMethod,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Veuillez renseigner ce champ.';

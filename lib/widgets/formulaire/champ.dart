@@ -5,6 +5,9 @@ abstract class Champ extends StatelessWidget {
   // Méthode appelée lors de la sauvegarde du formulaire
   final void Function(String?)? onSavedMethod;
 
+  // Méthode appelée lors de la modification du champ
+  final void Function(String?)? onChangedMethod;
+
   // Libellé affiché pour présenter le champ de saisie
   final String label;
 
@@ -23,6 +26,7 @@ abstract class Champ extends StatelessWidget {
     super.key,
     required this.label,
     this.onSavedMethod,
+    this.onChangedMethod,
     this.paddingVertical = 0.5,
     this.valeurInitiale,
     this.controller,
@@ -35,6 +39,10 @@ abstract class Champ extends StatelessWidget {
   // Méthode permettant d'afficher un message d'avertissement si aucune action n'a été spécifiée lors du onSaved()
   void Function(String?)? defaultOnSavedMethod(value) {
     print("\x1B[31mLe champ '$label' ne fait rien lors du onSave().\x1B[0m");
+    return null;
+  }
+
+  void Function(String?)? defaultOnChangedMethod(value) {
     return null;
   }
 
