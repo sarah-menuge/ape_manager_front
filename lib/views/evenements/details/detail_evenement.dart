@@ -1,8 +1,8 @@
 import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/models/panier.dart';
-import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/logs.dart';
@@ -15,14 +15,14 @@ class DetailEvenementWidget extends StatelessWidget {
   final Evenement evenement;
   final Widget listeView;
   final Panier panier;
-  final RoleUtilisateur roleUtilisateur;
+  final UtilisateurProvider utilisateurProvider;
 
   const DetailEvenementWidget(
       {super.key,
       required this.evenement,
       required this.listeView,
       required this.panier,
-      required this.roleUtilisateur});
+      required this.utilisateurProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +50,12 @@ class DetailEvenementWidget extends StatelessWidget {
                   getBoutonPartagerEvenement(context),
                   const Divider(thickness: 0.5),
                   listeView,
-                  if (roleUtilisateur == RoleUtilisateur.parent)
+                  if (utilisateurProvider.perspective == Perspective.PARENT)
                     getPrixTotal(context),
-                  if (roleUtilisateur == RoleUtilisateur.parent)
+                  if (utilisateurProvider.perspective == Perspective.PARENT)
                     getBoutonFinaliserCommande(context),
-                  if (roleUtilisateur == RoleUtilisateur.organisateur)
+                  if (utilisateurProvider.perspective ==
+                      Perspective.ORGANISATEUR)
                     DetailEvenementOrganisateur(commandes: evenement.commandes),
                 ],
               ),

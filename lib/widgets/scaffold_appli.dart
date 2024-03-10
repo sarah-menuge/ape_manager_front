@@ -1,12 +1,16 @@
 import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/routage.dart';
+import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/widgets/drawer_appli.dart';
 import 'package:ape_manager_front/widgets/footer_appli.dart';
 import 'package:ape_manager_front/widgets/header_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold/barre_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sticky_footer_scrollview/sticky_footer_scrollview.dart';
 
 class ScaffoldAppli extends StatefulWidget {
@@ -24,7 +28,15 @@ class ScaffoldAppli extends StatefulWidget {
 }
 
 class _ScaffoldAppliState extends State<ScaffoldAppli> {
+  late UtilisateurProvider utilisateurProvider;
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    utilisateurProvider =
+        Provider.of<UtilisateurProvider>(context, listen: false);
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,12 +54,17 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
 
   Widget getScaffoldMobile() {
     return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: HeaderAppli(),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: HeaderAppli(
+          utilisateurProvider: utilisateurProvider,
+          setPerspective: setPerspective,
+        ),
       ),
       body: widget.items != null ? getOnglet() : widget.body,
-      drawer: const DrawerAppli(),
+      drawer: DrawerAppli(
+        utilisateurProvider: utilisateurProvider,
+      ),
       bottomNavigationBar: widget.items != null
           ? BodyNavigationBar(
               items: widget.items,
@@ -89,7 +106,10 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80),
-        child: HeaderAppli(),
+        child: HeaderAppli(
+          utilisateurProvider: utilisateurProvider,
+          setPerspective: setPerspective,
+        ),
       ),
       body: StickyFooterScrollView(
         itemBuilder: (BuildContext context, int index) {
@@ -99,5 +119,12 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
         footer: const Footer(),
       ),
     );
+  }
+
+  void setPerspective(BuildContext context, Perspective p) {
+    setState(() {
+      utilisateurProvider.setPerspective(p);
+    });
+    naviguerVersPage(context, AccueilView.routeURL);
   }
 }

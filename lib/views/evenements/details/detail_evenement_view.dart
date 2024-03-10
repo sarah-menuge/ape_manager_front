@@ -1,7 +1,6 @@
 import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/models/panier.dart';
-import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
@@ -26,7 +25,6 @@ class DetailEvenementView extends StatefulWidget {
 class _DetailEvenementViewState extends State<DetailEvenementView> {
   Panier panier = Panier();
   late UtilisateurProvider utilisateurProvider;
-  late RoleUtilisateur roleUtilisateur;
   Evenement? evenement;
 
   final EvenementProvider evenementProvider = EvenementProvider();
@@ -36,7 +34,6 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     super.initState();
     utilisateurProvider =
         Provider.of<UtilisateurProvider>(context, listen: false);
-    roleUtilisateur = utilisateurProvider.utilisateur!.role;
     fetchEvenement();
   }
 
@@ -73,7 +70,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
       body: evenement == null
           ? const SizedBox()
           : DetailEvenementWidget(
-              roleUtilisateur: roleUtilisateur,
+              utilisateurProvider: utilisateurProvider,
               evenement: evenement!,
               listeView: getInfosArticles(),
               panier: panier,
@@ -120,7 +117,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
                       fontSize: POLICE_MOBILE_NORMAL_2,
                     ),
                   ),
-                  if (roleUtilisateur == RoleUtilisateur.parent)
+                  if (utilisateurProvider.perspective == Perspective.PARENT)
                     QuantiteBouton(
                       ajouterArticle: ajouterArticle,
                       retirerArticle: retirerArticle,
@@ -170,7 +167,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
                   fontSize: POLICE_DESKTOP_NORMAL_2,
                 ),
               ),
-              if (roleUtilisateur == RoleUtilisateur.parent)
+              if (utilisateurProvider.perspective == Perspective.PARENT)
                 Padding(
                   padding: EdgeInsets.only(left: 50, right: 10),
                   child: QuantiteBouton(

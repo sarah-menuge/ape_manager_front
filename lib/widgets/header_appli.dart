@@ -15,9 +15,13 @@ import 'package:provider/provider.dart';
 
 class HeaderAppli extends StatelessWidget {
   static double _screenWidth = 0.0;
+  final UtilisateurProvider utilisateurProvider;
+  final Function setPerspective;
 
   const HeaderAppli({
     super.key,
+    required this.utilisateurProvider,
+    required this.setPerspective,
   });
 
   @override
@@ -55,15 +59,23 @@ class HeaderAppli extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemBuilder: (BuildContext context) {
                 return [
-                  PopupMenuItem(
-                    child: Text("Mode Parents"),
-                  ),
-                  PopupMenuItem(
-                    child: Text("Mode Organisateurs"),
-                  ),
-                  PopupMenuItem(
-                    child: Text("Mode Administrateur"),
-                  ),
+                  if (utilisateurProvider.estAdmin ||
+                      utilisateurProvider.estOrganisateur) ...[
+                    PopupMenuItem(
+                      child: Text("Mode Parents"),
+                      onTap: () => setPerspective(context, Perspective.PARENT),
+                    ),
+                    PopupMenuItem(
+                      child: Text("Mode Organisateur"),
+                      onTap: () =>
+                          setPerspective(context, Perspective.ORGANISATEUR),
+                    ),
+                    if (utilisateurProvider.estAdmin)
+                      PopupMenuItem(
+                        child: Text("Mode Administrateur"),
+                        onTap: () => setPerspective(context, Perspective.ADMIN),
+                      ),
+                  ],
                   PopupMenuItem(
                     child: Text("Mon profil"),
                     onTap: () => naviguerVersPage(context, ProfilView.routeURL),
@@ -71,6 +83,7 @@ class HeaderAppli extends StatelessWidget {
                   PopupMenuItem(
                     child: Text("Se déconnecter"),
                     onTap: () {
+                      setPerspective(context, Perspective.PARENT);
                       Provider.of<AuthentificationProvider>(
                         context,
                         listen: false,
@@ -100,30 +113,63 @@ class HeaderAppli extends StatelessWidget {
   }
 
   Widget getMenuHeaderDesktop(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(right: 10),
-          child: InkWell(
-            child: Text(
-              "Événements",
-              style: FontUtils.getFontApp(fontSize: 15),
+    if (utilisateurProvider.perspective == Perspective.PARENT) {
+      return Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: InkWell(
+              child: Text(
+                "Événements",
+                style: FontUtils.getFontApp(fontSize: 15),
+              ),
+              onTap: () => naviguerVersPage(context, EvenementsView.routeURL),
             ),
-            onTap: () => naviguerVersPage(context, EvenementsView.routeURL),
           ),
-        ),
-        SizedBox(height: 25, child: VerticalDivider(color: GRIS_FONCE)),
-        Padding(
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: InkWell(
-            child: Text(
-              "Mes commandes",
-              style: FontUtils.getFontApp(fontSize: 15),
+          SizedBox(height: 25, child: VerticalDivider(color: GRIS_FONCE)),
+          Padding(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: InkWell(
+              child: Text(
+                "Mes commandes",
+                style: FontUtils.getFontApp(fontSize: 15),
+              ),
+              onTap: () => naviguerVersPage(context, MesCommandesView.routeURL),
             ),
-            onTap: () => naviguerVersPage(context, MesCommandesView.routeURL),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    } else if (utilisateurProvider.perspective == Perspective.ORGANISATEUR) {
+      return Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: InkWell(
+              child: Text(
+                "Événements",
+                style: FontUtils.getFontApp(fontSize: 15),
+              ),
+              onTap: () => naviguerVersPage(context, EvenementsView.routeURL),
+            ),
+          ),
+        ],
+      );
+    } else if (utilisateurProvider.perspective == Perspective.ADMIN) {
+      return Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: InkWell(
+              child: Text(
+                "Gestion des utilisateurs",
+                style: FontUtils.getFontApp(fontSize: 15),
+              ),
+              onTap: () => naviguerVersPage(context, ""),
+            ),
+          ),
+        ],
+      );
+    }
+    return Container();
   }
 }
