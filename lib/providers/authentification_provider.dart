@@ -1,5 +1,6 @@
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/logs.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -17,7 +18,9 @@ class AuthentificationProvider with ChangeNotifier {
 
   // Permet d'interroger l'API pour s'authentifier
   Future<dynamic> signin(
-      LoginForm loginForm, UtilisateurProvider utilisateurProvider) async {
+    LoginForm loginForm,
+    UtilisateurProvider utilisateurProvider,
+  ) async {
     // Appel à l'API pour tenter de s'authentifier
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
@@ -63,7 +66,9 @@ class AuthentificationProvider with ChangeNotifier {
 
   // Permet d'interroger l'API pour s'authentifier
   Future<dynamic> signup(
-      SignupForm signupForm, UtilisateurProvider utilisateurProvider) async {
+    SignupForm signupForm,
+    UtilisateurProvider utilisateurProvider,
+  ) async {
     // Appel à l'API pour tenter de s'authentifier
     isLoading = true;
     ReponseAPI reponseApi = await callAPI(
@@ -105,7 +110,7 @@ class AuthentificationProvider with ChangeNotifier {
   void logout(context, UtilisateurProvider utilisateurProvider) {
     utilisateurProvider.updateUser(null);
     isLoggedIn = false;
-    Navigator.pushReplacementNamed(context, LoginView.routeURL);
+    naviguerVersPage(context, LoginView.routeURL);
   }
 
 // Pas utilisé pour le moment

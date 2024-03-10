@@ -41,7 +41,10 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
   }
 
   Future<void> fetchEvenement() async {
-    await evenementProvider.fetchEvenement(widget.eventId);
+    await evenementProvider.fetchEvenement(
+      utilisateurProvider.token!,
+      widget.eventId,
+    );
     evenement = evenementProvider.evenement!;
     await fetchListeArticles();
     await fetchListeCommandes();
@@ -51,11 +54,17 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
   }
 
   Future<void> fetchListeArticles() async {
-    await evenementProvider.fetchListeArticles(evenement!);
+    await evenementProvider.fetchListeArticles(
+      utilisateurProvider.token!,
+      evenement!,
+    );
   }
 
   Future<void> fetchListeCommandes() async {
-    await evenementProvider.fetchListeCommandes(evenement!);
+    await evenementProvider.fetchListeCommandes(
+      utilisateurProvider.token!,
+      evenement!,
+    );
   }
 
   @override

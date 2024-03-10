@@ -91,7 +91,10 @@ class _ModificationMdpFormViewState
       return;
     }
 
-    final response = await utilisateurProvider.modifierMotDePasse(modifMdpForm);
+    final response = await utilisateurProvider.modifierMotDePasse(
+      utilisateurProvider.token!,
+      modifMdpForm,
+    );
     if (response["statusCode"] == 200 && mounted) {
       afficherMessageSucces(context: context, message: response["message"]);
       Navigator.of(context).pop();

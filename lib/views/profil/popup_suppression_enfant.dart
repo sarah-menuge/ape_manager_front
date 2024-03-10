@@ -75,7 +75,10 @@ class _SuppressionEnfantFormViewState
   }
 
   Future<void> supprimerEnfant() async {
-    final response = await utilisateurProvider.supprimerEnfant(widget.enfant);
+    final response = await utilisateurProvider.supprimerEnfant(
+      utilisateurProvider.token!,
+      widget.enfant,
+    );
     if (mounted && response["statusCode"] == 200) {
       afficherMessageSucces(context: context, message: response["message"]);
       Navigator.of(context).pop();

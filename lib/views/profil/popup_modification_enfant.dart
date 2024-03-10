@@ -92,7 +92,8 @@ class _ModificationEnfantFormViewState
   }
 
   Future<void> envoiFormulaire() async {
-    final response = await utilisateurProvider.modifierEnfant(widget.enfant);
+    final response = await utilisateurProvider.modifierEnfant(
+        utilisateurProvider.token!, widget.enfant);
     if (response["statusCode"] == 200 && mounted) {
       afficherMessageSucces(context: context, message: response["message"]);
       Navigator.of(context).pop();

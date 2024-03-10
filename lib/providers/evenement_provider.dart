@@ -22,10 +22,11 @@ class EvenementProvider extends ChangeNotifier {
 
   Evenement? get evenement => _evenement;
 
-  Future<void> fetchEvenements() async {
+  Future<void> fetchEvenements(String token) async {
     ReponseAPI reponseApi = await callAPI(
-      uri: '/evenements',
+      uri: '/events',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
     );
 
     if (!reponseApi.connexionAPIEtablie) return;
@@ -37,10 +38,11 @@ class EvenementProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchEvenement(int eventId) async {
+  Future<void> fetchEvenement(String token, int eventId) async {
     ReponseAPI reponseApi = await callAPI(
-      uri: '/evenements/$eventId',
+      uri: '/events/$eventId',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
     );
 
     if (!reponseApi.connexionAPIEtablie) return;
@@ -58,32 +60,38 @@ class EvenementProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchListeArticles(Evenement evenement) async {
+  Future<void> fetchListeArticles(String token, Evenement evenement) async {
     ReponseAPI reponseApi = await callAPI(
-      uri: '/evenements/${evenement.id}/articles',
+      uri: '/events/${evenement.id}/items',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
     );
 
     if (!reponseApi.connexionAPIEtablie) return;
 
-    evenement.setArticles((jsonDecode(reponseApi.response!.body) as List)
-        .map((a) => Article.fromJson(a))
-        .toList());
+    if (reponseApi.response?.statusCode == 200) {
+      evenement.setArticles((jsonDecode(reponseApi.response!.body) as List)
+          .map((a) => Article.fromJson(a))
+          .toList());
+    }
 
     notifyListeners();
   }
 
-  Future<void> fetchListeCommandes(Evenement evenement) async {
+  Future<void> fetchListeCommandes(String token, Evenement evenement) async {
     ReponseAPI reponseApi = await callAPI(
-      uri: '/evenements/${evenement.id}/commandes',
+      uri: '/events/${evenement.id}/orders',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
     );
 
     if (!reponseApi.connexionAPIEtablie) return;
 
-    evenement.setCommandes((jsonDecode(reponseApi.response!.body) as List)
-        .map((c) => Commande.fromJson(c))
-        .toList());
+    if (reponseApi.response?.statusCode == 200) {
+      evenement.setCommandes((jsonDecode(reponseApi.response!.body) as List)
+          .map((c) => Commande.fromJson(c))
+          .toList());
+    }
 
     notifyListeners();
   }

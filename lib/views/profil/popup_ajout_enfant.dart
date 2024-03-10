@@ -82,8 +82,9 @@ class _AjoutEnfantFormViewState extends FormulaireState<AjoutEnfantFormView> {
   }
 
   Future<void> envoiFormulaire() async {
-    final response = await utilisateurProvider.ajouterEnfant(newEnfant);
-    if (response["statusCode"] == 200 && mounted) {
+    final response = await utilisateurProvider.ajouterEnfant(
+        utilisateurProvider.token!, newEnfant);
+    if (response["statusCode"] == 201 && mounted) {
       afficherMessageSucces(context: context, message: response["message"]);
       Navigator.of(context).pop();
       widget.fetchEnfants();

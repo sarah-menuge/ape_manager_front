@@ -22,10 +22,10 @@ class SignupForm {
 
   Map<String, dynamic> toJson() {
     return {
-      'nom': nom,
-      'prenom': prenom,
+      'surname': nom,
+      'firstname': prenom,
       'email': email,
-      'telephone': telephone,
+      'phone': telephone,
       'password': password
     };
   }
