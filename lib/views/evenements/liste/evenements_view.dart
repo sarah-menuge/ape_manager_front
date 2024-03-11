@@ -6,6 +6,7 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/views/creer_evenement/creer_evenement_view.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/creer_evenement/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/image_evenements.dart';
 import 'package:ape_manager_front/views/evenements/liste/widget_evenement.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
