@@ -5,6 +5,12 @@ class Panier {
 
   Panier();
 
+  Panier.copie(Panier other) {
+    for (Article article in other.articles) {
+      articles.add(Article.copie(article));
+    }
+  }
+
   void ajouterArticle(Article article) {
     articles.add(article);
   }

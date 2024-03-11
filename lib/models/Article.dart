@@ -15,6 +15,15 @@ class Article {
     required this.categorie,
   });
 
+  Article.copie(Article other) {
+    id = other.id;
+    nom = other.nom;
+    quantiteMax = other.quantiteMax;
+    prix = other.prix;
+    description = other.description;
+    categorie = other.categorie;
+  }
+
   Article.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     nom = json['name'];
@@ -27,5 +36,11 @@ class Article {
   @override
   String toString() {
     return nom;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != Article) return false;
+    return (other as Article).id == id;
   }
 }
