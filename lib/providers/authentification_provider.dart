@@ -44,7 +44,7 @@ class AuthentificationProvider with ChangeNotifier {
     // Authentification OK
     if (response.statusCode == 200) {
       afficherLogInfo(
-          "L'utilisateur [${loginForm.email}] s'est authentifié avec succès.");
+          "L'utilisateur [${loginForm.email}] s'est authentifié avec succès sous le role [${json.decode(response.body)["role"]}]");
       var body = json.decode(response.body);
       utilisateurProvider.updateUser(Utilisateur.fromJson(body));
       setValueInHardwareMemory(key: "token", value: body["token"]);

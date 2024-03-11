@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 class TexteFlexible extends StatelessWidget {
   // Texte à afficher
   final String texte;
-
+  final TextStyle? style;
+  final TextAlign? textAlign;
   // Est-ce que le texte est déjà contenu immédiatement dans un row ?
   final bool dejaContenuDansUnRow;
 
   const TexteFlexible({
     super.key,
     required this.texte,
+    this.style,
+    this.textAlign,
     this.dejaContenuDansUnRow = false,
   });
 
@@ -19,6 +22,8 @@ class TexteFlexible extends StatelessWidget {
       return Expanded(
         child: Text(
           texte,
+          style: style,
+          textAlign: textAlign,
         ),
       );
     }
@@ -28,6 +33,8 @@ class TexteFlexible extends StatelessWidget {
         Expanded(
           child: Text(
             texte,
+            textAlign: textAlign,
+            style: style,
           ),
         ),
       ],

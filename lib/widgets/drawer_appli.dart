@@ -29,7 +29,7 @@ class DrawerAppli extends StatelessWidget {
   Widget build(BuildContext context) {
     List<BoutonOnglet> boutonsOnglets = [
       if (utilisateurProvider.perspective == Perspective.PARENT ||
-          utilisateurProvider.perspective == Perspective.ORGANISATEUR)
+          utilisateurProvider.perspective == Perspective.ORGANIZER)
         BoutonOnglet(libelle: "Événements", routeName: EvenementsView.routeURL),
       if (utilisateurProvider.perspective == Perspective.PARENT)
         BoutonOnglet(
