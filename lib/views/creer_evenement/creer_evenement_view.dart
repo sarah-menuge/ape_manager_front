@@ -239,18 +239,19 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
           icon: Icon(Icons.person),
           onglet: Column(children: [
             getTuileTableauOrganisateurs(context),
-            Row(
-              children: [
-                Icon(Icons.info_outline, color: GRIS_CLAIR),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10),
+            Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, color: GRIS_CLAIR),
+                  SizedBox(width: 10),
+                  Expanded(
                     child: Text(
                         "Restez appuyé pour modifier ou supprimer un organisateur",
                         style: TextStyle(fontStyle: FontStyle.italic)),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Center(
               child: Padding(
@@ -335,7 +336,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
 
   Widget getTuileTableauOrganisateurs(BuildContext context) {
     return Tuile(
-      maxHeight: 350,
+      maxHeight: estDesktop(context, 600) ? 500 : 400,
       body: Column(
         children: [
           Padding(
@@ -358,7 +359,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                 ),
                 SizedBox(height: 20),
                 Tableau(
-                  tailleTableau: 200,
+                  tailleTableau: estDesktop(context, 600) ? 300 : 200,
                   modele: Organisateur(),
                   objets: organisateurs,
                   editable: (Organisateur organisateurs) {
@@ -368,6 +369,18 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                     supprimerOrganisateur(organisateurs);
                   },
                 ),
+                //if desktop
+                if (estDesktop(context, 600))
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: BoutonAction(
+                      text: "Ajouter un organisateur",
+                      fonction: () {
+                        ajouterOrganisateur();
+                      },
+                      themeCouleur: ThemeCouleur.vert,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -417,10 +430,9 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Divider(), // Thin line added here
+                Divider(),
                 Container(
-                  height:
-                      200,
+                  height: 200,
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: organisateurs.length,
@@ -440,8 +452,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
           ),
         ),
         SizedBox(height: 20),
-        getBoutonValidation(
-            context),
+        getBoutonValidation(context),
       ],
     );
   }

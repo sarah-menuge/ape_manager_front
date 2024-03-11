@@ -6,7 +6,6 @@ import 'champ.dart';
 class ChampDate extends Champ {
   Icon? prefixIcon = Icon(Icons.calendar_today);
 
-
   ChampDate({
     super.key,
     required super.label,
@@ -14,10 +13,13 @@ class ChampDate extends Champ {
     super.onSavedMethod,
     super.onChangedMethod,
     super.paddingVertical,
-    super.valeurInitiale,
-    super.controller,
+    String? valeurInitiale,
+    TextEditingController? controller,
     super.readOnly,
-  });
+  }) : super(
+    controller: controller ?? TextEditingController(text: valeurInitiale),
+    valeurInitiale: null,
+  );
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -40,7 +42,6 @@ class ChampDate extends Champ {
         onSaved: onSavedMethod ?? defaultOnSavedMethod,
         onChanged: onChangedMethod ?? defaultOnChangedMethod,
         controller: controller,
-        initialValue: valeurInitiale,
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
           _selectDate(context);

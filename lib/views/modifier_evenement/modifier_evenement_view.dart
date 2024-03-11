@@ -454,7 +454,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
 
   Widget getTuileTableauOrganisateurs(BuildContext context) {
     return Tuile(
-      maxHeight: 500,
+      maxHeight: estDesktop(context, 600) ? 500 : 400,
       body: Column(
         children: [
           Padding(
@@ -472,12 +472,26 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 SizedBox(height: 20),
                 Tableau(
+                  tailleTableau: estDesktop(context, 600) ? 300 : 200,
                   modele: Organisateur(),
                   objets: organisateurs,
                   supprimable: (Organisateur organisateurs) {
                     supprimerOrganisateur(organisateurs);
                   },
                 ),
+                if (estDesktop(context, 600))
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: BoutonAction(
+                        text: "Ajouter un organisateur",
+                        fonction: () {
+                          ajouterOrganisateur();
+                        },
+                        themeCouleur: ThemeCouleur.vert,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -488,7 +502,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
 
   Widget getTuileTableauArticles(BuildContext context) {
     return Tuile(
-      maxHeight: 500,
+      maxHeight: estDesktop(context, 600) ? 500 : 400,
       body: Column(
         children: [
           Padding(
@@ -506,6 +520,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 SizedBox(height: 20),
                 Tableau(
+                  tailleTableau: estDesktop(context, 600) ? 300 : 200,
                   modele: Article(),
                   objets: article,
                   editable: (Article article) {
@@ -515,6 +530,19 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     supprimerArticle(article);
                   },
                 ),
+                if (estDesktop(context, 600))
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: BoutonAction(
+                        text: "Ajouter un article",
+                        fonction: () {
+                          ajouterArticle();
+                        },
+                        themeCouleur: ThemeCouleur.vert,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

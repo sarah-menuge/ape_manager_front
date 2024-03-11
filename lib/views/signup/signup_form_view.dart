@@ -12,7 +12,6 @@ import 'package:ape_manager_front/widgets/formulaire/champ_telephone.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class SignupFormView extends StatefulWidget {

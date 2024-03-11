@@ -45,13 +45,20 @@ class _ModifierEvenementFormViewState
               "Lieu 4",
             ],
           ),
-        ],
-        [
           ChampDate(
+            readOnly: false,
             prefixIcon: const Icon(Icons.calendar_today),
             label: "Date de début",
           ),
+        ],
+        [
           ChampDate(
+            readOnly: false,
+            prefixIcon: const Icon(Icons.calendar_today),
+            label: "Date de fin de paiement",
+          ),
+          ChampDate(
+            readOnly: false,
             prefixIcon: const Icon(Icons.calendar_today),
             label: "Date de fin",
           ),

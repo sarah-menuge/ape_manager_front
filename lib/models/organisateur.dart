@@ -78,25 +78,4 @@ class Organisateur extends DonneeTableau {
       "Email": email,
     };
   }
-
-  @override
-  getValeur(String nom_colonne) {
-    if (nom_colonne == "Nom") return nom;
-    if (nom_colonne == "Prénom") return prenom;
-    if (nom_colonne == "Email") return email;
-  }
-
-  @override
-  List<String> intitulesHeader() {
-    return ["Nom", "Prénom", "Email"];
-  }
-
-  @override
-  Map<String, dynamic> pourTableau() {
-    return {
-      "Nom": nom,
-      "Prénom": prenom,
-      "Email": email,
-    };
-  }
 }
