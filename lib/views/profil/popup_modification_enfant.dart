@@ -2,6 +2,7 @@ import 'package:ape_manager_front/models/enfant.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
+import 'package:ape_manager_front/widgets/formulaire/champ_select_simple.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_string.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
@@ -63,11 +64,25 @@ class _ModificationEnfantFormViewState
           ),
         ],
         [
-          ChampString(
+          ChampSelectSimple(
+            prefixIcon: const Icon(Icons.school),
+            label: "École de l'enfant",
+            valeurInitiale: getEcoleSelectionnee(widget.enfant.classe),
+            onSavedMethod: (value) => widget.enfant.ecole = value!,
+            onChangedMethod: (value) => setState(() {
+              widget.enfant.ecole = value!;
+              widget.enfant.classe =
+                  getListeClassesDepuisEcole(widget.enfant.ecole)![0];
+            }),
+            valeursExistantes: Enfant.ecolesEtClasses.keys.toList(),
+          ),
+          ChampSelectSimple(
+            valeurInitiale: widget.enfant.classe,
             prefixIcon: const Icon(Icons.school),
             label: "Classe de l'enfant",
-            valeurInitiale: widget.enfant.classe,
             onSavedMethod: (value) => widget.enfant.classe = value!,
+            valeursExistantes:
+                getListeClassesDepuisClasse(widget.enfant.classe)!,
           ),
         ],
       ],
@@ -92,7 +107,8 @@ class _ModificationEnfantFormViewState
   }
 
   Future<void> envoiFormulaire() async {
-    final response = await utilisateurProvider.modifierEnfant(widget.enfant);
+    final response = await utilisateurProvider.modifierEnfant(
+        utilisateurProvider.token!, widget.enfant);
     if (response["statusCode"] == 200 && mounted) {
       afficherMessageSucces(context: context, message: response["message"]);
       Navigator.of(context).pop();
@@ -100,5 +116,25 @@ class _ModificationEnfantFormViewState
     } else {
       setMessageErreur(response["message"]);
     }
+  }
+
+  List<String>? getListeClassesDepuisClasse(String classe) {
+    String? ecole = getEcoleSelectionnee(classe);
+    if (ecole!.isEmpty) return [];
+    return Enfant.ecolesEtClasses[ecole]?.toList();
+  }
+
+  List<String>? getListeClassesDepuisEcole(String ecole) {
+    if (ecole.isEmpty) return [];
+    return Enfant.ecolesEtClasses[ecole]?.toList();
+  }
+
+  String? getEcoleSelectionnee(String classe) {
+    for (var entry in Enfant.ecolesEtClasses.entries) {
+      if (entry.value.contains(classe)) {
+        return entry.key;
+      }
+    }
+    return null;
   }
 }

@@ -2,6 +2,7 @@ import 'package:ape_manager_front/models/enfant.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
+import 'package:ape_manager_front/widgets/formulaire/champ_select_simple.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_string.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
@@ -54,10 +55,22 @@ class _AjoutEnfantFormViewState extends FormulaireState<AjoutEnfantFormView> {
           ),
         ],
         [
-          ChampString(
+          ChampSelectSimple(
+            prefixIcon: const Icon(Icons.school),
+            label: "École de l'enfant",
+            onSavedMethod: (value) => newEnfant.ecole = value!,
+            onChangedMethod: (value) => setState(() {
+              newEnfant.ecole = value!;
+              newEnfant.classe = getListeClasses(newEnfant.ecole)![0];
+            }),
+            valeursExistantes: Enfant.ecolesEtClasses.keys.toList(),
+          ),
+          ChampSelectSimple(
+            valeurInitiale: newEnfant.classe,
             prefixIcon: const Icon(Icons.school),
             label: "Classe de l'enfant",
             onSavedMethod: (value) => newEnfant.classe = value!,
+            valeursExistantes: getListeClasses(newEnfant.ecole)!,
           ),
         ],
       ],
@@ -82,13 +95,19 @@ class _AjoutEnfantFormViewState extends FormulaireState<AjoutEnfantFormView> {
   }
 
   Future<void> envoiFormulaire() async {
-    final response = await utilisateurProvider.ajouterEnfant(newEnfant);
-    if (response["statusCode"] == 200 && mounted) {
+    final response = await utilisateurProvider.ajouterEnfant(
+        utilisateurProvider.token!, newEnfant);
+    if (response["statusCode"] == 201 && mounted) {
       afficherMessageSucces(context: context, message: response["message"]);
       Navigator.of(context).pop();
       widget.fetchEnfants();
     } else {
       setMessageErreur(response["message"]);
     }
+  }
+
+  List<String>? getListeClasses(String ecole) {
+    if (ecole.isEmpty) return [];
+    return Enfant.ecolesEtClasses[ecole]?.toList();
   }
 }

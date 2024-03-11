@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/models/commande.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/evenement.dart';
 import 'call_api.dart';
@@ -11,16 +13,20 @@ import 'call_api.dart';
 class EvenementProvider extends ChangeNotifier {
   List<Evenement> _evenements = [];
   List<Article> _articles = [];
+  Evenement? _evenement;
 
   UnmodifiableListView<Evenement> get evenements =>
       UnmodifiableListView(_evenements);
 
   UnmodifiableListView<Article> get articles => UnmodifiableListView(_articles);
 
-  Future<void> fetchData() async {
+  Evenement? get evenement => _evenement;
+
+  Future<void> fetchEvenements(String token) async {
     ReponseAPI reponseApi = await callAPI(
-      uri: '/evenements',
+      uri: '/events',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
     );
 
     if (!reponseApi.connexionAPIEtablie) return;
@@ -32,32 +38,60 @@ class EvenementProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> fetchListeArticles(Evenement evenement) async {
+  Future<void> fetchEvenement(String token, int eventId) async {
     ReponseAPI reponseApi = await callAPI(
-      uri: '/evenements/${evenement.id}/articles',
+      uri: '/events/$eventId',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
     );
 
     if (!reponseApi.connexionAPIEtablie) return;
 
-    evenement.setArticles((jsonDecode(reponseApi.response!.body) as List)
-        .map((a) => Article.fromJson(a))
-        .toList());
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      _evenement = Evenement.fromJson(body);
+      afficherLogDebug("L'évènement $eventId a bien été récupéré.");
+    } else {
+      afficherLogError("L'évènement $eventId n'a pas pu être récupéré.");
+    }
 
     notifyListeners();
   }
 
-  Future<void> fetchListeCommandes(Evenement evenement) async {
+  Future<void> fetchListeArticles(String token, Evenement evenement) async {
     ReponseAPI reponseApi = await callAPI(
-      uri: '/evenements/${evenement.id}/commandes',
+      uri: '/events/${evenement.id}/items',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
     );
 
     if (!reponseApi.connexionAPIEtablie) return;
 
-    evenement.setCommandes((jsonDecode(reponseApi.response!.body) as List)
-        .map((c) => Commande.fromJson(c))
-        .toList());
+    if (reponseApi.response?.statusCode == 200) {
+      evenement.setArticles((jsonDecode(reponseApi.response!.body) as List)
+          .map((a) => Article.fromJson(a))
+          .toList());
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> fetchListeCommandes(String token, Evenement evenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/${evenement.id}/orders',
+      typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    if (reponseApi.response?.statusCode == 200) {
+      evenement.setCommandes((jsonDecode(reponseApi.response!.body) as List)
+          .map((c) => Commande.fromJson(c))
+          .toList());
+    }
 
     notifyListeners();
   }

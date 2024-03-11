@@ -7,7 +7,7 @@ import 'package:ape_manager_front/widgets/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 
 class AccueilView extends StatelessWidget {
-  static String routeName = '/accueil';
+  static String routeURL = '/accueil';
 
   const AccueilView({super.key});
 

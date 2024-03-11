@@ -1,46 +1,37 @@
-import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/models/ligne_commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:flutter/material.dart';
 
-class QuantiteBouton extends StatefulWidget {
+class QuantiteBoutonCommande extends StatelessWidget {
   final bool disabled;
-  final int quantity;
-  final Article article;
   final Function ajouterArticle;
   final Function retirerArticle;
+  final Function augmenterQuantite;
+  final Function diminuerQuantite;
+  final LigneCommande ligneCommande;
 
-  const QuantiteBouton({
+  const QuantiteBoutonCommande({
     super.key,
     required this.ajouterArticle,
-    required this.article,
     required this.retirerArticle,
+    required this.augmenterQuantite,
+    required this.diminuerQuantite,
+    required this.ligneCommande,
     this.disabled = false,
-    this.quantity = 0,
   });
 
-  @override
-  State<QuantiteBouton> createState() => _QuantiteBoutonState();
-}
-
-class _QuantiteBoutonState extends State<QuantiteBouton> {
-  late int quantity;
-
-  @override
-  void initState() {
-    super.initState();
-    quantity = widget.quantity;
-  }
+  int get quantite => ligneCommande.quantite;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Card(
-        color: widget.disabled
+        color: disabled
             ? Colors.transparent
-            : quantity == 0
+            : quantite == 0
                 ? BLEU
                 : VERT,
         elevation: 0,
@@ -51,17 +42,15 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (quantity > 0 && !widget.disabled)
+              if (quantite > 0 && !disabled)
                 IconButton(
                   icon: const Icon(Icons.remove),
                   onPressed: () {
-                    setState(() {
-                      if (quantity > 0) quantity--;
-                      widget.retirerArticle(widget.article);
-                    });
+                    diminuerQuantite(ligneCommande);
+                    retirerArticle(ligneCommande.article);
                   },
                 ),
-              if (quantity <= 0 || widget.disabled)
+              if (quantite <= 0 || disabled)
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7),
                   child: Icon(
@@ -71,29 +60,25 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
                 ),
               Expanded(
                 child: Text(
-                  widget.disabled
-                      ? "x ${quantity.toString()}"
-                      : quantity.toString(),
+                  disabled ? "x ${quantite.toString()}" : quantite.toString(),
                   textAlign: TextAlign.center,
                   style: FontUtils.getFontApp(
                       fontWeight:
-                          widget.disabled ? FontWeight.normal : FontWeight.w300,
+                          disabled ? FontWeight.normal : FontWeight.w300,
                       fontSize: ResponsiveConstraint.getResponsiveValue(context,
                           POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
-                      color: widget.disabled ? NOIR : BLANC),
+                      color: disabled ? NOIR : BLANC),
                 ),
               ),
-              if (!widget.disabled)
+              if (!disabled)
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
-                    setState(() {
-                      quantity++;
-                      widget.ajouterArticle(widget.article);
-                    });
+                    augmenterQuantite(ligneCommande);
+                    ajouterArticle(ligneCommande.article);
                   },
                 ),
-              if (widget.disabled)
+              if (disabled)
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7),
                   child: Icon(

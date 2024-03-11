@@ -1,5 +1,6 @@
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/mes_commandes/details/commande_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
@@ -106,11 +107,11 @@ class WidgetCommande extends StatelessWidget {
   }
 
   Widget getBoutonDetail() {
-    return Align(
+    return const Align(
       alignment: Alignment.centerRight,
-      child: BoutonNavigation(
+      child: BoutonNavigationGoRouter(
         text: "Plus de détails",
-        routeName: "",
+        routeName: "/commandes/0",
       ),
     );
   }

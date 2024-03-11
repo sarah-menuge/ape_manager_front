@@ -25,6 +25,8 @@ dependencies:
   sticky_footer_scrollview: ^1.1.1
   intl: ^0.17.0
   sticky_headers: ^0.3.0
+  go_router: ^7.1.1
+  url_strategy: ^0.2.0
 
 
 dev_dependencies:
@@ -43,4 +45,5 @@ flutter:
     - assets/images/casiers.jpg
     - assets/images/ecole.jpg
     - assets/images/colis.jpg
+    - assets/images/page_introuvable.png
     - .env

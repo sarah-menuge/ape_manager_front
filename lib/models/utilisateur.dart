@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'enfant.dart';
 
-enum RoleUtilisateur { parent, organisateur, administrateur, inactif }
+enum RoleUtilisateur { parent, organisateur, administrateur, prof, inactif }
 
 class Utilisateur {
   late int id;
@@ -26,19 +26,31 @@ class Utilisateur {
   }
 
   Utilisateur.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
-    nom = json["nom"];
-    prenom = json["prenom"];
-    email = json["mail"];
-    telephone = json["telephone"];
-    token = json["token"];
+    id = -1;
+    nom = json["surname"];
+    prenom = json["firstname"];
+    email = json["email"];
+
+    try {
+      telephone = json["phone"];
+    } catch (e) {
+      telephone = "";
+    }
+
+    try {
+      token = json["token"];
+    } catch (e) {
+      token = "";
+    }
 
     if (json["role"] == "PARENT") {
       role = RoleUtilisateur.parent;
-    } else if (json["role"] == "ORGANISATEUR") {
+    } else if (json["role"] == "ORGANIZER") {
       role = RoleUtilisateur.organisateur;
-    } else if (json["role"] == "ADMINISTRATEUR") {
+    } else if (json["role"] == "ADMIN") {
       role = RoleUtilisateur.administrateur;
+    } else if (json["role"] == "PROF") {
+      role = RoleUtilisateur.prof;
     } else {
       role = RoleUtilisateur.inactif;
     }
@@ -51,9 +63,9 @@ class Utilisateur {
   Map<String, dynamic> toJsonModifDetails() {
     return {
       "email": email,
-      "nom": nom,
-      "prenom": prenom,
-      "telephone": telephone,
+      "surname": nom,
+      "firstname": prenom,
+      "phone": telephone,
     };
   }
 

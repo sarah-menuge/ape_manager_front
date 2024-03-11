@@ -1,29 +1,53 @@
 import 'package:ape_manager_front/models/donnee_tableau.dart';
 
 class Enfant extends DonneeTableau {
+  /*static List<String> classes = [
+    "Petite section",
+    "Moyenne section",
+    "Grande section",
+    "CP",
+    "CE1",
+    "CE2",
+    "CM1",
+    "CM2",
+    "Sixième",
+    "Cinquième",
+    "Quatrième",
+    "Troisième",
+  ];*/
+
+  static Map<String, List<String>> ecolesEtClasses = {
+    "Maternelle": ["Petite section", "Moyenne section", "Grande section"],
+    "Primaire": ["CP", "CE1", "CE2", "CM1", "CM2"],
+    "Collège": ["Sixième", "Cinquième", "Quatrième", "Troisième"],
+  };
+
   late int id;
   late String nom;
   late String prenom;
+  late String ecole;
   late String classe;
 
-  Enfant({this.id = -1, this.nom = "", this.prenom = "", this.classe = ""});
+  Enfant({
+    this.id = -1,
+    this.nom = "",
+    this.prenom = "",
+    this.ecole = "",
+    this.classe = "",
+  });
 
   Enfant.fromJson(Map<String, dynamic> json) {
-    try {
-      id = json["id"];
-    } catch (e) {
-      id = -1;
-    }
-    nom = json["nom"];
-    prenom = json["prenom"];
-    classe = json["classe"];
+    id = json["id"];
+    nom = json["surname"];
+    prenom = json["firstname"];
+    classe = json["level"];
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "nom": nom,
-      "prenom": prenom,
-      "classe": classe,
+      "surname": nom,
+      "firstname": prenom,
+      "level": classe,
     };
   }
 

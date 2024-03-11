@@ -3,6 +3,7 @@ import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +27,7 @@ class DetailEvenementOrganisateur extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: commandes.map((commande) {
@@ -61,9 +62,9 @@ class DetailEvenementOrganisateur extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       getBoutonFonctionStatut(context, commande),
-                      BoutonNavigation(
+                      const BoutonNavigationGoRouter(
                         text: "Plus de détails",
-                        routeName: "",
+                        routeName: "/commandes/0",
                         themeCouleur: ThemeCouleur.bleu,
                       ),
                     ],
@@ -71,9 +72,9 @@ class DetailEvenementOrganisateur extends StatelessWidget {
                 : Column(
                     children: [
                       getBoutonFonctionStatut(context, commande),
-                      BoutonNavigation(
+                      const BoutonNavigationGoRouter(
                         text: "Plus de détails",
-                        routeName: "",
+                        routeName: "/commandes/0",
                         themeCouleur: ThemeCouleur.bleu,
                       ),
                     ],
@@ -91,16 +92,18 @@ class DetailEvenementOrganisateur extends StatelessWidget {
     if (commande.getStatut() == "Validée") {
       return Padding(
         padding: const EdgeInsets.only(right: 10.0),
-        child: BoutonNavigation(
+        child: BoutonAction(
           text: "Valider le paiement",
-          routeName: "",
           themeCouleur: ThemeCouleur.vert,
+          fonction: (value) {
+            afficherLogCritical("Valider le paiement : non pris en charge");
+          },
         ),
       );
     }
     if (commande.getStatut() == "Annulée") {
       return Padding(
-        padding: EdgeInsets.only(right: 40.0),
+        padding: const EdgeInsets.only(right: 40.0),
         child: Text(
           "Commande annulée",
           textAlign: TextAlign.center,
@@ -118,16 +121,18 @@ class DetailEvenementOrganisateur extends StatelessWidget {
     if (commande.getStatut() == "À retirer") {
       return Padding(
         padding: const EdgeInsets.only(right: 10.0),
-        child: BoutonNavigation(
+        child: BoutonAction(
           text: "Valider le retrait",
-          routeName: "",
           themeCouleur: ThemeCouleur.vert,
+          fonction: (value) {
+            afficherLogCritical("Valider le retrait : non pris en charge");
+          },
         ),
       );
     }
     if (commande.getStatut() == "Retirée") {
       return Padding(
-        padding: EdgeInsets.only(right: 40.0),
+        padding: const EdgeInsets.only(right: 40.0),
         child: Text(
           "Retrait validé",
           textAlign: TextAlign.center,

@@ -1,5 +1,7 @@
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/login/login_form_view.dart';
+import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/div_principale.dart';
 import 'package:ape_manager_front/widgets/conteneur/header_div_principale.dart';
@@ -8,7 +10,9 @@ import 'package:flutter/material.dart';
 import '../../proprietes/couleurs.dart';
 
 class LoginView extends StatelessWidget {
-  static String routeName = '/login';
+  static String routeURL = '/login';
+
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +21,7 @@ class LoginView extends StatelessWidget {
       body: DivPrincipale(
         maxWidth: 800,
         body: getContenuLoginResponsive(context),
+        nomUrlRetour: '',
       ),
     );
   }
@@ -59,10 +64,10 @@ class LoginView extends StatelessWidget {
   }
 
   Widget getBoutonSignup(BuildContext context) {
-    return BoutonAction(
+    return BoutonNavigationGoRouter(
       text: "S'inscrire",
-      fonction: () => Navigator.pushNamed(context, '/signup'),
       themeCouleur: ThemeCouleur.rouge,
+      routeName: SignupView.routeURL,
     );
   }
 }

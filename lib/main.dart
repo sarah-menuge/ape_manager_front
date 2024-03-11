@@ -1,11 +1,13 @@
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_view.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
+import 'package:ape_manager_front/views/mes_commandes/details/commande_view.dart';
 import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
@@ -13,12 +15,13 @@ import 'package:ape_manager_front/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import 'models/evenement.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
+  setHashUrlStrategy();
   runApp(MainApp());
 }
 
@@ -27,6 +30,10 @@ class MainApp extends StatelessWidget {
       AuthentificationProvider();
   final EvenementProvider evenementProvider = EvenementProvider();
   final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
+
+  MainApp({super.key}) {
+    print("Constructeur MainApp");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,36 +46,80 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: utilisateurProvider),
         ChangeNotifierProvider.value(value: evenementProvider),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        initialRoute: LoginView.routeName,
-        onGenerateRoute: (settings) {
-          if (settings.name == LoginView.routeName) {
-            return MaterialPageRoute(builder: (_) => LoginView());
-          } else if (settings.name == SignupView.routeName) {
-            return MaterialPageRoute(builder: (_) => SignupView());
-          } else if (settings.name == AccueilView.routeName) {
-            return MaterialPageRoute(builder: (_) => AccueilView());
-          } else if (settings.name == EvenementsView.routeName) {
-            return MaterialPageRoute(builder: (_) => EvenementsView());
-          } else if (settings.name == DetailEvenementView.routeName) {
-            final evenement = settings.arguments as Evenement;
-            return MaterialPageRoute(
-                builder: (_) => DetailEvenementView(
-                      evenement: evenement,
-                    ));
-          } else if (settings.name == ProfilView.routeName) {
-            return MaterialPageRoute(builder: (_) => ProfilView());
-          } else if (settings.name == ForgotPasswordView.routeName) {
-            return MaterialPageRoute(builder: (_) => ForgotPasswordView());
-          } else if (settings.name == MesCommandesView.routeName) {
-            return MaterialPageRoute(builder: (_) => MesCommandesView());
-          }
-        },
-        onUnknownRoute: (settings) {
-          return MaterialPageRoute(builder: (_) => NotFound());
-        },
+        routerConfig: _router,
       ),
     );
   }
 }
+
+final _router = GoRouter(
+  initialLocation: AccueilView.routeURL,
+  errorBuilder: (context, state) => const NotFound(),
+  routes: [
+    GoRoute(
+      path: LoginView.routeURL,
+      builder: (context, state) => const LoginView(),
+    ),
+    GoRoute(
+      path: SignupView.routeURL,
+      builder: (context, state) => SignupView(),
+    ),
+    GoRoute(
+      path: AccueilView.routeURL,
+      builder: (context, state) => const AccueilView(),
+    ),
+    GoRoute(
+      path: EvenementsView.routeURL,
+      builder: (context, state) => const EvenementsView(),
+    ),
+    GoRoute(
+      path: DetailEvenementView.routeURL,
+      builder: (context, state) {
+        int id = int.tryParse(state.pathParameters['idEvent'] ?? '')!;
+        return DetailEvenementView(eventId: id);
+      },
+    ),
+    GoRoute(
+      path: ProfilView.routeURL,
+      builder: (context, state) => const ProfilView(),
+    ),
+    GoRoute(
+      path: ForgotPasswordView.routeURL,
+      builder: (context, state) => const ForgotPasswordView(),
+    ),
+    GoRoute(
+      path: MesCommandesView.routeURL,
+      builder: (context, state) => const MesCommandesView(),
+    ),
+    GoRoute(
+      path: CommandeView.routeURL,
+      builder: (context, state) {
+        int id = int.tryParse(state.pathParameters['idCommande'] ?? '')!;
+        return CommandeView(idCommande: id);
+      },
+    ),
+  ],
+  // Permet d'imposer l'authentification
+  redirect: (BuildContext context, GoRouterState state) {
+    afficherLogDebug(
+      "Tentative d'accès à la page '${state.location.toString()}'.",
+    );
+    if (state.location == SignupView.routeURL ||
+        state.location == LoginView.routeURL) {
+      afficherLogDebug("Accès autorisé.");
+      return null;
+    }
+    if (!Provider.of<AuthentificationProvider>(context, listen: false)
+        .isLoggedIn) {
+      afficherLogWarning(
+        "Utilisateur non authentifié : redirection vers le login.",
+      );
+      return LoginView.routeURL;
+    } else {
+      afficherLogDebug("Accès autorisé.");
+      return null;
+    }
+  },
+);

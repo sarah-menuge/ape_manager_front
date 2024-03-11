@@ -12,9 +12,13 @@ class DivPrincipale extends StatelessWidget {
   final double maxWidth;
   final double maxHeight;
 
+  // Pour qu'il dépile juste, valoriser par une chaîne vide
+  final String? nomUrlRetour;
+
   const DivPrincipale({
     super.key,
     required this.body,
+    required this.nomUrlRetour,
     this.header = const HeaderDivPrincipale(),
     this.minWidth = 0.0,
     this.minHeight = 0.0,
@@ -24,6 +28,19 @@ class DivPrincipale extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HeaderDivPrincipale? myHeader;
+    final h = header;
+    if (h != null) {
+      if (h.ajouterBoutonRetour && nomUrlRetour == null) {
+        throw Exception(
+            "La div principale contient un bouton 'Retour'. L'attribut 'nomUrlRetour' ne peut donc pas être nul.");
+      }
+      myHeader = HeaderDivPrincipale(
+        ajouterBoutonRetour: h.ajouterBoutonRetour,
+        titre: h.titre,
+        nomUrlRetour: nomUrlRetour!,
+      );
+    }
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -51,13 +68,13 @@ class DivPrincipale extends StatelessWidget {
             maxWidth: maxWidth,
             maxHeight: maxHeight,
           ),
-          padding: EdgeInsets.only(top: 15),
+          padding: const EdgeInsets.only(top: 15),
           child: ListView.builder(
             shrinkWrap: true,
             itemCount: 1,
             itemBuilder: (context, index) {
               return StickyHeader(
-                header: header != null ? header! : const SizedBox(),
+                header: myHeader ?? const SizedBox(),
                 content: Column(
                   children: [body],
                 ),

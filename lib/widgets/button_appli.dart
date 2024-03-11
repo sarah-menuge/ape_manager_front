@@ -1,10 +1,13 @@
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:flutter/material.dart';
 
 enum ThemeCouleur { vert, gris, rouge, bleu, bleu_clair }
 
 abstract class Bouton extends StatelessWidget {
+  const Bouton({super.key});
+
   @override
   Widget build(BuildContext context);
 }
@@ -15,10 +18,11 @@ class BoutonNavigation extends Bouton {
   final Object? arguments;
   final ThemeCouleur themeCouleur;
 
-  BoutonNavigation({
+  const BoutonNavigation({
+    super.key,
     required this.text,
     required this.routeName,
-    this.arguments = null,
+    this.arguments,
     this.themeCouleur = ThemeCouleur.bleu,
   });
 
@@ -26,6 +30,7 @@ class BoutonNavigation extends Bouton {
   Widget build(BuildContext context) {
     return BoutonAction(
       text: text,
+      themeCouleur: themeCouleur,
       fonction: () {
         Navigator.pushNamed(
           context,
@@ -43,7 +48,8 @@ class BoutonAction extends Bouton {
   final bool disable;
   final ThemeCouleur themeCouleur;
 
-  BoutonAction({
+  const BoutonAction({
+    super.key,
     required this.text,
     required this.fonction,
     this.disable = false,
@@ -101,8 +107,13 @@ class BoutonAction extends Bouton {
 class BoutonRetour extends Bouton {
   // Permet entre autre de bien aligner un titre dans un header
   final bool invisibleEtNonCliquable;
+  final String nomUrlRetour;
 
-  BoutonRetour({this.invisibleEtNonCliquable = false});
+  const BoutonRetour({
+    super.key,
+    this.invisibleEtNonCliquable = false,
+    this.nomUrlRetour = "",
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +124,9 @@ class BoutonRetour extends Bouton {
   }
 
   Widget getBouton(BuildContext context) {
-    Function()? onPressed =
-        invisibleEtNonCliquable ? null : () => Navigator.pop(context);
+    Function()? onPressed = invisibleEtNonCliquable
+        ? null
+        : () => revenirEnArriere(context, routeURL: nomUrlRetour);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -135,10 +147,42 @@ class BoutonIcon extends Bouton {
   final Icon icon;
   final Function()? onPressed;
 
-  BoutonIcon({required this.icon, this.onPressed});
+  const BoutonIcon({
+    super.key,
+    required this.icon,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return IconButton(icon: icon, onPressed: onPressed);
+  }
+}
+
+class BoutonNavigationGoRouter extends Bouton {
+  final String text;
+  final String routeName;
+  final bool disable;
+  final ThemeCouleur themeCouleur;
+
+  const BoutonNavigationGoRouter({
+    super.key,
+    required this.text,
+    required this.routeName,
+    this.disable = false,
+    this.themeCouleur = ThemeCouleur.bleu,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BoutonAction(
+      text: text,
+      fonction: () => naviguerVersPage(
+        context,
+        routeName,
+      ),
+      themeCouleur: themeCouleur,
+      disable: disable,
+    );
   }
 }

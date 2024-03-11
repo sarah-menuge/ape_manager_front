@@ -3,7 +3,15 @@ import 'package:ape_manager_front/models/commande.dart';
 
 import 'organisateur.dart';
 
-enum StatutEvenement { BROUILLON, A_VENIR, EN_COURS, CLOTURE, NON_DEFINI }
+enum StatutEvenement {
+  BROUILLON,
+  A_VENIR,
+  EN_COURS,
+  TRAITEMENT,
+  RETRAIT,
+  CLOTURE,
+  NON_DEFINI,
+}
 
 class Evenement {
   late int id;
@@ -11,9 +19,10 @@ class Evenement {
   late String lieu;
   late DateTime dateDebut;
   late DateTime dateFin;
-  late DateTime dateFinPaiement;
+  late bool finPaiement;
   late String description;
   late StatutEvenement statut;
+  late Organisateur proprietaire;
   late List<Organisateur> organisateurs;
   List<Article> articles = [];
   List<Commande> commandes = [];
@@ -24,9 +33,10 @@ class Evenement {
     required this.lieu,
     required this.dateDebut,
     required this.dateFin,
-    required this.dateFinPaiement,
+    required this.finPaiement,
     required this.statut,
     required this.description,
+    required this.proprietaire,
     required this.organisateurs,
     required this.articles,
     required this.commandes,
@@ -34,31 +44,32 @@ class Evenement {
 
   Evenement.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    titre = json["titre"];
-    lieu = json["lieu"];
-    dateDebut = DateTime.parse(json["dateDebut"]);
-    dateFin = DateTime.parse(json["dateFin"]);
-    try {
-      dateFinPaiement = DateTime.parse(json["dateFinPaiement"]);
-    } catch (e) {
-      dateFinPaiement = dateFin;
-    }
+    titre = json["title"];
+    lieu = json["place"];
+    dateDebut = DateTime.parse(json["startDate"]);
+    dateFin = DateTime.parse(json["endDate"]);
+    finPaiement = json["endOfPayment"] == "true" ? true : false;
     description = json["description"];
-    try {
-      if (json["statut"] == "BROUILLON")
-        statut = StatutEvenement.BROUILLON;
-      else if (json["statut"] == "A_VENIR")
-        statut = StatutEvenement.A_VENIR;
-      else if (json["statut"] == "EN_COURS")
-        statut = StatutEvenement.EN_COURS;
-      else if (json["statut"] == "CLOTURE")
-        statut = StatutEvenement.CLOTURE;
-      else
-        statut = StatutEvenement.NON_DEFINI;
-    } catch (e) {
+
+    if (json["status"] == "DRAFT") {
+      statut = StatutEvenement.BROUILLON;
+    } else if (json["status"] == "COMING_SOON") {
+      statut = StatutEvenement.A_VENIR;
+    } else if (json["status"] == "IN_PROGRESS") {
+      statut = StatutEvenement.EN_COURS;
+    } else if (json["status"] == "IN_TREATMENT") {
+      statut = StatutEvenement.TRAITEMENT;
+    } else if (json["status"] == "PICK_UP") {
+      statut = StatutEvenement.RETRAIT;
+    } else if (json["status"] == "CLOSED") {
+      statut = StatutEvenement.CLOTURE;
+    } else {
       statut = StatutEvenement.NON_DEFINI;
     }
-    organisateurs = (json["organisateurs"] as List<dynamic>)
+
+    proprietaire = Organisateur.fromJson(json["owner"]);
+
+    organisateurs = (json["organizers"] as List<dynamic>)
         .map((e) => Organisateur.fromJson(e))
         .toList();
   }
@@ -73,13 +84,15 @@ class Evenement {
 
   @override
   String toString() {
-    return "$titre - $lieu ($dateDebut -> $dateFin -> $dateFinPaiement) : $description [$statut]";
+    return "$titre - $lieu ($dateDebut -> $dateFin) : $description [$statut]";
   }
 
   String getStatut() {
     if (statut == StatutEvenement.BROUILLON) return "Brouillon";
     if (statut == StatutEvenement.A_VENIR) return "À venir";
     if (statut == StatutEvenement.EN_COURS) return "En cours";
+    if (statut == StatutEvenement.TRAITEMENT) return "En cours de traitement";
+    if (statut == StatutEvenement.RETRAIT) return "Retrait des commandes";
     if (statut == StatutEvenement.CLOTURE) return "Clôturé";
     return "Non défini";
   }

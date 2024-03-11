@@ -2,9 +2,10 @@ import 'package:ape_manager_front/forms/login_form.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/login/demande_reinit_form_view.dart';
+import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
-import 'package:ape_manager_front/widgets/conteneur/header_popup.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_email.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_mdp.dart';
@@ -74,11 +75,11 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
           disable: desactiverBoutons || isLoggedIn,
         ),
         if (estMobile(context, 600))
-          BoutonAction(
+          BoutonNavigationGoRouter(
             text: "S'inscrire",
-            fonction: () => Navigator.pushNamed(context, '/signup'),
-            disable: desactiverBoutons || isLoggedIn,
             themeCouleur: ThemeCouleur.rouge,
+            routeName: SignupView.routeURL,
+            disable: desactiverBoutons || isLoggedIn,
           ),
       ],
     );
@@ -104,7 +105,7 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
       Provider.of<UtilisateurProvider>(context, listen: false),
     );
     if (response["statusCode"] == 200 && mounted) {
-      Navigator.pushReplacementNamed(context, AccueilView.routeName);
+      naviguerVersPage(context, AccueilView.routeURL);
       afficherMessageSucces(
           context: context, message: "Connexion établie avec succès.");
     } else {

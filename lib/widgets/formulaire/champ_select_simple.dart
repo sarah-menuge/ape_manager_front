@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'champ.dart';
 
-class ChampString extends Champ {
+class ChampSelectSimple extends Champ {
   final Widget? prefixIcon;
+  final List<String> valeursExistantes;
 
-  const ChampString({
+  const ChampSelectSimple({
     super.key,
     required super.label,
+    required this.valeursExistantes,
     this.prefixIcon,
     super.onSavedMethod,
     super.onChangedMethod,
@@ -19,22 +21,19 @@ class ChampString extends Champ {
 
   @override
   Widget build(BuildContext context) {
+    print("$valeurInitiale : $valeursExistantes");
     return SizedBox(
       height: getHeight(context),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: paddingVertical),
-        child: TextFormField(
-          readOnly: readOnly,
-          onSaved: onSavedMethod ?? defaultOnSavedMethod,
-          onChanged: onChangedMethod ?? defaultOnChangedMethod,
-          controller: controller,
-          initialValue: valeurInitiale,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Veuillez renseigner ce champ.';
-            }
-            return null;
-          },
+        child: DropdownButtonFormField<String>(
+          value: valeurInitiale,
+          items: valeursExistantes.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
           decoration: InputDecoration(
             labelText: label,
             border: const OutlineInputBorder(),
@@ -44,7 +43,14 @@ class ChampString extends Champ {
             helperText: " ",
             isDense: isDense,
           ),
-          style: getTextStyle(context),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Veuillez choisir une option.';
+            }
+            return null;
+          },
+          onSaved: onSavedMethod ?? defaultOnSavedMethod,
+          onChanged: onChangedMethod ?? defaultOnChangedMethod,
         ),
       ),
     );

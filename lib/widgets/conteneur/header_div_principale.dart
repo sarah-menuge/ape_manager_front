@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 class HeaderDivPrincipale extends StatelessWidget {
   final bool ajouterBoutonRetour;
   final String? titre;
+  final String nomUrlRetour;
 
   const HeaderDivPrincipale({
     super.key,
     this.ajouterBoutonRetour = false,
     this.titre,
+    this.nomUrlRetour = "",
   });
 
   @override
@@ -30,7 +32,7 @@ class HeaderDivPrincipale extends StatelessWidget {
               : MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (ajouterBoutonRetour) BoutonRetour(),
+            if (ajouterBoutonRetour) BoutonRetour(nomUrlRetour: nomUrlRetour),
             if (titre != null)
               Flexible(
                 child: Text(

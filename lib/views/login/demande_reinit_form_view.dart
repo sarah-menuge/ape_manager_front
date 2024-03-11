@@ -1,3 +1,5 @@
+import 'package:ape_manager_front/utils/routage.dart';
+import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_email.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
@@ -53,7 +55,7 @@ class _DemandeReinitMdpFormViewState
       formKey.currentState!.save();
       final response = await utilisateurProvider.demandeReinitMdp(email);
       if (response["statusCode"] == 200 && mounted) {
-        Navigator.of(context).pop();
+        revenirEnArriere(context, routeURL: LoginView.routeURL);
       } else {
         setState(() {
           erreur = response['message'];

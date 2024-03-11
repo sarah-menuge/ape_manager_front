@@ -71,22 +71,24 @@ class WidgetEvenement extends StatelessWidget {
               ? getDescriptionDesktop(evenement.description)
               : getDescriptionMobile(context, evenement.description),
           if (typeBouton == TypeBouton.Detail)
-            BoutonNavigation(
+            BoutonNavigationGoRouter(
               text: "Plus de détails",
-              routeName: DetailEvenementView.routeName,
-              arguments: evenement,
+              routeName: DetailEvenementView.routeURL.replaceAll(
+                ":idEvent",
+                evenement.id.toString(),
+              ),
               themeCouleur: ThemeCouleur.bleu_clair,
             ),
           if (typeBouton == TypeBouton.Notification)
-            BoutonNavigation(
+            const BoutonNavigationGoRouter(
               text: "Me notifier",
-              routeName: "",
+              routeName: "/me-notifier-evenement",
               themeCouleur: ThemeCouleur.rouge,
             ),
           if (typeBouton == TypeBouton.Modifier)
-            BoutonNavigation(
+            const BoutonNavigationGoRouter(
               text: "Modifier",
-              routeName: "",
+              routeName: "/modifier-evenement/0",
               themeCouleur: ThemeCouleur.rouge,
             ),
         ],

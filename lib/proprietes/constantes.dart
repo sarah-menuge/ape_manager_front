@@ -7,6 +7,7 @@ String PROD = "${dotenv.env['PROD']}";
 String AUTO_LOGIN_TEST = "${dotenv.env['AUTO_LOGIN_TEST']}";
 String EMAIL_AUTO_LOGIN_TEST = "${dotenv.env['EMAIL_AUTO_LOGIN_TEST']}";
 String PASSWORD_AUTO_LOGIN_TEST = "${dotenv.env['PASSWORD_AUTO_LOGIN_TEST']}";
+String LOG_LEVEL = "${dotenv.env['LOG_LEVEL']}";
 
 // HEADER
 const double HEADER_HEIGHT = 80;

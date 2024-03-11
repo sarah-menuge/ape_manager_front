@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +18,26 @@ class BoutonOnglet {
 }
 
 class DrawerAppli extends StatelessWidget {
-  const DrawerAppli({super.key});
+  final UtilisateurProvider utilisateurProvider;
 
-  static List<BoutonOnglet> boutonsOnglets = [
-    BoutonOnglet(
-        libelle: "Mes événements", routeName: EvenementsView.routeName),
-    BoutonOnglet(
-        libelle: "Mes commandes", routeName: MesCommandesView.routeName),
-  ];
+  const DrawerAppli({
+    super.key,
+    required this.utilisateurProvider,
+  });
 
   @override
   Widget build(BuildContext context) {
+    List<BoutonOnglet> boutonsOnglets = [
+      if (utilisateurProvider.perspective == Perspective.PARENT ||
+          utilisateurProvider.perspective == Perspective.ORGANISATEUR)
+        BoutonOnglet(libelle: "Événements", routeName: EvenementsView.routeURL),
+      if (utilisateurProvider.perspective == Perspective.PARENT)
+        BoutonOnglet(
+            libelle: "Mes commandes", routeName: MesCommandesView.routeURL),
+      if (utilisateurProvider.perspective == Perspective.ADMIN)
+        BoutonOnglet(libelle: "Gestion des utilisateurs", routeName: ""),
+    ];
+
     return Drawer(
       child: ListView(
         children: [
@@ -42,7 +53,7 @@ class DrawerAppli extends StatelessWidget {
               return ListTile(
                 title: InkWell(
                   onTap: () =>
-                      Navigator.pushNamed(context, boutonOnglet.routeName),
+                      naviguerVersPage(context, boutonOnglet.routeName),
                   child: Text(boutonOnglet.libelle),
                 ),
                 titleTextStyle: GoogleFonts.oswald(
@@ -71,7 +82,7 @@ class DrawerHeaderAppli extends StatelessWidget {
       margin: EdgeInsets.all(0),
       child: Row(children: [
         InkWell(
-          onTap: () => Navigator.pushNamed(context, AccueilView.routeName),
+          onTap: () => naviguerVersPage(context, AccueilView.routeURL),
           child: Image(
             image: const AssetImage("assets/images/logoEcole.png"),
             width: 50,

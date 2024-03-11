@@ -148,6 +148,7 @@ class _ProfilFormViewState extends FormulaireState<ProfilFormView> {
       return;
     }
     final response = await utilisateurProvider.modifierInformationsUtilisateur(
+      utilisateurProvider.token!,
       utilisateurModifie,
     );
     if (response["statusCode"] == 200 && mounted) {
