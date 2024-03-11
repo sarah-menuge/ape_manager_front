@@ -48,7 +48,7 @@ class _ModifierEvenementFormViewState
           ChampDate(
             readOnly: false,
             prefixIcon: const Icon(Icons.calendar_today),
-            label: "Date de début",
+            label: "Date de début des commandes",
           ),
         ],
         [
@@ -60,7 +60,7 @@ class _ModifierEvenementFormViewState
           ChampDate(
             readOnly: false,
             prefixIcon: const Icon(Icons.calendar_today),
-            label: "Date de fin",
+            label: "Date de fin de l'événement",
           ),
         ],
       ],

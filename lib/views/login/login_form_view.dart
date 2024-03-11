@@ -42,7 +42,7 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
       loginForm.email = EMAIL_AUTO_LOGIN_TEST;
       loginForm.password = PASSWORD_AUTO_LOGIN_TEST;
       passerVerification = true;
-      appuiBoutonLoggin();
+      appuiBoutonLogin();
     }
   }
 
@@ -71,7 +71,7 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
       boutons: [
         BoutonAction(
           text: "Se connecter",
-          fonction: () => appuiBoutonLoggin(),
+          fonction: () => appuiBoutonLogin(),
           disable: desactiverBoutons || isLoggedIn,
         ),
         if (estMobile(context, 600))
@@ -85,7 +85,7 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
     );
   }
 
-  void appuiBoutonLoggin() {
+  void appuiBoutonLogin() {
     if (!chargement &&
         (passerVerification == true || formKey.currentState!.validate())) {
       if (passerVerification == false) {
