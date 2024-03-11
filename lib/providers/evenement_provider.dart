@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/models/commande.dart';
+import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +15,7 @@ class EvenementProvider extends ChangeNotifier {
   List<Evenement> _evenements = [];
   List<Article> _articles = [];
   Evenement? _evenement;
+  List<Organisateur> _organisateurs = [];
 
   UnmodifiableListView<Evenement> get evenements =>
       UnmodifiableListView(_evenements);
@@ -21,6 +23,9 @@ class EvenementProvider extends ChangeNotifier {
   UnmodifiableListView<Article> get articles => UnmodifiableListView(_articles);
 
   Evenement? get evenement => _evenement;
+
+  UnmodifiableListView<Organisateur> get organisateurs =>
+      UnmodifiableListView(_organisateurs);
 
   Future<void> fetchEvenements(String token) async {
     ReponseAPI reponseApi = await callAPI(
@@ -96,6 +101,24 @@ class EvenementProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> fetchOrganisateur(Evenement evenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/evenements/${evenement.id}',
+      typeRequeteHttp: TypeRequeteHttp.GET,
+    );
+    if (!reponseApi.connexionAPIEtablie) return;
+    var jsonResponse = jsonDecode(reponseApi.response!.body);
+    if (jsonResponse['organisateurs'] != null) {
+      _organisateurs = (jsonResponse['organisateurs'] as List)
+          .map((o) => Organisateur.fromJson(o))
+          .toList();
+    } else {
+      _organisateurs = [];
+    }
+
+    notifyListeners();
+  }
+
   List<Evenement> getEvenementsBrouillon() {
     return _evenements
         .where((evenement) => evenement.statut == StatutEvenement.BROUILLON)
@@ -118,5 +141,14 @@ class EvenementProvider extends ChangeNotifier {
     return _evenements
         .where((evenement) => evenement.statut == StatutEvenement.CLOTURE)
         .toList();
+  }
+
+  Future<void> ajouterOrganisateur(
+      Evenement evenement, Evenement nouvel_evenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/evenements/${evenement.id}',
+      typeRequeteHttp: TypeRequeteHttp.PUT,
+      jsonBody: nouvel_evenement.toJson(),
+    );
   }
 }

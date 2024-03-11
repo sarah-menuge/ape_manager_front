@@ -1,9 +1,12 @@
+import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_view.dart';
+import 'package:ape_manager_front/views/creer_evenement/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
@@ -80,6 +83,10 @@ final _router = GoRouter(
         int id = int.tryParse(state.pathParameters['idEvent'] ?? '')!;
         return DetailEvenementView(eventId: id);
       },
+    ),
+    GoRoute(
+      path: CreerEvenementView.routeURL,
+      builder: (context, state) => CreerEvenementView(),
     ),
     GoRoute(
       path: ProfilView.routeURL,

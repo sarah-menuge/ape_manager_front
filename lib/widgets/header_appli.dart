@@ -68,7 +68,7 @@ class HeaderAppli extends StatelessWidget {
                     PopupMenuItem(
                       child: Text("Mode Organisateur"),
                       onTap: () =>
-                          setPerspective(context, Perspective.ORGANISATEUR),
+                          setPerspective(context, Perspective.ORGANIZER),
                     ),
                     if (utilisateurProvider.estAdmin)
                       PopupMenuItem(
@@ -139,7 +139,7 @@ class HeaderAppli extends StatelessWidget {
           ),
         ],
       );
-    } else if (utilisateurProvider.perspective == Perspective.ORGANISATEUR) {
+    } else if (utilisateurProvider.perspective == Perspective.ORGANIZER) {
       return Row(
         children: [
           Padding(

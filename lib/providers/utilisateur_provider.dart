@@ -10,7 +10,7 @@ import '../forms/modification_mdp_form.dart';
 import '../models/utilisateur.dart';
 import 'call_api.dart';
 
-enum Perspective { ADMIN, ORGANISATEUR, PARENT }
+enum Perspective { ADMIN, ORGANIZER, PARENT }
 
 class UtilisateurProvider with ChangeNotifier {
   bool isLoading = false;
