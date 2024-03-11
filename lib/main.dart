@@ -12,6 +12,7 @@ import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/login/login_view.dart';
 import 'package:ape_manager_front/views/mes_commandes/details/commande_view.dart';
 import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
+import 'package:ape_manager_front/views/modifier_evenement/modifier_evenement_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/views/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
@@ -107,6 +108,12 @@ final _router = GoRouter(
         return CommandeView(idCommande: id);
       },
     ),
+    GoRoute(
+        path: ModifierEvenementView.routeURL,
+        builder: (context, state) {
+          int id = int.tryParse(state.pathParameters['idEvent'] ?? '')!;
+          return ModifierEvenementView(evenementId: id);
+        })
   ],
   // Permet d'imposer l'authentification
   redirect: (BuildContext context, GoRouterState state) {

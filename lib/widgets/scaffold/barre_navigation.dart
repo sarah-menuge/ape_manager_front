@@ -19,6 +19,8 @@ class BodyNavigationBar extends StatelessWidget {
       items: _buildBottomNavBarItems(items!),
       currentIndex: currentIndex,
       onTap: onTabTapped,
+      unselectedItemColor: Colors.grey,
+      selectedItemColor: Colors.purple,
     );
   }
 
