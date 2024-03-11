@@ -64,7 +64,7 @@ class BoutonAction extends Bouton {
       backgroundColor = BLEU;
       foregroundColor = BLANC;
     } else if (themeCouleur == ThemeCouleur.vert) {
-      backgroundColor = VERT;
+      backgroundColor = VERT_FONCE;
       foregroundColor = BLANC;
     } else if (themeCouleur == ThemeCouleur.rouge) {
       backgroundColor = ROUGE;
