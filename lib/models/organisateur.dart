@@ -1,6 +1,7 @@
+import 'package:ape_manager_front/models/donnee_tableau.dart';
 import 'package:ape_manager_front/models/utilisateur.dart';
 
-class Organisateur {
+class Organisateur extends DonneeTableau {
   late int id;
   late String nom;
   late String prenom;
@@ -10,13 +11,13 @@ class Organisateur {
   late bool estMembre;
 
   Organisateur({
-    required this.id,
-    required this.nom,
-    required this.prenom,
-    required this.email,
-    required this.telephone,
-    required this.role,
-    required this.estMembre,
+    this.id = -1,
+    this.nom = "",
+    this.prenom = "",
+    this.email = "",
+    this.telephone = "",
+    this.role = RoleUtilisateur.parent,
+    this.estMembre = false,
   });
 
   Organisateur.fromJson(Map<String, dynamic> json) {
@@ -44,8 +45,58 @@ class Organisateur {
     }
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "nom": nom,
+      "prenom": prenom,
+      "email": email,
+    };
+  }
+
   @override
   String toString() {
-    return "$prenom $nom ($email:$id)";
+    return "$prenom $nom";
+  }
+
+  @override
+  getValeur(String nom_colonne) {
+    if (nom_colonne == "Nom") return nom;
+    if (nom_colonne == "Prénom") return prenom;
+    if (nom_colonne == "Email") return email;
+  }
+
+  @override
+  List<String> intitulesHeader() {
+    return ["Nom", "Prénom", "Email"];
+  }
+
+  @override
+  Map<String, dynamic> pourTableau() {
+    return {
+      "Nom": nom,
+      "Prénom": prenom,
+      "Email": email,
+    };
+  }
+
+  @override
+  getValeur(String nom_colonne) {
+    if (nom_colonne == "Nom") return nom;
+    if (nom_colonne == "Prénom") return prenom;
+    if (nom_colonne == "Email") return email;
+  }
+
+  @override
+  List<String> intitulesHeader() {
+    return ["Nom", "Prénom", "Email"];
+  }
+
+  @override
+  Map<String, dynamic> pourTableau() {
+    return {
+      "Nom": nom,
+      "Prénom": prenom,
+      "Email": email,
+    };
   }
 }

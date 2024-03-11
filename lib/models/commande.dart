@@ -35,7 +35,7 @@ class Commande {
         prix: 10.99,
         description:
             "Une boîte de chocolat de 500g remplie de pleins de bonnes choses",
-        categorie: "Alimentaire");
+    );
     listeArticles = [article];
     listeLigneCommandes = [
       LigneCommande(id: id, quantite: 3, article: article)

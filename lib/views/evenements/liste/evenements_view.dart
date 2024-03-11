@@ -3,8 +3,10 @@ import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
+import 'package:ape_manager_front/views/creer_evenement/creer_evenement_view.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/creer_evenement/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/image_evenements.dart';
 import 'package:ape_manager_front/views/evenements/liste/widget_evenement.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
@@ -52,7 +54,6 @@ class _EvenementsViewState extends State<EvenementsView> {
         evenementProvider.getEvenementsEnCours();
     List<Evenement> evenementsCloture =
         evenementProvider.getEvenementsCloture();
-
     return ScaffoldAppli(
       body: SingleChildScrollView(
         child: Column(
@@ -61,7 +62,7 @@ class _EvenementsViewState extends State<EvenementsView> {
             ImageEvenements(),
             if (utilisateurProvider.perspective == Perspective.PARENT)
               getVueParents(evenementsEnCours, evenementsAVenir),
-            if (utilisateurProvider.perspective == Perspective.ORGANISATEUR)
+            if (utilisateurProvider.perspective == Perspective.ORGANIZER)
               getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
                   evenementsEnCours, evenementsCloture),
           ],
@@ -112,13 +113,13 @@ class _EvenementsViewState extends State<EvenementsView> {
       List<Evenement> evenementsCloture) {
     return Column(
       children: [
-        const Align(
+        Align(
           alignment: Alignment.centerRight,
           child: Padding(
             padding: const EdgeInsets.only(top: 20, right: 20),
-            child: BoutonNavigation(
+            child: BoutonNavigationGoRouter(
               text: "Créer un événement",
-              routeName: "",
+              routeName: CreerEvenementView.routeURL,
               themeCouleur: ThemeCouleur.vert,
             ),
           ),

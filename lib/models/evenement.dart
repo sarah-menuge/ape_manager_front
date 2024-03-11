@@ -74,6 +74,19 @@ class Evenement {
         .toList();
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "titre": titre,
+      "lieu": lieu,
+      "dateDebut": dateDebut.toIso8601String(),
+      "dateFin": dateFin.toIso8601String(),
+      "description": description,
+      "statut": statut.toString().split('.').last,
+      "organisateurs": organisateurs.map((e) => e.toJson()).toList(),
+    };
+  }
+
   void setArticles(listeArticles) {
     articles = listeArticles;
   }

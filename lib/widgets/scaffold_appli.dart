@@ -69,7 +69,8 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
           ? BodyNavigationBar(
               items: widget.items,
               currentIndex: _selectedIndex,
-              onTabTapped: _onItemTapped)
+              onTabTapped: _onItemTapped
+      )
           : null,
     );
   }

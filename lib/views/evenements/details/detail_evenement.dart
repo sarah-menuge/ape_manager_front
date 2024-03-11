@@ -55,7 +55,7 @@ class DetailEvenementWidget extends StatelessWidget {
                   if (utilisateurProvider.perspective == Perspective.PARENT)
                     getBoutonFinaliserCommande(context),
                   if (utilisateurProvider.perspective ==
-                      Perspective.ORGANISATEUR)
+                      Perspective.ORGANIZER)
                     DetailEvenementOrganisateur(commandes: evenement.commandes),
                 ],
               ),

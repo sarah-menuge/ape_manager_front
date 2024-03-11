@@ -202,6 +202,8 @@ class _TableauState extends State<Tableau> {
               Divider(
                 color: Colors.grey,
               ),
+              if (widget.editable != null &&
+                  estMobile(context, 600))
               ListTile(
                 leading: Icon(Icons.edit),
                 title: Text('Modifier'),
@@ -210,6 +212,8 @@ class _TableauState extends State<Tableau> {
                   widget.editable!(item);
                 },
               ),
+              if (widget.supprimable != null &&
+                  estMobile(context, 600))
               ListTile(
                 leading: Icon(Icons.delete),
                 title: Text('Supprimer'),

@@ -1,18 +1,18 @@
-class Article {
+import 'donnee_tableau.dart';
+
+class Article extends DonneeTableau {
   late int id;
   late String nom;
   late int quantiteMax;
   late double prix;
   late String description;
-  late String categorie;
 
   Article({
-    required this.id,
-    required this.nom,
-    required this.quantiteMax,
-    required this.prix,
-    required this.description,
-    required this.categorie,
+    this.id = -1,
+    this.nom = "",
+    this.quantiteMax = 0,
+    this.prix = 0.0,
+    this.description = "",
   });
 
   Article.copie(Article other) {
@@ -21,7 +21,6 @@ class Article {
     quantiteMax = other.quantiteMax;
     prix = other.prix;
     description = other.description;
-    categorie = other.categorie;
   }
 
   Article.fromJson(Map<String, dynamic> json) {
@@ -30,12 +29,34 @@ class Article {
     quantiteMax = json['maxQuantity'];
     prix = json['price'];
     description = json['description'];
-    categorie = json['category'];
   }
 
   @override
   String toString() {
     return nom;
+  }
+
+  @override
+  getValeur(String nom_colonne) {
+    if (nom_colonne == "Nom") return nom;
+    if (nom_colonne == "max") return quantiteMax;
+    if (nom_colonne == "Prix") return prix;
+    if (nom_colonne == "Desc") return description;
+  }
+
+  @override
+  List<String> intitulesHeader() {
+    return ["Nom", "Max", "Prix", "Desc"];
+  }
+
+  @override
+  Map<String, dynamic> pourTableau() {
+    return {
+      "Nom": nom,
+      "Max": quantiteMax,
+      "Prix": prix,
+      "Desc": description,
+    };
   }
 
   @override
