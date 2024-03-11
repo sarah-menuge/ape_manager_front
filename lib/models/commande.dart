@@ -38,8 +38,23 @@ class Commande {
         categorie: "Alimentaire");
     listeArticles = [article];
     listeLigneCommandes = [
-      LigneCommande(id: id, quantite: 3, article: article, commande: this)
+      LigneCommande(id: id, quantite: 3, article: article)
     ];
+  }
+
+  Commande.copie(Commande other) {
+    id = other.id;
+    estPaye = other.estPaye;
+    dateRetrait = other.dateRetrait;
+    lieuRetrait = other.lieuRetrait;
+    statut = other.statut;
+    libelleEvenement = other.libelleEvenement;
+    for (Article article in other.listeArticles) {
+      listeArticles.add(Article.copie(article));
+    }
+    for (LigneCommande ligneCommande in other.listeLigneCommandes) {
+      listeLigneCommandes.add(LigneCommande.copie(ligneCommande));
+    }
   }
 
   Commande.fromJson(Map<String, dynamic> json) {
@@ -48,9 +63,9 @@ class Commande {
     dateRetrait = DateTime.parse(json["pickUpDate"]);
     lieuRetrait = json["pickUpPlace"];
 
-    try{
+    try {
       libelleEvenement = json["event"];
-    } catch(e){
+    } catch (e) {
       libelleEvenement = "?";
     }
 
