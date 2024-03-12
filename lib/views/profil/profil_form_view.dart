@@ -113,7 +113,7 @@ class _ProfilFormViewState extends FormulaireState<ProfilFormView> {
         child: TextButton(
           style: TextButton.styleFrom(
             backgroundColor: Colors.transparent,
-            foregroundColor: ROUGE,
+            foregroundColor: ROUGE_1,
           ),
           onPressed: () => showDialog(
             context: context,

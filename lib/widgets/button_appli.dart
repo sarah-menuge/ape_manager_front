@@ -64,16 +64,16 @@ class BoutonAction extends Bouton {
       backgroundColor = BLEU;
       foregroundColor = BLANC;
     } else if (themeCouleur == ThemeCouleur.vert) {
-      backgroundColor = VERT_FONCE;
+      backgroundColor = VERT_1;
       foregroundColor = BLANC;
     } else if (themeCouleur == ThemeCouleur.rouge) {
-      backgroundColor = ROUGE;
+      backgroundColor = ROUGE_1;
       foregroundColor = BLANC;
     } else if (themeCouleur == ThemeCouleur.gris) {
       backgroundColor = GRIS_FONCE;
       foregroundColor = BLANC;
     } else if (themeCouleur == ThemeCouleur.bleu_clair) {
-      backgroundColor = BLEU_CLAIR;
+      backgroundColor = BLEU_1;
       foregroundColor = BLANC;
     }
     return ElevatedButton(
