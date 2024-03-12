@@ -33,7 +33,7 @@ class QuantiteBoutonCommande extends StatelessWidget {
             ? Colors.transparent
             : quantite == 0
                 ? BLEU
-                : VERT,
+                : VERT_FONCE,
         elevation: 0,
         child: SizedBox(
           height: 50,

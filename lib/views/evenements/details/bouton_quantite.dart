@@ -42,7 +42,7 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
             ? Colors.transparent
             : quantity == 0
                 ? BLEU
-                : VERT,
+                : VERT_FONCE,
         elevation: 0,
         child: SizedBox(
           height: 50,
