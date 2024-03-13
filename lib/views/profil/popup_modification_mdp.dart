@@ -13,7 +13,8 @@ class PopupModificationMdp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Popup(
-      intitule: 'Veuillez renseigner les champs suivants.',
+      titre: 'Modification du mot de passe',
+      sousTitre: "Veuillez renseigner les champs suivants.",
       body: ModificationMdpFormView(),
     );
   }
@@ -66,7 +67,7 @@ class _ModificationMdpFormViewState
       ],
       boutons: [
         BoutonAction(
-          text: 'Valider',
+          text: 'Valider la modification',
           fonction: () => appuiBoutonModifier(),
           disable: desactiverBoutons,
         ),

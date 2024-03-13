@@ -1,6 +1,6 @@
 import 'package:ape_manager_front/widgets/conteneur/div_principale.dart';
 import 'package:ape_manager_front/widgets/conteneur/header_div_principale.dart';
-import 'package:ape_manager_front/widgets/scaffold_appli.dart';
+import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 
 class NotFound extends StatelessWidget {

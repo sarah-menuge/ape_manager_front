@@ -1,15 +1,16 @@
+import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'champ.dart';
 
 class ChampDate extends Champ {
-  Icon? prefixIcon = Icon(Icons.calendar_today);
+  Icon? prefixIcon;
 
   ChampDate({
     super.key,
     required super.label,
-    this.prefixIcon,
+    this.prefixIcon = const Icon(Icons.calendar_today),
     super.onSavedMethod,
     super.onChangedMethod,
     super.paddingVertical,
@@ -17,16 +18,38 @@ class ChampDate extends Champ {
     TextEditingController? controller,
     super.readOnly,
   }) : super(
-    controller: controller ?? TextEditingController(text: valeurInitiale),
-    valeurInitiale: null,
-  );
+          controller: controller ?? TextEditingController(text: valeurInitiale),
+          valeurInitiale: null,
+        );
 
   Future<void> _selectDate(BuildContext context) async {
+    final DateTime maintenant = DateTime.now();
+    final DateTime anProchain = DateTime(DateTime.now().year+1,8,31);
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2101),
+      initialDate: maintenant,
+      firstDate: maintenant,
+      lastDate: anProchain,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: BEIGE_TRES_FONCE,
+              onPrimary: Colors.black,
+              surface: BLANC_CASSE,
+              onSurface: Colors.black,
+              
+            ),
+            buttonTheme: ButtonThemeData(
+              textTheme: ButtonTextTheme.primary,
+            ),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: child!,
+        );
+      },
+      helpText: "Date choisie :",
+
     );
     if (picked != null) {
       controller?.text = DateFormat('dd-MM-yyyy').format(picked);

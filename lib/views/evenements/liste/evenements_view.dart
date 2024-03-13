@@ -3,15 +3,14 @@ import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
-import 'package:ape_manager_front/views/creer_evenement/creer_evenement_view.dart';
+import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/views/creer_evenement/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/image_evenements.dart';
 import 'package:ape_manager_front/views/evenements/liste/widget_evenement.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/expansion_tile_appli.dart';
-import 'package:ape_manager_front/widgets/scaffold_appli.dart';
+import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

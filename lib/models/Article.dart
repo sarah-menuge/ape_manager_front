@@ -46,7 +46,7 @@ class Article extends DonneeTableau {
 
   @override
   List<String> intitulesHeader() {
-    return ["Nom", "Max", "Prix", "Desc"];
+    return ["Nom", "Qté.\nmax", "Prix", "Desc"];
   }
 
   @override

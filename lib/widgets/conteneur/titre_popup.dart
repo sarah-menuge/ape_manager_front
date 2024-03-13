@@ -18,7 +18,7 @@ class TitrePopup extends StatelessWidget {
         textAlign: TextAlign.center,
         style: FontUtils.getFontApp(
           fontSize:
-              ResponsiveConstraint.getResponsiveValue(context, 15.0, 16.0),
+              ResponsiveConstraint.getResponsiveValue(context, 15.0, 20.0),
         ),
       ),
     );

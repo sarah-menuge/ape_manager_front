@@ -16,7 +16,9 @@ class PopupAjoutEnfant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Popup(
-      intitule: "Veuillez renseigner les informations concernant votre enfant.",
+      titre: "Ajout d'un enfant",
+      sousTitre:
+          "Veuillez renseigner les informations concernant votre enfant.",
       body: AjoutEnfantFormView(fetchEnfants: fetchEnfants),
     );
   }
@@ -57,26 +59,26 @@ class _AjoutEnfantFormViewState extends FormulaireState<AjoutEnfantFormView> {
         [
           ChampSelectSimple(
             prefixIcon: const Icon(Icons.school),
-            label: "École de l'enfant",
-            onSavedMethod: (value) => newEnfant.ecole = value!,
+            label: "Site de l'enfant",
+            onSavedMethod: (value) => newEnfant.site = value!,
             onChangedMethod: (value) => setState(() {
-              newEnfant.ecole = value!;
-              newEnfant.classe = getListeClasses(newEnfant.ecole)![0];
+              newEnfant.site = value!;
+              newEnfant.classe = getListeClasses(newEnfant.site)![0];
             }),
-            valeursExistantes: Enfant.ecolesEtClasses.keys.toList(),
+            valeursExistantes: Enfant.sitesEtClasses.keys.toList(),
           ),
           ChampSelectSimple(
             valeurInitiale: newEnfant.classe,
             prefixIcon: const Icon(Icons.school),
             label: "Classe de l'enfant",
             onSavedMethod: (value) => newEnfant.classe = value!,
-            valeursExistantes: getListeClasses(newEnfant.ecole)!,
+            valeursExistantes: getListeClasses(newEnfant.site)!,
           ),
         ],
       ],
       boutons: [
         BoutonAction(
-          text: "Ajouter",
+          text: "Ajouter l'enfant",
           fonction: () => appuiBoutonAjouter(),
           disable: desactiverBoutons,
         ),
@@ -108,6 +110,6 @@ class _AjoutEnfantFormViewState extends FormulaireState<AjoutEnfantFormView> {
 
   List<String>? getListeClasses(String ecole) {
     if (ecole.isEmpty) return [];
-    return Enfant.ecolesEtClasses[ecole]?.toList();
+    return Enfant.sitesEtClasses[ecole]?.toList();
   }
 }

@@ -1,6 +1,8 @@
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/widgets/conteneur/header_popup.dart';
 import 'package:ape_manager_front/widgets/conteneur/titre_popup.dart';
+import 'package:ape_manager_front/widgets/texte/texte_flexible.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -10,14 +12,16 @@ class Popup extends StatelessWidget {
   final double minHeight;
   final double maxWidth;
   final double maxHeight;
-  final String intitule;
+  final String titre;
+  final String? sousTitre;
   final Widget body;
 
   const Popup({
     super.key,
-    required this.intitule,
+    required this.titre,
     required this.body,
     this.header = const HeaderPopup(),
+    this.sousTitre,
     this.minWidth = 0.0,
     this.minHeight = 0.0,
     this.maxWidth = 700,
@@ -57,7 +61,19 @@ class Popup extends StatelessWidget {
               header: header != null ? header! : const SizedBox(height: 20),
               content: Column(
                 children: [
-                  TitrePopup(titre: intitule),
+                  TitrePopup(titre: titre),
+                  if (sousTitre != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: TexteFlexible(
+                        texte: sousTitre!,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: ResponsiveConstraint.getResponsiveValue(
+                              context, 15, 17),
+                        ),
+                      ),
+                    ),
                   body,
                 ],
               ),

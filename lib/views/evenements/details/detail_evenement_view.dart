@@ -8,7 +8,7 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/bouton_quantite.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement.dart';
-import 'package:ape_manager_front/widgets/scaffold_appli.dart';
+import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
