@@ -1,6 +1,5 @@
 import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
-import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';

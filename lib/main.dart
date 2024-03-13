@@ -1,20 +1,18 @@
-import 'package:ape_manager_front/models/evenement.dart';
-import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
-import 'package:ape_manager_front/views/changer_mot_de_passe/forgot_password_view.dart';
-import 'package:ape_manager_front/views/creer_evenement/creer_evenement_view.dart';
+import 'package:ape_manager_front/views/authentification/changer_mdp/forgot_password_view.dart';
+import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
-import 'package:ape_manager_front/views/login/login_view.dart';
-import 'package:ape_manager_front/views/mes_commandes/details/commande_view.dart';
-import 'package:ape_manager_front/views/mes_commandes/liste/mes_commandes_view.dart';
-import 'package:ape_manager_front/views/modifier_evenement/modifier_evenement_view.dart';
+import 'package:ape_manager_front/views/authentification/login/login_view.dart';
+import 'package:ape_manager_front/views/commandes/details/commande_view.dart';
+import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
+import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
-import 'package:ape_manager_front/views/signup/signup_view.dart';
+import 'package:ape_manager_front/views/authentification/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +20,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -53,6 +52,12 @@ class MainApp extends StatelessWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: _router,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [const Locale('en', 'US'), const Locale('fr', 'FR')],
       ),
     );
   }

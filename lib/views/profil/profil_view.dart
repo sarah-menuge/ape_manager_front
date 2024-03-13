@@ -12,7 +12,7 @@ import 'package:ape_manager_front/views/profil/profil_form_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/tableau.dart';
 import 'package:ape_manager_front/widgets/conteneur/tuile.dart';
-import 'package:ape_manager_front/widgets/scaffold_appli.dart';
+import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -18,7 +18,9 @@ class PopupModificationEnfant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Popup(
-      intitule: "Veuillez renseigner les informations concernant votre enfant.",
+      titre: "Modification d'un enfant",
+      sousTitre:
+          "Veuillez renseigner les informations concernant votre enfant.",
       body: ModificationEnfantFormView(
         enfant: enfant,
         fetchEnfants: fetchEnfants,
@@ -66,15 +68,15 @@ class _ModificationEnfantFormViewState
         [
           ChampSelectSimple(
             prefixIcon: const Icon(Icons.school),
-            label: "École de l'enfant",
-            valeurInitiale: getEcoleSelectionnee(widget.enfant.classe),
-            onSavedMethod: (value) => widget.enfant.ecole = value!,
+            label: "Site de l'enfant",
+            valeurInitiale: getSiteSelectionne(widget.enfant.classe),
+            onSavedMethod: (value) => widget.enfant.site = value!,
             onChangedMethod: (value) => setState(() {
-              widget.enfant.ecole = value!;
+              widget.enfant.site = value!;
               widget.enfant.classe =
-                  getListeClassesDepuisEcole(widget.enfant.ecole)![0];
+                  getListeClassesDepuisSite(widget.enfant.site)![0];
             }),
-            valeursExistantes: Enfant.ecolesEtClasses.keys.toList(),
+            valeursExistantes: Enfant.sitesEtClasses.keys.toList(),
           ),
           ChampSelectSimple(
             valeurInitiale: widget.enfant.classe,
@@ -88,7 +90,7 @@ class _ModificationEnfantFormViewState
       ],
       boutons: [
         BoutonAction(
-          text: "Modifier",
+          text: "Modifier l'enfant",
           fonction: () => appuiBoutonModifier(),
           disable: desactiverBoutons,
         ),
@@ -119,18 +121,18 @@ class _ModificationEnfantFormViewState
   }
 
   List<String>? getListeClassesDepuisClasse(String classe) {
-    String? ecole = getEcoleSelectionnee(classe);
+    String? ecole = getSiteSelectionne(classe);
     if (ecole!.isEmpty) return [];
-    return Enfant.ecolesEtClasses[ecole]?.toList();
+    return Enfant.sitesEtClasses[ecole]?.toList();
   }
 
-  List<String>? getListeClassesDepuisEcole(String ecole) {
-    if (ecole.isEmpty) return [];
-    return Enfant.ecolesEtClasses[ecole]?.toList();
+  List<String>? getListeClassesDepuisSite(String site) {
+    if (site.isEmpty) return [];
+    return Enfant.sitesEtClasses[site]?.toList();
   }
 
-  String? getEcoleSelectionnee(String classe) {
-    for (var entry in Enfant.ecolesEtClasses.entries) {
+  String? getSiteSelectionne(String classe) {
+    for (var entry in Enfant.sitesEtClasses.entries) {
       if (entry.value.contains(classe)) {
         return entry.key;
       }

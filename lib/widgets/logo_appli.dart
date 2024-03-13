@@ -12,39 +12,39 @@ class LogoAppli extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 10),
-      child: Row(
-        children: [
-          InkWell(
-            child: Image(
+      child: InkWell(
+        onTap: () => naviguerVersPage(context, AccueilView.routeURL),
+        child: Row(
+          children: [
+            Image(
               image: const AssetImage("assets/images/logoEcole.png"),
               width: 50,
             ),
-            onTap: () => naviguerVersPage(context, AccueilView.routeURL),
-          ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.only(left: 10),
-              child: Text.rich(
-                TextSpan(
-                  text: "Association des parents d'élèves \n",
-                  style: FontUtils.getFontApp(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "École et collège \nSte Marie Pérenchies",
-                      style: FontUtils.getFontApp(
-                        fontWeight: FontWeight.w100,
-                        fontSize: 12.5,
-                      ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 10),
+                child: Text.rich(
+                  TextSpan(
+                    text: "Association des parents d'élèves \n",
+                    style: FontUtils.getFontApp(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
                     ),
-                  ],
+                    children: [
+                      TextSpan(
+                        text: "École et collège \nSte Marie Pérenchies",
+                        style: FontUtils.getFontApp(
+                          fontWeight: FontWeight.w100,
+                          fontSize: 12.5,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

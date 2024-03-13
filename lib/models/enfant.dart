@@ -16,7 +16,7 @@ class Enfant extends DonneeTableau {
     "Troisième",
   ];*/
 
-  static Map<String, List<String>> ecolesEtClasses = {
+  static Map<String, List<String>> sitesEtClasses = {
     "Maternelle": ["Petite section", "Moyenne section", "Grande section"],
     "Primaire": ["CP", "CE1", "CE2", "CM1", "CM2"],
     "Collège": ["Sixième", "Cinquième", "Quatrième", "Troisième"],
@@ -25,14 +25,14 @@ class Enfant extends DonneeTableau {
   late int id;
   late String nom;
   late String prenom;
-  late String ecole;
+  late String site;
   late String classe;
 
   Enfant({
     this.id = -1,
     this.nom = "",
     this.prenom = "",
-    this.ecole = "",
+    this.site = "",
     this.classe = "",
   });
 

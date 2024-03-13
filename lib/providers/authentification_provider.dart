@@ -1,15 +1,15 @@
+import 'package:ape_manager_front/forms/login_form.dart';
+import 'package:ape_manager_front/forms/signup_form.dart';
+import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
+import 'package:ape_manager_front/utils/stockage_hardware.dart';
+import 'package:ape_manager_front/views/authentification/login/login_view.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import '../forms/login_form.dart';
-import '../forms/signup_form.dart';
-import '../models/utilisateur.dart';
-import '../utils/stockage_hardware.dart';
-import '../views/login/login_view.dart';
 import 'call_api.dart';
 
 class AuthentificationProvider with ChangeNotifier {

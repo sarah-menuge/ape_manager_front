@@ -12,8 +12,8 @@ class PopupSuppressionCompte extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Popup(
-      intitule:
-          'Suppression du compte\nÊtes-vous sûr de vouloir supprimer votre compte ?',
+      titre: "Suppression du compte",
+      sousTitre: "Êtes-vous sûr de vouloir supprimer votre compte ?",
       body: SuppressionCompteFormView(),
     );
   }
@@ -46,12 +46,7 @@ class _SuppressionCompteFormViewState
       champs: [],
       boutons: [
         BoutonAction(
-          text: "Annuler",
-          fonction: () => Navigator.of(context).pop(),
-          themeCouleur: ThemeCouleur.gris,
-        ),
-        BoutonAction(
-          text: "Supprimer",
+          text: "Supprimer le compte",
           fonction: () => supprimerCompte(),
           themeCouleur: ThemeCouleur.rouge,
         ),

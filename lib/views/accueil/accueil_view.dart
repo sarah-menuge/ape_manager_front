@@ -3,7 +3,7 @@
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/widgets/scaffold_appli.dart';
+import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 
 class AccueilView extends StatelessWidget {

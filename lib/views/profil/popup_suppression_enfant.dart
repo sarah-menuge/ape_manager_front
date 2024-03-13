@@ -19,8 +19,8 @@ class PopupSuppressionEnfant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Popup(
-      intitule:
-          "Suppression d'un enfant.\n Êtes-vous sûr de vouloir supprimer l'enfant ?",
+      titre: "Détachement d'un enfant",
+      sousTitre: "Êtes-vous sûr de vouloir détacher l'enfant de votre compte ?",
       body: SuppressionEnfantFormView(
         enfant: enfant,
         fetchEnfants: fetchEnfants,
@@ -54,12 +54,7 @@ class _SuppressionEnfantFormViewState
       champs: const [],
       boutons: [
         BoutonAction(
-          text: "Annuler",
-          fonction: () => Navigator.of(context).pop(),
-          themeCouleur: ThemeCouleur.gris,
-        ),
-        BoutonAction(
-          text: "Supprimer",
+          text: "Détacher l'enfant",
           fonction: () => appuiBoutonSupprimer(),
           themeCouleur: ThemeCouleur.rouge,
         ),
