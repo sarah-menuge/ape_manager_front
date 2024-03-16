@@ -70,7 +70,7 @@ class Popup extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: ResponsiveConstraint.getResponsiveValue(
-                              context, 15, 17),
+                              context, 15.0, 17.0),
                         ),
                       ),
                     ),
