@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/ligne_commande.dart';
 
 enum StatutCommande {
@@ -12,43 +13,58 @@ enum StatutCommande {
 
 class Commande {
   late int id;
-  late bool estPaye;
-  late DateTime dateRetrait;
-  late String lieuRetrait;
-  late StatutCommande statut;
   late String libelleEvenement;
+  late int nombreArticles;
+  late double prixTotal;
+  late DateTime dateCreation;
+  late DateTime? dateRetrait;
+  late LieuRetrait lieuRetrait;
+  late bool estPaye;
+  late StatutCommande statut;
   List<Article> listeArticles = [];
   List<LigneCommande> listeLigneCommandes = [];
 
   Commande({
     required this.id,
-    required this.estPaye,
+    required this.libelleEvenement,
+    required this.nombreArticles,
+    required this.prixTotal,
+    required this.dateCreation,
     required this.dateRetrait,
     required this.lieuRetrait,
+    required this.estPaye,
     required this.statut,
-    required this.libelleEvenement,
-  }) {
-    Article article = Article(
-        id: 1,
-        nom: "Boîte de chocolat",
-        quantiteMax: 100,
-        prix: 10.99,
-        description:
-            "Une boîte de chocolat de 500g remplie de pleins de bonnes choses",
-    );
+    required this.listeArticles,
+    required this.listeLigneCommandes,
+  });
+
+  Commande.bidon(int seed) {
+    id = seed;
+    libelleEvenement = "Vente de chocolats";
+    nombreArticles = 3;
+    prixTotal = 16.66;
+    dateCreation = DateTime(2024, 10, 31);
+    dateRetrait = DateTime(2024, 11, 30);
+    lieuRetrait = LieuRetrait(id: 1, lieu: "Face à l'école");
+    estPaye = false;
+    statut = StatutCommande.RETIREE;
+    Article article = Article.bidon();
     listeArticles = [article];
     listeLigneCommandes = [
-      LigneCommande(id: id, quantite: 3, article: article)
+      LigneCommande(id: id, quantite: 3, article: article),
     ];
   }
 
   Commande.copie(Commande other) {
     id = other.id;
-    estPaye = other.estPaye;
-    dateRetrait = other.dateRetrait;
-    lieuRetrait = other.lieuRetrait;
-    statut = other.statut;
     libelleEvenement = other.libelleEvenement;
+    nombreArticles = other.nombreArticles;
+    prixTotal = other.prixTotal;
+    dateCreation = other.dateCreation;
+    dateRetrait = other.dateRetrait;
+    lieuRetrait = LieuRetrait.copie(other.lieuRetrait);
+    estPaye = other.estPaye;
+    statut = other.statut;
     for (Article article in other.listeArticles) {
       listeArticles.add(Article.copie(article));
     }
@@ -59,36 +75,35 @@ class Commande {
 
   Commande.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    estPaye = json["isPaid"] == "true" ? true : false;
-    dateRetrait = DateTime.parse(json["pickUpDate"]);
-    lieuRetrait = json["pickUpPlace"];
-
+    libelleEvenement = json["event"];
+    nombreArticles = json["totalItems"];
+    prixTotal = json["totalPrice"];
+    dateCreation = DateTime.parse(json["creationDate"]);
     try {
-      libelleEvenement = json["event"];
+      dateRetrait = DateTime.parse(json["pickUpDate"]);
     } catch (e) {
-      libelleEvenement = "?";
+      dateRetrait = null;
     }
-
-    // listeArticles = json["listeArticles"];
-    // listeLigneCommandes =
-
-    try {
-      if (json["status"] == "VALIDATED") {
-        statut = StatutCommande.VALIDEE;
-      } else if (json["status"] == "CANCELED") {
-        statut = StatutCommande.ANNULEE;
-      } else if (json["status"] == "TO_COLLECT") {
-        statut = StatutCommande.A_RETIRER;
-      } else if (json["status"] == "COLLECTED") {
-        statut = StatutCommande.RETIREE;
-      } else if (json["status"] == "CLOSED") {
-        statut = StatutCommande.CLOTUREE;
-      } else {
-        statut = StatutCommande.NON_DEFINI;
-      }
-    } catch (e) {
+    lieuRetrait = LieuRetrait.fromJson(json["pickUpPlace"]);
+    estPaye = json["isPaid"] == "true" ? true : false;
+    if (json["status"] == "VALIDATED") {
+      statut = StatutCommande.VALIDEE;
+    } else if (json["status"] == "CANCELED") {
+      statut = StatutCommande.ANNULEE;
+    } else if (json["status"] == "TO_COLLECT") {
+      statut = StatutCommande.A_RETIRER;
+    } else if (json["status"] == "COLLECTED") {
+      statut = StatutCommande.RETIREE;
+    } else if (json["status"] == "CLOSED") {
+      statut = StatutCommande.CLOTUREE;
+    } else {
       statut = StatutCommande.NON_DEFINI;
     }
+    listeLigneCommandes.addAll(
+      (json["orderlines"] as List<dynamic>).map(
+        (o) => LigneCommande.fromJson(o),
+      ),
+    );
   }
 
   String getStatut() {
@@ -101,5 +116,13 @@ class Commande {
     if (statut == StatutCommande.CLOTUREE) return "Clôturée";
     if (statut == StatutCommande.NON_DEFINI) return "Non défini";
     return "Non défini";
+  }
+
+  String getPrixTotal() {
+    return prixTotal.toStringAsFixed(2);
+  }
+
+  String getNumeroCommande() {
+    return id.toString().padLeft(5, '0');
   }
 }

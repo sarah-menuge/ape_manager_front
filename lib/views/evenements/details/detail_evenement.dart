@@ -54,8 +54,7 @@ class DetailEvenementWidget extends StatelessWidget {
                     getPrixTotal(context),
                   if (utilisateurProvider.perspective == Perspective.PARENT)
                     getBoutonFinaliserCommande(context),
-                  if (utilisateurProvider.perspective ==
-                      Perspective.ORGANIZER)
+                  if (utilisateurProvider.perspective == Perspective.ORGANIZER)
                     DetailEvenementOrganisateur(commandes: evenement.commandes),
                 ],
               ),
@@ -130,7 +129,7 @@ class DetailEvenementWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Text(
-          "Prix total : ${panier.getPrixTotal().toStringAsFixed(2)} €",
+          "Prix total : ${panier.prixTotal.toStringAsFixed(2)} €",
           style: FontUtils.getFontApp(
             fontSize: ResponsiveConstraint.getResponsiveValue(
                 context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),

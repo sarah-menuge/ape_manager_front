@@ -1,10 +1,14 @@
+import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class WidgetCommande extends StatelessWidget {
-  const WidgetCommande({super.key});
+  final Commande commande;
+
+  const WidgetCommande({super.key, required this.commande});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +28,9 @@ class WidgetCommande extends StatelessWidget {
   }
 
   Widget getInfosCommandes(BuildContext context) {
+    DateFormat formatter = DateFormat('dd MMMM yyyy', 'fr_FR');
+    String dateCrea = formatter.format(commande.dateCreation);
+
     return Expanded(
       flex: 1,
       child: Column(
@@ -31,17 +38,15 @@ class WidgetCommande extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Commande n° 1234",
+              "Commande n°${commande.getNumeroCommande()}",
               textAlign: TextAlign.left,
-              style: FontUtils.getFontApp(
-                fontSize: POLICE_DESKTOP_NORMAL_1,
-              ),
+              style: FontUtils.getFontApp(fontSize: POLICE_DESKTOP_NORMAL_1),
             ),
           ),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Commande effectuée le 08 mars 2024",
+              "Commande effectuée le ${dateCrea}",
               textAlign: TextAlign.left,
               style: FontUtils.getFontApp(
                 fontWeight: FONT_WEIGHT_NORMAL,
@@ -62,7 +67,7 @@ class WidgetCommande extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Opération chocolat",
+              commande.libelleEvenement,
               textAlign: TextAlign.left,
               style: FontUtils.getFontApp(
                 fontSize: POLICE_DESKTOP_NORMAL_1,
@@ -82,7 +87,7 @@ class WidgetCommande extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Montant total : 30,99€",
+              "Montant total : ${commande.getPrixTotal()}€",
               textAlign: TextAlign.left,
               style: FontUtils.getFontApp(
                 fontSize: POLICE_DESKTOP_NORMAL_1,
@@ -92,7 +97,7 @@ class WidgetCommande extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Nombre d'articles total : 3",
+              "Nombre d'articles total : ${commande.nombreArticles}",
               textAlign: TextAlign.left,
               style: FontUtils.getFontApp(
                 fontWeight: FONT_WEIGHT_NORMAL,
@@ -106,11 +111,11 @@ class WidgetCommande extends StatelessWidget {
   }
 
   Widget getBoutonDetail() {
-    return const Align(
+    return Align(
       alignment: Alignment.centerRight,
       child: BoutonNavigationGoRouter(
         text: "Plus de détails",
-        routeName: "/commandes/0",
+        routeName: "/commandes/${commande.id}",
       ),
     );
   }

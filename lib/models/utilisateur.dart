@@ -1,3 +1,4 @@
+import 'package:ape_manager_front/models/commande.dart';
 import 'package:flutter/material.dart';
 
 import 'enfant.dart';
@@ -14,6 +15,7 @@ class Utilisateur {
   late String token;
 
   List<Enfant> enfants = [];
+  List<Commande> commandes = [];
 
   Utilisateur.copie(Utilisateur other) {
     id = other.id;

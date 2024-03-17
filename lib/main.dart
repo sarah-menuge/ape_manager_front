@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/providers/authentification_provider.dart';
+import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/logs.dart';
@@ -9,7 +10,7 @@ import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/authentification/login/login_view.dart';
-import 'package:ape_manager_front/views/commandes/details/commande_view.dart';
+import 'package:ape_manager_front/views/commandes/details/detail_commande_view.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
@@ -34,6 +35,7 @@ class MainApp extends StatelessWidget {
       AuthentificationProvider();
   final EvenementProvider evenementProvider = EvenementProvider();
   final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
+  final CommandeProvider commandeProvider = CommandeProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: authentificationProvider),
         ChangeNotifierProvider.value(value: utilisateurProvider),
         ChangeNotifierProvider.value(value: evenementProvider),
+        ChangeNotifierProvider.value(value: commandeProvider),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -104,7 +107,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: MesCommandesView.routeURL,
-      builder: (context, state) => const MesCommandesView(),
+      builder: (context, state) => MesCommandesView(),
     ),
     GoRoute(
       path: CommandeView.routeURL,

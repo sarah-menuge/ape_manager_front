@@ -1,10 +1,13 @@
+import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
 class WidgetCommandeMobile extends StatelessWidget {
-  const WidgetCommandeMobile({super.key});
+  final Commande commande;
+
+  const WidgetCommandeMobile({super.key, required this.commande});
 
   @override
   Widget build(BuildContext context) {
@@ -14,46 +17,62 @@ class WidgetCommandeMobile extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Commande n° 1234",
-                textAlign: TextAlign.left,
-                style: FontUtils.getFontApp(fontSize: POLICE_MOBILE_NORMAL_1),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Opération chocolat",
-                textAlign: TextAlign.left,
-                style: FontUtils.getFontApp(
-                  fontSize: POLICE_MOBILE_NORMAL_1,
-                  fontWeight: FONT_WEIGHT_NORMAL,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "30,99€",
-                textAlign: TextAlign.left,
-                style: FontUtils.getFontApp(
-                  fontSize: POLICE_MOBILE_NORMAL_1,
-                  fontWeight: FONT_WEIGHT_NORMAL,
-                ),
-              ),
-            ),
+            getInfosCommandes(context),
+            getLibelleEvenementCommande(context),
+            getTotauxCommande(context),
           ],
         ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: BoutonNavigationGoRouter(
-            text: "Plus de détails",
-            routeName: "/commandes/0",
-          ),
-        ),
+        getBoutonDetail(),
       ],
+    );
+  }
+
+  Widget getInfosCommandes(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        "Commande n°${commande.getNumeroCommande()}",
+        textAlign: TextAlign.left,
+        style: FontUtils.getFontApp(fontSize: POLICE_MOBILE_NORMAL_1),
+      ),
+    );
+  }
+
+  Widget getLibelleEvenementCommande(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        commande.libelleEvenement,
+        textAlign: TextAlign.left,
+        style: FontUtils.getFontApp(
+          fontSize: POLICE_MOBILE_NORMAL_1,
+          fontWeight: FONT_WEIGHT_NORMAL,
+        ),
+      ),
+    );
+  }
+
+  Widget getTotauxCommande(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        "${commande.getPrixTotal()}€",
+        textAlign: TextAlign.left,
+        style: FontUtils.getFontApp(
+          fontSize: POLICE_MOBILE_NORMAL_1,
+          fontWeight: FONT_WEIGHT_NORMAL,
+        ),
+      ),
+    );
+  }
+
+  Widget getBoutonDetail() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: BoutonNavigationGoRouter(
+        text: "Plus de détails",
+        routeName: "/commandes/${commande.id}",
+      ),
     );
   }
 }

@@ -15,6 +15,15 @@ class Article extends DonneeTableau {
     this.description = "",
   });
 
+  Article.bidon() {
+    id = 1;
+    nom = "Boîte de chocolats !!!";
+    quantiteMax = 100;
+    prix = 10.99;
+    description =
+        "Une boîte de chocolat de 500g remplie de pleins de bonnes choses";
+  }
+
   Article.copie(Article other) {
     id = other.id;
     nom = other.nom;
