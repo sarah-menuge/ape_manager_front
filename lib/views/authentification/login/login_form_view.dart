@@ -99,6 +99,7 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
   }
 
   Future<void> envoiFormulaireLogin() async {
+    print("${loginForm.email}, ${loginForm.password}");
     final response = await authentificationProvider.signin(
       loginForm,
       Provider.of<UtilisateurProvider>(context, listen: false),
@@ -137,8 +138,9 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
 
   Widget getPopupMdpOublie() {
     return const Popup(
-      titre:
-          "Veuillez entrer votre mail pour demander une réinitialisation du mot de passe",
+      titre: "Mot de passe oublié",
+      sousTitre:
+          "Veuillez renseigner votre adresse email afin de recevoir un mail de réinitialisation du mot de passe.",
       body: DemandeReinitMdpFormView(),
     );
   }

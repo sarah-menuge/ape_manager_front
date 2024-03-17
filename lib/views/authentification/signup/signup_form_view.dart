@@ -2,6 +2,7 @@ import 'package:ape_manager_front/forms/signup_form.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/routage.dart';
+import 'package:ape_manager_front/views/authentification/login/login_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_email.dart';
@@ -99,10 +100,13 @@ class _SignupFormViewState extends FormulaireState<SignupFormView> {
       signupForm,
       utilisateurProvider,
     );
-    if (response["statusCode"] == 200 && mounted) {
-      naviguerVersPage(context, ProfilView.routeURL);
+    if (response["statusCode"] == 201 && mounted) {
       afficherMessageSucces(
-          context: context, message: "Compte créé avec succès.");
+        context: context,
+        message: response["message"],
+        duree: 10,
+      );
+      naviguerVersPage(context, LoginView.routeURL);
     } else {
       setMessageErreur(response['message']);
     }

@@ -1,5 +1,6 @@
+import 'package:ape_manager_front/utils/afficher_message.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
-import 'package:ape_manager_front/views/authentification/login/login_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_email.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
@@ -53,10 +54,16 @@ class _DemandeReinitMdpFormViewState
   Future<void> envoiFormulaireDemandeReinitMdp() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      final response = await utilisateurProvider.demandeReinitMdp(email);
+      final response = await utilisateurProvider.demandeReinitMdp(email!);
       if (response["statusCode"] == 200 && mounted) {
-        revenirEnArriere(context, routeURL: LoginView.routeURL);
+        afficherLogInfo(
+            "La demande de réinitialisation de mot de passe a bien été effectuée.");
+        afficherMessageSucces(
+            context: context, message: response["message"], duree: 10);
+        revenirEnArriere(context);
       } else {
+        afficherLogInfo(
+            "La demande de réinitialisation de mot de passe a échoué.");
         setState(() {
           erreur = response['message'];
         });

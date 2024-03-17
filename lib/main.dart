@@ -2,8 +2,9 @@ import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/logs.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
-import 'package:ape_manager_front/views/authentification/changer_mdp/forgot_password_view.dart';
+import 'package:ape_manager_front/views/authentification/changer_mdp/modification_mdp_view.dart';
 import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
@@ -33,10 +34,6 @@ class MainApp extends StatelessWidget {
       AuthentificationProvider();
   final EvenementProvider evenementProvider = EvenementProvider();
   final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
-
-  MainApp({super.key}) {
-    print("Constructeur MainApp");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +73,13 @@ final _router = GoRouter(
       builder: (context, state) => SignupView(),
     ),
     GoRoute(
+      path: ModificationMdpView.routeURL,
+      builder: (context, state) {
+        String token = state.pathParameters['token']!;
+        return ModificationMdpView(token: token);
+      },
+    ),
+    GoRoute(
       path: AccueilView.routeURL,
       builder: (context, state) => const AccueilView(),
     ),
@@ -92,15 +96,11 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: CreerEvenementView.routeURL,
-      builder: (context, state) => CreerEvenementView(),
+      builder: (context, state) => const CreerEvenementView(),
     ),
     GoRoute(
       path: ProfilView.routeURL,
       builder: (context, state) => const ProfilView(),
-    ),
-    GoRoute(
-      path: ForgotPasswordView.routeURL,
-      builder: (context, state) => const ForgotPasswordView(),
     ),
     GoRoute(
       path: MesCommandesView.routeURL,
@@ -125,10 +125,20 @@ final _router = GoRouter(
     afficherLogDebug(
       "Tentative d'accès à la page '${state.location.toString()}'.",
     );
+
     if (state.location == SignupView.routeURL ||
-        state.location == LoginView.routeURL) {
+        state.location == LoginView.routeURL ||
+        state.location
+            .contains(ModificationMdpView.routeURL.replaceAll(":token", ""))) {
       afficherLogDebug("Accès autorisé.");
       return null;
+    }
+    if (state.location == "/logout") {
+      afficherLogInfo("Déconnexion en cours");
+      Provider.of<UtilisateurProvider>(context, listen: false).updateUser(null);
+      Provider.of<AuthentificationProvider>(context, listen: false).isLoggedIn =
+          false;
+      naviguerVersPage(context, LoginView.routeURL);
     }
     if (!Provider.of<AuthentificationProvider>(context, listen: false)
         .isLoggedIn) {

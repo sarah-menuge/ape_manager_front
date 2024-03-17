@@ -60,7 +60,8 @@ class AuthentificationProvider with ChangeNotifier {
         "L'utilisateur [${loginForm.email}] n'a pas pu s'authentifier.");
     return {
       "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "message": json.decode(response.body)["message"] ??
+          "L'utilisateur n'a pas pu s'authentifier.",
     };
   }
 
@@ -92,10 +93,11 @@ class AuthentificationProvider with ChangeNotifier {
     if (response.statusCode == 201) {
       afficherLogInfo(
           "Le compte de l'utilisateur [${signupForm.prenom} ${signupForm.nom}] a été créé avec succès.");
-      return signin(
-        LoginForm(email: signupForm.email, password: signupForm.password),
-        utilisateurProvider,
-      );
+      return {
+        "statusCode": response.statusCode,
+        "message":
+            "Le compte a bien été créé. Vous allez recevoir un email afin de vérifier votre compte.",
+      };
     }
     // Authentification KO
     afficherLogInfo(
@@ -112,19 +114,4 @@ class AuthentificationProvider with ChangeNotifier {
     isLoggedIn = false;
     naviguerVersPage(context, LoginView.routeURL);
   }
-
-// Pas utilisé pour le moment
-/*Future<void> initAuth() async {
-    try {
-      String? oldToken = getValueInHardwareMemory(key: "token");
-      if (oldToken == null) {
-        isLoggedIn = false;
-      } else {
-        isLoggedIn = true;
-        token = oldToken;
-      }
-    } catch (e) {
-      rethrow;
-    }
-  }*/
 }

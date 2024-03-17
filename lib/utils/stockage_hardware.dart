@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 const FlutterSecureStorage storage = FlutterSecureStorage();
 
 // Permet de récupérer une valeur sur la mémoire du hardware
-getValueInHardwareMemory({required String key}) async {
+Future<String?> getValueInHardwareMemory({required String key}) async {
   return storage.read(key: key);
 }
 

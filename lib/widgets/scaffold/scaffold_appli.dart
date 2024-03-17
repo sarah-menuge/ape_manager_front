@@ -92,7 +92,7 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 30),
             child: Center(
               child: widget.items![_selectedIndex].onglet,
             ),

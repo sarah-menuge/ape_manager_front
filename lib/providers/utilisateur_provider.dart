@@ -13,7 +13,6 @@ import 'call_api.dart';
 enum Perspective { ADMIN, ORGANIZER, PARENT }
 
 class UtilisateurProvider with ChangeNotifier {
-  bool isLoading = false;
   Utilisateur? _utilisateur;
   Perspective _perspective = Perspective.PARENT;
 
@@ -21,9 +20,7 @@ class UtilisateurProvider with ChangeNotifier {
 
   Perspective get perspective => _perspective;
 
-  void setPerspective(Perspective p) {
-    _perspective = p;
-  }
+  void setPerspective(Perspective p) => _perspective = p;
 
   List<Enfant> get enfants => _utilisateur!.enfants;
 
@@ -47,13 +44,11 @@ class UtilisateurProvider with ChangeNotifier {
 
   Future<dynamic> fetchEnfants(String token) async {
     // Appel à l'API
-    isLoading = true;
     ReponseAPI reponseApi = await callAPI(
       uri: '/users/user-children',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
     );
-    isLoading = false;
     // Cas où la connexion avec l'API n'a pas pu être établie
     if (!reponseApi.connexionAPIEtablie) return;
     try {
@@ -66,26 +61,51 @@ class UtilisateurProvider with ChangeNotifier {
   }
 
   // Appel à l'API pour demander la réinitialisation du mot de passe d'un compte
-  Future<dynamic> demandeReinitMdp(String? email) async {
-    isLoading = true;
-    afficherLogCritical(
-        "[PROVIDER] => DEMANDE REINIT MDP - non pris en charge");
-    isLoading = false;
+  Future<dynamic> demandeReinitMdp(String email) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/auth/forgotten/$email',
+      typeRequeteHttp: TypeRequeteHttp.GET,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      afficherLogError(
+          "La demande de réinitialisation de mot de passe n'a pas pu aboutir.");
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
     return {
-      "statusCode": 400,
-      "message": "La fonctionnalité n'est pas prise en charge."
+      "statusCode": reponseApi.response?.statusCode,
+      "message": reponseApi.response?.statusCode == 200
+          ? "La demande de réinitialisation de mot de passe a bien été prise en compte. Veuillez vérifier vos mails."
+          : json.decode(reponseApi.response!.body)["message"],
     };
   }
 
   // Appel à l'API pour réinitialiser le mot de passe d'un compte
   // Redirigé ici par l'API après une demande de réinitialisation du mdp
   Future<dynamic> reinitMdp(ReinitMdpForm reinitMdpForm) async {
-    isLoading = true;
-    afficherLogCritical("[PROVIDER] => REINIT MDP - non pris en charge");
-    isLoading = false;
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/auth/forgotten/',
+      jsonBody: reinitMdpForm.toJson(),
+      typeRequeteHttp: TypeRequeteHttp.POST,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      afficherLogError("La modification du mot de passe n'a pas pu aboutir.");
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
     return {
-      "statusCode": 400,
-      "message": "La fonctionnalité n'est pas prise en charge."
+      "statusCode": reponseApi.response?.statusCode,
+      "message": reponseApi.response?.statusCode == 200
+          ? "Le mot de passe a été modifié avec succès."
+          : json.decode(reponseApi.response!.body)["message"],
     };
   }
 
@@ -95,14 +115,12 @@ class UtilisateurProvider with ChangeNotifier {
     String token,
     ModificationMdpForm modificationMdpForm,
   ) async {
-    isLoading = true;
     ReponseAPI reponseApi = await callAPI(
       uri: '/auth/change_password',
       jsonBody: modificationMdpForm.toJson(),
       typeRequeteHttp: TypeRequeteHttp.PUT,
       token: token,
     );
-    isLoading = false;
 
     // Cas où la connexion avec l'API n'a pas pu être établie
     if (!reponseApi.connexionAPIEtablie) {
@@ -132,14 +150,12 @@ class UtilisateurProvider with ChangeNotifier {
     String token,
     Utilisateur utilisateurModifie,
   ) async {
-    isLoading = true;
     ReponseAPI reponseApi = await callAPI(
       uri: '/users',
       jsonBody: utilisateurModifie.toJsonModifDetails(),
       typeRequeteHttp: TypeRequeteHttp.PUT,
       token: token,
     );
-    isLoading = false;
 
     // Cas où la connexion avec l'API n'a pas pu être établie
     if (!reponseApi.connexionAPIEtablie) {
@@ -167,10 +183,8 @@ class UtilisateurProvider with ChangeNotifier {
   }
 
   Future<dynamic> supprimerCompte(String token) async {
-    isLoading = true;
     afficherLogCritical(
         "[PROVIDER] => SUPPRIMER COMPTE UTILISATEUR - non pris en charge");
-    isLoading = false;
 
     return {
       "statusCode": 400,
@@ -179,14 +193,12 @@ class UtilisateurProvider with ChangeNotifier {
   }
 
   Future<dynamic> ajouterEnfant(String token, Enfant enfant) async {
-    isLoading = true;
     ReponseAPI reponseApi = await callAPI(
       uri: '/users/child',
       jsonBody: enfant.toJson(),
       typeRequeteHttp: TypeRequeteHttp.POST,
       token: token,
     );
-    isLoading = false;
 
     // Cas où la connexion avec l'API n'a pas pu être établie
     if (!reponseApi.connexionAPIEtablie) {
@@ -214,14 +226,12 @@ class UtilisateurProvider with ChangeNotifier {
   }
 
   Future<dynamic> modifierEnfant(String token, Enfant enfant) async {
-    isLoading = true;
     ReponseAPI reponseApi = await callAPI(
       uri: '/users/children/${enfant.id}',
       jsonBody: enfant.toJson(),
       typeRequeteHttp: TypeRequeteHttp.PUT,
       token: token,
     );
-    isLoading = false;
 
     // Cas où la connexion avec l'API n'a pas pu être établie
     if (!reponseApi.connexionAPIEtablie) {
@@ -249,13 +259,11 @@ class UtilisateurProvider with ChangeNotifier {
   }
 
   Future<dynamic> supprimerEnfant(String token, Enfant enfant) async {
-    isLoading = true;
     ReponseAPI reponseApi = await callAPI(
       uri: '/users/children/${enfant.id}',
       typeRequeteHttp: TypeRequeteHttp.DELETE,
       token: token,
     );
-    isLoading = false;
 
     // Cas où la connexion avec l'API n'a pas pu être établie
     if (!reponseApi.connexionAPIEtablie) {
