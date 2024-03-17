@@ -19,6 +19,7 @@ enum TypeBouton { Detail, Notification, Modifier }
 class EvenementsView extends StatefulWidget {
   static String routeURL = '/evenements';
 
+
   const EvenementsView({super.key});
 
   @override
@@ -29,6 +30,8 @@ class _EvenementsViewState extends State<EvenementsView> {
   final EvenementProvider evenementProvider = EvenementProvider();
   late UtilisateurProvider utilisateurProvider;
   late RoleUtilisateur roleUtilisateur;
+  late String titre_rappel;
+  late DateTime date_rappel;
 
   @override
   void initState() {
