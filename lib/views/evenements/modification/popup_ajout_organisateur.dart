@@ -101,8 +101,8 @@ class _AjoutOrganisateurFormViewState
   Future<void> envoiFormulaire() async {
     afficherLogCritical("Ajout d'un organisateur non pris en charge");
     return;
-    final response =
-        await evenementProvider.ajouterOrganisateur(newOrganisateur);
+    final response = await evenementProvider
+        .afficherPopupAjouterOrganisateur(newOrganisateur);
     if (response["statusCode"] == 200 && mounted) {
       afficherMessageSucces(context: context, message: response["message"]);
       Navigator.of(context).pop();

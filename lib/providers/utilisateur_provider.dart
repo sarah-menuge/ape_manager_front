@@ -1,8 +1,9 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:ape_manager_front/forms/reinit_mdp_form.dart';
-import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/enfant.dart';
+import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,22 +15,26 @@ import 'call_api.dart';
 enum Perspective { ADMIN, ORGANIZER, PARENT }
 
 class UtilisateurProvider with ChangeNotifier {
+  /// Lié à la gestion de l'utilisateur connecté
   Utilisateur? _utilisateur;
   List<Utilisateur> _utilisateurs = [];
-  Perspective _perspective = Perspective.PARENT;
 
   Utilisateur? get utilisateur => _utilisateur;
 
   List<Utilisateur> get utilisateurs => _utilisateurs;
 
-  Perspective get perspective => _perspective;
-
-  void setPerspective(Perspective p) => _perspective = p;
-
   List<Enfant> get enfants => _utilisateur!.enfants;
 
   String? get token => _utilisateur?.token;
 
+  /// Lié à la gestion de la perspective
+  Perspective _perspective = Perspective.PARENT;
+
+  Perspective get perspective => _perspective;
+
+  void setPerspective(Perspective p) => _perspective = p;
+
+  /// Lié à la gestion des rôles
   bool get estParent =>
       _utilisateur?.role == RoleUtilisateur.parent ||
       _utilisateur?.role == RoleUtilisateur.prof;
@@ -41,6 +46,42 @@ class UtilisateurProvider with ChangeNotifier {
 
   bool get estAdmin => _utilisateur?.role == RoleUtilisateur.administrateur;
 
+  /// Lié à la récupération de la liste des organisateurs
+  List<Organisateur> _organisateurs = [];
+
+  UnmodifiableListView<Organisateur> get organisateurs =>
+      UnmodifiableListView(_organisateurs);
+
+  Future<dynamic> fetchListeOrganisateurs(String token) async {
+    // Appel à l'API
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/users/organizers',
+      typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
+    );
+
+    // Cas où la connexion avec l'API n'a pas pu être établie
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    http.Response response = reponseApi.response as http.Response;
+
+    // Un problème avec la requête
+    if (response.statusCode != 200) {
+      return {
+        "statusCode": response.statusCode,
+        "message": json.decode(response.body)["message"],
+      };
+    }
+
+    // Récupération de la liste des orgas
+    _organisateurs = (json.decode(response.body) as List)
+        .map((e) => Organisateur.fromJson(e))
+        .toList();
+
+    notifyListeners();
+  }
+
+  /// Méthode permettant de mettre à jour les informations concernant l'utilisateur connecté
   void updateUser(Utilisateur? u) {
     _utilisateur = u;
     notifyListeners();
@@ -79,6 +120,7 @@ class UtilisateurProvider with ChangeNotifier {
     }
   }
 
+  /// Méthode permettant de demander la réinitialisation du mot de passe
   // Appel à l'API pour demander la réinitialisation du mot de passe d'un compte
   Future<dynamic> demandeReinitMdp(String email) async {
     ReponseAPI reponseApi = await callAPI(

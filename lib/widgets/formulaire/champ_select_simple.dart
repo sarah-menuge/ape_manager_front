@@ -21,7 +21,6 @@ class ChampSelectSimple extends Champ {
 
   @override
   Widget build(BuildContext context) {
-    print("$valeurInitiale : $valeursExistantes");
     return SizedBox(
       height: getHeight(context),
       child: Padding(
