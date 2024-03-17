@@ -6,6 +6,8 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
+import 'package:ape_manager_front/views/admin/gestion_utilisateurs/gestion_utilisateurs_view.dart';
+import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
@@ -55,7 +57,7 @@ class HeaderAppli extends StatelessWidget {
             PopupMenuButton(
               position: PopupMenuPosition.under,
               offset: ResponsiveConstraint.getResponsiveValue(
-                  context, Offset(0, 4), Offset(0, 20)),
+                  context, Offset(0, 0), Offset(0, 10)),
               padding: EdgeInsets.zero,
               itemBuilder: (BuildContext context) {
                 return [
@@ -159,7 +161,8 @@ class HeaderAppli extends StatelessWidget {
       return Row(
         children: [
           InkWell(
-            onTap: () => naviguerVersPage(context, ""),
+            onTap: () =>
+                naviguerVersPage(context, GestionUtilisateursView.routeURL),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Text(

@@ -1,3 +1,4 @@
+import 'package:ape_manager_front/models/donnee_tableau.dart';
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,7 @@ import 'enfant.dart';
 
 enum RoleUtilisateur { parent, organisateur, administrateur, prof, inactif }
 
-class Utilisateur {
+class Utilisateur extends DonneeTableau {
   late int id;
   late String nom;
   late String prenom;
@@ -13,14 +14,18 @@ class Utilisateur {
   late String telephone;
   late RoleUtilisateur role;
   late String token;
+  bool est_membre = false;
 
   List<Enfant> enfants = [];
   List<Commande> commandes = [];
+
+  Utilisateur();
 
   Utilisateur.copie(Utilisateur other) {
     id = other.id;
     nom = other.nom;
     prenom = other.prenom;
+    // est_membre = other.est_membre;
     email = other.email;
     telephone = other.telephone;
     role = other.role;
@@ -32,6 +37,7 @@ class Utilisateur {
     nom = json["surname"];
     prenom = json["firstname"];
     email = json["email"];
+    // est_membre = json["member"];
 
     try {
       telephone = json["phone"];
@@ -87,6 +93,26 @@ class Utilisateur {
     return "$prenom $nom";
   }
 
+  String roleToString(RoleUtilisateur role) {
+    if (role == RoleUtilisateur.organisateur) return "Organisateur";
+    if (role == RoleUtilisateur.administrateur) return "Administrateur";
+    if (role == RoleUtilisateur.parent) return "Parent";
+    if (role == RoleUtilisateur.prof) return "Enseignant";
+    if (role == RoleUtilisateur.inactif) return "Inactif";
+    return "Non défini";
+  }
+
+  List<String> roles() {
+    return [
+      "Administrateur",
+      "Organisateur",
+      "Enseignant",
+      "Parent",
+      "Inactif",
+      "Non défini"
+    ];
+  }
+
   bool equals(Object o) {
     if (identical(this, o)) return true;
     if (o.runtimeType != this.runtimeType) return false;
@@ -96,5 +122,36 @@ class Utilisateur {
         prenom == other.prenom &&
         email == other.email &&
         telephone == other.telephone;
+  }
+
+  @override
+  getValeur(String nom_colonne) {
+    if (nom_colonne == "Nom") return nom;
+    if (nom_colonne == "Prénom") return prenom;
+    if (nom_colonne == "Email") return email;
+    if (nom_colonne == "Téléphone") return telephone;
+    if (nom_colonne == "Rôle") return roleToString(role);
+    if (nom_colonne == "Membre CA ?") return est_membre;
+  }
+
+  @override
+  List<String> intitulesHeader() {
+    return [
+      "Nom",
+      "Prénom",
+      "Rôle",
+    ];
+  }
+
+  @override
+  Map<String, dynamic> pourTableau() {
+    return {
+      "Nom": nom,
+      "Prénom": prenom,
+      "Email": email,
+      "Téléphone": telephone,
+      "Rôle": role,
+      "Membre CA ?": est_membre,
+    };
   }
 }

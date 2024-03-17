@@ -5,24 +5,25 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
+import 'package:ape_manager_front/views/admin/gestion_utilisateurs/gestion_utilisateurs_view.dart';
 import 'package:ape_manager_front/views/authentification/changer_mdp/modification_mdp_view.dart';
+import 'package:ape_manager_front/views/authentification/login/login_view.dart';
+import 'package:ape_manager_front/views/authentification/signup/signup_view.dart';
+import 'package:ape_manager_front/views/commandes/details/detail_commande_view.dart';
+import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
-import 'package:ape_manager_front/views/authentification/login/login_view.dart';
-import 'package:ape_manager_front/views/commandes/details/detail_commande_view.dart';
-import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
-import 'package:ape_manager_front/views/authentification/signup/signup_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -117,11 +118,16 @@ final _router = GoRouter(
       },
     ),
     GoRoute(
-        path: ModifierEvenementView.routeURL,
-        builder: (context, state) {
-          int id = int.tryParse(state.pathParameters['idEvent'] ?? '')!;
-          return ModifierEvenementView(evenementId: id);
-        })
+      path: ModifierEvenementView.routeURL,
+      builder: (context, state) {
+        int id = int.tryParse(state.pathParameters['idEvent'] ?? '')!;
+        return ModifierEvenementView(evenementId: id);
+      },
+    ),
+    GoRoute(
+      path: GestionUtilisateursView.routeURL,
+      builder: (context, state) => const GestionUtilisateursView(),
+    ),
   ],
   // Permet d'imposer l'authentification
   redirect: (BuildContext context, GoRouterState state) {

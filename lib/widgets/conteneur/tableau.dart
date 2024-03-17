@@ -10,13 +10,9 @@ class Tableau extends StatefulWidget {
   final int tailleTableau;
   final Function? editable;
   final Function? supprimable;
+  final Function? consultable;
   final List<DonneeTableau> objets;
   final DonneeTableau modele;
-
-  /*List<Map<String, dynamic>> get _donnees =>
-      objets.map((DonneeTableau e) => e.pourTableau()).toList();*/
-
-  List<String> get intitulesHeader => modele.intitulesHeader();
 
   Tableau({
     super.key,
@@ -25,6 +21,7 @@ class Tableau extends StatefulWidget {
     this.tailleTableau = 300,
     this.editable,
     this.supprimable,
+    this.consultable,
   });
 
   @override
@@ -32,10 +29,11 @@ class Tableau extends StatefulWidget {
 }
 
 class _TableauState extends State<Tableau> {
+  late List<String> _intitulesHeader;
   Map<String, bool> trie = {};
 
   void createTrieFromData() {
-    for (var donnee in widget.intitulesHeader) {
+    for (var donnee in _intitulesHeader) {
       if (!trie.containsKey(donnee)) {
         trie[donnee] = true;
       }
@@ -44,6 +42,7 @@ class _TableauState extends State<Tableau> {
 
   @override
   Widget build(BuildContext context) {
+    _intitulesHeader = widget.modele.intitulesHeader();
     createTrieFromData();
     return Column(
       children: [
@@ -54,7 +53,7 @@ class _TableauState extends State<Tableau> {
           alignment: Alignment.centerLeft,
           child: Row(
             children: [
-              for (var columnName in widget.intitulesHeader)
+              for (var columnName in _intitulesHeader)
                 Expanded(
                   child: InkWell(
                     onTap: () => _sort(columnName),
@@ -84,6 +83,14 @@ class _TableauState extends State<Tableau> {
                 padding: const EdgeInsets.only(right: 10),
                 child: Row(
                   children: [
+                    if (widget.consultable != null && estDesktop(context, 600))
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.transparent,
+                        ),
+                      ),
                     if (widget.editable != null && estDesktop(context, 600))
                       const Icon(
                         Icons.edit,
@@ -104,8 +111,7 @@ class _TableauState extends State<Tableau> {
           ),
         ),
         Container(
-          constraints: BoxConstraints(
-              minHeight: 50, maxHeight: widget.tailleTableau - 50),
+          constraints: BoxConstraints(maxHeight: widget.tailleTableau - 50),
           child: widget.objets.isEmpty
               ? Row(
                   children: [
@@ -136,25 +142,42 @@ class _TableauState extends State<Tableau> {
                         onLongPress: () {
                           if (estMobile(context, 600) &&
                               (widget.editable != null ||
-                                  widget.supprimable != null))
+                                  widget.supprimable != null ||
+                                  widget.consultable != null))
                             afficherPopup(context, item);
                         },
                         title: Row(
                           children: [
-                            for (var nom_colonne in widget.intitulesHeader)
-                              Expanded(
-                                child: Text(
-                                  item.getValeur(nom_colonne).toString(),
-                                  textAlign: TextAlign.center,
-                                  style: FontUtils.getFontApp(
-                                    fontSize:
-                                        ResponsiveConstraint.getResponsiveValue(
-                                            context,
-                                            POLICE_MOBILE_NORMAL_2,
-                                            POLICE_DESKTOP_NORMAL_2),
-                                    fontWeight: FONT_WEIGHT_NORMAL,
-                                  ),
-                                ),
+                            for (var nom_colonne in _intitulesHeader)
+                              item.getValeur(nom_colonne).runtimeType == bool
+                                  ? Expanded(
+                                      child: Checkbox(
+                                        tristate: true,
+                                        value: item.getValeur(nom_colonne),
+                                        onChanged: null,
+                                      ),
+                                    )
+                                  : Expanded(
+                                      child: Text(
+                                        item.getValeur(nom_colonne).toString(),
+                                        textAlign: TextAlign.center,
+                                        style: FontUtils.getFontApp(
+                                          fontSize: ResponsiveConstraint
+                                              .getResponsiveValue(
+                                                  context,
+                                                  POLICE_MOBILE_NORMAL_2,
+                                                  POLICE_DESKTOP_NORMAL_2),
+                                          fontWeight: FONT_WEIGHT_NORMAL,
+                                        ),
+                                      ),
+                                    ),
+                            if (widget.consultable != null &&
+                                estDesktop(context, 600))
+                              BoutonIcon(
+                                icon: const Icon(Icons.search),
+                                onPressed: () {
+                                  widget.consultable!(item);
+                                },
                               ),
                             if (widget.editable != null &&
                                 estDesktop(context, 600))
@@ -202,26 +225,33 @@ class _TableauState extends State<Tableau> {
               Divider(
                 color: Colors.grey,
               ),
-              if (widget.editable != null &&
-                  estMobile(context, 600))
-              ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('Modifier'),
-                onTap: () {
-                  Navigator.pop(context);
-                  widget.editable!(item);
-                },
-              ),
-              if (widget.supprimable != null &&
-                  estMobile(context, 600))
-              ListTile(
-                leading: Icon(Icons.delete),
-                title: Text('Supprimer'),
-                onTap: () {
-                  Navigator.pop(context);
-                  widget.supprimable!(item);
-                },
-              ),
+              if (widget.editable != null && estMobile(context, 600))
+                ListTile(
+                  leading: Icon(Icons.edit),
+                  title: Text('Modifier'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    widget.editable!(item);
+                  },
+                ),
+              if (widget.supprimable != null && estMobile(context, 600))
+                ListTile(
+                  leading: Icon(Icons.delete),
+                  title: Text('Supprimer'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    widget.supprimable!(item);
+                  },
+                ),
+              if (widget.consultable != null && estMobile(context, 600))
+                ListTile(
+                  leading: Icon(Icons.search),
+                  title: Text('Consulter'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    widget.consultable!(item);
+                  },
+                ),
             ],
           ),
         );

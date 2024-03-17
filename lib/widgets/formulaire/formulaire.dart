@@ -90,7 +90,7 @@ class Formulaire extends StatelessWidget {
                 for (dynamic champ in ligne) Expanded(child: getChamp(champ)),
               ],
             ),
-          ),
+          )
       ],
     );
   }
