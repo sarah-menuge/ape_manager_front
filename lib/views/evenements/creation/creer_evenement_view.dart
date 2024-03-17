@@ -1,18 +1,21 @@
+import 'package:ape_manager_front/forms/creation_evenement_form.dart';
 import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
-import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/utils/logs.dart';
-import 'package:ape_manager_front/views/evenements/creation/creer_evenement_form_view.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/creation/popup_ajout_organisateur.dart';
-import 'package:ape_manager_front/views/evenements/creation/popup_supprimer_organisateur.dart';
+import 'package:ape_manager_front/views/evenements/creation/popup_suppression_organisateur.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/tableau.dart';
 import 'package:ape_manager_front/widgets/conteneur/tuile.dart';
+import 'package:ape_manager_front/widgets/formulaire/champ_string.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:ape_manager_front/widgets/texte/texte_flexible.dart';
 import 'package:flutter/material.dart';
@@ -29,197 +32,28 @@ class CreerEvenementView extends StatefulWidget {
 
 class _CreerEvenementViewState extends State<CreerEvenementView> {
   late EvenementProvider evenementProvider;
+  late CreationEvenementForm creationEvenementForm;
+  late UtilisateurProvider utilisateurProvider;
+  String? erreur;
 
   @override
   void initState() {
-    evenementProvider = Provider.of<EvenementProvider>(context, listen: false);
     super.initState();
+    evenementProvider = Provider.of<EvenementProvider>(context, listen: false);
+    utilisateurProvider =
+        Provider.of<UtilisateurProvider>(context, listen: false);
+    creationEvenementForm = CreationEvenementForm();
+    fetchListeOrganisateurs();
   }
 
-  List<Organisateur> organisateurs = [
-    Organisateur(
-      id: 1,
-      nom: "Dupont",
-      prenom: "Jean",
-      email: "test@test.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 2,
-      nom: "Martin",
-      prenom: "Sophie",
-      email: "sophie.martin@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 3,
-      nom: "Leclerc",
-      prenom: "Pierre",
-      email: "p.leclerc@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 4,
-      nom: "Dubois",
-      prenom: "Marie",
-      email: "marie.dubois@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 5,
-      nom: "Lefebvre",
-      prenom: "Luc",
-      email: "luc.lefebvre@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 6,
-      nom: "Bernard",
-      prenom: "Émilie",
-      email: "emilie.bernard@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 7,
-      nom: "Thomas",
-      prenom: "Nicolas",
-      email: "nicolas.thomas@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 8,
-      nom: "Petit",
-      prenom: "Anne",
-      email: "anne.petit@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 9,
-      nom: "Robert",
-      prenom: "Julie",
-      email: "julie.robert@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 10,
-      nom: "Richard",
-      prenom: "Philippe",
-      email: "philippe.richard@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 11,
-      nom: "Durand",
-      prenom: "Sylvie",
-      email: "sylvie.durand@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 12,
-      nom: "Moreau",
-      prenom: "Thomas",
-      email: "thomas.moreau@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 13,
-      nom: "Laurent",
-      prenom: "Céline",
-      email: "celine.laurent@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 14,
-      nom: "Garcia",
-      prenom: "David",
-      email: "david.garcia@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 15,
-      nom: "Leroy",
-      prenom: "Christine",
-      email: "christine.leroy@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 16,
-      nom: "Girard",
-      prenom: "Antoine",
-      email: "antoine.girard@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 17,
-      nom: "Roux",
-      prenom: "Isabelle",
-      email: "isabelle.roux@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 18,
-      nom: "Fournier",
-      prenom: "François",
-      email: "francois.fournier@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 19,
-      nom: "Morel",
-      prenom: "Marion",
-      email: "marion.morel@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-    Organisateur(
-      id: 20,
-      nom: "Garnier",
-      prenom: "Jean-Pierre",
-      email: "jp.garnier@example.com",
-      telephone: "1",
-      role: RoleUtilisateur.organisateur,
-      estMembre: true,
-    ),
-  ];
-
-  String titre = "";
+  Future<void> fetchListeOrganisateurs() async {
+    await utilisateurProvider
+        .fetchListeOrganisateurs(utilisateurProvider.token!);
+    setState(() {
+      creationEvenementForm.organisateursExistants =
+          utilisateurProvider.organisateurs;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -236,35 +70,36 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
           titre: "Création d'événement",
           label: 'Organisateurs',
           icon: const Icon(Icons.person),
-          onglet: Column(children: [
-            getTuileTableauOrganisateurs(context),
-            const Padding(
-              padding: EdgeInsets.only(left: 20),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: GRIS_CLAIR),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                        "Restez appuyé pour modifier ou supprimer un organisateur",
-                        style: TextStyle(fontStyle: FontStyle.italic)),
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: BoutonAction(
-                  text: "Ajouter un organisateur",
-                  fonction: () {
-                    ajouterOrganisateur();
-                  },
-                  themeCouleur: ThemeCouleur.vert,
+          onglet: Column(
+            children: [
+              getTuileTableauOrganisateurs(context),
+              const Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline, color: GRIS_CLAIR),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                          "Restez appuyé pour modifier ou supprimer un organisateur",
+                          style: TextStyle(fontStyle: FontStyle.italic)),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ]),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: BoutonAction(
+                    text: "Ajouter un organisateur",
+                    fonction: () => afficherPopupAjouterOrganisateur(),
+                    themeCouleur: ThemeCouleur.vert,
+                    disable: creationEvenementForm.organisateursSelect.isEmpty,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         BarreNavigationItem(
           titre: "Création d'événement",
@@ -281,9 +116,13 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
       child: Column(
         children: [
           getTitre(context),
+          Text(
+            erreur != null ? erreur! : "",
+            style: const TextStyle(color: Colors.red, fontSize: 20.0),
+          ),
           getTuileFormulaireTitre(context),
           getTuileTableauOrganisateurs(context),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           getBoutonValidation(context),
         ],
       ),
@@ -311,9 +150,9 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 15.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 10),
             child: TexteFlexible(
-              texte: "Veuillez renseigner le titre de l'évenement à créer",
+              texte: "Titre de l'événement à créer",
               style: FontUtils.getFontApp(
                 fontSize: ResponsiveConstraint.getResponsiveValue(
                     context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
@@ -321,12 +160,20 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 10),
           const TexteFlexible(
             texte: "Il sera modifiable plus tard",
             textAlign: TextAlign.center,
           ),
-          const CreerEvenementFormView(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            child: ChampString(
+              label: "Titre de l'événement",
+              prefixIcon: const Icon(Icons.title),
+              onChangedMethod: (value) {
+                creationEvenementForm.titreEvenement = value!;
+              },
+            ),
+          ),
         ],
       ),
       maxHeight: ResponsiveConstraint.getResponsiveValue(context, 500.0, 300.0),
@@ -335,7 +182,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
 
   Widget getTuileTableauOrganisateurs(BuildContext context) {
     return Tuile(
-      maxHeight: estDesktop(context, 600) ? 500 : 400,
+      maxHeight: estDesktop(context, 600) ? 700 : 550,
       body: Column(
         children: [
           Padding(
@@ -343,8 +190,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
             child: Column(
               children: [
                 TexteFlexible(
-                  texte:
-                      "Veuillez renseigner la liste des organisateurs de l'événement",
+                  texte: "Liste des organisateurs de l'événement",
                   style: FontUtils.getFontApp(
                     fontSize: ResponsiveConstraint.getResponsiveValue(
                         context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
@@ -360,13 +206,9 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                 Tableau(
                   tailleTableau: estDesktop(context, 600) ? 300 : 200,
                   modele: Organisateur(),
-                  objets: organisateurs,
-                  editable: (Organisateur organisateurs) {
-                    modifierOrganisateur(organisateurs);
-                  },
-                  supprimable: (Organisateur organisateurs) {
-                    supprimerOrganisateur(organisateurs);
-                  },
+                  objets: creationEvenementForm.organisateursSelectionnes,
+                  supprimable: (Organisateur o) =>
+                      afficherPopupSupprimerOrganisateur(o),
                 ),
                 //if desktop
                 if (estDesktop(context, 600))
@@ -374,10 +216,10 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                     padding: const EdgeInsets.only(top: 20),
                     child: BoutonAction(
                       text: "Ajouter un organisateur",
-                      fonction: () {
-                        ajouterOrganisateur();
-                      },
+                      fonction: () => afficherPopupAjouterOrganisateur(),
                       themeCouleur: ThemeCouleur.vert,
+                      disable:
+                          creationEvenementForm.organisateursSelect.isEmpty,
                     ),
                   ),
               ],
@@ -388,21 +230,12 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
     );
   }
 
-  Widget getBoutonValidation(BuildContext context) {
-    return BoutonAction(
-      text: "Valider la création",
-      fonction: () =>
-          afficherLogCritical("Création d'un événement non pris en charge"),
-      themeCouleur: ThemeCouleur.vert,
-    );
-  }
-
   Widget getRecapitulatifEvenement(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Tuile(
-          maxHeight: 400,
+          maxHeight: 700,
           body: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Column(
@@ -416,31 +249,37 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                   ),
                   textAlign: TextAlign.center,
                 ),
+                Text(
+                  erreur != null ? erreur! : "",
+                  style: const TextStyle(color: Colors.red, fontSize: 15.0),
+                ),
                 const Divider(),
                 TexteFlexible(
-                  texte: "Titre de l'événement : ${titre}",
+                  texte:
+                      "Titre de l'événement : ${creationEvenementForm.titreEvenement}",
                 ),
                 const SizedBox(height: 10),
                 TexteFlexible(
-                  texte: "Nombre d'organisateurs : ${organisateurs.length}",
+                  texte:
+                      "Nombre d'organisateurs : ${creationEvenementForm.organisateursSelectionnes.length}",
                 ),
                 const SizedBox(height: 10),
                 const TexteFlexible(
                   texte: "Liste des organisateurs :",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const Divider(),
                 SizedBox(
                   height: 200,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: organisateurs.length,
+                    itemCount:
+                        creationEvenementForm.organisateursSelectionnes.length,
                     itemBuilder: (context, index) {
-                      final organisateur = organisateurs[index];
+                      final organisateur = creationEvenementForm
+                          .organisateursSelectionnes[index];
                       return ListTile(
-                        leading: Icon(Icons.person),
+                        leading: const Icon(Icons.person),
                         title:
                             Text("${organisateur.prenom} ${organisateur.nom}"),
                         subtitle: Text(organisateur.email),
@@ -458,33 +297,71 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
     );
   }
 
-  void doNothing() {}
-
-  void ajouterOrganisateur() {
-    showDialog(
-      context: context,
-      builder: (context) =>
-          PopupAjoutOrganisateur(fetchOrganisateurs: doNothing),
-    );
-  }
-
-  void modifierOrganisateur(Organisateur organisateur) {
+  void afficherPopupAjouterOrganisateur() {
     showDialog(
       context: context,
       builder: (context) => PopupAjoutOrganisateur(
-        fetchOrganisateurs: doNothing,
-        organisateur: organisateur,
+        organisateursSelect: creationEvenementForm.organisateursSelect,
+        ajouterOrganisateur: (Organisateur organisateur) {
+          setState(() {
+            creationEvenementForm.organisateursSelectionnes.add(organisateur);
+          });
+          revenirEnArriere(context);
+        },
       ),
     );
   }
 
-  void supprimerOrganisateur(Organisateur organisateur) {
+  void afficherPopupSupprimerOrganisateur(Organisateur organisateur) {
     showDialog(
       context: context,
-      builder: (context) => PopupSupprimerOrganisateur(
-        fetchOrganisateurs: doNothing,
+      builder: (context) => PopupSuppressionOrganisateur(
         organisateur: organisateur,
+        supprimerOrganisateur: (Organisateur organisateur) {
+          setState(() {
+            creationEvenementForm.organisateursSelectionnes
+                .remove(organisateur);
+          });
+          revenirEnArriere(context);
+        },
       ),
     );
+  }
+
+  Widget getBoutonValidation(BuildContext context) {
+    return BoutonAction(
+      text: "Valider la création",
+      themeCouleur: ThemeCouleur.vert,
+      fonction: () {
+        String? estValide = creationEvenementForm.estValide();
+        if (estValide != null) {
+          setState(() => erreur = estValide);
+          // afficherMessageErreur(context: context, message: estValide);
+          return;
+        }
+        creerEvenement();
+      },
+    );
+  }
+
+  Future<void> creerEvenement() async {
+    final response = await evenementProvider.creerEvenement(
+      utilisateurProvider.token!,
+      creationEvenementForm,
+    );
+
+    if (response["statusCode"] == 201 && mounted) {
+      setState(() => erreur = null);
+      afficherMessageSucces(
+        context: context,
+        message: response["message"],
+      );
+      naviguerVersPage(context, EvenementsView.routeURL);
+    } else {
+      setState(() {
+        erreur = response['message'];
+        afficherMessageErreur(context: context, message: response['message']);
+      });
+    }
   }
 }

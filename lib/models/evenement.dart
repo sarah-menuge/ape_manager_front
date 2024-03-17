@@ -53,7 +53,7 @@ class Evenement {
     dateDebut = DateTime.parse(json["startDate"]);
     dateFin = DateTime.parse(json["endDate"]);
     finPaiement = json["endOfPayment"] == "true" ? true : false;
-    description = json["description"];
+    description = json["description"] ?? "";
 
     if (json["status"] == "DRAFT") {
       statut = StatutEvenement.BROUILLON;

@@ -1,20 +1,18 @@
 import 'package:ape_manager_front/models/organisateur.dart';
-import 'package:ape_manager_front/utils/afficher_message.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
 import 'package:flutter/material.dart';
 
-class PopupSupprimerOrganisateur extends StatelessWidget {
+class PopupSuppressionOrganisateur extends StatelessWidget {
   final Organisateur organisateur;
-  final Function fetchOrganisateurs;
+  final Function supprimerOrganisateur;
 
-  const PopupSupprimerOrganisateur({
+  const PopupSuppressionOrganisateur({
     super.key,
     required this.organisateur,
-    required this.fetchOrganisateurs,
+    required this.supprimerOrganisateur,
   });
 
   @override
@@ -24,7 +22,7 @@ class PopupSupprimerOrganisateur extends StatelessWidget {
       sousTitre: "Êtes-vous sûr de vouloir supprimer l'organisateur ?",
       body: SuppressionOrganisateurFormView(
         organisateur: organisateur,
-        fetchOrganisateurs: fetchOrganisateurs,
+        supprimerOrganisateur: supprimerOrganisateur,
       ),
     );
   }
@@ -32,12 +30,12 @@ class PopupSupprimerOrganisateur extends StatelessWidget {
 
 class SuppressionOrganisateurFormView extends StatefulWidget {
   final Organisateur organisateur;
-  final Function fetchOrganisateurs;
+  final Function supprimerOrganisateur;
 
   const SuppressionOrganisateurFormView({
     super.key,
     required this.organisateur,
-    required this.fetchOrganisateurs,
+    required this.supprimerOrganisateur,
   });
 
   @override
@@ -56,30 +54,10 @@ class _SuppressionOrganisateurFormViewState
       boutons: [
         BoutonAction(
           text: "Supprimer l'organisateur",
-          fonction: () => appuiBoutonSupprimer(),
+          fonction: () => widget.supprimerOrganisateur(widget.organisateur),
           themeCouleur: ThemeCouleur.rouge,
         ),
       ],
     );
-  }
-
-  void appuiBoutonSupprimer() {
-    resetMessageErreur();
-    appelMethodeAsynchrone(() {
-      supprimerOrganisateur();
-    });
-  }
-
-  Future<void> supprimerOrganisateur() async {
-    afficherLogCritical("Suppression d'un organisateur non pris en charge");
-    return;
-    final response = null;
-    if (mounted && response["statusCode"] == 200) {
-      afficherMessageSucces(context: context, message: response["message"]);
-      Navigator.of(context).pop();
-      widget.fetchOrganisateurs();
-    } else {
-      setMessageErreur(response["message"]);
-    }
   }
 }

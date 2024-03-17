@@ -1,7 +1,4 @@
 import 'package:ape_manager_front/models/organisateur.dart';
-import 'package:ape_manager_front/providers/evenement_provider.dart';
-import 'package:ape_manager_front/utils/afficher_message.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_select_simple.dart';
@@ -10,31 +7,37 @@ import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
 import 'package:flutter/material.dart';
 
 class PopupAjoutOrganisateur extends StatelessWidget {
-  final Function fetchOrganisateurs;
-  Organisateur? organisateur = Organisateur();
+  final List<Organisateur> organisateursSelect;
+  final Function ajouterOrganisateur;
 
-  PopupAjoutOrganisateur(
-      {super.key, required this.fetchOrganisateurs, this.organisateur});
+  const PopupAjoutOrganisateur({
+    super.key,
+    required this.organisateursSelect,
+    required this.ajouterOrganisateur,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Popup(
       titre:
-          "Veuillez renseigner les informations concernant l'organisateur à ${organisateur != null ? 'modifier' : 'ajouter'}.",
+          "Veuillez renseigner les informations concernant l'organisateur à ajouter.",
       body: AjoutOrganisateurFormView(
-        fetchOrganisateurs: fetchOrganisateurs,
-        organisateur: organisateur,
+        organisateursSelect: organisateursSelect,
+        ajouterOrganisateur: ajouterOrganisateur,
       ),
     );
   }
 }
 
 class AjoutOrganisateurFormView extends StatefulWidget {
-  final Function fetchOrganisateurs;
-  Organisateur? organisateur = Organisateur();
+  final List<Organisateur> organisateursSelect;
+  final Function ajouterOrganisateur;
 
-  AjoutOrganisateurFormView(
-      {super.key, required this.fetchOrganisateurs, this.organisateur});
+  const AjoutOrganisateurFormView({
+    super.key,
+    required this.organisateursSelect,
+    required this.ajouterOrganisateur,
+  });
 
   @override
   State<AjoutOrganisateurFormView> createState() =>
@@ -43,17 +46,10 @@ class AjoutOrganisateurFormView extends StatefulWidget {
 
 class _AjoutOrganisateurFormViewState
     extends FormulaireState<AjoutOrganisateurFormView> {
-  Organisateur newOrganisateur = Organisateur();
-
-  Organisateur? get organisateur => widget.organisateur ?? Organisateur();
-
-  get evenementProvider => EvenementProvider();
-
-  var isExistingOrganisateur;
+  Organisateur? newOrganisateur;
 
   @override
   Formulaire setFormulaire(BuildContext context) {
-    isExistingOrganisateur = organisateur?.id != null && organisateur?.id != -1;
     return Formulaire(
       formKey: formKey,
       erreur: erreur,
@@ -62,26 +58,18 @@ class _AjoutOrganisateurFormViewState
           ChampSelectSimple(
             prefixIcon: const Icon(Icons.person),
             label: "Organisateur",
-            onSavedMethod: (value) => newOrganisateur.nom = value!,
-            valeurInitiale: isExistingOrganisateur
-                ? "${organisateur!.prenom} ${organisateur!.nom}"
-                : null,
+            onSavedMethod: (value) =>
+                newOrganisateur = getOrganisateurByPrenomNom(value),
             valeursExistantes: [
-              if (isExistingOrganisateur)
-                "${organisateur!.prenom} ${organisateur!.nom}",
-              "Florian Dupont",
-              "Patricia Martin",
-              "Kevin Durand",
-              "Emmanuelle Dubois",
-              "Jean-luc Moreau",
+              for (Organisateur orgExistant in widget.organisateursSelect)
+                orgExistant.toString(),
             ],
           ),
         ],
       ],
       boutons: [
         BoutonAction(
-          text:
-              "${isExistingOrganisateur != null ? 'Modifier' : 'Ajouter'} l'organisateur",
+          text: "Ajouter l'organisateur",
           fonction: () => appuiBoutonAjouter(),
           disable: desactiverBoutons,
         ),
@@ -93,24 +81,19 @@ class _AjoutOrganisateurFormViewState
     resetMessageErreur();
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
+      if (newOrganisateur == null) return;
       appelMethodeAsynchrone(() {
-        envoiFormulaire();
+        widget.ajouterOrganisateur(newOrganisateur);
       });
     }
   }
 
-  Future<void> envoiFormulaire() async {
-    afficherLogCritical(
-        "${isExistingOrganisateur != null ? 'Modification' : 'Ajout'} d'un organisateur non pris en charge");
-    return;
-    final response =
-        await evenementProvider.ajouterOrganisateur(newOrganisateur);
-    if (response["statusCode"] == 200 && mounted) {
-      afficherMessageSucces(context: context, message: response["message"]);
-      Navigator.of(context).pop();
-      widget.fetchOrganisateurs();
-    } else {
-      setMessageErreur(response["message"]);
+  Organisateur? getOrganisateurByPrenomNom(String? prenomNom) {
+    if (prenomNom == null) return null;
+    if (widget.organisateursSelect.isEmpty) return null;
+    for (Organisateur org in widget.organisateursSelect) {
+      if (org.toString() == prenomNom) return org;
     }
+    return null;
   }
 }

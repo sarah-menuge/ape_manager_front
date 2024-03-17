@@ -99,7 +99,6 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
   }
 
   Future<void> envoiFormulaireLogin() async {
-    print("${loginForm.email}, ${loginForm.password}");
     final response = await authentificationProvider.signin(
       loginForm,
       Provider.of<UtilisateurProvider>(context, listen: false),
