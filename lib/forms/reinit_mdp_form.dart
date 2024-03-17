@@ -1,21 +1,20 @@
 // La réinitialisation d'un mot de passe est effectuée après envoi d'un mail
 // avec un lien vers le formulaire de réinitialisation
 class ReinitMdpForm {
-  String? email;
+  String? token;
   String? nouveauMdp;
-  String? encoreNouveauMdp;
+  String? confirmerNouveauMdp;
 
   ReinitMdpForm({
-    this.email = "",
+    this.token = "",
     this.nouveauMdp = "",
-    this.encoreNouveauMdp = "",
+    this.confirmerNouveauMdp = "",
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'email': email,
+      'token': token,
       'newPassword': nouveauMdp,
-      'encoreNouveauMdp': encoreNouveauMdp,
     };
   }
 }

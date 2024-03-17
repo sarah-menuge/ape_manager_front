@@ -30,6 +30,7 @@ abstract class FormulaireState<T extends StatefulWidget> extends State<T> {
   Formulaire setFormulaire(BuildContext context);
 
   Future<void> appelMethodeAsynchrone(Function f) async {
+    resetMessageErreur();
     gererChargement(true);
     try {
       f();

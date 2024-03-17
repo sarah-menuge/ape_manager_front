@@ -1,21 +1,20 @@
+import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/utils/logs.dart';
+import 'package:ape_manager_front/utils/rappel_calendrier.dart';
+import 'package:ape_manager_front/widgets/button_appli.dart';
+import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_platform/universal_platform.dart';
-
-import '../../../proprietes/couleurs.dart';
-import '../../../utils/rappel_calendrier.dart';
-import '../../../widgets/button_appli.dart';
-import '../../../widgets/conteneur/popup.dart';
 
 class NotificationPopup extends StatefulWidget {
   final String titreEvenement;
   final DateTime dateDebut;
 
   const NotificationPopup({
-    Key? key,
+    super.key,
     required this.titreEvenement,
     required this.dateDebut,
-  }) : super(key: key);
+  });
 
   @override
   State<NotificationPopup> createState() => _NotificationPopupState();
@@ -78,8 +77,9 @@ class _NotificationPopupState extends State<NotificationPopup> {
                   ),
                 );
               }
-              // TODO: Gérer le rappel par mail
-              if (_rappelerParMail) {}
+              if (_rappelerParMail) {
+                afficherLogCritical("Rappeler par mail non pris en charge");
+              }
             },
           ),
         ],
