@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import 'notification_popup.dart';
+
 class WidgetEvenement extends StatelessWidget {
   final Evenement evenement;
   final TypeBouton typeBouton;
@@ -76,12 +78,21 @@ class WidgetEvenement extends StatelessWidget {
                 ":idEvent",
                 evenement.id.toString(),
               ),
-              themeCouleur: ThemeCouleur.bleu_clair,
             ),
           if (typeBouton == TypeBouton.Notification)
-            const BoutonNavigationGoRouter(
+            BoutonAction(
               text: "Me notifier",
-              routeName: "/me-notifier-evenement",
+              fonction: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return NotificationPopup(
+                      titreEvenement: evenement.titre,
+                      dateDebut: evenement.dateDebut,
+                    );
+                  },
+                );
+              },
               themeCouleur: ThemeCouleur.rouge,
             ),
           if (typeBouton == TypeBouton.Modifier)

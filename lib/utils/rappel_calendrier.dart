@@ -2,27 +2,27 @@ import 'package:device_calendar/device_calendar.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class CalendarService {
-  final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
+  static final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
 
-  Future<bool> requestPermissions() async {
-    final result = await _deviceCalendarPlugin.requestPermissions();
-    return result.isSuccess && result.data == true;
+  static Future<bool> requestPermissions() async {
+    final resultat = await _deviceCalendarPlugin.requestPermissions();
+    return resultat.isSuccess && resultat.data == true;
   }
 
-  Future<bool> addReminder({
+  static Future<String?> addReminder({
     required String title,
     required DateTime start,
     Duration duration = const Duration(hours: 1),
   }) async {
     final permissionsGranted = await requestPermissions();
     if (!permissionsGranted) {
-      return false;
+      return "Accès au calendrier refusé.";
     }
 
     final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
     final calendars = calendarsResult.data;
     if (calendars == null || calendars.isEmpty) {
-      return false;
+      return "Calendrier non trouvé.";
     }
 
     Calendar? targetCalendar;
@@ -34,7 +34,7 @@ class CalendarService {
     }
 
     if (targetCalendar == null) {
-      return false;
+      return "Calendrier non trouvé.";
     }
 
     final Event event = Event(
@@ -45,6 +45,10 @@ class CalendarService {
     );
 
     final createEventResult = await _deviceCalendarPlugin.createOrUpdateEvent(event);
-    return createEventResult!.isSuccess;
+    if (createEventResult?.isSuccess == true) {
+      return "Rappel ajouté avec succès.";
+    } else {
+      return "Erreur lors de l'ajout du rappel.";
+    }
   }
 }

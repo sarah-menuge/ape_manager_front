@@ -52,12 +52,12 @@ class MainApp extends StatelessWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         routerConfig: _router,
-        localizationsDelegates: [
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: [const Locale('en', 'US'), const Locale('fr', 'FR')],
+        supportedLocales: const [Locale('en', 'US'), Locale('fr', 'FR')],
       ),
     );
   }

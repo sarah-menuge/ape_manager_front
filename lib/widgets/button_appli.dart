@@ -3,7 +3,7 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:flutter/material.dart';
 
-enum ThemeCouleur { vert, gris, rouge, bleu, bleu_clair }
+enum ThemeCouleur { vert, gris, rouge, bleu }
 
 abstract class Bouton extends StatelessWidget {
   const Bouton({super.key});
@@ -61,7 +61,7 @@ class BoutonAction extends Bouton {
     Color foregroundColor = GRIS_FONCE;
     Color backgroundColor = BLANC;
     if (themeCouleur == ThemeCouleur.bleu) {
-      backgroundColor = BLEU;
+      backgroundColor = BLEU_1;
       foregroundColor = BLANC;
     } else if (themeCouleur == ThemeCouleur.vert) {
       backgroundColor = VERT_1;
@@ -71,9 +71,6 @@ class BoutonAction extends Bouton {
       foregroundColor = BLANC;
     } else if (themeCouleur == ThemeCouleur.gris) {
       backgroundColor = GRIS_FONCE;
-      foregroundColor = BLANC;
-    } else if (themeCouleur == ThemeCouleur.bleu_clair) {
-      backgroundColor = BLEU_1;
       foregroundColor = BLANC;
     }
     return ElevatedButton(
