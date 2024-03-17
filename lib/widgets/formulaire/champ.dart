@@ -46,6 +46,10 @@ abstract class Champ extends StatelessWidget {
     return null;
   }
 
+  void Function(bool?)? boolDefaultOnChangedMethod(value) {
+    return null;
+  }
+
   TextStyle getTextStyle(BuildContext context) {
     return const TextStyle(height: 1.5, fontSize: 16.0);
   }

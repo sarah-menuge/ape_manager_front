@@ -4,6 +4,7 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
+import 'package:ape_manager_front/views/admin/gestion_utilisateurs/gestion_utilisateurs_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,9 @@ class DrawerAppli extends StatelessWidget {
         BoutonOnglet(
             libelle: "Mes commandes", routeName: MesCommandesView.routeURL),
       if (utilisateurProvider.perspective == Perspective.ADMIN)
-        BoutonOnglet(libelle: "Gestion des utilisateurs", routeName: ""),
+        BoutonOnglet(
+            libelle: "Gestion des utilisateurs",
+            routeName: GestionUtilisateursView.routeURL),
     ];
 
     return Drawer(

@@ -15,9 +15,12 @@ enum Perspective { ADMIN, ORGANIZER, PARENT }
 
 class UtilisateurProvider with ChangeNotifier {
   Utilisateur? _utilisateur;
+  List<Utilisateur> _utilisateurs = [];
   Perspective _perspective = Perspective.PARENT;
 
   Utilisateur? get utilisateur => _utilisateur;
+
+  List<Utilisateur> get utilisateurs => _utilisateurs;
 
   Perspective get perspective => _perspective;
 
@@ -40,6 +43,21 @@ class UtilisateurProvider with ChangeNotifier {
 
   void updateUser(Utilisateur? u) {
     _utilisateur = u;
+    notifyListeners();
+  }
+
+  Future<dynamic> fetchUtilisateurs(String token) async {
+    // Appel à l'API
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/users',
+      typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
+    );
+    // Cas où la connexion avec l'API n'a pas pu être établie
+    if (!reponseApi.connexionAPIEtablie) return;
+    _utilisateurs = (jsonDecode(reponseApi.response!.body) as List)
+        .map((u) => Utilisateur.fromJson(u))
+        .toList();
     notifyListeners();
   }
 
@@ -180,6 +198,26 @@ class UtilisateurProvider with ChangeNotifier {
     return {
       "statusCode": response.statusCode,
       "message": json.decode(response.body)["message"],
+    };
+  }
+
+  Future<dynamic> modifierUtilisateur(
+      String token, Utilisateur utilisateurModifie) async {
+    afficherLogCritical(
+        "[PROVIDER] => MODIFIER UTILISATEUR - non pris en charge");
+    return {
+      "statusCode": 400,
+      "message": "La fonctionnalité n'est pas prise en charge"
+    };
+  }
+
+  Future<dynamic> supprimerUtilisateur(
+      String token, Utilisateur utilisateurASupprimer) async {
+    afficherLogCritical(
+        "[PROVIDER] => SUPPRIMER UTILISATEUR - non pris en charge");
+    return {
+      "statusCode": 400,
+      "message": "La fonctionnalité n'est pas prise en charge"
     };
   }
 

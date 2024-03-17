@@ -7,6 +7,7 @@ class Tuile extends StatelessWidget {
   final double maxHeight;
   final bool prendLargeurTotal;
   final Widget body;
+  final bool scrollable;
 
   const Tuile({
     super.key,
@@ -15,6 +16,7 @@ class Tuile extends StatelessWidget {
     this.maxHeight = 300,
     this.prendLargeurTotal = true,
     required this.body,
+    this.scrollable = false,
   });
 
   @override
@@ -30,7 +32,7 @@ class Tuile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Container(
-        width: 1200,
+        width: maxWidth,
         constraints: BoxConstraints(
             maxWidth: maxWidth, minHeight: minHeight, maxHeight: maxHeight),
         decoration: BoxDecoration(
@@ -53,9 +55,10 @@ class Tuile extends StatelessWidget {
             ),
           ],
         ),
-        child: ListView(
-          shrinkWrap: true,
-          children: [body],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [body],
+          ),
         ),
       ),
     );
