@@ -1,6 +1,7 @@
 import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
@@ -534,7 +535,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               evenement: Evenement(
                   id: -1,
                   titre: '',
-                  lieu: '',
+                  lieu: [LieuRetrait(id: 1, lieu: "dv")],
                   dateDebut: DateTime.now(),
                   dateFin: DateTime.now(),
                   finPaiement: false,
@@ -561,7 +562,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               evenement: Evenement(
                   id: -1,
                   titre: '',
-                  lieu: '',
+                  lieu: [LieuRetrait(id: 1, lieu: "dv")],
                   dateDebut: DateTime.now(),
                   dateFin: DateTime.now(),
                   finPaiement: false,

@@ -1,5 +1,6 @@
 import 'package:ape_manager_front/models/Article.dart';
 import 'package:ape_manager_front/models/commande.dart';
+import 'package:ape_manager_front/models/lieu_retrait.dart';
 
 import 'organisateur.dart';
 
@@ -16,7 +17,7 @@ enum StatutEvenement {
 class Evenement {
   late int id;
   late String titre;
-  late String lieu;
+  late List<LieuRetrait> lieu = [];
   late DateTime dateDebut;
   late DateTime dateFin;
   late bool finPaiement;
@@ -45,7 +46,10 @@ class Evenement {
   Evenement.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     titre = json["title"];
-    lieu = json["place"];
+    lieu = (json["places"] as List<dynamic>)
+        .map((l) => LieuRetrait.fromJson(l))
+        .toList();
+
     dateDebut = DateTime.parse(json["startDate"]);
     dateFin = DateTime.parse(json["endDate"]);
     finPaiement = json["endOfPayment"] == "true" ? true : false;
@@ -78,7 +82,7 @@ class Evenement {
     return {
       "id": id,
       "titre": titre,
-      "lieu": lieu,
+      "lieux": lieu,
       "dateDebut": dateDebut.toIso8601String(),
       "dateFin": dateFin.toIso8601String(),
       "description": description,
@@ -97,7 +101,7 @@ class Evenement {
 
   @override
   String toString() {
-    return "$titre - $lieu ($dateDebut -> $dateFin) : $description [$statut]";
+    return "$titre ($dateDebut -> $dateFin) : $description [$statut]";
   }
 
   String getStatut() {

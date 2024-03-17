@@ -19,7 +19,7 @@ class LigneCommande {
 
   LigneCommande.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    quantite = json["quantite"];
-    article = json["article"];
+    quantite = json["quantity"];
+    article = Article.fromJson(json["item"]);
   }
 }

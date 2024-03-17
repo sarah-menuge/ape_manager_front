@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_annuler_modifications.dart';
@@ -63,7 +64,7 @@ class _ModifierEvenementFormViewState
                 evenement: Evenement(
                   id: -1,
                   titre: '',
-                  lieu: '',
+                  lieu: [LieuRetrait(id: 1, lieu: "dv")],
                   dateDebut: DateTime.now(),
                   dateFin: DateTime.now(),
                   finPaiement: false,
