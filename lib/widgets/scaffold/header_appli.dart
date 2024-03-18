@@ -9,7 +9,6 @@ import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/admin/gestion_utilisateurs/gestion_utilisateurs_view.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
-import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/logo_appli.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +30,10 @@ class HeaderAppli extends StatelessWidget {
     _screenWidth = MediaQuery.of(context).size.width;
     return AppBar(
       // Logo de l'application situé à gauche du header pour le Desktop
-      leading: MediaQuery.of(context).size.width > 600 ? LogoAppli() : null,
-      leadingWidth: MediaQuery.of(context).size.width > 600 ? 300.0 : 50.0,
+      leading: estDesktop(context, 600) ? LogoAppli() : null,
+      leadingWidth: estDesktop(context, 600) ? 300.0 : 50.0,
       // Hauteur du header
-      toolbarHeight:
-          MediaQuery.of(context).size.width > 600 ? 80 : kToolbarHeight,
+      toolbarHeight: estDesktop(context, 600) ? 80 : kToolbarHeight,
       // Linéar gradient du header
       flexibleSpace: Container(
         decoration: const BoxDecoration(
@@ -45,6 +43,7 @@ class HeaderAppli extends StatelessWidget {
               colors: [HEADER_FONCE, HEADER_CLAIR]),
         ),
       ),
+
       // Menu déroulant à droite de l'écran
       actions: [
         Row(
@@ -64,22 +63,45 @@ class HeaderAppli extends StatelessWidget {
                   if (utilisateurProvider.estAdmin ||
                       utilisateurProvider.estOrganisateur) ...[
                     PopupMenuItem(
-                      child: Text("Mode Parents"),
+                      child: Text(
+                        "Mode Parents",
+                        style: utilisateurProvider.perspective ==
+                                Perspective.PARENT
+                            ? TextStyle(
+                                fontWeight: FontWeight.bold, color: BLEU_2)
+                            : null,
+                      ),
                       onTap: () => setPerspective(context, Perspective.PARENT),
                     ),
                     PopupMenuItem(
-                      child: Text("Mode Organisateur"),
+                      child: Text(
+                        "Mode Organisateur",
+                        style: utilisateurProvider.perspective ==
+                                Perspective.ORGANIZER
+                            ? TextStyle(
+                                fontWeight: FontWeight.bold, color: BLEU_2)
+                            : null,
+                      ),
                       onTap: () =>
                           setPerspective(context, Perspective.ORGANIZER),
                     ),
                     if (utilisateurProvider.estAdmin)
                       PopupMenuItem(
-                        child: Text("Mode Administrateur"),
+                        child: Text(
+                          "Mode Administrateur",
+                          style: utilisateurProvider.perspective ==
+                                  Perspective.ADMIN
+                              ? TextStyle(
+                                  fontWeight: FontWeight.bold, color: BLEU_2)
+                              : null,
+                        ),
                         onTap: () => setPerspective(context, Perspective.ADMIN),
                       ),
                   ],
                   PopupMenuItem(
-                    child: Text("Mon profil"),
+                    child: Text(
+                      "Mon profil",
+                    ),
                     onTap: () => naviguerVersPage(context, ProfilView.routeURL),
                   ),
                   PopupMenuItem(

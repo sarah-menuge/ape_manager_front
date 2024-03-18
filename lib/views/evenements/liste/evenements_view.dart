@@ -3,9 +3,9 @@ import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
-import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/image_evenements.dart';
 import 'package:ape_manager_front/views/evenements/liste/widget_evenement.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
@@ -18,7 +18,6 @@ enum TypeBouton { Detail, Notification, Modifier }
 
 class EvenementsView extends StatefulWidget {
   static String routeURL = '/evenements';
-
 
   const EvenementsView({super.key});
 
@@ -85,7 +84,9 @@ class _EvenementsViewState extends State<EvenementsView> {
               ...evenementsEnCours.map((evenement) {
                 return ListTile(
                   title: WidgetEvenement(
-                      evenement: evenement, typeBouton: TypeBouton.Detail),
+                      utilisateurProvider: utilisateurProvider,
+                      evenement: evenement,
+                      typeBouton: TypeBouton.Detail),
                 );
               }).toList()
           ],
@@ -98,6 +99,7 @@ class _EvenementsViewState extends State<EvenementsView> {
               ...evenementsAVenir.map((evenement) {
                 return ListTile(
                   title: WidgetEvenement(
+                      utilisateurProvider: utilisateurProvider,
                       evenement: evenement,
                       typeBouton: TypeBouton.Notification),
                 );
@@ -134,7 +136,9 @@ class _EvenementsViewState extends State<EvenementsView> {
               ...evenementsBrouillon.map((evenement) {
                 return ListTile(
                   title: WidgetEvenement(
-                      evenement: evenement, typeBouton: TypeBouton.Modifier),
+                      utilisateurProvider: utilisateurProvider,
+                      evenement: evenement,
+                      typeBouton: TypeBouton.Modifier),
                 );
               }).toList()
           ],
@@ -147,7 +151,9 @@ class _EvenementsViewState extends State<EvenementsView> {
               ...evenementsAVenir.map((evenement) {
                 return ListTile(
                   title: WidgetEvenement(
-                      evenement: evenement, typeBouton: TypeBouton.Modifier),
+                      utilisateurProvider: utilisateurProvider,
+                      evenement: evenement,
+                      typeBouton: TypeBouton.Modifier),
                 );
               }).toList()
           ],
@@ -160,7 +166,9 @@ class _EvenementsViewState extends State<EvenementsView> {
               ...evenementsEnCours.map((evenement) {
                 return ListTile(
                   title: WidgetEvenement(
-                      evenement: evenement, typeBouton: TypeBouton.Detail),
+                      utilisateurProvider: utilisateurProvider,
+                      evenement: evenement,
+                      typeBouton: TypeBouton.Detail),
                 );
               }).toList()
           ],
@@ -174,7 +182,9 @@ class _EvenementsViewState extends State<EvenementsView> {
               ...evenementsCloture.map((evenement) {
                 return ListTile(
                   title: WidgetEvenement(
-                      evenement: evenement, typeBouton: TypeBouton.Detail),
+                      utilisateurProvider: utilisateurProvider,
+                      evenement: evenement,
+                      typeBouton: TypeBouton.Detail),
                 );
               }).toList()
           ],

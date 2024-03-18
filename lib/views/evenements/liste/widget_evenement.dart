@@ -1,5 +1,7 @@
 import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
@@ -12,11 +14,15 @@ import 'package:intl/intl.dart';
 import 'notification_popup.dart';
 
 class WidgetEvenement extends StatelessWidget {
+  final UtilisateurProvider utilisateurProvider;
   final Evenement evenement;
   final TypeBouton typeBouton;
 
   const WidgetEvenement(
-      {super.key, required this.typeBouton, required this.evenement});
+      {super.key,
+      required this.typeBouton,
+      required this.evenement,
+      required this.utilisateurProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +74,7 @@ class WidgetEvenement extends StatelessWidget {
               ],
             ),
           ),
-          (MediaQuery.of(context).size.width > 600)
+          (estDesktop(context, 600))
               ? getDescriptionDesktop(evenement.description)
               : getDescriptionMobile(context, evenement.description),
           if (typeBouton == TypeBouton.Detail)
@@ -95,12 +101,7 @@ class WidgetEvenement extends StatelessWidget {
               },
               themeCouleur: ThemeCouleur.rouge,
             ),
-          if (typeBouton == TypeBouton.Modifier)
-            const BoutonNavigationGoRouter(
-              text: "Modifier",
-              routeName: "/modifier-evenement/0",
-              themeCouleur: ThemeCouleur.rouge,
-            ),
+          getBoutonModifierSiProprietaire(context),
         ],
       ),
     );
@@ -154,5 +155,36 @@ class WidgetEvenement extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget getBoutonModifierSiProprietaire(BuildContext context) {
+    if (typeBouton == TypeBouton.Modifier) {
+      if (utilisateurProvider.utilisateur!.email ==
+              evenement.proprietaire.email ||
+          utilisateurProvider.estAdmin) {
+        return const BoutonNavigationGoRouter(
+          text: "Modifier",
+          routeName: "/modifier-evenement/0",
+          themeCouleur: ThemeCouleur.rouge,
+        );
+      }
+
+      for (Organisateur organisateur in evenement.organisateurs) {
+        if (utilisateurProvider.utilisateur!.email == organisateur.email) {
+          return const BoutonNavigationGoRouter(
+            text: "Plus de détails",
+            routeName: "/modifier-evenement/0",
+            themeCouleur: ThemeCouleur.bleu,
+          );
+        }
+      }
+
+      return const BoutonNavigationGoRouter(
+        text: "Non accessible",
+        routeName: "",
+        themeCouleur: ThemeCouleur.gris,
+      );
+    }
+    return Container();
   }
 }
