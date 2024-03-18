@@ -107,6 +107,13 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
       naviguerVersPage(context, AccueilView.routeURL);
       afficherMessageSucces(
           context: context, message: "Connexion établie avec succès.");
+      if (utilisateurProvider.estAdmin) {
+        utilisateurProvider.setPerspective(Perspective.ADMIN);
+      } else if (utilisateurProvider.estOrganisateur) {
+        utilisateurProvider.setPerspective(Perspective.ORGANIZER);
+      } else {
+        utilisateurProvider.setPerspective(Perspective.PARENT);
+      }
     } else {
       setMessageErreur(response['message']);
     }
