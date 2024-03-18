@@ -56,6 +56,7 @@ class _EvenementsViewState extends State<EvenementsView> {
         evenementProvider.getEvenementsEnCours();
     List<Evenement> evenementsCloture =
         evenementProvider.getEvenementsCloture();
+
     return ScaffoldAppli(
       body: SingleChildScrollView(
         child: Column(

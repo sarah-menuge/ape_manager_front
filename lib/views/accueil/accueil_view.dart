@@ -6,6 +6,8 @@ import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/notification.dart';
+
 class AccueilView extends StatelessWidget {
   static String routeURL = '/accueil';
 
@@ -13,6 +15,8 @@ class AccueilView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final NotificationService _notificationService = NotificationService();
+    _notificationService.sendNotification(title: "Bienvenue", body: "Bienvenue sur APE Manager", channelId: "1", channelName: "1");
     return ScaffoldAppli(
       body: SingleChildScrollView(
         child: Column(
