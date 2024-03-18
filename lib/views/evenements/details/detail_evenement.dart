@@ -7,6 +7,7 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_organisateur.dart';
+import 'package:ape_manager_front/views/evenements/details/popup_partage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
@@ -147,10 +148,22 @@ class DetailEvenementWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          BoutonNavigationGoRouter(
+          BoutonAction(
             text: "Partager l'événement",
-            routeName: "/evenements/${evenement.id}/partager",
             themeCouleur: ThemeCouleur.rouge,
+            fonction: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return PopupPartage(
+                    titreEvenement: evenement.titre,
+                    dateDebut: evenement.dateDebut,
+                    dateFin: evenement.dateFin,
+                    lien: "http://localhost:45678/#/evenements/${evenement.id}",
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
