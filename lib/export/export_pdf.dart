@@ -1,3 +1,5 @@
+import 'package:ape_manager_front/models/commande.dart';
+import 'package:ape_manager_front/models/ligne_commande.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -5,7 +7,7 @@ import 'package:pdf/widgets.dart';
 class ExportPdf {
   ExcelPdf() {}
 
-  Future<Uint8List> savePdf() async {
+  Future<Uint8List> savePdf(Commande commande) async {
     final pdf = Document();
     final fontData =
         await rootBundle.load('assets/fonts/Oswald-VariableFont_wght.ttf');
@@ -25,11 +27,13 @@ class ExportPdf {
                 children: [
                   Column(
                     children: [
-                      Text("À l'attention de : Sarah Menuge",
+                      Text(
+                          "À l'attention de : ${commande.utilisateur.prenom} ${commande.utilisateur.nom}",
                           style: TextStyle(font: font)),
-                      Text("menuge_sarah@icloud.com",
+                      Text(commande.utilisateur.email,
                           style: TextStyle(font: font)),
-                      Text("0762079691", style: TextStyle(font: font)),
+                      Text(commande.utilisateur.telephone,
+                          style: TextStyle(font: font)),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.start,
                   ),
@@ -65,7 +69,15 @@ class ExportPdf {
                         ),
                         Padding(
                           child: Text(
-                            'PRIX',
+                            'PRIX UNITAIRE',
+                            style: TextStyle(font: font),
+                            textAlign: TextAlign.center,
+                          ),
+                          padding: EdgeInsets.all(10),
+                        ),
+                        Padding(
+                          child: Text(
+                            'MONTANT',
                             style: TextStyle(font: font),
                             textAlign: TextAlign.center,
                           ),
@@ -73,66 +85,46 @@ class ExportPdf {
                         ),
                       ],
                     ),
-                    TableRow(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 5),
+                    for (LigneCommande ligneCommande
+                        in commande.listeLigneCommandes)
+                      TableRow(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 5),
+                              child: Text(
+                                ligneCommande.article.nom,
+                                style: TextStyle(font: font, fontSize: 10),
+                              ),
+                            ),
+                            flex: 2,
+                          ),
+                          Expanded(
                             child: Text(
-                              "Eau minérale",
+                              ligneCommande.quantite.toString(),
+                              textAlign: TextAlign.center,
                               style: TextStyle(font: font, fontSize: 10),
                             ),
+                            flex: 1,
                           ),
-                          flex: 2,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "10",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(font: font, fontSize: 10),
-                          ),
-                          flex: 1,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "15.87 €",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(font: font, fontSize: 10),
-                          ),
-                          flex: 1,
-                        )
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 5),
+                          Expanded(
                             child: Text(
-                              "Biscuit chocolaté",
+                              "${ligneCommande.article.prix.toStringAsFixed(2)} €",
+                              textAlign: TextAlign.center,
                               style: TextStyle(font: font, fontSize: 10),
                             ),
+                            flex: 1,
                           ),
-                          flex: 2,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "3",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(font: font, fontSize: 10),
-                          ),
-                          flex: 1,
-                        ),
-                        Expanded(
-                          child: Text(
-                            "5.96 €",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(font: font, fontSize: 10),
-                          ),
-                          flex: 1,
-                        )
-                      ],
-                    ),
+                          Expanded(
+                            child: Text(
+                              "${(ligneCommande.quantite * ligneCommande.article.prix).toStringAsFixed(2)} €",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(font: font, fontSize: 10),
+                            ),
+                            flex: 1,
+                          )
+                        ],
+                      ),
                     TableRow(
                       children: [
                         Padding(
@@ -143,12 +135,16 @@ class ExportPdf {
                           ),
                         ),
                         Text(
-                          "13",
+                          commande.nombreArticles.toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(font: font, fontSize: 10),
                         ),
                         Text(
-                          "21.83 €",
+                          "",
+                          style: TextStyle(font: font, fontSize: 10),
+                        ),
+                        Text(
+                          "${commande.getPrixTotal()} €",
                           textAlign: TextAlign.center,
                           style: TextStyle(font: font, fontSize: 10),
                         ),
