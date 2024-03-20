@@ -17,13 +17,16 @@ class DetailEvenementWidget extends StatelessWidget {
   final Widget listeView;
   final Panier panier;
   final UtilisateurProvider utilisateurProvider;
+  final Map<String, int> listingCommande;
 
-  const DetailEvenementWidget(
-      {super.key,
-      required this.evenement,
-      required this.listeView,
-      required this.panier,
-      required this.utilisateurProvider});
+  const DetailEvenementWidget({
+    super.key,
+    required this.evenement,
+    required this.listeView,
+    required this.panier,
+    required this.utilisateurProvider,
+    required this.listingCommande,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +59,11 @@ class DetailEvenementWidget extends StatelessWidget {
                   if (utilisateurProvider.perspective == Perspective.PARENT)
                     getBoutonFinaliserCommande(context),
                   if (utilisateurProvider.perspective == Perspective.ORGANIZER)
-                    DetailEvenementOrganisateur(commandes: evenement.commandes),
+                    DetailEvenementOrganisateur(
+                      listingCommandes: listingCommande,
+                      commandes: evenement.commandes,
+                      libelleEvenement: evenement.titre,
+                    ),
                 ],
               ),
             ),

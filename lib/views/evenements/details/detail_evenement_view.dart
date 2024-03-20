@@ -1,5 +1,7 @@
 import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/models/ligne_commande.dart';
 import 'package:ape_manager_front/models/panier.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
@@ -70,6 +72,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
       body: evenement == null
           ? const SizedBox()
           : DetailEvenementWidget(
+              listingCommande: getListingCommande(),
               utilisateurProvider: utilisateurProvider,
               evenement: evenement!,
               listeView: getInfosArticles(),
@@ -194,5 +197,20 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     setState(() {
       panier.retirerArticle(article);
     });
+  }
+
+  Map<String, int> getListingCommande() {
+    Map<String, int> listing = {};
+    for (Commande commande in evenement!.commandes) {
+      for (LigneCommande ligneCommande in commande.listeLigneCommandes) {
+        if (listing[ligneCommande.article.nom] == null) {
+          listing[ligneCommande.article.nom] = ligneCommande.quantite;
+        } else {
+          listing[ligneCommande.article.nom] =
+              (listing[ligneCommande.article.nom]! + ligneCommande.quantite);
+        }
+      }
+    }
+    return listing;
   }
 }

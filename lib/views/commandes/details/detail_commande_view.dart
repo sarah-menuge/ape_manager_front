@@ -1,22 +1,19 @@
-import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/export/export_pdf.dart';
 import 'package:ape_manager_front/models/commande.dart';
-import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/ligne_commande.dart';
-import 'package:ape_manager_front/models/panier.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
-import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/logs.dart';
-import 'package:ape_manager_front/views/commandes/details/bouton_quantite_commandes.dart';
 import 'package:ape_manager_front/views/commandes/details/pop_up_annulation_commande.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:flutter/material.dart';
+import 'package:printing/printing.dart';
 import 'package:provider/provider.dart';
 
 class CommandeView extends StatefulWidget {
@@ -202,7 +199,9 @@ class _CommandeViewState extends State<CommandeView> {
                       fontSize: POLICE_MOBILE_NORMAL_2,
                     ),
                   ),
-                  QuantiteBoutonCommande(ligneCommande: ligneCommande),
+                  Text("x ${ligneCommande.quantite}",
+                      style: FontUtils.getFontApp(
+                          fontSize: POLICE_MOBILE_NORMAL_2)),
                 ],
               ),
             ],
@@ -249,7 +248,9 @@ class _CommandeViewState extends State<CommandeView> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 50, right: 10),
-                child: QuantiteBoutonCommande(ligneCommande: ligneCommande),
+                child: Text("x ${ligneCommande.quantite}",
+                    style: FontUtils.getFontApp(
+                        fontSize: POLICE_DESKTOP_NORMAL_2)),
               ),
             ],
           ),
@@ -289,7 +290,26 @@ class _CommandeViewState extends State<CommandeView> {
         BoutonAction(
           text: "Voir ma facture",
           fonction: () {
-            afficherLogCritical("Voir ma facture non pris en charge");
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return PdfPreview(
+                  pdfFileName:
+                      "Commande n°${commande!.getNumeroCommande()}.pdf",
+                  actionBarTheme: const PdfActionBarTheme(
+                    backgroundColor: BEIGE_FONCE,
+                    textStyle: TextStyle(color: NOIR),
+                    iconColor: NOIR,
+                  ),
+                  canDebug: false,
+                  canChangePageFormat: false,
+                  canChangeOrientation: false,
+                  build: (context) {
+                    ExportPdf export = ExportPdf();
+                    return export.savePdf();
+                  },
+                );
+              }),
+            );
           },
         ),
     ]);
