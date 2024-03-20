@@ -23,6 +23,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
@@ -40,6 +41,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    lancerApplicationMobile();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -61,6 +63,13 @@ class MainApp extends StatelessWidget {
         supportedLocales: const [Locale('en', 'US'), Locale('fr', 'FR')],
       ),
     );
+  }
+
+  // Permet de lancer l'application quand on est sur navigateur et que l'appli est disponible
+  lancerApplicationMobile() async {
+    Uri uri = Uri.parse('ape-manager://redirect');
+    //if (await canLaunchUrl(uri)) await launchUrl(uri);
+    await launchUrl(uri);
   }
 }
 

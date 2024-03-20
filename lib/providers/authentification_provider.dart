@@ -4,7 +4,6 @@ import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
-import 'package:ape_manager_front/utils/stockage_hardware.dart';
 import 'package:ape_manager_front/views/authentification/login/login_view.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -47,7 +46,7 @@ class AuthentificationProvider with ChangeNotifier {
           "L'utilisateur [${loginForm.email}] s'est authentifié avec succès sous le role [${json.decode(response.body)["role"]}]");
       var body = json.decode(response.body);
       utilisateurProvider.updateUser(Utilisateur.fromJson(body));
-      setValueInHardwareMemory(key: "token", value: body["token"]);
+      //setValueInHardwareMemory(key: "token", value: body["token"]);
       isLoggedIn = true;
       return {
         "statusCode": 200,
