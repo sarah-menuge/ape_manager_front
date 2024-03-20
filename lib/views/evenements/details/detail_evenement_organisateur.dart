@@ -1,3 +1,4 @@
+import 'package:ape_manager_front/export/export_excel.dart';
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
@@ -7,9 +8,16 @@ import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
 class DetailEvenementOrganisateur extends StatelessWidget {
+  final String libelleEvenement;
   final List<Commande> commandes;
+  final Map<String, int> listingCommandes;
 
-  const DetailEvenementOrganisateur({super.key, required this.commandes});
+  const DetailEvenementOrganisateur({
+    super.key,
+    required this.commandes,
+    required this.libelleEvenement,
+    required this.listingCommandes,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +45,15 @@ class DetailEvenementOrganisateur extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.only(bottom: 50),
           ),
+          if (estDesktop(context, 600))
+            Align(
+              alignment: Alignment.center,
+              child: BoutonAction(
+                  text: "Exporter au format Excel",
+                  fonction: () {
+                    exporterListingExcel(context);
+                  }),
+            ),
         ],
       ),
     );
@@ -144,5 +161,13 @@ class DetailEvenementOrganisateur extends StatelessWidget {
       );
     }
     return Container();
+  }
+
+  void exporterListingExcel(BuildContext context) {
+    ExportExcel excel = ExportExcel();
+    excel.ajouterFeuille("Feuille 1", true);
+    excel.ajouterValeurs("Feuille 1",
+        ["Nom de l'article", "Quantité total à commander"], listingCommandes);
+    excel.enregistrerExcel(context, "Listing_des_commandes_$libelleEvenement");
   }
 }

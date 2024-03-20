@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:ape_manager_front/forms/reinit_mdp_form.dart';
+import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/enfant.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/utils/logs.dart';
