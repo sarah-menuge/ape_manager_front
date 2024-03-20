@@ -1,6 +1,7 @@
 import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/ligne_commande.dart';
+import 'package:ape_manager_front/models/utilisateur.dart';
 
 enum StatutCommande {
   VALIDEE,
@@ -23,6 +24,7 @@ class Commande {
   late StatutCommande statut;
   List<Article> listeArticles = [];
   List<LigneCommande> listeLigneCommandes = [];
+  late Utilisateur utilisateur;
 
   Commande({
     required this.id,
@@ -36,6 +38,7 @@ class Commande {
     required this.statut,
     required this.listeArticles,
     required this.listeLigneCommandes,
+    required this.utilisateur,
   });
 
   Commande.bidon(int seed) {
@@ -53,6 +56,7 @@ class Commande {
     listeLigneCommandes = [
       LigneCommande(id: id, quantite: 3, article: article),
     ];
+    utilisateur = Utilisateur();
   }
 
   Commande.copie(Commande other) {
@@ -71,6 +75,7 @@ class Commande {
     for (LigneCommande ligneCommande in other.listeLigneCommandes) {
       listeLigneCommandes.add(LigneCommande.copie(ligneCommande));
     }
+    utilisateur = other.utilisateur;
   }
 
   Commande.fromJson(Map<String, dynamic> json) {
@@ -78,6 +83,7 @@ class Commande {
     libelleEvenement = json["event"];
     nombreArticles = json["totalItems"];
     prixTotal = json["totalPrice"];
+    utilisateur = Utilisateur.fromJson(json["user"]);
     dateCreation = DateTime.parse(json["creationDate"]);
     try {
       dateRetrait = DateTime.parse(json["pickUpDate"]);
@@ -85,7 +91,7 @@ class Commande {
       dateRetrait = null;
     }
     lieuRetrait = LieuRetrait.fromJson(json["pickUpPlace"]);
-    estPaye = json["isPaid"] == "true" ? true : false;
+    estPaye = json["isPaid"];
     if (json["status"] == "VALIDATED") {
       statut = StatutCommande.VALIDEE;
     } else if (json["status"] == "CANCELED") {

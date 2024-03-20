@@ -306,7 +306,7 @@ class _CommandeViewState extends State<CommandeView> {
                   canChangeOrientation: false,
                   build: (context) {
                     ExportPdf export = ExportPdf();
-                    return export.savePdf();
+                    return export.savePdf(commande!);
                   },
                 );
               }),
