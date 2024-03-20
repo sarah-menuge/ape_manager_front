@@ -1,4 +1,4 @@
-import 'package:ape_manager_front/forms/creation_evenement_form.dart';
+import 'package:ape_manager_front/forms/creation_modif_evenement_form.dart';
 import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
@@ -32,7 +32,7 @@ class CreerEvenementView extends StatefulWidget {
 
 class _CreerEvenementViewState extends State<CreerEvenementView> {
   late EvenementProvider evenementProvider;
-  late CreationEvenementForm creationEvenementForm;
+  late CreationModifEvenementForm creationEvenementForm;
   late UtilisateurProvider utilisateurProvider;
   String? erreur;
 
@@ -42,7 +42,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
     evenementProvider = Provider.of<EvenementProvider>(context, listen: false);
     utilisateurProvider =
         Provider.of<UtilisateurProvider>(context, listen: false);
-    creationEvenementForm = CreationEvenementForm();
+    creationEvenementForm = CreationModifEvenementForm();
     fetchListeOrganisateurs();
   }
 

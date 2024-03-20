@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/export/export_pdf.dart';
+import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/ligne_commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';

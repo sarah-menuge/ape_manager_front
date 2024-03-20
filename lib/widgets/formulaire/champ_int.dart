@@ -6,6 +6,9 @@ import 'champ.dart';
 class ChampInt extends Champ {
   final Widget? prefixIcon;
   final int incrementValue;
+  final void Function(int?)? onChangedMethodInt;
+  final void Function(int?)? onSavedMethodInt;
+  final bool peutEtreNul;
 
   const ChampInt({
     super.key,
@@ -18,27 +21,25 @@ class ChampInt extends Champ {
     super.controller,
     super.readOnly,
     this.incrementValue = 1,
-  }) : assert(incrementValue > 0, 'La valeur d\'incrémentation doit être positive.');
+    this.onChangedMethodInt,
+    this.onSavedMethodInt,
+    this.peutEtreNul = false,
+  }) : assert(incrementValue > 0,
+            'La valeur d\'incrémentation doit être positive.');
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller = controller ?? TextEditingController(text: valeurInitiale);
+    int val = valeurInitiale ?? 0;
 
     void _increment() {
-      int currentValue = int.tryParse(_controller.text) ?? 0;
-      currentValue += incrementValue;
-      _controller.text = currentValue.toString();
-      onChangedMethod?.call(currentValue as String?);
+      val += incrementValue;
+      onChangedMethodInt?.call(val);
     }
 
     void _decrement() {
-      int currentValue = int.tryParse(_controller.text) ?? 0;
-      currentValue -= incrementValue;
-      if (currentValue < 0) {
-        currentValue = 0;
-      }
-      _controller.text = currentValue.toString();
-      onChangedMethod?.call(currentValue as String?);
+      val -= incrementValue;
+      if (val < 0) val = 0;
+      onChangedMethodInt?.call(val);
     }
 
     return SizedBox(
@@ -51,24 +52,30 @@ class ChampInt extends Champ {
             Expanded(
               child: TextFormField(
                 readOnly: readOnly,
-                controller: _controller,
+                initialValue: valeurInitiale?.toString(),
                 onSaved: (value) {
                   int? intValue = int.tryParse(value ?? '');
-                  if (onSavedMethod != null && intValue != null) {
-                    onSavedMethod!(intValue as String?);
+                  if (onSavedMethodInt != null && intValue != null) {
+                    onSavedMethodInt!(intValue);
                   }
                 },
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
+                  if (peutEtreNul == false &&
+                      (value == null || value.isEmpty)) {
                     return 'Veuillez renseigner ce champ.';
                   }
-                  if (int.tryParse(value) == null) {
+                  if (value != null &&
+                      value.isNotEmpty &&
+                      int.tryParse(value) == null) {
                     return 'Veuillez entrer un nombre valide.';
                   }
                   return null;
                 },
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))],
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*'))
+                ],
                 decoration: InputDecoration(
                   labelText: label,
                   border: const OutlineInputBorder(),
@@ -83,11 +90,11 @@ class ChampInt extends Champ {
             ),
             if (!readOnly) ...[
               IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: _increment,
               ),
               IconButton(
-                icon: Icon(Icons.remove),
+                icon: const Icon(Icons.remove),
                 onPressed: _decrement,
               ),
             ]

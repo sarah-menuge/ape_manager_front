@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:ape_manager_front/forms/creation_evenement_form.dart';
-import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/forms/creation_modif_evenement_form.dart';
+import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/utils/logs.dart';
@@ -96,7 +96,7 @@ class EvenementProvider extends ChangeNotifier {
   }
 
   Future<dynamic> creerEvenement(
-      String token, CreationEvenementForm creationEvenementForm) async {
+      String token, CreationModifEvenementForm creationEvenementForm) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/events/',
       typeRequeteHttp: TypeRequeteHttp.POST,
@@ -128,6 +128,300 @@ class EvenementProvider extends ChangeNotifier {
     return {
       "statusCode": 201,
       "message": "L'événement a été créé avec succès.",
+    };
+  }
+
+  /// Modification d'un événement
+  Future<dynamic> modifierEvenement(String token, Evenement evenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/${evenement.id}',
+      typeRequeteHttp: TypeRequeteHttp.PUT,
+      token: token,
+      jsonBody: evenement.toJsonInfosGenerales(),
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode != 200) {
+      String err = json.decode(response.body)["message"] ??
+          "La modification de l'événement n'a pas pu aboutir.";
+
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    return {
+      "statusCode": 200,
+      "message": "L'événement a été modifié avec succès.",
+    };
+  }
+
+  /// Ajout d'un nouvel organisateur à l'événement
+  Future<dynamic> ajouterOrganisateur(
+    String token,
+    Evenement evenement,
+    Organisateur organisateur,
+  ) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/${evenement.id}/organizers/${organisateur.id}',
+      typeRequeteHttp: TypeRequeteHttp.PUT,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode != 200) {
+      String err = json.decode(response.body)["message"] ??
+          "L'ajout de l'organisateur à l'événement n'a pas pu aboutir.";
+
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    return {
+      "statusCode": 200,
+      "message": "L'organisateur a bien été ajouté à l'événement.",
+    };
+  }
+
+  /// Suppression d'un nouvel organisateur à l'événement
+  Future<dynamic> supprimerOrganisateur(
+    String token,
+    Evenement evenement,
+    Organisateur organisateur,
+  ) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/${evenement.id}/organizers/${organisateur.id}',
+      typeRequeteHttp: TypeRequeteHttp.DELETE,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode != 200) {
+      String err = json.decode(response.body)["message"] ??
+          "L'organisateur n'a pas pu être supprimé de l'événement.";
+
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    return {
+      "statusCode": 200,
+      "message": "L'organisateur a bien été supprimé de l'événement.",
+    };
+  }
+
+  /// Ajout d'un article à un événément
+  Future<dynamic> ajouterArticle(
+    String token,
+    Evenement evenement,
+    Article article,
+  ) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/${evenement.id}/items/',
+      typeRequeteHttp: TypeRequeteHttp.POST,
+      token: token,
+      jsonBody: article.toJson(evenement.id),
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode != 201) {
+      String err = json.decode(response.body)["message"] ??
+          "La création de l'article a échoué.";
+
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    return {
+      "statusCode": 201,
+      "message": "La création de l'article a bien été effectuée.",
+      "id": json.decode(response.body)["id"],
+    };
+  }
+
+  /// Modification d'un article associé à un événément
+  Future<dynamic> modifierArticle(
+    String token,
+    Evenement evenement,
+    Article article,
+  ) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/items/${article.id}',
+      typeRequeteHttp: TypeRequeteHttp.PUT,
+      token: token,
+      jsonBody: article.toJson(null),
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode != 200) {
+      String err = json.decode(response.body)["message"] ??
+          "La modification de l'article a échoué.";
+
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    return {
+      "statusCode": 200,
+      "message": "La modification de l'article a bien été effectuée.",
+    };
+  }
+
+  /// Suppression d'un article associé à un événément
+  Future<dynamic> supprimerArticle(
+    String token,
+    Evenement evenement,
+    Article article,
+  ) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/${evenement.id}/items/${article.id}',
+      typeRequeteHttp: TypeRequeteHttp.DELETE,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode != 204) {
+      String err = json.decode(response.body)["message"] ??
+          "La suppression de l'article a échoué.";
+
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    return {
+      "statusCode": 204,
+      "message": "L'article a bien été supprimé de l'événement.",
+    };
+  }
+
+  /// Suppression d'un événement
+  Future<dynamic> supprimerEvenement(
+    String token,
+    Evenement evenement,
+  ) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/${evenement.id}',
+      typeRequeteHttp: TypeRequeteHttp.DELETE,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode != 204) {
+      String err = json.decode(response.body)["message"] ??
+          "La suppression de l'événement a échoué.";
+
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    return {
+      "statusCode": 204,
+      "message": "L'événement a bien été supprimé.",
+    };
+  }
+
+  /// Publication de l'événement
+  Future<dynamic> publierEvenement(
+    String token,
+    Evenement evenement,
+  ) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/${evenement.id}/publish',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode != 204) {
+      String err = json.decode(response.body)["message"] ??
+          "L'événement n'a pas pu être publié.";
+
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    return {
+      "statusCode": 204,
+      "message": "L'événement a bien été publié.",
     };
   }
 

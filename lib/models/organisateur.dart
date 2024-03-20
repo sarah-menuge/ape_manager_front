@@ -20,6 +20,16 @@ class Organisateur extends DonneeTableau {
     this.estMembre = false,
   });
 
+  Organisateur.copie(Organisateur other) {
+    id = other.id;
+    nom = other.nom;
+    prenom = other.prenom;
+    email = other.email;
+    telephone = other.telephone;
+    role = other.role;
+    estMembre = other.estMembre;
+  }
+
   Organisateur.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     nom = json["surname"];
@@ -43,6 +53,12 @@ class Organisateur extends DonneeTableau {
     } else {
       role = RoleUtilisateur.inactif;
     }
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != Organisateur) return false;
+    return (other as Organisateur).id == id;
   }
 
   Map<String, dynamic> toJson() {

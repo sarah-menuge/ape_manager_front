@@ -1,16 +1,21 @@
-import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/forms/creation_modif_evenement_form.dart';
+import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/models/evenement.dart';
-import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/routage.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_form_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_ajout_article.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_ajout_organisateur.dart';
+import 'package:ape_manager_front/views/evenements/modification/popup_modifier_article.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_publier_evenement.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_supprimer_article.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_supprimer_evenement.dart';
@@ -21,6 +26,7 @@ import 'package:ape_manager_front/widgets/conteneur/tuile.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:ape_manager_front/widgets/texte/texte_flexible.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ModifierEvenementView extends StatefulWidget {
   static String routeURL = '/modifier-evenement/:idEvent';
@@ -34,176 +40,59 @@ class ModifierEvenementView extends StatefulWidget {
 
 class _ModifierEvenementViewState extends State<ModifierEvenementView> {
   late EvenementProvider evenementProvider;
+  late UtilisateurProvider utilisateurProvider;
+  late CreationModifEvenementForm modifEvenementForm;
+  Evenement? evenementBrouillon;
+  Map<String, dynamic> valeursInitiales = {};
 
-  List<Organisateur> organisateurs = [
-    Organisateur(
-      id: 1,
-      nom: "Dupont",
-      prenom: "Jean",
-      email: "test@test.com",
-    ),
-    Organisateur(
-      id: 2,
-      nom: "Martin",
-      prenom: "Sophie",
-      email: "sophie.martin@example.com",
-    ),
-    Organisateur(
-      id: 3,
-      nom: "Leclerc",
-      prenom: "Pierre",
-      email: "p.leclerc@example.com",
-    ),
-    Organisateur(
-      id: 4,
-      nom: "Dubois",
-      prenom: "Marie",
-      email: "marie.dubois@example.com",
-    ),
-    Organisateur(
-      id: 5,
-      nom: "Lefebvre",
-      prenom: "Luc",
-      email: "luc.lefebvre@example.com",
-    ),
-    Organisateur(
-      id: 6,
-      nom: "Bernard",
-      prenom: "Émilie",
-      email: "emilie.bernard@example.com",
-    ),
-    Organisateur(
-      id: 7,
-      nom: "Thomas",
-      prenom: "Nicolas",
-      email: "nicolas.thomas@example.com",
-    ),
-    Organisateur(
-      id: 8,
-      nom: "Petit",
-      prenom: "Anne",
-      email: "anne.petit@example.com",
-    ),
-    Organisateur(
-      id: 9,
-      nom: "Robert",
-      prenom: "Julie",
-      email: "julie.robert@example.com",
-    ),
-    Organisateur(
-      id: 10,
-      nom: "Richard",
-      prenom: "Philippe",
-      email: "philippe.richard@example.com",
-    ),
-    Organisateur(
-      id: 11,
-      nom: "Durand",
-      prenom: "Sylvie",
-      email: "sylvie.durand@example.com",
-    ),
-    Organisateur(
-      id: 12,
-      nom: "Moreau",
-      prenom: "Thomas",
-      email: "thomas.moreau@example.com",
-    ),
-    Organisateur(
-      id: 13,
-      nom: "Laurent",
-      prenom: "Céline",
-      email: "celine.laurent@example.com",
-    ),
-    Organisateur(
-      id: 14,
-      nom: "Garcia",
-      prenom: "David",
-      email: "david.garcia@example.com",
-    ),
-    Organisateur(
-      id: 15,
-      nom: "Leroy",
-      prenom: "Christine",
-      email: "christine.leroy@example.com",
-    ),
-    Organisateur(
-      id: 16,
-      nom: "Girard",
-      prenom: "Antoine",
-      email: "antoine.girard@example.com",
-    ),
-    Organisateur(
-      id: 17,
-      nom: "Roux",
-      prenom: "Isabelle",
-      email: "isabelle.roux@example.com",
-    ),
-    Organisateur(
-      id: 18,
-      nom: "Fournier",
-      prenom: "François",
-      email: "francois.fournier@example.com",
-    ),
-    Organisateur(
-      id: 19,
-      nom: "Morel",
-      prenom: "Marion",
-      email: "marion.morel@example.com",
-    ),
-    Organisateur(
-      id: 20,
-      nom: "Garnier",
-      prenom: "Jean-Pierre",
-      email: "jp.garnier@example.com",
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    evenementProvider = Provider.of<EvenementProvider>(context, listen: false);
+    utilisateurProvider =
+        Provider.of<UtilisateurProvider>(context, listen: false);
+    fetchEvenement();
+  }
 
-  List<Article> article = [
-    Article(
-      id: 1,
-      nom: "Article 5",
-      description: "Description de l'article 5",
-      prix: 50.0,
-      quantiteMax: 100,
-    ),
-    Article(
-      id: 2,
-      nom: "Article 6",
-      description: "Description de l'article 6",
-      prix: 60.0,
-      quantiteMax: 100,
-    ),
-    Article(
-      id: 3,
-      nom: "Article 7",
-      description: "Description de l'article 7",
-      prix: 70.0,
-      quantiteMax: 100,
-    ),
-    Article(
-      id: 4,
-      nom: "Article 8",
-      description: "Description de l'article 8",
-      prix: 80.0,
-      quantiteMax: 100,
-    ),
-    Article(
-      id: 5,
-      nom: "Article 9",
-      description: "Description de l'article 9",
-      prix: 90.0,
-      quantiteMax: 100,
-    ),
-    Article(
-      id: 6,
-      nom: "Article 10",
-      description: "Description de l'article 10",
-      prix: 100.0,
-      quantiteMax: 100,
-    ),
-  ];
+  Future<void> fetchEvenement() async {
+    evenementBrouillon = null;
+    modifEvenementForm = CreationModifEvenementForm();
 
-  get titre => null;
+    await evenementProvider.fetchEvenement(
+      utilisateurProvider.token!,
+      widget.evenementId,
+    );
+    evenementBrouillon = evenementProvider.evenement!;
+    valeursInitiales = {
+      "titre": evenementBrouillon!.titre,
+      "description": evenementBrouillon!.description,
+      "dateDebut": evenementBrouillon!.dateDebut,
+      "dateFin": evenementBrouillon!.dateFin,
+      "dateFinPaiement": evenementBrouillon!.dateFinPaiement,
+    };
+
+    await evenementProvider.fetchListeArticles(
+      utilisateurProvider.token!,
+      evenementBrouillon!,
+    );
+
+    setState(() {
+      evenementBrouillon;
+    });
+
+    fetchListeOrganisateurs();
+  }
+
+  Future<void> fetchListeOrganisateurs() async {
+    await utilisateurProvider
+        .fetchListeOrganisateurs(utilisateurProvider.token!);
+    setState(() {
+      modifEvenementForm.organisateursExistants =
+          utilisateurProvider.organisateurs;
+      modifEvenementForm.organisateursSelectionnes =
+          evenementBrouillon!.organisateurs;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,81 +103,98 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
           titre: "Modification d'événement",
           label: 'Général',
           icon: const Icon(Icons.settings),
-          onglet: getTuileFormulaireTitre(context),
+          onglet: evenementBrouillon == null
+              ? const SizedBox()
+              : getTuileInformationsGenerales(context),
         ),
         BarreNavigationItem(
           titre: "Modification d'événement",
           label: 'Organisateurs',
           icon: const Icon(Icons.person),
-          onglet: Column(children: [
-            getTuileTableauOrganisateurs(context),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: GRIS_CLAIR),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                          "Restez appuyé pour modifier ou supprimer un organisateur",
-                          style: TextStyle(fontStyle: FontStyle.italic)),
+          onglet: evenementBrouillon == null
+              ? const SizedBox()
+              : Column(
+                  children: [
+                    getTuileTableauOrganisateurs(context),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Icon(Icons.info_outline, color: GRIS_CLAIR),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                  "Restez appuyé pour modifier ou supprimer un organisateur",
+                                  style:
+                                      TextStyle(fontStyle: FontStyle.italic)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: BoutonAction(
-                  text: "Ajouter un organisateur",
-                  fonction: () => ajouterOrganisateur(),
-                  themeCouleur: ThemeCouleur.vert,
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: BoutonAction(
+                          text: "Ajouter un organisateur",
+                          fonction: () => afficherPopupAjouterOrganisateur(),
+                          themeCouleur: ThemeCouleur.vert,
+                          disable:
+                              modifEvenementForm.organisateursSelect.isEmpty,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ]),
         ),
         BarreNavigationItem(
           titre: "Modification d'événement",
           label: 'Articles',
           icon: const Icon(Icons.article),
-          onglet: Column(children: [
-            getTuileTableauArticles(context),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: GRIS_CLAIR),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                          "Restez appuyé pour modifier ou supprimer un article",
-                          style: TextStyle(fontStyle: FontStyle.italic)),
+          onglet: evenementBrouillon == null
+              ? const SizedBox()
+              : Column(
+                  children: [
+                    getTuileTableauArticles(context),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Icon(Icons.info_outline, color: GRIS_CLAIR),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                  "Restez appuyé pour modifier ou supprimer un article",
+                                  style:
+                                      TextStyle(fontStyle: FontStyle.italic)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: BoutonAction(
-                  text: "Ajouter un article",
-                  fonction: () => ajouterArticle(),
-                  themeCouleur: ThemeCouleur.vert,
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: BoutonAction(
+                          text: "Ajouter un article",
+                          fonction: () => afficherPopupAjouterArticle(),
+                          themeCouleur: ThemeCouleur.vert,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ]),
         ),
         BarreNavigationItem(
-            titre: "Modification d'événement",
-            label: 'Validation',
-            icon: const Icon(Icons.check),
-            onglet: getRecapitulatifEvenement(context)),
+          titre: "Modification d'événement",
+          label: 'Validation',
+          icon: const Icon(Icons.check),
+          onglet: evenementBrouillon == null
+              ? const SizedBox()
+              : getRecapitulatifEvenement(context),
+        ),
       ],
     );
   }
@@ -314,11 +220,12 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const Divider(),
                 TexteFlexible(
-                  texte: "Titre de l'événement : ${titre}",
+                  texte: "Titre de l'événement : ${evenementBrouillon!.titre}",
                 ),
                 const SizedBox(height: 10),
                 TexteFlexible(
-                  texte: "Nombre d'organisateurs : ${organisateurs.length}",
+                  texte:
+                      "Nombre d'organisateurs : ${evenementBrouillon!.organisateurs.length}",
                 ),
                 const SizedBox(height: 10),
                 const TexteFlexible(
@@ -333,9 +240,10 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   // Hauteur fixe pour la liste déroulante des organisateurs
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: organisateurs.length,
+                    itemCount: evenementBrouillon!.organisateurs.length,
                     itemBuilder: (context, index) {
-                      final organisateur = organisateurs[index];
+                      final organisateur =
+                          evenementBrouillon!.organisateurs[index];
                       return ListTile(
                         leading: const Icon(Icons.person),
                         title:
@@ -358,11 +266,12 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
   }
 
   Widget getBodyDesktop(BuildContext context) {
+    if (evenementBrouillon == null) return const SizedBox();
     return SingleChildScrollView(
       child: Column(
         children: [
           getTitre(context),
-          getTuileFormulaireTitre(context),
+          getTuileInformationsGenerales(context),
           getTuileTableauOrganisateurs(context),
           getTuileTableauArticles(context),
           const SizedBox(height: 20),
@@ -406,7 +315,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
     );
   }
 
-  Widget getTuileFormulaireTitre(BuildContext context) {
+  Widget getTuileInformationsGenerales(BuildContext context) {
     return Tuile(
       body: Column(
         children: [
@@ -421,7 +330,12 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               textAlign: TextAlign.center,
             ),
           ),
-          const ModifierEvenementFormView(),
+          ModifierEvenementFormView(
+            evenement: evenementBrouillon!,
+            annulerModificationsInfosGenerales: () =>
+                annulerModificationsInfosGenerales(),
+            modifierInfosGenerales: modifierInfosGenerales,
+          ),
         ],
       ),
       maxHeight:
@@ -431,7 +345,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
 
   Widget getTuileTableauOrganisateurs(BuildContext context) {
     return Tuile(
-      maxHeight: estDesktop(context, 600) ? 500 : 400,
+      maxHeight: estDesktop(context, 600) ? 650 : 550,
       body: Column(
         children: [
           Padding(
@@ -450,9 +364,9 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 Tableau(
                   tailleTableau: estDesktop(context, 600) ? 300 : 200,
                   modele: Organisateur(),
-                  objets: organisateurs,
-                  supprimable: (Organisateur organisateurs) {
-                    supprimerOrganisateur(organisateurs);
+                  objets: evenementBrouillon!.organisateurs,
+                  supprimable: (Organisateur organisateur) {
+                    afficherPopupSupprimerOrganisateur(organisateur);
                   },
                 ),
                 if (estDesktop(context, 600))
@@ -461,8 +375,9 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: BoutonAction(
                         text: "Ajouter un organisateur",
-                        fonction: () => ajouterOrganisateur(),
+                        fonction: () => afficherPopupAjouterOrganisateur(),
                         themeCouleur: ThemeCouleur.vert,
+                        disable: modifEvenementForm.organisateursSelect.isEmpty,
                       ),
                     ),
                   ),
@@ -476,7 +391,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
 
   Widget getTuileTableauArticles(BuildContext context) {
     return Tuile(
-      maxHeight: estDesktop(context, 600) ? 500 : 400,
+      maxHeight: estDesktop(context, 600) ? 650 : 550,
       body: Column(
         children: [
           Padding(
@@ -493,14 +408,14 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const SizedBox(height: 20),
                 Tableau(
-                  tailleTableau: estDesktop(context, 600) ? 300 : 200,
+                  tailleTableau: estDesktop(context, 600) ? 450 : 350,
                   modele: Article(),
-                  objets: article,
+                  objets: evenementBrouillon!.articles,
                   editable: (Article article) {
-                    modifierArticle(article);
+                    afficherPopupModifierArticle(article);
                   },
                   supprimable: (Article article) {
-                    supprimerArticle(article);
+                    afficherPopupSupprimerArticle(article);
                   },
                 ),
                 if (estDesktop(context, 600))
@@ -510,7 +425,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                       child: BoutonAction(
                         text: "Ajouter un article",
                         fonction: () {
-                          ajouterArticle();
+                          afficherPopupAjouterArticle();
                         },
                         themeCouleur: ThemeCouleur.vert,
                       ),
@@ -524,33 +439,75 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
     );
   }
 
+  /// Publication événement
   Widget getBoutonPublication(BuildContext context) {
     return BoutonAction(
       text: "Publier l'événement",
       fonction: () {
+        print("${evenementBrouillon!.dateFin} ${valeursInitiales["dateFin"]}");
+        print("${evenementBrouillon!.titre != valeursInitiales["titre"]} "
+            "${evenementBrouillon!.description != valeursInitiales["description"]} "
+            "${evenementBrouillon!.dateDebut != valeursInitiales["dateDebut"]} "
+            "${evenementBrouillon!.dateFin != valeursInitiales["dateFin"]} "
+            "${evenementBrouillon!.dateFinPaiement != valeursInitiales["dateFinPaiement"]}");
+        if (evenementBrouillon!.titre != valeursInitiales["titre"] ||
+            evenementBrouillon!.description !=
+                valeursInitiales["description"] ||
+            evenementBrouillon!.dateDebut != valeursInitiales["dateDebut"] ||
+            evenementBrouillon!.dateFin != valeursInitiales["dateFin"] ||
+            evenementBrouillon!.dateFinPaiement !=
+                valeursInitiales["dateFinPaiement"]) {
+          afficherMessageInfo(
+            context: context,
+            message:
+                "Veuillez enregistrer les modifications effectuées avant de publier le formulaire.",
+            duree: 4,
+          );
+          return;
+        }
+
+        if (evenementBrouillon!.titre == "" ||
+            evenementBrouillon!.description == "" ||
+            evenementBrouillon!.dateDebut == null ||
+            evenementBrouillon!.dateFin == null ||
+            evenementBrouillon!.dateFinPaiement == null) {
+          afficherMessageInfo(
+            context: context,
+            message:
+                "Veuillez renseigner l'intégralité des informations générales avant de publier l'événement.",
+            duree: 4,
+          );
+          return;
+        }
+
         showDialog(
           context: context,
           builder: (context) => PopupPublierModifications(
-              fetchEvenements: () {},
-              evenement: Evenement(
-                  id: -1,
-                  titre: '',
-                  lieu: [LieuRetrait(id: 1, lieu: "dv")],
-                  dateDebut: DateTime.now(),
-                  dateFin: DateTime.now(),
-                  finPaiement: false,
-                  statut: StatutEvenement.BROUILLON,
-                  description: '',
-                  proprietaire: Organisateur(),
-                  organisateurs: [],
-                  articles: [],
-                  commandes: [])),
+            publierEvenement: () => futurePublierEvenement(),
+            evenement: evenementBrouillon!,
+          ),
         );
       },
       themeCouleur: ThemeCouleur.vert,
     );
   }
 
+  Future<void> futurePublierEvenement() async {
+    final response = await evenementProvider.publierEvenement(
+      utilisateurProvider.token!,
+      evenementBrouillon!,
+    );
+
+    if (response["statusCode"] == 204 && mounted) {
+      revenirEnArriere(context);
+      naviguerVersPage(context, EvenementsView.routeURL);
+      afficherMessageSucces(context: context, message: response["message"]);
+    } else {
+      afficherMessageErreur(context: context, message: response["message"]);
+    }
+  }
+
+  /// Suppression de l'événement
   Widget getBoutonSuppression(BuildContext context) {
     return BoutonAction(
       text: "Supprimer l'événement",
@@ -558,72 +515,214 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
         showDialog(
           context: context,
           builder: (context) => PopupSupprimerEvenement(
-              fetchEvenements: () {},
-              evenement: Evenement(
-                  id: -1,
-                  titre: '',
-                  lieu: [LieuRetrait(id: 1, lieu: "dv")],
-                  dateDebut: DateTime.now(),
-                  dateFin: DateTime.now(),
-                  finPaiement: false,
-                  statut: StatutEvenement.BROUILLON,
-                  description: '',
-                  proprietaire: Organisateur(),
-                  organisateurs: [],
-                  articles: [],
-                  commandes: [])),
+            evenement: evenementBrouillon!,
+            supprimerEvenement: () => futureSupprimerEvenement(),
+          ),
         );
       },
       themeCouleur: ThemeCouleur.rouge,
     );
   }
 
-  void doNothing() {}
+  Future<void> futureSupprimerEvenement() async {
+    final response = await evenementProvider.supprimerEvenement(
+      utilisateurProvider.token!,
+      evenementBrouillon!,
+    );
 
-  void ajouterOrganisateur() {
+    if (response["statusCode"] == 204 && mounted) {
+      naviguerVersPage(context, EvenementsView.routeURL);
+      revenirEnArriere(context);
+      afficherMessageSucces(context: context, message: response["message"]);
+    } else {
+      afficherMessageErreur(context: context, message: response["message"]);
+    }
+  }
+
+  /// Ajout d'un organisateur
+  void afficherPopupAjouterOrganisateur() {
     showDialog(
       context: context,
-      builder: (context) =>
-          PopupAjoutOrganisateur(fetchOrganisateurs: doNothing),
+      builder: (context) => PopupAjoutOrganisateur(
+        organisateursSelect: modifEvenementForm.organisateursSelect,
+        ajouterOrganisateur: (Organisateur organisateur) =>
+            futureAjouterOrganisateur(organisateur),
+      ),
     );
   }
 
-  void supprimerOrganisateur(Organisateur organisateur) {
+  Future<void> futureAjouterOrganisateur(Organisateur organisateur) async {
+    final response = await evenementProvider.ajouterOrganisateur(
+      utilisateurProvider.token!,
+      evenementBrouillon!,
+      organisateur,
+    );
+
+    if (response["statusCode"] == 200 && mounted) {
+      setState(() {
+        evenementBrouillon!.organisateurs.add(organisateur);
+      });
+      afficherMessageSucces(context: context, message: response["message"]);
+      revenirEnArriere(context);
+    } else {
+      afficherMessageErreur(context: context, message: response["message"]);
+    }
+  }
+
+  /// Suppression d'un organisateur
+  void afficherPopupSupprimerOrganisateur(Organisateur organisateur) {
     showDialog(
       context: context,
       builder: (context) => PopupSupprimerOrganisateur(
-        fetchOrganisateurs: doNothing,
+        supprimerOrganisateur: (Organisateur organisateur) =>
+            futureSupprimerOrganisateur(organisateur),
         organisateur: organisateur,
       ),
     );
   }
 
-  void ajouterArticle() {
+  Future<void> futureSupprimerOrganisateur(Organisateur organisateur) async {
+    final response = await evenementProvider.supprimerOrganisateur(
+      utilisateurProvider.token!,
+      evenementBrouillon!,
+      organisateur,
+    );
+
+    if (response["statusCode"] == 200 && mounted) {
+      setState(() {
+        evenementBrouillon!.organisateurs.remove(organisateur);
+      });
+      afficherMessageSucces(context: context, message: response["message"]);
+      revenirEnArriere(context);
+    } else {
+      afficherMessageInfo(context: context, message: response["message"]);
+      if (response["statusCode"] == 409) revenirEnArriere(context);
+    }
+  }
+
+  /// Ajout d'un article
+  void afficherPopupAjouterArticle() {
     showDialog(
       context: context,
       builder: (context) => PopupAjoutArticle(
-        fetchArticles: doNothing,
+        ajouterArticle: (Article article) => futureAjouterArticle(article),
       ),
     );
   }
 
-  void modifierArticle(Article article) {
+  Future<void> futureAjouterArticle(Article article) async {
+    if (article.quantiteMax == 0) article.quantiteMax = -1;
+    final response = await evenementProvider.ajouterArticle(
+      utilisateurProvider.token!,
+      evenementBrouillon!,
+      article,
+    );
+
+    if (response["statusCode"] == 201 && mounted) {
+      setState(() {
+        article.id = response["id"];
+        evenementBrouillon!.articles.add(article);
+      });
+      afficherMessageSucces(context: context, message: response["message"]);
+      revenirEnArriere(context);
+    } else {
+      afficherMessageInfo(context: context, message: response["message"]);
+    }
+  }
+
+  /// Modification d'un article
+  void afficherPopupModifierArticle(Article article) {
     showDialog(
       context: context,
-      builder: (context) => PopupAjoutArticle(
-        fetchArticles: doNothing,
+      builder: (context) => PopupModifierArticle(
+        modifierArticle: (Article article) => futureModifierArticle(article),
         article: article,
       ),
     );
   }
 
-  void supprimerArticle(Article article) {
+  Future<void> futureModifierArticle(Article article) async {
+    if (article.quantiteMax == 0) article.quantiteMax = -1;
+    final response = await evenementProvider.modifierArticle(
+      utilisateurProvider.token!,
+      evenementBrouillon!,
+      article,
+    );
+
+    if (response["statusCode"] == 200 && mounted) {
+      setState(() {
+        evenementBrouillon;
+      });
+      afficherMessageSucces(context: context, message: response["message"]);
+      revenirEnArriere(context);
+    } else {
+      afficherMessageErreur(context: context, message: response["message"]);
+    }
+  }
+
+  /// Suppression d'un article
+  void afficherPopupSupprimerArticle(Article article) {
     showDialog(
       context: context,
       builder: (context) => PopupSupprimerArticle(
-        fetchArticles: doNothing,
+        supprimerArticle: (Article article) => futureSupprimerArticle(article),
         article: article,
       ),
     );
+  }
+
+  Future<void> futureSupprimerArticle(Article article) async {
+    final response = await evenementProvider.supprimerArticle(
+      utilisateurProvider.token!,
+      evenementBrouillon!,
+      article,
+    );
+
+    if (response["statusCode"] == 204 && mounted) {
+      setState(() {
+        evenementBrouillon!.articles.remove(article);
+      });
+      afficherMessageSucces(context: context, message: response["message"]);
+      revenirEnArriere(context);
+    } else {
+      afficherMessageInfo(context: context, message: response["message"]);
+    }
+  }
+
+  /// Annulation des modifications des infos générales
+  annulerModificationsInfosGenerales() {
+    revenirEnArriere(context);
+    setState(() {
+      evenementBrouillon!.titre = valeursInitiales["titre"];
+      evenementBrouillon!.description = valeursInitiales["description"];
+      evenementBrouillon!.dateDebut = valeursInitiales["dateDebut"];
+      evenementBrouillon!.dateFin = valeursInitiales["dateFin"];
+      evenementBrouillon!.dateFinPaiement = valeursInitiales["dateFinPaiement"];
+    });
+  }
+
+  /// Modification des infos générales
+  modifierInfosGenerales(Evenement evenement) {
+    futureModifierInfosGenerales(evenement);
+  }
+
+  Future<void> futureModifierInfosGenerales(Evenement evenement) async {
+    final response = await evenementProvider.modifierEvenement(
+      utilisateurProvider.token!,
+      evenement,
+    );
+
+    if (response["statusCode"] == 200 && mounted) {
+      afficherMessageSucces(context: context, message: response["message"]);
+      valeursInitiales = {
+        "titre": evenementBrouillon!.titre,
+        "description": evenementBrouillon!.description,
+        "dateDebut": evenementBrouillon!.dateDebut,
+        "dateFin": evenementBrouillon!.dateFin,
+        "dateFinPaiement": evenementBrouillon!.dateFinPaiement,
+      };
+    } else {
+      afficherMessageErreur(context: context, message: response["message"]);
+    }
   }
 }

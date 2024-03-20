@@ -8,39 +8,47 @@ import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
 import 'package:flutter/material.dart';
 
-class PopupAjoutArticle extends StatelessWidget {
-  final Function ajouterArticle;
+class PopupModifierArticle extends StatelessWidget {
+  final Function modifierArticle;
+  final Article article;
 
-  const PopupAjoutArticle({super.key, required this.ajouterArticle});
+  const PopupModifierArticle({
+    super.key,
+    required this.modifierArticle,
+    required this.article,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Popup(
-      titre: "Ajout d'un article",
+      titre: "Modification d'un article",
       sousTitre:
-          "Veuillez renseigner les informations concernant l'article à ajouter.",
-      body: AjoutArticleFormView(
-        ajouterArticle: ajouterArticle,
+          "Veuillez renseigner les informations concernant l'article à modifier.",
+      body: ModifierArticleFormView(
+        modifierArticle: modifierArticle,
+        article: article,
       ),
     );
   }
 }
 
-class AjoutArticleFormView extends StatefulWidget {
-  final Function ajouterArticle;
+class ModifierArticleFormView extends StatefulWidget {
+  final Function modifierArticle;
+  final Article article;
 
-  AjoutArticleFormView({
+  const ModifierArticleFormView({
     super.key,
-    required this.ajouterArticle,
+    required this.modifierArticle,
+    required this.article,
   });
 
   @override
-  State<AjoutArticleFormView> createState() => _AjoutArticleFormViewState();
+  State<ModifierArticleFormView> createState() =>
+      _ModifierArticleFormViewState();
 }
 
-class _AjoutArticleFormViewState extends FormulaireState<AjoutArticleFormView> {
-  Article newArticle = Article();
-
+class _ModifierArticleFormViewState
+    extends FormulaireState<ModifierArticleFormView> {
   @override
   Formulaire setFormulaire(BuildContext context) {
     return Formulaire(
@@ -51,28 +59,34 @@ class _AjoutArticleFormViewState extends FormulaireState<AjoutArticleFormView> {
           ChampString(
             prefixIcon: const Icon(Icons.abc),
             label: "Nom de l'article",
-            onSavedMethod: (value) => newArticle.nom = value!,
+            valeurInitiale: widget.article.nom,
+            onSavedMethod: (value) => widget.article.nom = value!,
           ),
         ],
         [
           ChampString(
             prefixIcon: const Icon(Icons.description),
             label: "Description de l'article",
-            onSavedMethod: (value) => newArticle.description = value!,
+            valeurInitiale: widget.article.description,
+            onSavedMethod: (value) => widget.article.description = value!,
           ),
         ],
         [
           ChampDouble(
             prefixIcon: const Icon(Icons.euro),
             label: "Prix",
-            onSavedMethodDouble: (value) => newArticle.prix = value!,
+            valeurInitiale: widget.article.prix,
+            onSavedMethodDouble: (value) => widget.article.prix = value!,
           ),
         ],
         [
           ChampInt(
             prefixIcon: const Icon(Icons.numbers),
             label: "Quantité maximale autorisée",
-            onSavedMethodInt: (value) => newArticle.quantiteMax = value!,
+            valeurInitiale: widget.article.quantiteMax == -1
+                ? null
+                : widget.article.quantiteMax,
+            onSavedMethodInt: (value) => widget.article.quantiteMax = value!,
             incrementValue: 1,
             peutEtreNul: true,
           ),
@@ -80,20 +94,20 @@ class _AjoutArticleFormViewState extends FormulaireState<AjoutArticleFormView> {
       ],
       boutons: [
         BoutonAction(
-          text: "Ajouter l'article",
-          fonction: () => appuiBoutonAjouter(),
+          text: "Modifier l'article",
+          fonction: () => appuiBoutonModifier(),
           disable: desactiverBoutons,
         ),
       ],
     );
   }
 
-  void appuiBoutonAjouter() {
+  void appuiBoutonModifier() {
     resetMessageErreur();
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       appelMethodeAsynchrone(() {
-        widget.ajouterArticle(newArticle);
+        widget.modifierArticle(widget.article);
       });
     }
   }

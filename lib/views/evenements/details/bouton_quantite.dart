@@ -1,4 +1,4 @@
-import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';

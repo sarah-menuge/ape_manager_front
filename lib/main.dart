@@ -14,9 +14,6 @@ import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart'
 import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
-import 'package:ape_manager_front/views/authentification/login/login_view.dart';
-import 'package:ape_manager_front/views/commandes/details/detail_commande_view.dart';
-import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
@@ -111,7 +108,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: MesCommandesView.routeURL,
-      builder: (context, state) => MesCommandesView(),
+      builder: (context, state) => const MesCommandesView(),
     ),
     GoRoute(
       path: CommandeView.routeURL,

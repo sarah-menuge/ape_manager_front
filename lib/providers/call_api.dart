@@ -73,7 +73,7 @@ Future<ReponseAPI> callAPI({
       methodeHttp: http.put,
       rootUrl: rootURL,
       uri: uri,
-      jsonBody: jsonBody as Object,
+      jsonBody: jsonBody != null ? jsonBody : null,
       timeoutSec: timeoutSec,
       token: token,
     );

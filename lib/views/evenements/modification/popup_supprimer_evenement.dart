@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 
 class PopupSupprimerEvenement extends StatelessWidget {
   final Evenement evenement;
-  final Function fetchEvenements;
+  final Function supprimerEvenement;
 
   const PopupSupprimerEvenement({
     super.key,
     required this.evenement,
-    required this.fetchEvenements,
+    required this.supprimerEvenement,
   });
 
   @override
@@ -24,7 +24,7 @@ class PopupSupprimerEvenement extends StatelessWidget {
       sousTitre: "Êtes-vous sûr de vouloir supprimer l'evenement ?",
       body: SuppressionEvenementFormView(
         evenement: evenement,
-        fetchEvenements: fetchEvenements,
+        supprimerEvenement: supprimerEvenement,
       ),
     );
   }
@@ -32,12 +32,12 @@ class PopupSupprimerEvenement extends StatelessWidget {
 
 class SuppressionEvenementFormView extends StatefulWidget {
   final Evenement evenement;
-  final Function fetchEvenements;
+  final Function supprimerEvenement;
 
   const SuppressionEvenementFormView({
     super.key,
     required this.evenement,
-    required this.fetchEvenements,
+    required this.supprimerEvenement,
   });
 
   @override
@@ -66,20 +66,7 @@ class _SuppressionEvenementFormViewState
   void appuiBoutonSupprimer() {
     resetMessageErreur();
     appelMethodeAsynchrone(() {
-      supprimerEvenement();
+      widget.supprimerEvenement();
     });
-  }
-
-  Future<void> supprimerEvenement() async {
-    afficherLogCritical("Suppression d'un événement non pris en charge");
-    return;
-    final response = null;
-    if (mounted && response["statusCode"] == 200) {
-      afficherMessageSucces(context: context, message: response["message"]);
-      Navigator.of(context).pop();
-      widget.fetchEvenements();
-    } else {
-      setMessageErreur(response["message"]);
-    }
   }
 }
