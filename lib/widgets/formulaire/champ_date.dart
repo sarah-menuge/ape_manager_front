@@ -6,6 +6,7 @@ import 'champ.dart';
 
 class ChampDate extends Champ {
   Icon? prefixIcon;
+  DateTime? lastSelectedDate;
 
   ChampDate({
     super.key,
@@ -20,53 +21,63 @@ class ChampDate extends Champ {
   }) : super(
           controller: controller ?? TextEditingController(text: valeurInitiale),
           valeurInitiale: null,
-        );
+        ) {
+    if (valeurInitiale != null && valeurInitiale.isNotEmpty) {
+      lastSelectedDate = DateFormat('dd-MM-yyyy').parse(valeurInitiale);
+    }
+  }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime maintenant = DateTime.now();
-    final DateTime anProchain = DateTime(DateTime.now().year+1,8,31);
+    final DateTime dateDebut = lastSelectedDate == null
+        ? DateTime.now()
+        : DateTime.now().isBefore(lastSelectedDate!)
+            ? DateTime.now()
+            : lastSelectedDate!;
+    final DateTime anProchain = DateTime(DateTime.now().year + 1, 8, 31);
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: maintenant,
-      firstDate: maintenant,
+      initialDate: lastSelectedDate ?? dateDebut,
+      firstDate: dateDebut,
       lastDate: anProchain,
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: BEIGE_TRES_FONCE,
-              onPrimary: Colors.black,
-              surface: BLANC_CASSE,
-              onSurface: Colors.black,
-              
-            ),
-            buttonTheme: ButtonThemeData(
-              textTheme: ButtonTextTheme.primary,
-            ),
+            buttonTheme:
+                const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             dialogBackgroundColor: Colors.white,
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: BLEU_2),
+            ),
           ),
           child: child!,
         );
       },
       helpText: "Date choisie :",
-
     );
     if (picked != null) {
-      controller?.text = DateFormat('dd-MM-yyyy').format(picked);
+      lastSelectedDate = picked;
+      String formattedDate = DateFormat('dd-MM-yyyy').format(picked);
+      if (controller!.text != formattedDate) {
+        controller!.text = formattedDate;
+        if (onChangedMethod != null) {
+          onChangedMethod!(formattedDate);
+        }
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: paddingVertical),
+      padding: EdgeInsets.symmetric(vertical: paddingVertical ?? 0),
       child: TextFormField(
         readOnly: readOnly,
         onSaved: onSavedMethod ?? defaultOnSavedMethod,
-        onChanged: onChangedMethod ?? defaultOnChangedMethod,
+        onChanged:
+            onChangedMethod != null ? (value) => onChangedMethod!(value) : null,
         controller: controller,
         onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
           _selectDate(context);
         },
         validator: (value) {
@@ -76,12 +87,11 @@ class ChampDate extends Champ {
           labelText: label,
           border: const OutlineInputBorder(),
           prefixIcon: prefixIcon,
-          labelStyle: getTextStyle(context),
-          contentPadding: getPaddingChamp(),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
           helperText: " ",
-          isDense: isDense,
+          isDense: true,
         ),
-        style: getTextStyle(context),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:intl/intl.dart';
 
-class CreationEvenementForm {
+class CreationModifEvenementForm {
   String titreEvenement = "";
   List<Organisateur> organisateursExistants = [];
   List<Organisateur> organisateursSelectionnes = [];

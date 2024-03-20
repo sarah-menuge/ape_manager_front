@@ -10,7 +10,7 @@ class Article extends DonneeTableau {
   Article({
     this.id = -1,
     this.nom = "",
-    this.quantiteMax = 0,
+    this.quantiteMax = -1,
     this.prix = 0.0,
     this.description = "",
   });
@@ -40,6 +40,22 @@ class Article extends DonneeTableau {
     description = json['description'];
   }
 
+  Map<String, dynamic> toJson(int? eventId) {
+    Map<String, dynamic> json = {};
+
+    if (eventId != null) json.addAll({"event": eventId});
+
+    json.addAll({
+      "name": nom,
+      "maxQuantity": quantiteMax,
+      "price": prix,
+      "description": description,
+      "category": ""
+    });
+
+    return json;
+  }
+
   @override
   String toString() {
     return nom;
@@ -48,8 +64,10 @@ class Article extends DonneeTableau {
   @override
   getValeur(String nom_colonne) {
     if (nom_colonne == "Nom") return nom;
-    if (nom_colonne == "max") return quantiteMax;
-    if (nom_colonne == "Prix") return prix;
+    if (nom_colonne == "Qté.\nmax") {
+      return quantiteMax == -1 ? "-" : quantiteMax;
+    }
+    if (nom_colonne == "Prix") return "${prix.toStringAsFixed(2)} €";
     if (nom_colonne == "Desc") return description;
   }
 

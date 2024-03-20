@@ -6,6 +6,8 @@ import 'champ.dart';
 class ChampDouble extends Champ {
   final Widget? prefixIcon;
   final double incrementValue;
+  final void Function(double?)? onChangedMethodDouble;
+  final void Function(double?)? onSavedMethodDouble;
 
   const ChampDouble({
     super.key,
@@ -18,27 +20,24 @@ class ChampDouble extends Champ {
     super.controller,
     super.readOnly,
     this.incrementValue = 0.01,
-  }) : assert(incrementValue > 0, 'La valeur d\'incrémentation doit être positive.');
+    this.onChangedMethodDouble,
+    this.onSavedMethodDouble,
+  }) : assert(incrementValue > 0,
+            'La valeur d\'incrémentation doit être positive.');
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller = controller ?? TextEditingController(text: valeurInitiale);
+    double val = valeurInitiale ?? 0.0;
 
-    void _increment() {
-      double currentValue = double.tryParse(_controller.text) ?? 0.0;
-      currentValue += incrementValue;
-      _controller.text = currentValue.toStringAsFixed(2);
-      onChangedMethod?.call(currentValue as String?);
+    void increment() {
+      val += incrementValue;
+      onChangedMethodDouble?.call(val);
     }
 
-    void _decrement() {
-      double currentValue = double.tryParse(_controller.text) ?? 0.0;
-      currentValue -= incrementValue;
-      if (currentValue < 0) {
-        currentValue = 0;
-      }
-      _controller.text = currentValue.toStringAsFixed(2);
-      onChangedMethod?.call(currentValue as String?);
+    void decrement() {
+      val -= incrementValue;
+      if (val < 0) val = 0;
+      onChangedMethodDouble?.call(val);
     }
 
     return SizedBox(
@@ -51,11 +50,11 @@ class ChampDouble extends Champ {
             Expanded(
               child: TextFormField(
                 readOnly: readOnly,
-                controller: _controller,
+                initialValue: valeurInitiale?.toStringAsFixed(2),
                 onSaved: (value) {
                   double? doubleValue = double.tryParse(value ?? '');
-                  if (onSavedMethod != null && doubleValue != null) {
-                    onSavedMethod!(doubleValue as String?);
+                  if (onSavedMethodDouble != null && doubleValue != null) {
+                    onSavedMethodDouble!(doubleValue);
                   }
                 },
                 validator: (value) {
@@ -67,8 +66,11 @@ class ChampDouble extends Champ {
                   }
                   return null;
                 },
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*'))],
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d?\d?'))
+                ],
                 decoration: InputDecoration(
                   labelText: label,
                   border: const OutlineInputBorder(),
@@ -82,14 +84,8 @@ class ChampDouble extends Champ {
               ),
             ),
             if (!readOnly) ...[
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: _increment,
-              ),
-              IconButton(
-                icon: Icon(Icons.remove),
-                onPressed: _decrement,
-              ),
+              IconButton(icon: const Icon(Icons.add), onPressed: increment),
+              IconButton(icon: const Icon(Icons.remove), onPressed: decrement),
             ]
           ],
         ),

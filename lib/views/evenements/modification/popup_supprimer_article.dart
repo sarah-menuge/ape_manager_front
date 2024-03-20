@@ -1,4 +1,4 @@
-import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 
 class PopupSupprimerArticle extends StatelessWidget {
   final Article article;
-  final Function fetchArticles;
+  final Function supprimerArticle;
 
   const PopupSupprimerArticle({
     super.key,
     required this.article,
-    required this.fetchArticles,
+    required this.supprimerArticle,
   });
 
   @override
@@ -24,7 +24,7 @@ class PopupSupprimerArticle extends StatelessWidget {
       sousTitre: "Êtes-vous sûr de vouloir supprimer l'article ?",
       body: SuppressionArticleFormView(
         article: article,
-        fetchArticles: fetchArticles,
+        supprimerArticle: supprimerArticle,
       ),
     );
   }
@@ -32,12 +32,12 @@ class PopupSupprimerArticle extends StatelessWidget {
 
 class SuppressionArticleFormView extends StatefulWidget {
   final Article article;
-  final Function fetchArticles;
+  final Function supprimerArticle;
 
   const SuppressionArticleFormView({
     super.key,
     required this.article,
-    required this.fetchArticles,
+    required this.supprimerArticle,
   });
 
   @override
@@ -66,20 +66,7 @@ class _SuppressionArticleFormViewState
   void appuiBoutonSupprimer() {
     resetMessageErreur();
     appelMethodeAsynchrone(() {
-      supprimerArticle();
+      widget.supprimerArticle(widget.article);
     });
-  }
-
-  Future<void> supprimerArticle() async {
-    afficherLogCritical("Suppression d'un article non pris en charge");
-    return;
-    final response = null;
-    if (mounted && response["statusCode"] == 200) {
-      afficherMessageSucces(context: context, message: response["message"]);
-      Navigator.of(context).pop();
-      widget.fetchArticles();
-    } else {
-      setMessageErreur(response["message"]);
-    }
   }
 }

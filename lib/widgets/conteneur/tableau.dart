@@ -49,7 +49,7 @@ class _TableauState extends State<Tableau> {
         Container(
           height: 50,
           color: BEIGE_FONCE,
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           alignment: Alignment.centerLeft,
           child: Row(
             children: [
@@ -117,7 +117,7 @@ class _TableauState extends State<Tableau> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(top: 10),
                         child: Text(
                           "Aucune donnée à afficher",
                           textAlign: TextAlign.center,
@@ -159,7 +159,14 @@ class _TableauState extends State<Tableau> {
                                     )
                                   : Expanded(
                                       child: Text(
-                                        item.getValeur(nom_colonne).toString(),
+                                        item
+                                                    .getValeur(nom_colonne)
+                                                    .toString() ==
+                                                "null"
+                                            ? '-'
+                                            : item
+                                                .getValeur(nom_colonne)
+                                                .toString(),
                                         textAlign: TextAlign.center,
                                         style: FontUtils.getFontApp(
                                           fontSize: ResponsiveConstraint

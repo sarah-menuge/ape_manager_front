@@ -6,6 +6,7 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
+import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -18,11 +19,12 @@ class WidgetEvenement extends StatelessWidget {
   final Evenement evenement;
   final TypeBouton typeBouton;
 
-  const WidgetEvenement(
-      {super.key,
-      required this.typeBouton,
-      required this.evenement,
-      required this.utilisateurProvider});
+  const WidgetEvenement({
+    super.key,
+    required this.typeBouton,
+    required this.evenement,
+    required this.utilisateurProvider,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +32,12 @@ class WidgetEvenement extends StatelessWidget {
     String filtreDate = MediaQuery.of(context).size.width > 600
         ? 'E dd MMM yyyy'
         : 'dd MMM yyyy';
-    String formattedDateDebut =
-        DateFormat(filtreDate, 'fr_FR').format(evenement.dateDebut);
-    String formattedDateFin =
-        DateFormat(filtreDate, 'fr_FR').format(evenement.dateFin);
+    String formattedDateDebut = evenement.dateDebut != null
+        ? DateFormat(filtreDate, 'fr_FR').format(evenement.dateDebut!)
+        : "";
+    String formattedDateFin = evenement.dateFin != null
+        ? DateFormat(filtreDate, 'fr_FR').format(evenement.dateFin!)
+        : "";
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal:
@@ -86,21 +90,22 @@ class WidgetEvenement extends StatelessWidget {
               ),
             ),
           if (typeBouton == TypeBouton.Notification)
-            BoutonAction(
-              text: "Me notifier",
-              fonction: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return NotificationPopup(
-                      titreEvenement: evenement.titre,
-                      dateDebut: evenement.dateDebut,
-                    );
-                  },
-                );
-              },
-              themeCouleur: ThemeCouleur.rouge,
-            ),
+            if (evenement.dateDebut != null)
+              BoutonAction(
+                text: "Me notifier",
+                fonction: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NotificationPopup(
+                        titreEvenement: evenement.titre,
+                        dateDebut: evenement.dateDebut!,
+                      );
+                    },
+                  );
+                },
+                themeCouleur: ThemeCouleur.rouge,
+              ),
           getBoutonModifierSiProprietaire(context),
         ],
       ),
@@ -128,7 +133,7 @@ class WidgetEvenement extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("OK"),
+                  child: const Text("OK"),
                 ),
               ],
             ),
@@ -141,16 +146,14 @@ class WidgetEvenement extends StatelessWidget {
   Widget getDescriptionDesktop(String description) {
     return Expanded(
       flex: 2,
-      child: Container(
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            description,
-            textAlign: TextAlign.left,
-            style: FontUtils.getFontApp(
-              fontSize: POLICE_DESKTOP_NORMAL_2,
-              fontWeight: FontWeight.w300,
-            ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          description,
+          textAlign: TextAlign.left,
+          style: FontUtils.getFontApp(
+            fontSize: POLICE_DESKTOP_NORMAL_2,
+            fontWeight: FontWeight.w300,
           ),
         ),
       ),
@@ -162,18 +165,18 @@ class WidgetEvenement extends StatelessWidget {
       if (utilisateurProvider.utilisateur!.email ==
               evenement.proprietaire.email ||
           utilisateurProvider.estAdmin) {
-        return const BoutonNavigationGoRouter(
+        return BoutonNavigationGoRouter(
           text: "Modifier",
-          routeName: "/modifier-evenement/0",
+          routeName: "/modifier-evenement/${evenement.id}",
           themeCouleur: ThemeCouleur.rouge,
         );
       }
 
       for (Organisateur organisateur in evenement.organisateurs) {
         if (utilisateurProvider.utilisateur!.email == organisateur.email) {
-          return const BoutonNavigationGoRouter(
+          return BoutonNavigationGoRouter(
             text: "Plus de détails",
-            routeName: "/modifier-evenement/0",
+            routeName: "/modifier-evenement/${evenement.id}",
             themeCouleur: ThemeCouleur.bleu,
           );
         }

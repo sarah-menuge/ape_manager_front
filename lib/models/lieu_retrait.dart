@@ -5,12 +5,16 @@ class LieuRetrait {
   LieuRetrait({required this.id, required this.lieu});
 
   LieuRetrait.fromJson(Map<String, dynamic> json) {
-    id = json["id"];
+    //id = json["id"];
     lieu = json["place"];
   }
 
   LieuRetrait.copie(LieuRetrait other) {
-    id = other.id;
+    try {
+      id = other.id;
+    } catch (e) {
+      id = -1;
+    }
     lieu = other.lieu;
   }
 }

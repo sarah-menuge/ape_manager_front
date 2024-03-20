@@ -8,13 +8,11 @@ import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
 import 'package:flutter/material.dart';
 
 class PopupAnnulerModifications extends StatelessWidget {
-  final Evenement evenement;
-  final Function fetchEvenements;
+  final Function annulerModificationsInfosGenerales;
 
   const PopupAnnulerModifications({
     super.key,
-    required this.evenement,
-    required this.fetchEvenements,
+    required this.annulerModificationsInfosGenerales,
   });
 
   @override
@@ -23,21 +21,18 @@ class PopupAnnulerModifications extends StatelessWidget {
       titre: "Annulation des modifications",
       sousTitre: "Êtes-vous sûr de vouloir annuler les modifications ?",
       body: SuppressionEvenementFormView(
-        evenement: evenement,
-        fetchEvenements: fetchEvenements,
+        annulerModificationsInfosGenerales: annulerModificationsInfosGenerales,
       ),
     );
   }
 }
 
 class SuppressionEvenementFormView extends StatefulWidget {
-  final Evenement evenement;
-  final Function fetchEvenements;
+  final Function annulerModificationsInfosGenerales;
 
   const SuppressionEvenementFormView({
     super.key,
-    required this.evenement,
-    required this.fetchEvenements,
+    required this.annulerModificationsInfosGenerales,
   });
 
   @override
@@ -67,20 +62,7 @@ class _SuppressionEvenementFormViewState
   void appuiBoutonAnnuler() {
     resetMessageErreur();
     appelMethodeAsynchrone(() {
-      annulerEvenement();
+      widget.annulerModificationsInfosGenerales();
     });
-  }
-
-  Future<void> annulerEvenement() async {
-    afficherLogCritical("Annulation d'un événement non pris en charge");
-    return;
-    final response = null;
-    if (mounted && response["statusCode"] == 200) {
-      afficherMessageSucces(context: context, message: response["message"]);
-      Navigator.of(context).pop();
-      widget.fetchEvenements();
-    } else {
-      setMessageErreur(response["message"]);
-    }
   }
 }

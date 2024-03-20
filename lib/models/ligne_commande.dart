@@ -1,4 +1,4 @@
-import 'package:ape_manager_front/models/Article.dart';
+import 'package:ape_manager_front/models/article.dart';
 
 class LigneCommande {
   late int id;

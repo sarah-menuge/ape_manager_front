@@ -1,6 +1,4 @@
 import 'package:ape_manager_front/models/evenement.dart';
-import 'package:ape_manager_front/utils/afficher_message.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
@@ -9,12 +7,12 @@ import 'package:flutter/material.dart';
 
 class PopupPublierModifications extends StatelessWidget {
   final Evenement evenement;
-  final Function fetchEvenements;
+  final Function publierEvenement;
 
   const PopupPublierModifications({
     super.key,
     required this.evenement,
-    required this.fetchEvenements,
+    required this.publierEvenement,
   });
 
   @override
@@ -24,7 +22,7 @@ class PopupPublierModifications extends StatelessWidget {
       sousTitre: "Êtes-vous sûr de vouloir publier l'évenement ?",
       body: PublicationEvenementFormView(
         evenement: evenement,
-        fetchEvenements: fetchEvenements,
+        publierEvenement: publierEvenement,
       ),
     );
   }
@@ -32,12 +30,12 @@ class PopupPublierModifications extends StatelessWidget {
 
 class PublicationEvenementFormView extends StatefulWidget {
   final Evenement evenement;
-  final Function fetchEvenements;
+  final Function publierEvenement;
 
   const PublicationEvenementFormView({
     super.key,
     required this.evenement,
-    required this.fetchEvenements,
+    required this.publierEvenement,
   });
 
   @override
@@ -66,20 +64,7 @@ class _PublicationEvenementFormViewState
   void appuiBoutonAnnuler() {
     resetMessageErreur();
     appelMethodeAsynchrone(() {
-      annulerEvenement();
+      widget.publierEvenement();
     });
-  }
-
-  Future<void> annulerEvenement() async {
-    afficherLogCritical("Publication d'un événement non pris en charge");
-    return;
-    final response = null;
-    if (mounted && response["statusCode"] == 200) {
-      afficherMessageSucces(context: context, message: response["message"]);
-      Navigator.of(context).pop();
-      widget.fetchEvenements();
-    } else {
-      setMessageErreur(response["message"]);
-    }
   }
 }
