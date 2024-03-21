@@ -1,6 +1,5 @@
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/donnee_tableau.dart';
-import 'package:ape_manager_front/models/commande.dart';
 import 'package:flutter/material.dart';
 
 import 'enfant.dart';
@@ -34,7 +33,11 @@ class Utilisateur extends DonneeTableau {
   }
 
   Utilisateur.fromJson(Map<String, dynamic> json) {
-    id = -1;
+    try {
+      id = json["id"];
+    } catch (e) {
+      id = -1;
+    }
     nom = json["surname"];
     prenom = json["firstname"];
     email = json["email"];
@@ -78,6 +81,17 @@ class Utilisateur extends DonneeTableau {
     };
   }
 
+  Map<String, dynamic> toJsonModifAdmin() {
+    return {
+      "email": email,
+      "surname": nom,
+      "firstname": prenom,
+      "phone": telephone,
+      "role": roleAPI(role),
+      "member": est_membre,
+    };
+  }
+
   TextEditingController getNomController() => TextEditingController(text: nom);
 
   TextEditingController getPrenomController() =>
@@ -101,6 +115,23 @@ class Utilisateur extends DonneeTableau {
     if (role == RoleUtilisateur.prof) return "Enseignant";
     if (role == RoleUtilisateur.inactif) return "Inactif";
     return "Non défini";
+  }
+
+  RoleUtilisateur stringToRole(String role) {
+    if (role == "Organisateur") return RoleUtilisateur.organisateur;
+    if (role == "Administrateur") return RoleUtilisateur.administrateur;
+    if (role == "Parent") return RoleUtilisateur.parent;
+    if (role == "Enseignant") return RoleUtilisateur.prof;
+    return RoleUtilisateur.inactif;
+  }
+
+  String roleAPI(RoleUtilisateur role) {
+    if (role == RoleUtilisateur.organisateur) return "ORGANIZER";
+    if (role == RoleUtilisateur.administrateur) return "ADMIN";
+    if (role == RoleUtilisateur.parent) return "PARENT";
+    if (role == RoleUtilisateur.prof) return "PROF";
+    if (role == RoleUtilisateur.inactif) return "INACTIVE";
+    return "UNDEFINED";
   }
 
   List<String> roles() {

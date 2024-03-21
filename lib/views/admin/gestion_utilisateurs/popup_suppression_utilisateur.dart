@@ -1,5 +1,4 @@
 import 'package:ape_manager_front/models/utilisateur.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
@@ -9,11 +8,13 @@ import 'package:flutter/material.dart';
 class PopupSuppressionUtilisateur extends StatelessWidget {
   final Utilisateur utilisateur;
   final Function fetchUtilisateurs;
+  final Function fonctionSuppression;
 
   const PopupSuppressionUtilisateur({
     super.key,
     required this.utilisateur,
     required this.fetchUtilisateurs,
+    required this.fonctionSuppression,
   });
 
   @override
@@ -25,6 +26,7 @@ class PopupSuppressionUtilisateur extends StatelessWidget {
       body: SuppressionUtilisateurFormView(
         utilisateur: utilisateur,
         fetchUtilisateurs: fetchUtilisateurs,
+        fonctionSuppression: fonctionSuppression,
       ),
     );
   }
@@ -33,11 +35,13 @@ class PopupSuppressionUtilisateur extends StatelessWidget {
 class SuppressionUtilisateurFormView extends StatefulWidget {
   final Utilisateur utilisateur;
   final Function fetchUtilisateurs;
+  final Function fonctionSuppression;
 
   const SuppressionUtilisateurFormView({
     super.key,
     required this.utilisateur,
     required this.fetchUtilisateurs,
+    required this.fonctionSuppression,
   });
 
   @override
@@ -66,11 +70,7 @@ class _SuppressionUtilisateurFormViewState
   void appuiBoutonSupprimer() {
     resetMessageErreur();
     appelMethodeAsynchrone(() {
-      supprimerUtilisateur();
+      widget.fonctionSuppression(widget.utilisateur.id);
     });
-  }
-
-  Future<void> supprimerUtilisateur() async {
-    afficherLogCritical("Suppression d'un utilisateur non pris en charge");
   }
 }

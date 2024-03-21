@@ -1,5 +1,4 @@
 import 'package:ape_manager_front/models/utilisateur.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_email.dart';
@@ -12,14 +11,14 @@ import 'package:flutter/material.dart';
 
 class PopupConsultationModificationUtilisateur extends StatelessWidget {
   final Utilisateur utilisateur;
-  final Function fetchUtilisateurs;
+  final Function fonctionModification;
   final bool consultation;
 
   const PopupConsultationModificationUtilisateur({
     super.key,
     required this.utilisateur,
-    required this.fetchUtilisateurs,
     this.consultation = false,
+    required this.fonctionModification,
   });
 
   @override
@@ -29,23 +28,23 @@ class PopupConsultationModificationUtilisateur extends StatelessWidget {
           '${consultation ? 'Consultation' : 'Modification'} d\' un utilisateur',
       body: ConsultationModificationUtilisateurFormView(
         utilisateur: utilisateur,
-        fetchUtilisateurs: fetchUtilisateurs,
         consultation: consultation,
+        fonctionModification: fonctionModification,
       ),
     );
   }
 }
 
 class ConsultationModificationUtilisateurFormView extends StatefulWidget {
-  final Function fetchUtilisateurs;
+  final Function fonctionModification;
   final Utilisateur utilisateur;
   final bool consultation;
 
   const ConsultationModificationUtilisateurFormView(
       {super.key,
       required this.utilisateur,
-      required this.fetchUtilisateurs,
-      required this.consultation});
+      required this.consultation,
+      required this.fonctionModification});
 
   @override
   State<ConsultationModificationUtilisateurFormView> createState() =>
@@ -102,11 +101,13 @@ class _ConsultationModificationUtilisateurFormViewState
               valeurInitiale:
                   widget.utilisateur.roleToString(widget.utilisateur.role),
               prefixIcon: Icon(Icons.manage_accounts),
+              onSavedMethod: (value) => widget.utilisateur.role =
+                  widget.utilisateur.stringToRole(value!),
               valeursExistantes: widget.utilisateur.roles()),
         ],
         [
           CheckboxListTile(
-            value: widget.utilisateur.role == RoleUtilisateur.organisateur,
+            value: widget.utilisateur.est_membre,
             onChanged: widget.consultation
                 ? null
                 : (bool? value) {
@@ -134,12 +135,8 @@ class _ConsultationModificationUtilisateurFormViewState
     if (!chargement && formKey.currentState!.validate()) {
       formKey.currentState!.save();
       appelMethodeAsynchrone(() {
-        envoiFormulaireModification();
+        widget.fonctionModification(widget.utilisateur);
       });
     }
-  }
-
-  Future<void> envoiFormulaireModification() async {
-    afficherLogCritical("Modification d'un utilisateur non pris en charge");
   }
 }

@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ape_manager_front/utils/logs.dart';
-import 'package:http/http.dart' as http;
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
 
 import '../proprietes/constantes.dart';
