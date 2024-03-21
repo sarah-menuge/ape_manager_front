@@ -86,7 +86,7 @@ class Evenement {
       dateFinPaiement = null;
     }
 
-    finPaiement = json["endOfPayment"] == "true" ? true : false;
+    finPaiement = json["endOfPayment"];
     description = json["description"] ?? "";
 
     if (json["status"] == "DRAFT") {
@@ -105,7 +105,11 @@ class Evenement {
       statut = StatutEvenement.NON_DEFINI;
     }
 
-    proprietaire = Organisateur.fromJson(json["owner"]);
+    if (json["owner"] != null) {
+      proprietaire = Organisateur.fromJson(json["owner"]);
+    } else {
+      proprietaire = Organisateur();
+    }
 
     organisateurs = (json["organizers"] as List<dynamic>)
         .map((e) => Organisateur.fromJson(e))

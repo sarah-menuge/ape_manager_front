@@ -4,12 +4,12 @@ import 'dart:convert';
 import 'package:ape_manager_front/forms/creation_modif_evenement_form.dart';
 import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/commande.dart';
+import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/evenement.dart';
 import 'call_api.dart';
 
 class EvenementProvider extends ChangeNotifier {
@@ -40,6 +40,7 @@ class EvenementProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Récupération d'un événement
   Future<void> fetchEvenement(String token, int eventId) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/events/$eventId',
@@ -132,6 +133,108 @@ class EvenementProvider extends ChangeNotifier {
       "statusCode": 201,
       "message": "L'événement a été créé avec succès.",
     };
+  }
+
+  /// Passer l'événement au statut retrait
+  Future<dynamic> passerEvenementEnRetrait(
+      String token, int idEvenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/$idEvenement/pickup',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode == 204) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": "La commande a été payée.",
+      };
+    } else {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": "La commande a été payée.",
+      };
+    }
+  }
+
+  /// Passer l'événement au statut clôturé
+  Future<dynamic> passerEvenementEnCloture(
+      String token, int idEvenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/$idEvenement/close',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode == 204) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": "La commande a été payée.",
+      };
+    } else {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"],
+      };
+    }
+  }
+
+  /// Forcer la fin de paiement
+  Future<dynamic> annulerCommandeNonPayees(
+      String token, int idEvenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/$idEvenement/orders/cancel-unpaid',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode == 204) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": "Les commandes non payées ont été annulées.",
+      };
+    } else {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"],
+      };
+    }
+  }
+
+  Future<dynamic> forcerFinPaiement(String token, int idEvenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/events/$idEvenement/endOfPayment/enable',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode == 204) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": "La fin de paiement a été établie.",
+      };
+    } else {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"],
+      };
+    }
   }
 
   /// Modification d'un événement
@@ -443,7 +546,10 @@ class EvenementProvider extends ChangeNotifier {
 
   List<Evenement> getEvenementsEnCours() {
     return _evenements
-        .where((evenement) => evenement.statut == StatutEvenement.EN_COURS)
+        .where((evenement) =>
+            evenement.statut == StatutEvenement.EN_COURS ||
+            evenement.statut == StatutEvenement.TRAITEMENT ||
+            evenement.statut == StatutEvenement.RETRAIT)
         .toList();
   }
 

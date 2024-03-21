@@ -4,9 +4,11 @@ import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/models/ligne_commande.dart';
 import 'package:ape_manager_front/models/panier.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
+import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/bouton_quantite.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement.dart';
@@ -30,6 +32,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
   Evenement? evenement;
 
   final EvenementProvider evenementProvider = EvenementProvider();
+  final CommandeProvider commandeProvider = CommandeProvider();
 
   @override
   void initState() {
@@ -66,6 +69,105 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     );
   }
 
+  /// Passage d'un événement à l'état retrait
+  Future<void> passerEvenementARetirer(int idEvenement) async {
+    final response = await evenementProvider.passerEvenementEnRetrait(
+        utilisateurProvider.token!, idEvenement);
+    final response_commande = await commandeProvider.passerCommandeEnRetrait(
+        utilisateurProvider.token!, idEvenement);
+    if (response["statusCode"] != 204 && mounted) {
+      if (response_commande["statusCode"] != 204 && mounted) {
+        afficherMessageErreur(
+            context: context, message: response_commande["message"]);
+      }
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      setState(() {
+        evenement!.statut = StatutEvenement.RETRAIT;
+        for (Commande commande in evenement!.commandes) {
+          commande.statut = StatutCommande.A_RETIRER;
+        }
+      });
+    }
+  }
+
+  /// Passage d'un événement à l'état clôturé
+  Future<void> passerEvenementACloturer(int idEvenement) async {
+    final response = await evenementProvider.passerEvenementEnCloture(
+        utilisateurProvider.token!, idEvenement);
+    if (response["statusCode"] != 204 && mounted) {
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      setState(() {
+        evenement!.statut = StatutEvenement.CLOTURE;
+      });
+    }
+  }
+
+  /// Forcer la fin de paiement d'un événement
+  Future<void> forcerFinPaiement(int idEvenement) async {
+    final response = await evenementProvider.annulerCommandeNonPayees(
+        utilisateurProvider.token!, idEvenement);
+    if (response["statusCode"] != 204 && mounted) {
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      for (Commande commande in evenement!.commandes) {
+        if (commande.estPaye == false) {
+          setState(() {
+            commande.statut = StatutCommande.ANNULEE;
+          });
+        }
+      }
+    }
+
+    final response_2 = await evenementProvider.forcerFinPaiement(
+        utilisateurProvider.token!, idEvenement);
+    if (response_2["statusCode"] != 204 && mounted) {
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      setState(() {
+        evenement!.finPaiement = true;
+      });
+    }
+  }
+
+  /// Passage d'une commande à l'état payée
+  Future<void> passerCommandeAPayer(int idCommande) async {
+    final response = await commandeProvider.passerCommandePayee(
+        utilisateurProvider.token!, idCommande);
+    if (response["statusCode"] != 204 && mounted) {
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      for (Commande commande in evenement!.commandes) {
+        if (commande.id == idCommande) {
+          setState(() {
+            commande.statut = StatutCommande.VALIDEE;
+            commande.estPaye = true;
+          });
+        }
+      }
+    }
+  }
+
+  /// Passage d'une commande à l'état retirée
+  Future<void> passerCommandeARetirer(int idCommande) async {
+    final response = await commandeProvider.passerCommandeRetiree(
+        utilisateurProvider.token!, idCommande);
+    final response_2 = await commandeProvider.cloturerCommande(
+        utilisateurProvider.token!, idCommande);
+    if (response["statusCode"] != 204 && mounted) {
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      for (Commande commande in evenement!.commandes) {
+        if (commande.id == idCommande) {
+          setState(() {
+            commande.statut = StatutCommande.CLOTUREE;
+          });
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldAppli(
@@ -73,6 +175,12 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
           ? const SizedBox()
           : DetailEvenementWidget(
               listingCommande: getListingCommande(),
+              commandeRetraitFonction: passerCommandeARetirer,
+              commandePayerFonction: passerCommandeAPayer,
+              evenementCloturerFonction: passerEvenementACloturer,
+              evenementRetirerFonction: passerEvenementARetirer,
+              forcerFinPaiement: forcerFinPaiement,
+              evenementProvider: evenementProvider,
               utilisateurProvider: utilisateurProvider,
               evenement: evenement!,
               listeView: getInfosArticles(),

@@ -2,6 +2,7 @@ import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/models/panier.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
@@ -17,16 +18,27 @@ class DetailEvenementWidget extends StatelessWidget {
   final Widget listeView;
   final Panier panier;
   final UtilisateurProvider utilisateurProvider;
+  final EvenementProvider evenementProvider;
+  final Function? commandeRetraitFonction;
+  final Function? commandePayerFonction;
+  final Function? evenementCloturerFonction;
+  final Function? evenementRetirerFonction;
+  final Function? forcerFinPaiement;
   final Map<String, int> listingCommande;
 
-  const DetailEvenementWidget({
-    super.key,
-    required this.evenement,
-    required this.listeView,
-    required this.panier,
-    required this.utilisateurProvider,
-    required this.listingCommande,
-  });
+  const DetailEvenementWidget(
+      {super.key,
+      required this.evenement,
+      required this.listeView,
+      required this.panier,
+      required this.utilisateurProvider,
+      required this.listingCommande,
+      required this.evenementProvider,
+      this.commandeRetraitFonction,
+      this.commandePayerFonction,
+      this.evenementCloturerFonction,
+      this.evenementRetirerFonction,
+      this.forcerFinPaiement});
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +75,14 @@ class DetailEvenementWidget extends StatelessWidget {
                       listingCommandes: listingCommande,
                       commandes: evenement.commandes,
                       libelleEvenement: evenement.titre,
+                      commandeRetraitFonction: commandeRetraitFonction,
+                      commandePayerFonction: commandePayerFonction,
+                      evenementCloturerFonction: evenementCloturerFonction,
+                      evenementRetirerFonction: evenementRetirerFonction,
+                      forcerFinPaiement: forcerFinPaiement,
+                      utilisateurProvider: utilisateurProvider,
+                      evenementProvider: evenementProvider,
+                      evenement: evenement,
                     ),
                 ],
               ),
@@ -101,6 +121,10 @@ class DetailEvenementWidget extends StatelessWidget {
   }
 
   Widget getStatutEvenement(BuildContext context) {
+    bool enCours = false;
+    if (evenement.getStatut() == "En cours" ||
+        evenement.getStatut() == "En cours de traitement" ||
+        evenement.getStatut() == "Retrait des commandes") enCours = true;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Text.rich(
@@ -119,9 +143,8 @@ class DetailEvenementWidget extends StatelessWidget {
               style: FontUtils.getFontApp(
                 fontSize: ResponsiveConstraint.getResponsiveValue(
                     context, POLICE_MOBILE_NORMAL_1, POLICE_DESKTOP_NORMAL_1),
-                color: evenement.getStatut() == "En cours"
-                    ? const Color.fromRGBO(0, 86, 27, 100)
-                    : GRIS_CLAIR,
+                color:
+                    enCours ? const Color.fromRGBO(0, 86, 27, 100) : GRIS_CLAIR,
                 fontWeight: FontWeight.bold,
               ),
             ),
