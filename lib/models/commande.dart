@@ -115,9 +115,9 @@ class Commande {
   }
 
   String getStatut() {
-    if (statut == StatutCommande.VALIDEE && estPaye) return "Validé et payé";
+    if (statut == StatutCommande.VALIDEE && estPaye) return "Payée";
     if (statut == StatutCommande.VALIDEE && !estPaye)
-      return "Validé et non payé";
+      return "En attente de paiement";
     if (statut == StatutCommande.ANNULEE) return "Annulée";
     if (statut == StatutCommande.A_RETIRER) return "À retirer";
     if (statut == StatutCommande.RETIREE) return "Retirée";

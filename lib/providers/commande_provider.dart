@@ -26,6 +26,7 @@ class CommandeProvider with ChangeNotifier {
     return null;
   }
 
+  /// Récupérer toutes les commandes
   Future<dynamic> fetchCommandes(String token) async {
     _commandes = [];
     commandesRecuperees = false;
@@ -50,6 +51,7 @@ class CommandeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Récupérer une commande grâce à son identifiant
   Future<dynamic> fetchCommande(String token, int idCommande) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/users/orders/$idCommande',
@@ -70,6 +72,7 @@ class CommandeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Permet d'annuler une commande grâce à son identifiant
   Future<dynamic> annulerCommande(String token, int idCommande) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/orders/$idCommande/cancel',
@@ -92,6 +95,105 @@ class CommandeProvider with ChangeNotifier {
     };
   }
 
+  /// Permet de changer le statut d'une commande en PAYÉE
+  Future<dynamic> passerCommandePayee(String token, int idCommande) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/orders/$idCommande/pay',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+      timeoutSec: 6,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    if (reponseApi.response?.statusCode == 204) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": "La commande a été payée.",
+      };
+    }
+    return {
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"],
+    };
+  }
+
+  /// Permet de changer le statut des commande d'un événement en À RETIRER
+  Future<dynamic> passerCommandeEnRetrait(String token, int idEvenement) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/orders/$idEvenement/collect',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+      timeoutSec: 6,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    if (reponseApi.response?.statusCode == 204) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message":
+            "Les commandes sont passées au statut 'En attente de retrait'.",
+      };
+    }
+    return {
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"],
+    };
+  }
+
+  /// Permet de changer le statut des commande d'un événement en RETIRÉE
+  Future<dynamic> passerCommandeRetiree(String token, int idCommande) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/orders/$idCommande/collected',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+      timeoutSec: 6,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    if (reponseApi.response?.statusCode == 204) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": "La commande a été retirée.",
+      };
+    }
+    return {
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"],
+    };
+  }
+
+  /// Permet de clôturer une commande grâce à son identifiant
+  Future<dynamic> cloturerCommande(String token, int idCommande) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/orders/$idCommande/close',
+      typeRequeteHttp: TypeRequeteHttp.PATCH,
+      token: token,
+      timeoutSec: 6,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    if (reponseApi.response?.statusCode == 204) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": "La commande a bien été clôturée.",
+      };
+    }
+    return {
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"],
+    };
+  }
+
+  /// Permet de récupérer les commandes selon leur statut
   List<Commande> getCommandesEnCours() {
     return _commandes
         .where(
