@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 class QuantiteBouton extends StatefulWidget {
   final bool disabled;
   final int quantity;
+  final int quantityMax;
   final Article article;
   final Function ajouterArticle;
   final Function retirerArticle;
@@ -19,6 +20,7 @@ class QuantiteBouton extends StatefulWidget {
     required this.retirerArticle,
     this.disabled = false,
     this.quantity = 0,
+    this.quantityMax = -1,
   });
 
   @override
@@ -83,17 +85,21 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
                       color: widget.disabled ? NOIR : BLANC),
                 ),
               ),
-              if (!widget.disabled)
+              if (!widget.disabled &&
+                  (widget.quantityMax != -1 && quantity < widget.quantityMax))
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
                     setState(() {
-                      quantity++;
-                      widget.ajouterArticle(widget.article);
+                      if (widget.quantityMax != -1 &&
+                          quantity < widget.quantityMax) {
+                        quantity++;
+                        widget.ajouterArticle(widget.article);
+                      }
                     });
                   },
                 ),
-              if (widget.disabled)
+              if (widget.disabled || quantity >= widget.quantityMax)
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7),
                   child: Icon(

@@ -122,6 +122,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
                   ),
                   if (utilisateurProvider.perspective == Perspective.PARENT)
                     QuantiteBouton(
+                      quantityMax: article.quantiteMax,
                       ajouterArticle: ajouterArticle,
                       retirerArticle: retirerArticle,
                       article: article,
@@ -174,6 +175,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
                 Padding(
                   padding: EdgeInsets.only(left: 50, right: 10),
                   child: QuantiteBouton(
+                    quantityMax: article.quantiteMax,
                     ajouterArticle: ajouterArticle,
                     retirerArticle: retirerArticle,
                     article: article,
