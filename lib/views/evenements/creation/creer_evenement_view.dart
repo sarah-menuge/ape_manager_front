@@ -2,7 +2,6 @@ import 'package:ape_manager_front/forms/creation_modif_evenement_form.dart';
 import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
-import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
@@ -73,20 +72,6 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
           onglet: Column(
             children: [
               getTuileTableauOrganisateurs(context),
-              const Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: Row(
-                  children: [
-                    Icon(Icons.info_outline, color: GRIS_CLAIR),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                          "Restez appuyé pour modifier ou supprimer un organisateur",
-                          style: TextStyle(fontStyle: FontStyle.italic)),
-                    ),
-                  ],
-                ),
-              ),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 20),
@@ -204,6 +189,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                 ),
                 const SizedBox(height: 20),
                 Tableau(
+                  nomTableau: "un organisateur",
                   tailleTableau: estDesktop(context, 600) ? 300 : 200,
                   modele: Organisateur(),
                   objets: creationEvenementForm.organisateursSelectionnes,

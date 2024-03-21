@@ -1,7 +1,6 @@
 import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/models/enfant.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
-import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
@@ -108,6 +107,7 @@ class _ProfilViewState extends State<ProfilView> {
           Padding(
             padding: EdgeInsets.all(15),
             child: Tableau(
+              nomTableau: "un enfant",
               modele: Enfant(),
               objets: enfants,
               editable: (Enfant enfant) {
@@ -118,23 +118,6 @@ class _ProfilViewState extends State<ProfilView> {
               },
             ),
           ),
-          if (estMobile(context, 600))
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline, color: GRIS_CLAIR),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                          "Restez appuyé pour modifier ou supprimer un enfant",
-                          style: TextStyle(fontStyle: FontStyle.italic)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           Center(
             child: Padding(
               padding: EdgeInsets.only(bottom: 20),
