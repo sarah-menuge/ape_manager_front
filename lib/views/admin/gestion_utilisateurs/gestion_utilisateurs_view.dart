@@ -2,6 +2,8 @@ import 'package:ape_manager_front/models/utilisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/afficher_message.dart';
+import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/admin/gestion_utilisateurs/image_gestion_utilisateurs.dart';
 import 'package:ape_manager_front/views/admin/gestion_utilisateurs/popup_consultation_modification_utilisateur.dart';
 import 'package:ape_manager_front/views/admin/gestion_utilisateurs/popup_suppression_utilisateur.dart';
@@ -28,6 +30,7 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
   late TextEditingController _searchController;
   List<Utilisateur> utilisateurs = [];
   List<Utilisateur> utilisateursFiltres = [];
+  late Utilisateur utilisateurCourant;
 
   @override
   void initState() {
@@ -35,15 +38,62 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
     _searchController = TextEditingController();
     utilisateurProvider =
         Provider.of<UtilisateurProvider>(context, listen: false);
+    utilisateurCourant = utilisateurProvider.utilisateur!;
     fetchData();
   }
 
   Future<void> fetchData() async {
     await utilisateurProvider.fetchUtilisateurs(utilisateurProvider.token!);
     setState(() {
-      utilisateurs = utilisateurProvider.utilisateurs;
+      utilisateurs = utilisateurProvider.utilisateurs
+          .where((utilisateur) =>
+              (utilisateur.nom != utilisateurCourant.nom) &&
+              (utilisateur.prenom != utilisateurCourant.prenom) &&
+              (utilisateur.email != utilisateurCourant.email))
+          .toList();
       utilisateursFiltres = utilisateurs;
     });
+  }
+
+  /// Supprimer un utilisateur depuis la vue administrateur
+  Future<void> supprimerUtilisateurAPI(int idUtilisateur) async {
+    revenirEnArriere(context);
+    final response = await utilisateurProvider.supprimerUtilisateurAdmin(
+        utilisateurProvider.token!, idUtilisateur);
+
+    if (response["statusCode"] != 204 && mounted) {
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      Utilisateur? u;
+      for (Utilisateur utilisateur in utilisateurProvider.utilisateurs) {
+        if (utilisateur.id == idUtilisateur) {
+          u = utilisateur;
+          break;
+        }
+      }
+      if (u != null) {
+        setState(() {
+          utilisateurProvider.utilisateurs.remove(u);
+        });
+      }
+      afficherMessageSucces(context: context, message: response["message"]);
+    }
+  }
+
+  /// Modifier un utilisateur depuis la vue administrateur
+  Future<void> modifierUtilisateurAPI(Utilisateur u) async {
+    revenirEnArriere(context);
+    final response = await utilisateurProvider.modifierUtilisateurAdmin(
+        utilisateurProvider.token!, u);
+
+    if (response["statusCode"] != 200 && mounted) {
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      afficherMessageSucces(context: context, message: response["message"]);
+      for (Utilisateur utilisateur in utilisateurProvider.utilisateurs) {
+        if (utilisateur.id == u.id) setState(() => utilisateur = u);
+      }
+    }
   }
 
   @override
@@ -77,7 +127,7 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
   Widget getBoutonRechercheUtilisateur(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: estDesktop(context, 600)
+      child: estDesktop(context, 642)
           ? Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -105,14 +155,17 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: ChampString(
-                      controller: _searchController,
-                      label: "",
-                      prefixIcon: Icon(Icons.person_search),
+                Center(
+                  child: ConstrainedBox(
+                    constraints:
+                        const BoxConstraints(minWidth: 400, maxWidth: 500),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: ChampString(
+                        controller: _searchController,
+                        label: "",
+                        prefixIcon: Icon(Icons.person_search),
+                      ),
                     ),
                   ),
                 ),
@@ -184,8 +237,8 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
       context: context,
       builder: (context) => PopupConsultationModificationUtilisateur(
         utilisateur: utilisateur,
-        fetchUtilisateurs: fetchData,
         consultation: consultable,
+        fonctionModification: (Utilisateur u) => modifierUtilisateurAPI(u),
       ),
     );
   }
@@ -196,6 +249,7 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
       builder: (context) => PopupSuppressionUtilisateur(
         utilisateur: utilisateur,
         fetchUtilisateurs: fetchData,
+        fonctionSuppression: supprimerUtilisateurAPI,
       ),
     );
   }

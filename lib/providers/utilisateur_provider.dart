@@ -244,26 +244,6 @@ class UtilisateurProvider with ChangeNotifier {
     };
   }
 
-  Future<dynamic> modifierUtilisateur(
-      String token, Utilisateur utilisateurModifie) async {
-    afficherLogCritical(
-        "[PROVIDER] => MODIFIER UTILISATEUR - non pris en charge");
-    return {
-      "statusCode": 400,
-      "message": "La fonctionnalité n'est pas prise en charge"
-    };
-  }
-
-  Future<dynamic> supprimerUtilisateur(
-      String token, Utilisateur utilisateurASupprimer) async {
-    afficherLogCritical(
-        "[PROVIDER] => SUPPRIMER UTILISATEUR - non pris en charge");
-    return {
-      "statusCode": 400,
-      "message": "La fonctionnalité n'est pas prise en charge"
-    };
-  }
-
   Future<dynamic> supprimerCompte(String token) async {
     afficherLogCritical(
         "[PROVIDER] => SUPPRIMER COMPTE UTILISATEUR - non pris en charge");
@@ -368,6 +348,70 @@ class UtilisateurProvider with ChangeNotifier {
     return {
       "statusCode": response.statusCode,
       "message": json.decode(response.body)["message"],
+    };
+  }
+
+  /// Suppression d'un utilisateur par l'administrateur
+  Future<dynamic> supprimerUtilisateurAdmin(
+      String token, int idUtilisateur) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/users/$idUtilisateur',
+      typeRequeteHttp: TypeRequeteHttp.DELETE,
+      token: token,
+    );
+
+    // Cas où la connexion avec l'API n'a pas pu être établie
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+    if (response.statusCode == 204) {
+      return {
+        "statusCode": 204,
+        "message": "Le compte de l'utilisateur a bien été supprimé.",
+      };
+    }
+
+    return {
+      "statusCode": response.statusCode,
+      "message": json.decode(response.body)["message"],
+    };
+  }
+
+  Future<dynamic> modifierUtilisateurAdmin(String token, Utilisateur u) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/users/${u.id}',
+      typeRequeteHttp: TypeRequeteHttp.PUT,
+      token: token,
+      jsonBody: u.toJsonModifAdmin(),
+    );
+
+    // Cas où la connexion avec l'API n'a pas pu être établie
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode == 200) {
+      return {
+        "statusCode": 200,
+        "message":
+            "Les informations de l'utilisateur ont bien été mises à jour.",
+      };
+    }
+    String err = json.decode(response.body)["message"] ??
+        "Une erreur est survenue lors de la modification d'un utilisateur";
+    return {
+      "statusCode": response.statusCode,
+      "message": err,
     };
   }
 }
