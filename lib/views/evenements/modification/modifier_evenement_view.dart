@@ -4,7 +4,6 @@ import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
-import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
@@ -116,23 +115,6 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               : Column(
                   children: [
                     getTuileTableauOrganisateurs(context),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.info_outline, color: GRIS_CLAIR),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Text(
-                                  "Restez appuyé pour modifier ou supprimer un organisateur",
-                                  style:
-                                      TextStyle(fontStyle: FontStyle.italic)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -157,23 +139,6 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               : Column(
                   children: [
                     getTuileTableauArticles(context),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          Icon(Icons.info_outline, color: GRIS_CLAIR),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Text(
-                                  "Restez appuyé pour modifier ou supprimer un article",
-                                  style:
-                                      TextStyle(fontStyle: FontStyle.italic)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -362,6 +327,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const SizedBox(height: 20),
                 Tableau(
+                  nomTableau: "un organisateur",
                   tailleTableau: estDesktop(context, 600) ? 300 : 200,
                   modele: Organisateur(),
                   objets: evenementBrouillon!.organisateurs,
@@ -408,6 +374,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const SizedBox(height: 20),
                 Tableau(
+                  nomTableau: "un article",
                   tailleTableau: estDesktop(context, 600) ? 450 : 350,
                   modele: Article(),
                   objets: evenementBrouillon!.articles,

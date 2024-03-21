@@ -42,6 +42,7 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
     fetchData();
   }
 
+  /// Récupère les valeurs des utilisateurs
   Future<void> fetchData() async {
     await utilisateurProvider.fetchUtilisateurs(utilisateurProvider.token!);
     setState(() {
@@ -212,6 +213,7 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
           Padding(
             padding: EdgeInsets.all(15),
             child: Tableau(
+              nomTableau: "un administrateur",
               tailleTableau: 600,
               modele: Utilisateur(),
               objets: utilisateursFiltres,

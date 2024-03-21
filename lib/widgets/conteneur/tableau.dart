@@ -13,6 +13,7 @@ class Tableau extends StatefulWidget {
   final Function? consultable;
   final List<DonneeTableau> objets;
   final DonneeTableau modele;
+  final String? nomTableau;
 
   Tableau({
     super.key,
@@ -22,6 +23,7 @@ class Tableau extends StatefulWidget {
     this.editable,
     this.supprimable,
     this.consultable,
+    this.nomTableau = "",
   });
 
   @override
@@ -209,6 +211,22 @@ class _TableauState extends State<Tableau> {
                   },
                 ),
         ),
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            children: [
+              Icon(Icons.info_outline, color: GRIS_CLAIR),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(
+                      "Restez appuyé pour modifier ou supprimer ${widget.nomTableau}.",
+                      style: TextStyle(fontStyle: FontStyle.italic)),
+                ),
+              ),
+            ],
+          ),
+        )
       ],
     );
   }
