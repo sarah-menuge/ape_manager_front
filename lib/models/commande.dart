@@ -69,6 +69,7 @@ class Commande {
     lieuRetrait = LieuRetrait.copie(other.lieuRetrait);
     estPaye = other.estPaye;
     statut = other.statut;
+    utilisateur = other.utilisateur;
     for (Article article in other.listeArticles) {
       listeArticles.add(Article.copie(article));
     }
@@ -90,6 +91,7 @@ class Commande {
     } catch (e) {
       dateRetrait = null;
     }
+    utilisateur = Utilisateur.fromJson(json["user"]);
     lieuRetrait = LieuRetrait.fromJson(json["pickUpPlace"]);
     estPaye = json["isPaid"];
     if (json["status"] == "VALIDATED") {

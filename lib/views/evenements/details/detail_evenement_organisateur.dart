@@ -66,7 +66,7 @@ class DetailEvenementOrganisateur extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              "Commande n° ${commande.id} - Nom Prénom de l'utilisateur",
+              "Commande n° ${commande.id} - ${commande.utilisateur.prenom} ${commande.utilisateur.nom}",
               style: FontUtils.getFontApp(
                   fontSize: ResponsiveConstraint.getResponsiveValue(context,
                       POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2)),
