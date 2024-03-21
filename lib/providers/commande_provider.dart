@@ -10,9 +10,12 @@ class CommandeProvider with ChangeNotifier {
   List<Commande> _commandes = [];
   Commande? _commande;
   bool commandesRecuperees = false;
+  String _qrCode = "";
 
   UnmodifiableListView<Commande> get commandes =>
       UnmodifiableListView(_commandes);
+
+  String get qrCode => _qrCode;
 
   Commande? get commande => _commande;
 
@@ -110,5 +113,28 @@ class CommandeProvider with ChangeNotifier {
           ].contains(commande.statut),
         )
         .toList();
+  }
+
+  /// Récupération du QRCode
+  Future<dynamic> getQrCodeCommande(String token, int idCommande) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/orders/qrcode/$idCommande',
+      typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
+      timeoutSec: 6,
+    );
+
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    if (reponseApi.response?.statusCode != 200) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"],
+      };
+    }
+
+    _qrCode = json.decode(reponseApi.response!.body)["qrCode"];
+    afficherLogInfo("Récupération du Qr Code terminé.");
+    notifyListeners();
   }
 }

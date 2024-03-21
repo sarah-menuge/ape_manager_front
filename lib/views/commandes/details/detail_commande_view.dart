@@ -1,5 +1,6 @@
+import 'dart:convert';
+
 import 'package:ape_manager_front/export/export_pdf.dart';
-import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/ligne_commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
@@ -8,10 +9,10 @@ import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/commandes/details/pop_up_annulation_commande.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
+import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
@@ -47,16 +48,8 @@ class _CommandeViewState extends State<CommandeView> {
     setState(() {
       commande = commandeProvider.getCommande(widget.idCommande);
     });
-    // Pour l'instant, utilise liste car endpoint de détail lent
-    /*await commandeProvider.fetchCommande(
-      utilisateurProvider.token!,
-      widget.idCommande,
-    );
-    setState(() {
-      if (commandeProvider.commande != null) {
-        commande = commandeProvider.commande!;
-      }
-    });*/
+    await commandeProvider.getQrCodeCommande(
+        utilisateurProvider.token!, commande!.id);
   }
 
   @override
@@ -282,8 +275,7 @@ class _CommandeViewState extends State<CommandeView> {
         BoutonAction(
           text: "Retirer ma commande",
           fonction: () {
-            afficherLogCritical(
-                "Infos pour retrait d'une commande non pris en charge");
+            afficherQRCode();
           },
         ),
       if (commande!.statut == StatutCommande.RETIREE ||
@@ -329,6 +321,39 @@ class _CommandeViewState extends State<CommandeView> {
           ),
         ),
       ),
+    );
+  }
+
+  Image imageFromBase64String(String base64String) {
+    return Image.memory(base64Decode(base64String));
+  }
+
+  void afficherQRCode() {
+    Image qrCode = imageFromBase64String(commandeProvider.qrCode);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Popup(
+          titre: "Commande n° ${commande!.getNumeroCommande()}",
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                      "${commande!.utilisateur.prenom} ${commande!.utilisateur.nom}"),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: qrCode,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
