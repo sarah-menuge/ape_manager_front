@@ -2,9 +2,11 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:ape_manager_front/models/commande.dart';
+import 'package:ape_manager_front/models/panier.dart';
 import 'package:ape_manager_front/providers/call_api.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class CommandeProvider with ChangeNotifier {
   List<Commande> _commandes = [];
@@ -70,6 +72,45 @@ class CommandeProvider with ChangeNotifier {
     afficherLogInfo("Récupération de la commande terminée.");
 
     notifyListeners();
+  }
+
+  /// Création d'une commande
+  Future<dynamic> creerCommande(String token, Panier panier) async {
+    panier.toJson();
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/orders',
+      typeRequeteHttp: TypeRequeteHttp.POST,
+      token: token,
+      jsonBody: panier.toJson(),
+    );
+
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+    if (response.statusCode != 201) {
+      String err;
+      try {
+        err = json.decode(response.body)["message"];
+      } catch (e) {
+        err = "La création de la commande n'a pas pu aboutir.";
+      }
+      return {
+        "statusCode": response.statusCode,
+        "message": err,
+      };
+    }
+
+    int idCommande = json.decode(response.body)["id"];
+    return {
+      "statusCode": 201,
+      "message": "L'événement a été créé avec succès.",
+      "idCommande": idCommande,
+    };
   }
 
   /// Permet d'annuler une commande grâce à son identifiant

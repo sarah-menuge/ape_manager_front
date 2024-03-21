@@ -3,8 +3,10 @@ import 'package:ape_manager_front/models/ligne_commande.dart';
 
 class Panier {
   List<Article> articles = [];
+  int idEvenement = -1;
+  int idLieuRetrait = -1;
 
-  Panier();
+  Panier({this.idEvenement = -1, this.idLieuRetrait = -1});
 
   Panier.fromLignesCommande(List<LigneCommande> lignesCommande) {
     for (LigneCommande ligneCommande in lignesCommande) {
@@ -36,5 +38,28 @@ class Panier {
   @override
   String toString() {
     return articles.toString();
+  }
+
+  Map<String, dynamic> toJson() {
+    List<Map<String, int>> lignesCommande = [];
+
+    Map<int, int> occurrences = {};
+    for (Article article in articles) {
+      if (occurrences.containsKey(article.id)) {
+        occurrences.update(article.id, (value) => value + 1);
+      } else {
+        occurrences[article.id] = 1;
+      }
+    }
+
+    occurrences.forEach((key, value) {
+      lignesCommande.add({"item_id": key, "quantity": value});
+    });
+
+    return {
+      "eventId": idEvenement,
+      "pickUpPlaceId": idLieuRetrait,
+      "orderLines": lignesCommande
+    };
   }
 }

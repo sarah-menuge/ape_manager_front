@@ -10,6 +10,8 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/routage.dart';
+import 'package:ape_manager_front/views/commandes/details/detail_commande_view.dart';
 import 'package:ape_manager_front/views/evenements/details/bouton_quantite.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
@@ -27,7 +29,7 @@ class DetailEvenementView extends StatefulWidget {
 }
 
 class _DetailEvenementViewState extends State<DetailEvenementView> {
-  Panier panier = Panier();
+  late Panier panier;
   late UtilisateurProvider utilisateurProvider;
   Evenement? evenement;
 
@@ -52,6 +54,8 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     await fetchListeCommandes();
     setState(() {
       evenement;
+      panier = Panier(
+          idEvenement: evenement!.id, idLieuRetrait: evenement!.lieux[0].id);
     });
   }
 
@@ -67,6 +71,24 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
       utilisateurProvider.token!,
       evenement!,
     );
+  }
+
+  /// Création d'une commande
+  Future<void> creerCommande() async {
+    final response = await commandeProvider.creerCommande(
+        utilisateurProvider.token!, panier);
+    if (response["statusCode"] != 201 && mounted) {
+      afficherMessageErreur(context: context, message: response["message"]);
+    } else {
+      naviguerVersPage(
+          context,
+          CommandeView.routeURL
+              .replaceAll(":idCommande", response["idCommande"].toString()));
+      afficherMessageSucces(
+          context: context,
+          message: "Votre commande a bien été prise en compte.",
+          duree: 5);
+    }
   }
 
   /// Passage d'un événement à l'état retrait
@@ -174,6 +196,8 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
       body: evenement == null
           ? const SizedBox()
           : DetailEvenementWidget(
+              creerCommande: creerCommande,
+              commandeProvider: commandeProvider,
               listingCommande: getListingCommande(),
               commandeRetraitFonction: passerCommandeARetirer,
               commandePayerFonction: passerCommandeAPayer,

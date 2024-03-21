@@ -2,11 +2,11 @@ import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/models/panier.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_organisateur.dart';
 import 'package:ape_manager_front/views/evenements/details/popup_partage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
@@ -25,20 +25,25 @@ class DetailEvenementWidget extends StatelessWidget {
   final Function? evenementRetirerFonction;
   final Function? forcerFinPaiement;
   final Map<String, int> listingCommande;
+  final CommandeProvider commandeProvider;
+  final Function? creerCommande;
 
-  const DetailEvenementWidget(
-      {super.key,
-      required this.evenement,
-      required this.listeView,
-      required this.panier,
-      required this.utilisateurProvider,
-      required this.listingCommande,
-      required this.evenementProvider,
-      this.commandeRetraitFonction,
-      this.commandePayerFonction,
-      this.evenementCloturerFonction,
-      this.evenementRetirerFonction,
-      this.forcerFinPaiement});
+  const DetailEvenementWidget({
+    super.key,
+    required this.evenement,
+    required this.listeView,
+    required this.panier,
+    required this.utilisateurProvider,
+    required this.listingCommande,
+    required this.evenementProvider,
+    required this.commandeProvider,
+    this.creerCommande,
+    this.commandeRetraitFonction,
+    this.commandePayerFonction,
+    this.evenementCloturerFonction,
+    this.evenementRetirerFonction,
+    this.forcerFinPaiement
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -218,10 +223,7 @@ class DetailEvenementWidget extends StatelessWidget {
               : BoutonAction(
                   text: "Finaliser la commande",
                   themeCouleur: ThemeCouleur.vert,
-                  fonction: () {
-                    afficherLogCritical(
-                        "Finaliser la commande : non pris en charge");
-                  },
+                  fonction: () => creerCommande!(),
                 ),
         ],
       ),

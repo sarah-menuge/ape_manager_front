@@ -90,7 +90,7 @@ class _CommandeViewState extends State<CommandeView> {
         }),
         getPrixTotal(context),
         Padding(
-          padding: const EdgeInsets.only(top: 30),
+          padding: const EdgeInsets.symmetric(vertical: 30),
           child: getBoutons(context),
         ),
       ],
