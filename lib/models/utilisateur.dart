@@ -113,8 +113,7 @@ class Utilisateur extends DonneeTableau {
     if (role == RoleUtilisateur.administrateur) return "Administrateur";
     if (role == RoleUtilisateur.parent) return "Parent";
     if (role == RoleUtilisateur.prof) return "Enseignant";
-    if (role == RoleUtilisateur.inactif) return "Inactif";
-    return "Non défini";
+    return "Inactif";
   }
 
   RoleUtilisateur stringToRole(String role) {
@@ -140,8 +139,7 @@ class Utilisateur extends DonneeTableau {
       "Organisateur",
       "Enseignant",
       "Parent",
-      "Inactif",
-      "Non défini"
+      "Inactif"
     ];
   }
 
