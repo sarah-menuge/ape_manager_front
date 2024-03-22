@@ -22,10 +22,14 @@ import 'package:ape_manager_front/views/evenements/modification/popup_supprimer_
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/tableau.dart';
 import 'package:ape_manager_front/widgets/conteneur/tuile.dart';
+import 'package:ape_manager_front/widgets/scaffold/page_non_accessible.dart';
+import 'package:ape_manager_front/widgets/scaffold/page_vide.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
 import 'package:ape_manager_front/widgets/texte/texte_flexible.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+enum DroitEvenement { aucun, consultation, modification }
 
 class ModifierEvenementView extends StatefulWidget {
   static String routeURL = '/modifier-evenement/:idEvent';
@@ -43,6 +47,8 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
   late CreationModifEvenementForm modifEvenementForm;
   Evenement? evenementBrouillon;
   Map<String, dynamic> valeursInitiales = {};
+  DroitEvenement droitEvenement = DroitEvenement.aucun;
+  bool chargement = true;
 
   @override
   void initState() {
@@ -75,8 +81,23 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
       evenementBrouillon!,
     );
 
+    if (utilisateurProvider.estAdmin) {
+      droitEvenement = DroitEvenement.modification;
+    } else if (evenementBrouillon!.proprietaire.email ==
+        utilisateurProvider.utilisateur!.email) {
+      droitEvenement = DroitEvenement.modification;
+    } else if (evenementBrouillon!.organisateurs
+        .where((e) => e.email == utilisateurProvider.utilisateur!.email)
+        .isNotEmpty) {
+      droitEvenement = DroitEvenement.consultation;
+    } else {
+      droitEvenement = DroitEvenement.aucun;
+    }
+
     setState(() {
       evenementBrouillon;
+      droitEvenement;
+      chargement = false;
     });
 
     fetchListeOrganisateurs();
@@ -95,11 +116,19 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
 
   @override
   Widget build(BuildContext context) {
+    if (chargement) return const PageVide();
+    if (droitEvenement == DroitEvenement.aucun) {
+      return PageNonAccessible(nomUrlRetour: EvenementsView.routeURL);
+    }
+
     return ScaffoldAppli(
       body: getBodyDesktop(context),
+      nomUrlRetour: EvenementsView.routeURL,
       items: [
         BarreNavigationItem(
-          titre: "Modification d'événement",
+          titre: droitEvenement == DroitEvenement.modification
+              ? "Modification de l'événement"
+              : "Consultation de l'événement",
           label: 'Général',
           icon: const Icon(Icons.settings),
           onglet: evenementBrouillon == null
@@ -107,7 +136,9 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               : getTuileInformationsGenerales(context),
         ),
         BarreNavigationItem(
-          titre: "Modification d'événement",
+          titre: droitEvenement == DroitEvenement.modification
+              ? "Modification de l'événement"
+              : "Consultation de l'événement",
           label: 'Organisateurs',
           icon: const Icon(Icons.person),
           onglet: evenementBrouillon == null
@@ -115,6 +146,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               : Column(
                   children: [
                     getTuileTableauOrganisateurs(context),
+                    if (droitEvenement == DroitEvenement.modification)
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -131,7 +163,9 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
         ),
         BarreNavigationItem(
-          titre: "Modification d'événement",
+          titre: droitEvenement == DroitEvenement.modification
+              ? "Modification de l'événement"
+              : "Consultation de l'événement",
           label: 'Articles',
           icon: const Icon(Icons.article),
           onglet: evenementBrouillon == null
@@ -139,6 +173,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               : Column(
                   children: [
                     getTuileTableauArticles(context),
+                    if (droitEvenement == DroitEvenement.modification)
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -152,14 +187,17 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   ],
                 ),
         ),
-        BarreNavigationItem(
-          titre: "Modification d'événement",
-          label: 'Validation',
-          icon: const Icon(Icons.check),
-          onglet: evenementBrouillon == null
-              ? const SizedBox()
-              : getRecapitulatifEvenement(context),
-        ),
+        if (droitEvenement == DroitEvenement.modification)
+          BarreNavigationItem(
+            titre: droitEvenement == DroitEvenement.modification
+                ? "Modification de l'événement"
+                : "Consultation de l'événement",
+            label: 'Validation',
+            icon: const Icon(Icons.check),
+            onglet: evenementBrouillon == null
+                ? const SizedBox()
+                : getRecapitulatifEvenement(context),
+          ),
       ],
     );
   }
@@ -201,7 +239,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const Divider(), // Thin line added here
                 SizedBox(
-                  height: 300,
+                  height: 250,
                   // Hauteur fixe pour la liste déroulante des organisateurs
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -222,10 +260,15 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
             ),
           ),
         ),
-        const SizedBox(height: 20),
-        getBoutonPublication(context),
-        const SizedBox(height: 20),
-        getBoutonSuppression(context),
+        if (droitEvenement == DroitEvenement.modification)
+          const SizedBox(height: 20),
+        if (droitEvenement == DroitEvenement.modification &&
+            evenementBrouillon!.statut == StatutEvenement.BROUILLON)
+          getBoutonPublication(context),
+        if (droitEvenement == DroitEvenement.modification)
+          const SizedBox(height: 20),
+        if (droitEvenement == DroitEvenement.modification)
+          getBoutonSuppression(context),
       ],
     );
   }
@@ -250,9 +293,14 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      getBoutonSuppression(context),
-                      const SizedBox(width: 20),
-                      getBoutonPublication(context),
+                      if (droitEvenement == DroitEvenement.modification)
+                        getBoutonSuppression(context),
+                      if (droitEvenement == DroitEvenement.modification)
+                        const SizedBox(width: 20),
+                      if (droitEvenement == DroitEvenement.modification &&
+                          evenementBrouillon!.statut ==
+                              StatutEvenement.BROUILLON)
+                        getBoutonPublication(context),
                     ],
                   )
                 ],
@@ -270,7 +318,9 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Text(
-          "Modification d'événement",
+          droitEvenement == DroitEvenement.modification
+              ? "Modification de l'événement"
+              : "Consultation de l'événement",
           textAlign: TextAlign.center,
           style: FontUtils.getFontApp(
               fontSize: ResponsiveConstraint.getResponsiveValue(
@@ -300,6 +350,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
             annulerModificationsInfosGenerales: () =>
                 annulerModificationsInfosGenerales(),
             modifierInfosGenerales: modifierInfosGenerales,
+            droitEvenement: droitEvenement,
           ),
         ],
       ),
@@ -331,11 +382,14 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   tailleTableau: estDesktop(context, 600) ? 300 : 200,
                   modele: Organisateur(),
                   objets: evenementBrouillon!.organisateurs,
-                  supprimable: (Organisateur organisateur) {
-                    afficherPopupSupprimerOrganisateur(organisateur);
-                  },
+                  supprimable: droitEvenement != DroitEvenement.modification
+                      ? null
+                      : (Organisateur organisateur) {
+                          afficherPopupSupprimerOrganisateur(organisateur);
+                        },
                 ),
-                if (estDesktop(context, 600))
+                if (estDesktop(context, 600) &&
+                    droitEvenement == DroitEvenement.modification)
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -378,14 +432,17 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   tailleTableau: estDesktop(context, 600) ? 450 : 350,
                   modele: Article(),
                   objets: evenementBrouillon!.articles,
-                  editable: (Article article) {
-                    afficherPopupModifierArticle(article);
-                  },
-                  supprimable: (Article article) {
-                    afficherPopupSupprimerArticle(article);
-                  },
+                  editable: droitEvenement != DroitEvenement.modification
+                      ? null
+                      : (Article article) =>
+                          afficherPopupModifierArticle(article),
+                  supprimable: droitEvenement != DroitEvenement.modification
+                      ? null
+                      : (Article article) =>
+                          afficherPopupSupprimerArticle(article),
                 ),
-                if (estDesktop(context, 600))
+                if (estDesktop(context, 600) &&
+                    droitEvenement == DroitEvenement.modification)
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20),
@@ -411,12 +468,6 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
     return BoutonAction(
       text: "Publier l'événement",
       fonction: () {
-        print("${evenementBrouillon!.dateFin} ${valeursInitiales["dateFin"]}");
-        print("${evenementBrouillon!.titre != valeursInitiales["titre"]} "
-            "${evenementBrouillon!.description != valeursInitiales["description"]} "
-            "${evenementBrouillon!.dateDebut != valeursInitiales["dateDebut"]} "
-            "${evenementBrouillon!.dateFin != valeursInitiales["dateFin"]} "
-            "${evenementBrouillon!.dateFinPaiement != valeursInitiales["dateFinPaiement"]}");
         if (evenementBrouillon!.titre != valeursInitiales["titre"] ||
             evenementBrouillon!.description !=
                 valeursInitiales["description"] ||

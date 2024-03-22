@@ -58,6 +58,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
   Widget build(BuildContext context) {
     return ScaffoldAppli(
       body: getBodyDesktop(context),
+      nomUrlRetour: EvenementsView.routeURL,
       items: [
         BarreNavigationItem(
           titre: "Création d'événement",
