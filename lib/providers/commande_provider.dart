@@ -200,6 +200,8 @@ class CommandeProvider with ChangeNotifier {
     }
 
     if (reponseApi.response?.statusCode == 204) {
+      cloturerCommande(token, idCommande);
+
       return {
         "statusCode": reponseApi.response?.statusCode,
         "message": "La commande a été retirée.",
