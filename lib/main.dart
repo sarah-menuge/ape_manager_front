@@ -17,6 +17,7 @@ import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
+import 'package:ape_manager_front/widgets/scaffold/aucune_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -59,8 +60,22 @@ class MainApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [Locale('en', 'US'), Locale('fr', 'FR')],
+        theme: appTheme(),
       ),
     );
+  }
+
+  ThemeData appTheme() {
+    final builder = AucuneTransition();
+    return ThemeData(
+        pageTransitionsTheme: PageTransitionsTheme(builders: {
+      TargetPlatform.android: builder,
+      TargetPlatform.fuchsia: builder,
+      TargetPlatform.iOS: builder,
+      TargetPlatform.linux: builder,
+      TargetPlatform.macOS: builder,
+      TargetPlatform.windows: builder,
+    }));
   }
 }
 
