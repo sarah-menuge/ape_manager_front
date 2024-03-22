@@ -8,41 +8,42 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_organisateur.dart';
+import 'package:ape_manager_front/views/evenements/details/popup_finaliser_commande.dart';
 import 'package:ape_manager_front/views/evenements/details/popup_partage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
 class DetailEvenementWidget extends StatelessWidget {
+  final UtilisateurProvider utilisateurProvider;
+  final EvenementProvider evenementProvider;
+  final CommandeProvider commandeProvider;
+
   final Evenement evenement;
   final Widget listeView;
   final Panier panier;
-  final UtilisateurProvider utilisateurProvider;
-  final EvenementProvider evenementProvider;
-  final Function? commandeRetraitFonction;
-  final Function? commandePayerFonction;
+  final Map<String, int> listingCommande;
+
+  final Function? validerPaiementFonction;
+  final Function? validerRetraitFonction;
   final Function? evenementCloturerFonction;
   final Function? evenementRetirerFonction;
   final Function? forcerFinPaiement;
-  final Map<String, int> listingCommande;
-  final CommandeProvider commandeProvider;
-  final Function? creerCommande;
 
   const DetailEvenementWidget({
     super.key,
+    required this.evenementProvider,
+    required this.commandeProvider,
+    required this.utilisateurProvider,
     required this.evenement,
     required this.listeView,
     required this.panier,
-    required this.utilisateurProvider,
     required this.listingCommande,
-    required this.evenementProvider,
-    required this.commandeProvider,
-    this.creerCommande,
-    this.commandeRetraitFonction,
-    this.commandePayerFonction,
     this.evenementCloturerFonction,
     this.evenementRetirerFonction,
-    this.forcerFinPaiement
+    this.forcerFinPaiement,
+    this.validerPaiementFonction,
+    this.validerRetraitFonction,
   });
 
   @override
@@ -80,13 +81,14 @@ class DetailEvenementWidget extends StatelessWidget {
                       listingCommandes: listingCommande,
                       commandes: evenement.commandes,
                       libelleEvenement: evenement.titre,
-                      commandeRetraitFonction: commandeRetraitFonction,
-                      commandePayerFonction: commandePayerFonction,
+                      validerPaiementFonction: validerPaiementFonction,
+                      validerRetraitFonction: validerRetraitFonction,
                       evenementCloturerFonction: evenementCloturerFonction,
                       evenementRetirerFonction: evenementRetirerFonction,
                       forcerFinPaiement: forcerFinPaiement,
                       utilisateurProvider: utilisateurProvider,
                       evenementProvider: evenementProvider,
+                      commandeProvider: commandeProvider,
                       evenement: evenement,
                     ),
                 ],
@@ -223,7 +225,17 @@ class DetailEvenementWidget extends StatelessWidget {
               : BoutonAction(
                   text: "Finaliser la commande",
                   themeCouleur: ThemeCouleur.vert,
-                  fonction: () => creerCommande!(),
+                  fonction: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return PopupFinaliserCommande(
+                          commandeProvider: commandeProvider,
+                          panier: panier,
+                        );
+                      },
+                    );
+                  },
                 ),
         ],
       ),

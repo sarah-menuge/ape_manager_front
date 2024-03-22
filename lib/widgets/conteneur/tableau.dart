@@ -211,22 +211,23 @@ class _TableauState extends State<Tableau> {
                   },
                 ),
         ),
-        Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Icon(Icons.info_outline, color: GRIS_CLAIR),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text(
-                      "Restez appuyé pour modifier ou supprimer ${widget.nomTableau}.",
-                      style: TextStyle(fontStyle: FontStyle.italic)),
+        if (estMobile(context, 600))
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Icon(Icons.info_outline, color: GRIS_CLAIR),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                        "Restez appuyé pour ${widget.editable != null ? "modifier, " : ""} ${widget.consultable != null ? "consulter, " : ""} ${widget.supprimable != null ? "supprimer " : ""} ${widget.nomTableau}.",
+                        style: TextStyle(fontStyle: FontStyle.italic)),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )
+              ],
+            ),
+          )
       ],
     );
   }

@@ -2,39 +2,48 @@ import 'package:ape_manager_front/export/export_excel.dart';
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
+import 'package:ape_manager_front/proprietes/couleurs.dart';
+import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/views/evenements/details/popup_gestion_commande.dart';
+import 'package:ape_manager_front/views/evenements/details/popup_gestion_evenement.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
 class DetailEvenementOrganisateur extends StatelessWidget {
+  final EvenementProvider evenementProvider;
+  final CommandeProvider commandeProvider;
+  final UtilisateurProvider utilisateurProvider;
+
   final Evenement evenement;
   final String libelleEvenement;
   final List<Commande> commandes;
-  final EvenementProvider evenementProvider;
-  final UtilisateurProvider utilisateurProvider;
-  final Function? commandeRetraitFonction;
-  final Function? commandePayerFonction;
+  final Map<String, int> listingCommandes;
+
   final Function? evenementCloturerFonction;
   final Function? evenementRetirerFonction;
   final Function? forcerFinPaiement;
-  final Map<String, int> listingCommandes;
+  final Function? validerPaiementFonction;
+  final Function? validerRetraitFonction;
 
-  const DetailEvenementOrganisateur(
-      {super.key,
-      required this.commandes,
-      required this.libelleEvenement,
-      required this.listingCommandes,
-      required this.evenement,
-      required this.evenementProvider,
-      required this.utilisateurProvider,
-      this.commandeRetraitFonction,
-      this.commandePayerFonction,
-      this.evenementCloturerFonction,
-      this.evenementRetirerFonction,
-      this.forcerFinPaiement});
+  const DetailEvenementOrganisateur({
+    super.key,
+    required this.evenementProvider,
+    required this.utilisateurProvider,
+    required this.commandeProvider,
+    required this.commandes,
+    required this.libelleEvenement,
+    required this.listingCommandes,
+    required this.evenement,
+    this.evenementCloturerFonction,
+    this.evenementRetirerFonction,
+    this.forcerFinPaiement,
+    this.validerPaiementFonction,
+    this.validerRetraitFonction,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,30 +59,23 @@ class DetailEvenementOrganisateur extends StatelessWidget {
                   context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: commandes.map((commande) {
-                return getListeCommandeWidget(context, commande);
-              }).toList(),
-            ),
+          Column(
+            children: commandes.map((commande) {
+              return getListeCommandeWidget(context, commande);
+            }).toList(),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: getBoutonActionEvenement(context),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 50),
-          ),
+          getBoutonActionEvenement(context),
           if (estDesktop(context, 600))
-            Align(
-              alignment: Alignment.center,
-              child: BoutonAction(
-                  text: "Exporter au format Excel",
-                  fonction: () {
-                    exporterListingExcel(context);
-                  }),
+            Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Align(
+                alignment: Alignment.center,
+                child: BoutonAction(
+                    text: "Exporter au format Excel",
+                    fonction: () {
+                      exporterListingExcel(context);
+                    }),
+              ),
             ),
         ],
       ),
@@ -82,47 +84,52 @@ class DetailEvenementOrganisateur extends StatelessWidget {
 
   Widget getListeCommandeWidget(BuildContext context, Commande commande) {
     return ListTile(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      title: Column(
         children: [
-          Expanded(
-            child: Text(
-              "Commande n° ${commande.getNumeroCommande()} - ${commande.utilisateur.prenom} ${commande.utilisateur.nom}",
-              style: FontUtils.getFontApp(
-                  fontSize: ResponsiveConstraint.getResponsiveValue(context,
-                      POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2)),
-            ),
-          ),
-          Expanded(
-            child: estDesktop(context, 710)
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      getBoutonFonctionStatut(context, commande),
-                      BoutonNavigationGoRouter(
-                        text: "Plus de détails",
-                        routeName: "/commandes/${commande.id}",
-                        themeCouleur: ThemeCouleur.bleu,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  "Commande n° ${commande.getNumeroCommande()} - ${commande.utilisateur.prenom} ${commande.utilisateur.nom}",
+                  style: FontUtils.getFontApp(
+                      fontSize: ResponsiveConstraint.getResponsiveValue(context,
+                          POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2)),
+                ),
+              ),
+              Expanded(
+                child: estDesktop(context, 710)
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          getBoutonFonctionStatut(context, commande),
+                          BoutonNavigationGoRouter(
+                            text: "Plus de détails",
+                            routeName: "/commandes/${commande.id}",
+                            themeCouleur: ThemeCouleur.bleu,
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          getBoutonFonctionStatut(context, commande),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: BoutonNavigationGoRouter(
+                              text: "Plus de détails",
+                              routeName: "/commandes/${commande.id}",
+                              themeCouleur: ThemeCouleur.bleu,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  )
-                : Column(
-                    children: [
-                      getBoutonFonctionStatut(context, commande),
-                      Padding(
-                        padding: EdgeInsets.only(top: 10),
-                        child: BoutonNavigationGoRouter(
-                          text: "Plus de détails",
-                          routeName: "/commandes/${commande.id}",
-                          themeCouleur: ThemeCouleur.bleu,
-                        ),
-                      ),
-                    ],
-                  ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+              ),
+            ],
           ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 10.0),
-          ),
+          const Divider(thickness: 0.5),
         ],
       ),
     );
@@ -131,17 +138,31 @@ class DetailEvenementOrganisateur extends StatelessWidget {
   Widget getBoutonFonctionStatut(BuildContext context, Commande commande) {
     if (commande.getStatut() == "En attente de paiement") {
       return Padding(
-        padding: const EdgeInsets.only(right: 10.0),
+        padding: EdgeInsets.only(right: estDesktop(context, 600) ? 10.0 : 0.0),
         child: BoutonAction(
           text: "Valider le paiement",
           themeCouleur: ThemeCouleur.vert,
-          fonction: () => commandePayerFonction!(commande.id),
+          fonction: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return PopupGestionCommande(
+                  commande: commande,
+                  fonctionAEffectuer: validerPaiementFonction,
+                  texteBouton: "Valider le paiement",
+                  titrePopup: "Confirmer le paiement d'une commande",
+                  sousTitrePopup:
+                      "Vous vous apprêtez à valider le paiement de la commande n°${commande.getNumeroCommande()}.",
+                );
+              },
+            );
+          },
         ),
       );
     }
     if (commande.getStatut() == "Payée") {
       return Padding(
-        padding: const EdgeInsets.only(right: 40.0),
+        padding: EdgeInsets.only(right: estDesktop(context, 600) ? 40.0 : 0.0),
         child: Text(
           "Paiement validé",
           textAlign: TextAlign.center,
@@ -152,13 +173,14 @@ class DetailEvenementOrganisateur extends StatelessWidget {
               POLICE_DESKTOP_NORMAL_2,
             ),
             fontWeight: FONT_WEIGHT_NORMAL,
+            color: VERT_1,
           ),
         ),
       );
     }
     if (commande.getStatut() == "Annulée") {
       return Padding(
-        padding: const EdgeInsets.only(right: 40.0),
+        padding: EdgeInsets.only(right: estDesktop(context, 600) ? 40.0 : 0.0),
         child: Text(
           "Commande annulée",
           textAlign: TextAlign.center,
@@ -169,23 +191,38 @@ class DetailEvenementOrganisateur extends StatelessWidget {
               POLICE_DESKTOP_NORMAL_2,
             ),
             fontWeight: FONT_WEIGHT_NORMAL,
+            color: ROUGE_1,
           ),
         ),
       );
     }
     if (commande.getStatut() == "À retirer") {
       return Padding(
-        padding: const EdgeInsets.only(right: 10.0),
+        padding: EdgeInsets.only(right: estDesktop(context, 600) ? 10.0 : 0.0),
         child: BoutonAction(
           text: "Valider le retrait",
           themeCouleur: ThemeCouleur.vert,
-          fonction: () => commandeRetraitFonction!(commande.id),
+          fonction: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return PopupGestionCommande(
+                  commande: commande,
+                  fonctionAEffectuer: validerRetraitFonction,
+                  titrePopup: "Confirmer le retrait d'une commande",
+                  sousTitrePopup:
+                      "Vous vous apprêtez à valider le retrait de la commande n°${commande.getNumeroCommande()}.",
+                  texteBouton: "Valider le retrait",
+                );
+              },
+            );
+          },
         ),
       );
     }
     if (commande.getStatut() == "Clôturée") {
       return Padding(
-        padding: const EdgeInsets.only(right: 40.0),
+        padding: EdgeInsets.only(right: estDesktop(context, 600) ? 40.0 : 0.0),
         child: Text(
           "Commande clôturée",
           textAlign: TextAlign.center,
@@ -193,6 +230,7 @@ class DetailEvenementOrganisateur extends StatelessWidget {
             fontSize: ResponsiveConstraint.getResponsiveValue(
                 context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
             fontWeight: FONT_WEIGHT_NORMAL,
+            color: GRIS_FONCE,
           ),
         ),
       );
@@ -208,7 +246,21 @@ class DetailEvenementOrganisateur extends StatelessWidget {
           alignment: Alignment.center,
           child: BoutonAction(
             text: "Forcer la fin des paiements",
-            fonction: () => forcerFinPaiement!(evenement.id),
+            fonction: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return PopupGestionEvenement(
+                    idEvenement: evenement.id,
+                    fonctionAEffectuer: forcerFinPaiement,
+                    titrePopup: "Confirmer la fin des paiements",
+                    sousTitrePopup:
+                        "Vous vous apprêtez à valider la fin des paiements.\nLes commandes non payées vont être annulées.",
+                    texteBouton: "Forcer la fin des paiements",
+                  );
+                },
+              );
+            },
             themeCouleur: ThemeCouleur.rouge,
           ),
         );
@@ -216,8 +268,24 @@ class DetailEvenementOrganisateur extends StatelessWidget {
         return Align(
           alignment: Alignment.center,
           child: BoutonAction(
-              text: "Passer au retrait",
-              fonction: () => evenementRetirerFonction!(evenement.id)),
+            text: "Passer au retrait",
+            fonction: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return PopupGestionEvenement(
+                    idEvenement: evenement.id,
+                    fonctionAEffectuer: evenementRetirerFonction,
+                    titrePopup:
+                        "Confirmer le traitement des commandes en attente de retrait",
+                    sousTitrePopup:
+                        "Vous vous apprêtez à passer les commandes au statut en attente de retrait.",
+                    texteBouton: "Passer au retrait",
+                  );
+                },
+              );
+            },
+          ),
         );
       }
     }
@@ -228,7 +296,21 @@ class DetailEvenementOrganisateur extends StatelessWidget {
         alignment: Alignment.center,
         child: BoutonAction(
           text: "Clôturé l'événement",
-          fonction: () => evenementCloturerFonction!(evenement.id),
+          fonction: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return PopupGestionEvenement(
+                  idEvenement: evenement.id,
+                  fonctionAEffectuer: evenementCloturerFonction,
+                  titrePopup: "Confirmer le clôture de l'événement",
+                  sousTitrePopup:
+                      "Vous vous apprêtez à clôturer l'événement ${evenement.titre}.",
+                  texteBouton: "Clôturer l'événement",
+                );
+              },
+            );
+          },
           themeCouleur: ThemeCouleur.rouge,
         ),
       );

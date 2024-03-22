@@ -11,7 +11,6 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
-import 'package:ape_manager_front/views/commandes/details/detail_commande_view.dart';
 import 'package:ape_manager_front/views/evenements/details/bouton_quantite.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
@@ -29,12 +28,12 @@ class DetailEvenementView extends StatefulWidget {
 }
 
 class _DetailEvenementViewState extends State<DetailEvenementView> {
-  late Panier panier;
-  late UtilisateurProvider utilisateurProvider;
-  Evenement? evenement;
-
   final EvenementProvider evenementProvider = EvenementProvider();
   final CommandeProvider commandeProvider = CommandeProvider();
+  late UtilisateurProvider utilisateurProvider;
+
+  late Panier panier;
+  Evenement? evenement;
 
   @override
   void initState() {
@@ -44,6 +43,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     fetchEvenement();
   }
 
+  /// Récupération de l'événement demandé
   Future<void> fetchEvenement() async {
     await evenementProvider.fetchEvenement(
       utilisateurProvider.token!,
@@ -59,6 +59,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     });
   }
 
+  /// Récupération de la liste des articles de l'événement demandé
   Future<void> fetchListeArticles() async {
     await evenementProvider.fetchListeArticles(
       utilisateurProvider.token!,
@@ -66,6 +67,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     );
   }
 
+  /// Récupération de la liste des commandes de l'événement demandé
   Future<void> fetchListeCommandes() async {
     await evenementProvider.fetchListeCommandes(
       utilisateurProvider.token!,
@@ -73,56 +75,60 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     );
   }
 
-  /// Création d'une commande
-  Future<void> creerCommande() async {
-    final response = await commandeProvider.creerCommande(
-        utilisateurProvider.token!, panier);
-    if (response["statusCode"] != 201 && mounted) {
-      afficherMessageErreur(context: context, message: response["message"]);
-    } else {
-      naviguerVersPage(
-          context,
-          CommandeView.routeURL
-              .replaceAll(":idCommande", response["idCommande"].toString()));
-      afficherMessageSucces(
-          context: context,
-          message: "Votre commande a bien été prise en compte.",
-          duree: 5);
-    }
-  }
-
-  /// Passage d'un événement à l'état retrait
-  Future<void> passerEvenementARetirer(int idEvenement) async {
-    final response = await evenementProvider.passerEvenementEnRetrait(
-        utilisateurProvider.token!, idEvenement);
-    final response_commande = await commandeProvider.passerCommandeEnRetrait(
-        utilisateurProvider.token!, idEvenement);
+  /// Valider le paiement d'une commande
+  Future<void> validerPaiement(int idCommande) async {
+    final response = await commandeProvider.passerCommandePayee(
+        utilisateurProvider.token!, idCommande);
     if (response["statusCode"] != 204 && mounted) {
-      if (response_commande["statusCode"] != 204 && mounted) {
-        afficherMessageErreur(
-            context: context, message: response_commande["message"]);
-      }
+      // Affiche qu'il y a eut une erreur
       afficherMessageErreur(context: context, message: response["message"]);
     } else {
-      setState(() {
-        evenement!.statut = StatutEvenement.RETRAIT;
-        for (Commande commande in evenement!.commandes) {
-          commande.statut = StatutCommande.A_RETIRER;
+      for (Commande commande in evenement!.commandes) {
+        if (commande.id == idCommande) {
+          // Ferme la popup
+          revenirEnArriere(context);
+
+          // Change le statut d'une commande
+          setState(() {
+            commande.statut = StatutCommande.VALIDEE;
+            commande.estPaye = true;
+          });
+
+          // Affiche le message de succès
+          afficherMessageSucces(
+              context: context,
+              message:
+                  "La commande n°${commande.getNumeroCommande()} a été payée.",
+              duree: 5);
         }
-      });
+      }
     }
   }
 
-  /// Passage d'un événement à l'état clôturé
-  Future<void> passerEvenementACloturer(int idEvenement) async {
-    final response = await evenementProvider.passerEvenementEnCloture(
-        utilisateurProvider.token!, idEvenement);
+  /// Valider le retrait d'une commande
+  Future<void> validerRetrait(int idCommande) async {
+    final response = await commandeProvider.passerCommandeRetiree(
+        utilisateurProvider.token!, idCommande);
     if (response["statusCode"] != 204 && mounted) {
       afficherMessageErreur(context: context, message: response["message"]);
     } else {
-      setState(() {
-        evenement!.statut = StatutEvenement.CLOTURE;
-      });
+      // Ferme la popup
+      revenirEnArriere(context);
+
+      // Change le statut de la commande
+      for (Commande commande in evenement!.commandes) {
+        if (commande.id == idCommande) {
+          setState(() {
+            commande.statut = StatutCommande.CLOTUREE;
+          });
+          // Affiche le message de succès
+          afficherMessageSucces(
+              context: context,
+              message:
+                  "La commande n°${commande.getNumeroCommande()} a été retirée.",
+              duree: 5);
+        }
+      }
     }
   }
 
@@ -133,11 +139,18 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     if (response["statusCode"] != 204 && mounted) {
       afficherMessageErreur(context: context, message: response["message"]);
     } else {
+      // Ferme la popup
+      revenirEnArriere(context);
+
       for (Commande commande in evenement!.commandes) {
-        if (commande.estPaye == false) {
+        if (!commande.estPaye) {
           setState(() {
             commande.statut = StatutCommande.ANNULEE;
           });
+          // Affiche le message de succès
+          afficherMessageSucces(
+              context: context,
+              message: "Les commandes non payées ont été annulées.");
         }
       }
     }
@@ -153,40 +166,56 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     }
   }
 
-  /// Passage d'une commande à l'état payée
-  Future<void> passerCommandeAPayer(int idCommande) async {
-    final response = await commandeProvider.passerCommandePayee(
-        utilisateurProvider.token!, idCommande);
+  /// Passer un événement au statut À RETIRER
+  Future<void> passerEvenementARetirer(int idEvenement) async {
+    final response = await evenementProvider.passerEvenementEnRetrait(
+        utilisateurProvider.token!, idEvenement);
+    final response_commande = await commandeProvider.passerCommandeEnRetrait(
+        utilisateurProvider.token!, idEvenement);
     if (response["statusCode"] != 204 && mounted) {
+      if (response_commande["statusCode"] != 204 && mounted) {
+        // Affiche un message d'erreur si la commande n'est pas passer en à retirer
+        afficherMessageErreur(
+            context: context, message: response_commande["message"]);
+      }
+      // Affiche un message d'erreur si l'événement n'est pas passer en à retirer
       afficherMessageErreur(context: context, message: response["message"]);
     } else {
-      for (Commande commande in evenement!.commandes) {
-        if (commande.id == idCommande) {
-          setState(() {
-            commande.statut = StatutCommande.VALIDEE;
-            commande.estPaye = true;
-          });
+      revenirEnArriere(context);
+
+      setState(() {
+        evenement!.statut = StatutEvenement.RETRAIT;
+        for (Commande commande in evenement!.commandes) {
+          if (commande.statut != StatutCommande.ANNULEE) {
+            commande.statut = StatutCommande.A_RETIRER;
+          }
         }
-      }
+      });
+      // Affiche le message de succès
+      afficherMessageSucces(
+          context: context,
+          message:
+              "L'événement et les commandes sont passés au statut en attente de retrait",
+          duree: 5);
     }
   }
 
-  /// Passage d'une commande à l'état retirée
-  Future<void> passerCommandeARetirer(int idCommande) async {
-    final response = await commandeProvider.passerCommandeRetiree(
-        utilisateurProvider.token!, idCommande);
-    final response_2 = await commandeProvider.cloturerCommande(
-        utilisateurProvider.token!, idCommande);
+  /// Passage d'un événement à l'état clôturé
+  Future<void> passerEvenementACloturer(int idEvenement) async {
+    final response = await evenementProvider.passerEvenementEnCloture(
+        utilisateurProvider.token!, idEvenement);
     if (response["statusCode"] != 204 && mounted) {
       afficherMessageErreur(context: context, message: response["message"]);
     } else {
-      for (Commande commande in evenement!.commandes) {
-        if (commande.id == idCommande) {
-          setState(() {
-            commande.statut = StatutCommande.CLOTUREE;
-          });
-        }
-      }
+      revenirEnArriere(context);
+
+      setState(() {
+        evenement!.statut = StatutEvenement.CLOTURE;
+      });
+
+      // Affiche le message de succès
+      afficherMessageSucces(
+          context: context, message: "L'événement a été clôturé", duree: 5);
     }
   }
 
@@ -196,19 +225,18 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
       body: evenement == null
           ? const SizedBox()
           : DetailEvenementWidget(
-              creerCommande: creerCommande,
               commandeProvider: commandeProvider,
-              listingCommande: getListingCommande(),
-              commandeRetraitFonction: passerCommandeARetirer,
-              commandePayerFonction: passerCommandeAPayer,
-              evenementCloturerFonction: passerEvenementACloturer,
-              evenementRetirerFonction: passerEvenementARetirer,
-              forcerFinPaiement: forcerFinPaiement,
               evenementProvider: evenementProvider,
               utilisateurProvider: utilisateurProvider,
+              listingCommande: getListingCommande(),
               evenement: evenement!,
               listeView: getInfosArticles(),
               panier: panier,
+              validerPaiementFonction: validerPaiement,
+              validerRetraitFonction: validerRetrait,
+              evenementCloturerFonction: passerEvenementACloturer,
+              evenementRetirerFonction: passerEvenementARetirer,
+              forcerFinPaiement: forcerFinPaiement,
             ),
     );
   }
