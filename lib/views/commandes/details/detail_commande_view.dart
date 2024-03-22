@@ -254,7 +254,7 @@ class _CommandeViewState extends State<CommandeView> {
 
   Widget getBoutons(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      if (commande!.statut == StatutCommande.VALIDEE)
+      if (commande!.statut == StatutCommande.VALIDEE && !commande!.estPaye)
         BoutonAction(
           text: "Annuler ma commande",
           themeCouleur: ThemeCouleur.rouge,
