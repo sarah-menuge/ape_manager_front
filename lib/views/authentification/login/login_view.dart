@@ -15,10 +15,13 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
-      body: DivPrincipale(
-        maxWidth: 800,
-        body: getContenuLoginResponsive(context),
-        nomUrlRetour: '',
+      body: DefaultTextStyle(
+        style: const TextStyle(fontFamilyFallback: ['Roboto']),
+        child: DivPrincipale(
+          maxWidth: 800,
+          body: getContenuLoginResponsive(context),
+          nomUrlRetour: '',
+        ),
       ),
     );
   }
