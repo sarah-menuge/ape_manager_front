@@ -15,12 +15,15 @@ class ModificationMdpView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
-      body: DivPrincipale(
-        header: const HeaderDivPrincipale(ajouterBoutonRetour: true),
-        maxWidth: 800,
-        maxHeight: 1250,
-        body: ModificationMdpFormView(token: token),
-        nomUrlRetour: LoginView.routeURL,
+      body: DefaultTextStyle(
+        style: const TextStyle(fontFamilyFallback: ['Roboto']),
+        child: DivPrincipale(
+          header: const HeaderDivPrincipale(ajouterBoutonRetour: true),
+          maxWidth: 800,
+          maxHeight: 1250,
+          body: ModificationMdpFormView(token: token),
+          nomUrlRetour: LoginView.routeURL,
+        ),
       ),
     );
   }

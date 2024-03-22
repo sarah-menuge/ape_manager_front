@@ -8,7 +8,6 @@ import 'package:ape_manager_front/views/admin/gestion_utilisateurs/gestion_utili
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class BoutonOnglet {
   final String libelle;
@@ -56,7 +55,8 @@ class DrawerAppli extends StatelessWidget {
                 onTap: () => naviguerVersPage(context, boutonOnglet.routeName),
                 child: ListTile(
                   title: Text(boutonOnglet.libelle),
-                  titleTextStyle: GoogleFonts.oswald(
+                  titleTextStyle: TextStyle(
+                    fontFamily: 'Oswald',
                     fontSize: 15,
                     color: Colors.black,
                   ),

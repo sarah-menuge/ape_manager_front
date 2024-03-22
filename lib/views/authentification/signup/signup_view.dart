@@ -12,12 +12,15 @@ class SignupView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
-      body: DivPrincipale(
-        header: const HeaderDivPrincipale(ajouterBoutonRetour: true),
-        maxWidth: 800,
-        maxHeight: 1250,
-        body: const SignupFormView(),
-        nomUrlRetour: LoginView.routeURL,
+      body: DefaultTextStyle(
+        style: const TextStyle(fontFamilyFallback: ['Roboto']),
+        child: DivPrincipale(
+          header: const HeaderDivPrincipale(ajouterBoutonRetour: true),
+          maxWidth: 800,
+          maxHeight: 1250,
+          body: const SignupFormView(),
+          nomUrlRetour: LoginView.routeURL,
+        ),
       ),
     );
   }

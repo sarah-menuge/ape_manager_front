@@ -44,6 +44,7 @@ class MainApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: authentificationProvider),

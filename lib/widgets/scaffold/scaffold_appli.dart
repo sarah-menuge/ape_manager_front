@@ -65,7 +65,10 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
           setPerspective: setPerspective,
         ),
       ),
-      body: widget.items != null ? getOnglet() : widget.body,
+      body: DefaultTextStyle(
+        style: const TextStyle(fontFamilyFallback: ['Roboto']),
+        child: widget.items != null ? getOnglet() : widget.body,
+      ),
       drawer: DrawerAppli(
         utilisateurProvider: utilisateurProvider,
       ),
@@ -117,16 +120,19 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
           setPerspective: setPerspective,
         ),
       ),
-      body: StickyFooterScrollView(
-        itemBuilder: (BuildContext context, int index) {
-          return Column(children: [
-            if (widget.nomUrlRetour != null)
-              BoutonRetour(nomUrlRetour: widget.nomUrlRetour!),
-            widget.body,
-          ]);
-        },
-        itemCount: 1,
-        footer: const Footer(),
+      body: DefaultTextStyle(
+        style: const TextStyle(fontFamilyFallback: ['Roboto']),
+        child: StickyFooterScrollView(
+          itemBuilder: (BuildContext context, int index) {
+            return Column(children: [
+              if (widget.nomUrlRetour != null)
+                BoutonRetour(nomUrlRetour: widget.nomUrlRetour!),
+              widget.body,
+            ]);
+          },
+          itemCount: 1,
+          footer: const Footer(),
+        ),
       ),
     );
   }

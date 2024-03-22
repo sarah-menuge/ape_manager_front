@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
@@ -127,22 +128,23 @@ Future<ReponseAPI> _tentativeAppelAPI({
   }
 
   // Appel à l'API
-  if (jsonBody != null) {
-    http.Response reponse = await methodeHttp(
-      URL,
-      headers: HEADERS,
-      body: json.encode(jsonBody),
-    ).timeout(Duration(seconds: timeoutSec));
-    return ReponseAPI.connexionOk(response: reponse);
-  } else {
-    http.Response reponse = await methodeHttp(
-      URL,
-      headers: HEADERS,
-    ).timeout(Duration(seconds: timeoutSec));
-    return ReponseAPI.connexionOk(response: reponse);
-  }
-  /*} catch (e) {
+  try {
+    if (jsonBody != null) {
+      http.Response reponse = await methodeHttp(
+        URL,
+        headers: HEADERS,
+        body: json.encode(jsonBody),
+      ).timeout(Duration(seconds: timeoutSec));
+      return ReponseAPI.connexionOk(response: reponse);
+    } else {
+      http.Response reponse = await methodeHttp(
+        URL,
+        headers: HEADERS,
+      ).timeout(Duration(seconds: timeoutSec));
+      return ReponseAPI.connexionOk(response: reponse);
+    }
+  } catch (e) {
     afficherLogCritical("La tentative de connexion à l'API a échoué.");
     return ReponseAPI.connexionKO();
-  }*/
+  }
 }
