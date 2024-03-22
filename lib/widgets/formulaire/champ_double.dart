@@ -27,16 +27,21 @@ class ChampDouble extends Champ {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _controller = controller ??
+        TextEditingController(text: valeurInitiale?.toStringAsFixed(2));
+
     double val = valeurInitiale ?? 0.0;
 
     void increment() {
       val += incrementValue;
+      _controller.text = val.toStringAsFixed(2);
       onChangedMethodDouble?.call(val);
     }
 
     void decrement() {
       val -= incrementValue;
       if (val < 0) val = 0;
+      _controller.text = val.toStringAsFixed(2);
       onChangedMethodDouble?.call(val);
     }
 
@@ -49,8 +54,9 @@ class ChampDouble extends Champ {
           children: [
             Expanded(
               child: TextFormField(
+                controller: _controller,
                 readOnly: readOnly,
-                initialValue: valeurInitiale?.toStringAsFixed(2),
+                // initialValue: valeurInitiale?.toStringAsFixed(2),
                 onSaved: (value) {
                   double? doubleValue = double.tryParse(value ?? '');
                   if (onSavedMethodDouble != null && doubleValue != null) {

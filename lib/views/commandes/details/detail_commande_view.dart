@@ -326,13 +326,9 @@ class _CommandeViewState extends State<CommandeView> {
     return Image.memory(base64Decode(base64String));
   }
 
-  Future<dynamic> getQRCode() async {
+  void afficherQRCode() async {
     await commandeProvider.getQrCodeCommande(
         utilisateurProvider.token!, commande!.id);
-  }
-
-  void afficherQRCode() {
-    getQRCode();
     Image qrCode = imageFromBase64String(commandeProvider.qrCode);
     showDialog(
       context: context,

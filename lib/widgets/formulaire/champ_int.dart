@@ -29,16 +29,20 @@ class ChampInt extends Champ {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _controller =
+        controller ?? TextEditingController(text: valeurInitiale?.toString());
     int val = valeurInitiale ?? 0;
 
     void _increment() {
       val += incrementValue;
+      _controller.text = val.toString();
       onChangedMethodInt?.call(val);
     }
 
     void _decrement() {
       val -= incrementValue;
       if (val < 0) val = 0;
+      _controller.text = val.toString();
       onChangedMethodInt?.call(val);
     }
 
@@ -51,8 +55,9 @@ class ChampInt extends Champ {
           children: [
             Expanded(
               child: TextFormField(
+                controller: _controller,
                 readOnly: readOnly,
-                initialValue: valeurInitiale?.toString(),
+                // initialValue: valeurInitiale?.toString(),
                 onSaved: (value) {
                   int? intValue = int.tryParse(value ?? '');
                   if (onSavedMethodInt != null && intValue != null) {
