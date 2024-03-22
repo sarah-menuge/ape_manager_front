@@ -28,6 +28,7 @@ class ChampDate extends Champ {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    if (readOnly) return;
     final DateTime dateDebut = lastSelectedDate == null
         ? DateTime.now()
         : DateTime.now().isBefore(lastSelectedDate!)

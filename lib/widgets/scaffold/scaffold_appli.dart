@@ -6,6 +6,8 @@ import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/widgets/scaffold/barre_navigation.dart';
+import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
+import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold/drawer_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold/footer_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold/header_appli.dart';
@@ -16,11 +18,13 @@ import 'package:sticky_footer_scrollview/sticky_footer_scrollview.dart';
 class ScaffoldAppli extends StatefulWidget {
   final Widget body;
   final List<BarreNavigationItem>? items;
+  final String? nomUrlRetour;
 
   const ScaffoldAppli({
     super.key,
     required this.body,
     this.items,
+    this.nomUrlRetour,
   });
 
   @override
@@ -78,6 +82,8 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          if (widget.nomUrlRetour != null)
+            BoutonRetour(nomUrlRetour: widget.nomUrlRetour!),
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
@@ -105,7 +111,7 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
   Widget getScaffoldDesktop() {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80),
+        preferredSize: const Size.fromHeight(80),
         child: HeaderAppli(
           utilisateurProvider: utilisateurProvider,
           setPerspective: setPerspective,
@@ -113,7 +119,11 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
       ),
       body: StickyFooterScrollView(
         itemBuilder: (BuildContext context, int index) {
-          return widget.body;
+          return Column(children: [
+            if (widget.nomUrlRetour != null)
+              BoutonRetour(nomUrlRetour: widget.nomUrlRetour!),
+            widget.body,
+          ]);
         },
         itemCount: 1,
         footer: const Footer(),

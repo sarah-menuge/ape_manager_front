@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_annuler_modifications.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_date.dart';
@@ -12,12 +13,14 @@ class ModifierEvenementFormView extends StatefulWidget {
   final Evenement evenement;
   final Function annulerModificationsInfosGenerales;
   final Function modifierInfosGenerales;
+  final DroitEvenement droitEvenement;
 
   const ModifierEvenementFormView({
     super.key,
     required this.evenement,
     required this.annulerModificationsInfosGenerales,
     required this.modifierInfosGenerales,
+    required this.droitEvenement,
   });
 
   @override
@@ -40,6 +43,7 @@ class _ModifierEvenementFormViewState
             prefixIcon: const Icon(Icons.title),
             valeurInitiale: widget.evenement.titre,
             onChangedMethod: (value) => widget.evenement.titre = value!,
+            readOnly: widget.droitEvenement != DroitEvenement.modification,
           ),
         ],
         [
@@ -49,12 +53,13 @@ class _ModifierEvenementFormViewState
             prefixIcon: const Icon(Icons.description),
             valeurInitiale: widget.evenement.description,
             onChangedMethod: (value) => widget.evenement.description = value!,
+            readOnly: widget.droitEvenement != DroitEvenement.modification,
           ),
         ],
         [
           ChampDate(
             key: UniqueKey(),
-            readOnly: false,
+            readOnly: widget.droitEvenement != DroitEvenement.modification,
             label: "Début des commandes",
             valeurInitiale: widget.evenement.getDateDebutString(),
             controller: widget.evenement.dateDebutTEC,
@@ -63,7 +68,7 @@ class _ModifierEvenementFormViewState
           ),
           ChampDate(
             key: UniqueKey(),
-            readOnly: false,
+            readOnly: widget.droitEvenement != DroitEvenement.modification,
             label: "Fin des commandes",
             valeurInitiale: widget.evenement.getDateFinString(),
             controller: widget.evenement.dateFinTEC,
@@ -72,7 +77,7 @@ class _ModifierEvenementFormViewState
           ),
           ChampDate(
             key: UniqueKey(),
-            readOnly: false,
+            readOnly: widget.droitEvenement != DroitEvenement.modification,
             label: "Fin de paiement",
             valeurInitiale: widget.evenement.getDateFinPaiementString(),
             controller: widget.evenement.dateFinPaiementTEC,
@@ -82,24 +87,26 @@ class _ModifierEvenementFormViewState
         ],
       ],
       boutons: [
-        BoutonAction(
-          text: "Annuler les modifications",
-          fonction: () {
-            showDialog(
-              context: context,
-              builder: (context) => PopupAnnulerModifications(
-                annulerModificationsInfosGenerales:
-                    widget.annulerModificationsInfosGenerales,
-              ),
-            );
-          },
-          themeCouleur: ThemeCouleur.rouge,
-        ),
-        BoutonAction(
-          text: "Enregistrer les modifications",
-          fonction: () => widget.modifierInfosGenerales(widget.evenement),
-          themeCouleur: ThemeCouleur.bleu,
-        ),
+        if (widget.droitEvenement == DroitEvenement.modification)
+          BoutonAction(
+            text: "Annuler les modifications",
+            fonction: () {
+              showDialog(
+                context: context,
+                builder: (context) => PopupAnnulerModifications(
+                  annulerModificationsInfosGenerales:
+                      widget.annulerModificationsInfosGenerales,
+                ),
+              );
+            },
+            themeCouleur: ThemeCouleur.rouge,
+          ),
+        if (widget.droitEvenement == DroitEvenement.modification)
+          BoutonAction(
+            text: "Enregistrer les modifications",
+            fonction: () => widget.modifierInfosGenerales(widget.evenement),
+            themeCouleur: ThemeCouleur.bleu,
+          ),
       ],
     );
   }
