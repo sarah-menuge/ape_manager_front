@@ -84,10 +84,10 @@ class _ConsultationModificationCommandeFormViewState
             prefixIcon: const Icon(Icons.euro),
             label: "Prix de la commande",
             valeurInitiale: widget.commande.prixTotal != 0.0
-                ? widget.commande.prixTotal as double
+                ? widget.commande.prixTotal
                 : 0.0,
-            onSavedMethod: (value) {
-              widget.commande.prixTotal = double.parse(value!);
+            onSavedMethodDouble: (value) {
+              widget.commande.prixTotal = value!;
             },
             readOnly: widget.consultation,
           ),
@@ -139,5 +139,4 @@ class _ConsultationModificationCommandeFormViewState
       ],
     );
   }
-
 }

@@ -76,7 +76,9 @@ class _ModifierArticleFormViewState
             prefixIcon: const Icon(Icons.euro),
             label: "Prix",
             valeurInitiale: widget.article.prix,
-            onSavedMethodDouble: (value) => widget.article.prix = value!,
+            onSavedMethodDouble: (value) {
+              widget.article.prix = value!;
+            },
           ),
         ],
         [
@@ -86,7 +88,8 @@ class _ModifierArticleFormViewState
             valeurInitiale: widget.article.quantiteMax == -1
                 ? null
                 : widget.article.quantiteMax,
-            onSavedMethodInt: (value) => widget.article.quantiteMax = value!,
+            onSavedMethodInt: (value) =>
+                widget.article.quantiteMax = value ?? -1,
             incrementValue: 1,
             peutEtreNul: true,
           ),
