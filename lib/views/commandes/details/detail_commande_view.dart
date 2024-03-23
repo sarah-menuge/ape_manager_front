@@ -11,6 +11,7 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/commandes/details/pop_up_annulation_commande.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
+import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
@@ -32,7 +33,7 @@ class _CommandeViewState extends State<CommandeView> {
   late UtilisateurProvider utilisateurProvider;
   late CommandeProvider commandeProvider;
 
-  Commande? commande = null;
+  Commande? commande;
 
   @override
   void initState() {
@@ -44,7 +45,12 @@ class _CommandeViewState extends State<CommandeView> {
   }
 
   Future<void> fetchCommande() async {
-    await commandeProvider.fetchCommandes(utilisateurProvider.token!);
+    if (utilisateurProvider.perspective == Perspective.PARENT) {
+      await commandeProvider.fetchCommandes(utilisateurProvider.token!);
+    } else if (utilisateurProvider.perspective == Perspective.ORGANIZER) {
+      await commandeProvider.fetchAllCommandes();
+    }
+
     setState(() {
       commande = commandeProvider.getCommande(widget.idCommande);
     });
@@ -53,28 +59,33 @@ class _CommandeViewState extends State<CommandeView> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldAppli(
-      nomUrlRetour: MesCommandesView.routeURL,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: PAGE_WIDTH),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: 20,
-                  right: ResponsiveConstraint.getResponsiveValue(
-                      context, 20.0, 0.0),
-                ),
-                child: getCommande(context),
+      nomUrlRetour: utilisateurProvider.perspective == Perspective.PARENT
+          ? MesCommandesView.routeURL
+          : DetailEvenementView.routeURL
+              .replaceAll(":idEvent", "${commande?.idEvenement ?? ''}"),
+      body: commande == null
+          ? const SizedBox.shrink()
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: PAGE_WIDTH),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        right: ResponsiveConstraint.getResponsiveValue(
+                            context, 20.0, 0.0),
+                      ),
+                      child: getCommandeInfos(context),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
-  Widget getCommande(BuildContext context) {
+  Widget getCommandeInfos(BuildContext context) {
     if (commande == null) return Container();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
