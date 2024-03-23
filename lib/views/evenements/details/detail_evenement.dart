@@ -10,7 +10,6 @@ import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_organisateur.dart';
 import 'package:ape_manager_front/views/evenements/details/popup_finaliser_commande.dart';
 import 'package:ape_manager_front/views/evenements/details/popup_partage.dart';
-import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +50,6 @@ class DetailEvenementWidget extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          BoutonRetour(nomUrlRetour: EvenementsView.routeURL),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: PAGE_WIDTH),
             child: Padding(
