@@ -1,8 +1,8 @@
 import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/ligne_commande.dart';
-import 'package:intl/intl.dart';
 import 'package:ape_manager_front/models/utilisateur.dart';
+import 'package:intl/intl.dart';
 
 import 'donnee_tableau.dart';
 
@@ -18,6 +18,7 @@ enum StatutCommande {
 class Commande extends DonneeTableau {
   late int id;
   late String libelleEvenement;
+  late int idEvenement;
   late int nombreArticles;
   late double prixTotal;
   late DateTime dateCreation;
@@ -29,9 +30,11 @@ class Commande extends DonneeTableau {
   List<Article> listeArticles = [];
   List<LigneCommande> listeLigneCommandes = [];
   late Utilisateur utilisateur;
+
   Commande() {
     id = 0;
     libelleEvenement = "";
+    idEvenement = 0;
     nomUtilisateur = "";
     nombreArticles = 0;
     prixTotal = 0.0;
@@ -46,6 +49,7 @@ class Commande extends DonneeTableau {
   Commande.bidon(int seed) {
     id = seed;
     libelleEvenement = "Vente de chocolats";
+    idEvenement = 0;
     nombreArticles = 3;
     prixTotal = 16.66;
     dateCreation = DateTime(2024, 10, 31);
@@ -64,6 +68,7 @@ class Commande extends DonneeTableau {
   Commande.copie(Commande other) {
     id = other.id;
     libelleEvenement = other.libelleEvenement;
+    idEvenement = other.idEvenement;
     nombreArticles = other.nombreArticles;
     prixTotal = other.prixTotal as double;
     dateCreation = other.dateCreation;
@@ -83,7 +88,8 @@ class Commande extends DonneeTableau {
 
   Commande.fromJson(Map<String, dynamic> json) {
     id = json["id"];
-    libelleEvenement = json["event"];
+    libelleEvenement = json["eventTitle"];
+    idEvenement = json["eventId"];
     nombreArticles = json["totalItems"];
     dynamic rawTotalPrice = json["totalPrice"];
     if (rawTotalPrice is int) {

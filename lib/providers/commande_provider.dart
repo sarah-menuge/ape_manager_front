@@ -23,7 +23,9 @@ class CommandeProvider with ChangeNotifier {
 
   Commande? getCommande(int id) {
     for (Commande c in _commandes) {
-      if (c.id == id) return c;
+      if (c.id == id) {
+        return c;
+      }
     }
     return null;
   }
