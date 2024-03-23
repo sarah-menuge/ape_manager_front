@@ -11,6 +11,7 @@ import 'package:ape_manager_front/views/authentification/login/login_view.dart';
 import 'package:ape_manager_front/views/authentification/signup/signup_view.dart';
 import 'package:ape_manager_front/views/commandes/details/detail_commande_view.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
+import 'package:ape_manager_front/views/commandes/retrait/retrait_commandes_view.dart';
 import 'package:ape_manager_front/views/evenements/creation/creer_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
@@ -143,6 +144,10 @@ final _router = GoRouter(
     GoRoute(
       path: GestionUtilisateursView.routeURL,
       builder: (context, state) => const GestionUtilisateursView(),
+    ),
+    GoRoute(
+      path: RetraitCommandeView.routeURL,
+      builder: (context, state)  => const RetraitCommandeView(),
     ),
   ],
   // Permet d'imposer l'authentification

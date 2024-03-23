@@ -57,15 +57,6 @@ class Enfant extends DonneeTableau {
   }
 
   @override
-  Map<String, dynamic> pourTableau() {
-    return {
-      "Nom": nom,
-      "Prénom": prenom,
-      "Classe": classe,
-    };
-  }
-
-  @override
   List<String> intitulesHeader() {
     return ["Nom", "Prénom", "Classe"];
   }

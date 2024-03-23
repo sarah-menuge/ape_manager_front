@@ -7,8 +7,10 @@ class FontUtils {
     bool shadows = false,
     double letterSpacing = 0,
     FontWeight fontWeight = FontWeight.normal,
+    FontStyle fontstyle = FontStyle.normal,
   }) {
     return TextStyle(
+      fontStyle: fontstyle,
       fontFamily: 'Oswald',
       fontWeight: fontWeight,
       fontSize: fontSize,

@@ -8,6 +8,7 @@ import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/admin/gestion_utilisateurs/gestion_utilisateurs_view.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
+import 'package:ape_manager_front/views/commandes/retrait/retrait_commandes_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/logo_appli.dart';
@@ -173,6 +174,17 @@ class HeaderAppli extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Text(
                 "Événements",
+                style: FontUtils.getFontApp(fontSize: 15),
+              ),
+            ),
+          ),
+          SizedBox(height: 25, child: VerticalDivider(color: GRIS_FONCE)),
+          InkWell(
+            onTap: () => naviguerVersPage(context, RetraitCommandeView.routeURL),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Text(
+                "Retrait des commandes",
                 style: FontUtils.getFontApp(fontSize: 15),
               ),
             ),

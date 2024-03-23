@@ -1,7 +1,10 @@
 import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/ligne_commande.dart';
+import 'package:intl/intl.dart';
 import 'package:ape_manager_front/models/utilisateur.dart';
+
+import 'donnee_tableau.dart';
 
 enum StatutCommande {
   VALIDEE,
@@ -12,7 +15,7 @@ enum StatutCommande {
   NON_DEFINI
 }
 
-class Commande {
+class Commande extends DonneeTableau {
   late int id;
   late String libelleEvenement;
   late int nombreArticles;
@@ -21,25 +24,24 @@ class Commande {
   late DateTime? dateRetrait;
   late LieuRetrait lieuRetrait;
   late bool estPaye;
+  late String nomUtilisateur;
   late StatutCommande statut;
   List<Article> listeArticles = [];
   List<LigneCommande> listeLigneCommandes = [];
   late Utilisateur utilisateur;
-
-  Commande({
-    required this.id,
-    required this.libelleEvenement,
-    required this.nombreArticles,
-    required this.prixTotal,
-    required this.dateCreation,
-    required this.dateRetrait,
-    required this.lieuRetrait,
-    required this.estPaye,
-    required this.statut,
-    required this.listeArticles,
-    required this.listeLigneCommandes,
-    required this.utilisateur,
-  });
+  Commande() {
+    id = 0;
+    libelleEvenement = "";
+    nomUtilisateur = "";
+    nombreArticles = 0;
+    prixTotal = 0.0;
+    dateCreation = DateTime.now();
+    dateRetrait = DateTime.now();
+    lieuRetrait = LieuRetrait(id: 0, lieu: "");
+    estPaye = false;
+    statut = StatutCommande.NON_DEFINI;
+    utilisateur = Utilisateur();
+  }
 
   Commande.bidon(int seed) {
     id = seed;
@@ -63,7 +65,7 @@ class Commande {
     id = other.id;
     libelleEvenement = other.libelleEvenement;
     nombreArticles = other.nombreArticles;
-    prixTotal = other.prixTotal;
+    prixTotal = other.prixTotal as double;
     dateCreation = other.dateCreation;
     dateRetrait = other.dateRetrait;
     lieuRetrait = LieuRetrait.copie(other.lieuRetrait);
@@ -83,17 +85,21 @@ class Commande {
     id = json["id"];
     libelleEvenement = json["event"];
     nombreArticles = json["totalItems"];
-    prixTotal = json["totalPrice"];
-    utilisateur = Utilisateur.fromJson(json["user"]);
+    dynamic rawTotalPrice = json["totalPrice"];
+    if (rawTotalPrice is int) {
+      prixTotal = rawTotalPrice.toDouble();
+    } else {
+      prixTotal = rawTotalPrice as double;
+    }
     dateCreation = DateTime.parse(json["creationDate"]);
+    nomUtilisateur = json["user"]["firstname"] + " " + json["user"]["surname"];
     try {
       dateRetrait = DateTime.parse(json["pickUpDate"]);
     } catch (e) {
       dateRetrait = null;
     }
-    utilisateur = Utilisateur.fromJson(json["user"]);
     lieuRetrait = LieuRetrait.fromJson(json["pickUpPlace"]);
-    estPaye = json["isPaid"];
+    estPaye = json["isPaid"] == "true" ? true : false;
     if (json["status"] == "VALIDATED") {
       statut = StatutCommande.VALIDEE;
     } else if (json["status"] == "CANCELED") {
@@ -112,6 +118,7 @@ class Commande {
         (o) => LigneCommande.fromJson(o),
       ),
     );
+    utilisateur = Utilisateur.fromJson(json["user"]);
   }
 
   String getStatut() {
@@ -132,5 +139,40 @@ class Commande {
 
   String getNumeroCommande() {
     return id.toString().padLeft(5, '0');
+  }
+
+  String getDateCreation() {
+    return DateFormat('dd/MM/yyyy').format(dateCreation);
+  }
+
+  String getDateRetrait() {
+    return dateRetrait != null
+        ? DateFormat('dd/MM/yyyy').format(dateRetrait!)
+        : " - ";
+  }
+
+  String getUser() {
+    return nomUtilisateur;
+  }
+
+  Map<String, dynamic> getDonneesTableau() {
+    return {
+      "Numéro": getNumeroCommande(),
+      "Utilisateur": getUser(),
+      "Événement": libelleEvenement,
+    };
+  }
+
+  @override
+  getValeur(String nom_colonne) {
+    if (getDonneesTableau().containsKey(nom_colonne)) {
+      return getDonneesTableau()[nom_colonne];
+    }
+    return "Non défini";
+  }
+
+  @override
+  List<String> intitulesHeader() {
+    return getDonneesTableau().keys.toList();
   }
 }

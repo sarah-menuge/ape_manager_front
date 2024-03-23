@@ -172,16 +172,4 @@ class Utilisateur extends DonneeTableau {
       "Rôle",
     ];
   }
-
-  @override
-  Map<String, dynamic> pourTableau() {
-    return {
-      "Nom": nom,
-      "Prénom": prenom,
-      "Email": email,
-      "Téléphone": telephone,
-      "Rôle": role,
-      "Membre CA ?": est_membre,
-    };
-  }
 }

@@ -9,6 +9,8 @@ import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
 import 'package:flutter/material.dart';
 
+import '../../views/commandes/retrait/retrait_commandes_view.dart';
+
 class BoutonOnglet {
   final String libelle;
   final String routeName;
@@ -33,6 +35,9 @@ class DrawerAppli extends StatelessWidget {
       if (utilisateurProvider.perspective == Perspective.PARENT)
         BoutonOnglet(
             libelle: "Mes commandes", routeName: MesCommandesView.routeURL),
+      if (utilisateurProvider.perspective == Perspective.ORGANIZER)
+        BoutonOnglet(
+            libelle: "Retrait des commandes", routeName: RetraitCommandeView.routeURL),
       if (utilisateurProvider.perspective == Perspective.ADMIN)
         BoutonOnglet(
             libelle: "Gestion des utilisateurs",
