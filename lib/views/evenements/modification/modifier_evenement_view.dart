@@ -132,7 +132,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
           label: 'Général',
           icon: const Icon(Icons.settings),
           onglet: evenementBrouillon == null
-              ? const SizedBox()
+              ? const SizedBox.shrink()
               : getTuileInformationsGenerales(context),
         ),
         BarreNavigationItem(
@@ -142,23 +142,23 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
           label: 'Organisateurs',
           icon: const Icon(Icons.person),
           onglet: evenementBrouillon == null
-              ? const SizedBox()
+              ? const SizedBox.shrink()
               : Column(
                   children: [
                     getTuileTableauOrganisateurs(context),
                     if (droitEvenement == DroitEvenement.modification)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: BoutonAction(
-                          text: "Ajouter un organisateur",
-                          fonction: () => afficherPopupAjouterOrganisateur(),
-                          themeCouleur: ThemeCouleur.vert,
-                          disable:
-                              modifEvenementForm.organisateursSelect.isEmpty,
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: BoutonAction(
+                            text: "Ajouter un organisateur",
+                            fonction: () => afficherPopupAjouterOrganisateur(),
+                            themeCouleur: ThemeCouleur.vert,
+                            disable:
+                                modifEvenementForm.organisateursSelect.isEmpty,
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
         ),
@@ -169,21 +169,21 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
           label: 'Articles',
           icon: const Icon(Icons.article),
           onglet: evenementBrouillon == null
-              ? const SizedBox()
+              ? const SizedBox.shrink()
               : Column(
                   children: [
                     getTuileTableauArticles(context),
                     if (droitEvenement == DroitEvenement.modification)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: BoutonAction(
-                          text: "Ajouter un article",
-                          fonction: () => afficherPopupAjouterArticle(),
-                          themeCouleur: ThemeCouleur.vert,
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: BoutonAction(
+                            text: "Ajouter un article",
+                            fonction: () => afficherPopupAjouterArticle(),
+                            themeCouleur: ThemeCouleur.vert,
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
         ),
@@ -195,7 +195,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
             label: 'Validation',
             icon: const Icon(Icons.check),
             onglet: evenementBrouillon == null
-                ? const SizedBox()
+                ? const SizedBox.shrink()
                 : getRecapitulatifEvenement(context),
           ),
       ],
@@ -222,15 +222,20 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   textAlign: TextAlign.center,
                 ),
                 const Divider(),
-                TexteFlexible(
-                  texte: "Titre de l'événement : ${evenementBrouillon!.titre}",
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: TexteFlexible(
+                    texte:
+                        "Titre de l'événement : ${evenementBrouillon!.titre}",
+                  ),
                 ),
-                const SizedBox(height: 10),
-                TexteFlexible(
-                  texte:
-                      "Nombre d'organisateurs : ${evenementBrouillon!.organisateurs.length}",
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: TexteFlexible(
+                    texte:
+                        "Nombre d'organisateurs : ${evenementBrouillon!.organisateurs.length}",
+                  ),
                 ),
-                const SizedBox(height: 10),
                 const TexteFlexible(
                   texte: "Liste des organisateurs :",
                   style: TextStyle(
@@ -261,28 +266,36 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
           ),
         ),
         if (droitEvenement == DroitEvenement.modification)
-          const SizedBox(height: 20),
-        if (droitEvenement == DroitEvenement.modification &&
-            evenementBrouillon!.statut == StatutEvenement.BROUILLON)
-          getBoutonPublication(context),
-        if (droitEvenement == DroitEvenement.modification)
-          const SizedBox(height: 20),
-        if (droitEvenement == DroitEvenement.modification)
-          getBoutonSuppression(context),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Column(
+              children: [
+                if (evenementBrouillon != null &&
+                    evenementBrouillon!.statut == StatutEvenement.BROUILLON)
+                  getBoutonPublication(context),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: getBoutonSuppression(context),
+                ),
+              ],
+            ),
+          ),
       ],
     );
   }
 
   Widget getBodyDesktop(BuildContext context) {
-    if (evenementBrouillon == null) return const SizedBox();
+    if (evenementBrouillon == null) return const SizedBox.shrink();
     return SingleChildScrollView(
       child: Column(
         children: [
           getTitre(context),
           getTuileInformationsGenerales(context),
           getTuileTableauOrganisateurs(context),
-          getTuileTableauArticles(context),
-          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: getTuileTableauArticles(context),
+          ),
           LayoutBuilder(
             builder: (context, constraints) {
               bool isWide = constraints.maxWidth > 800;
@@ -294,13 +307,18 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (droitEvenement == DroitEvenement.modification)
-                        getBoutonSuppression(context),
-                      if (droitEvenement == DroitEvenement.modification)
-                        const SizedBox(width: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: getBoutonSuppression(context),
+                        ),
                       if (droitEvenement == DroitEvenement.modification &&
+                          evenementBrouillon != null &&
                           evenementBrouillon!.statut ==
                               StatutEvenement.BROUILLON)
-                        getBoutonPublication(context),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: getBoutonPublication(context),
+                        ),
                     ],
                   )
                 ],
@@ -368,15 +386,17 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
-                TexteFlexible(
-                  texte: "Liste des organisateurs",
-                  style: FontUtils.getFontApp(
-                    fontSize: ResponsiveConstraint.getResponsiveValue(
-                        context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: TexteFlexible(
+                    texte: "Liste des organisateurs",
+                    style: FontUtils.getFontApp(
+                      fontSize: ResponsiveConstraint.getResponsiveValue(
+                          context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
                 Tableau(
                   nomTableau: "un organisateur",
                   tailleTableau: estDesktop(context, 600) ? 300 : 200,
@@ -418,15 +438,17 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
-                TexteFlexible(
-                  texte: "Liste des articles",
-                  style: FontUtils.getFontApp(
-                    fontSize: ResponsiveConstraint.getResponsiveValue(
-                        context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: TexteFlexible(
+                    texte: "Liste des articles",
+                    style: FontUtils.getFontApp(
+                      fontSize: ResponsiveConstraint.getResponsiveValue(
+                          context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 20),
                 Tableau(
                   nomTableau: "un article",
                   tailleTableau: estDesktop(context, 600) ? 450 : 350,

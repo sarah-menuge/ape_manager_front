@@ -107,8 +107,10 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
             style: const TextStyle(color: Colors.red, fontSize: 20.0),
           ),
           getTuileFormulaireTitre(context),
-          getTuileTableauOrganisateurs(context),
-          const SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.only(bottom: 20),
+            child: getTuileTableauOrganisateurs(context),
+          ),
           getBoutonValidation(context),
         ],
       ),
@@ -175,20 +177,24 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
-                TexteFlexible(
-                  texte: "Liste des organisateurs de l'événement",
-                  style: FontUtils.getFontApp(
-                    fontSize: ResponsiveConstraint.getResponsiveValue(
-                        context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: TexteFlexible(
+                    texte: "Liste des organisateurs de l'événement",
+                    style: FontUtils.getFontApp(
+                      fontSize: ResponsiveConstraint.getResponsiveValue(
+                          context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 10),
-                const TexteFlexible(
-                  texte: "Elle sera modifiable plus tard",
-                  textAlign: TextAlign.center,
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 20),
+                  child: TexteFlexible(
+                    texte: "Elle sera modifiable plus tard",
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-                const SizedBox(height: 20),
                 Tableau(
                   nomTableau: "un organisateur",
                   tailleTableau: estDesktop(context, 600) ? 300 : 200,
@@ -241,16 +247,20 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                   style: const TextStyle(color: Colors.red, fontSize: 15.0),
                 ),
                 const Divider(),
-                TexteFlexible(
-                  texte:
-                      "Titre de l'événement : ${creationEvenementForm.titreEvenement}",
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: TexteFlexible(
+                    texte:
+                        "Titre de l'événement : ${creationEvenementForm.titreEvenement}",
+                  ),
                 ),
-                const SizedBox(height: 10),
-                TexteFlexible(
-                  texte:
-                      "Nombre d'organisateurs : ${creationEvenementForm.organisateursSelectionnes.length}",
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: TexteFlexible(
+                    texte:
+                        "Nombre d'organisateurs : ${creationEvenementForm.organisateursSelectionnes.length}",
+                  ),
                 ),
-                const SizedBox(height: 10),
                 const TexteFlexible(
                   texte: "Liste des organisateurs :",
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -278,8 +288,10 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
             ),
           ),
         ),
-        const SizedBox(height: 20),
-        getBoutonValidation(context),
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: getBoutonValidation(context),
+        ),
       ],
     );
   }

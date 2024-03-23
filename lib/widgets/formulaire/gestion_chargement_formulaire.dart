@@ -13,7 +13,7 @@ class GestionChargementFormulaire extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        chargement == true ? const Loader() : const SizedBox(),
+        chargement == true ? const Loader() : const SizedBox.shrink(),
         Center(child: body),
       ],
     );

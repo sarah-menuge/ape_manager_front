@@ -8,7 +8,7 @@ class MessageErreur extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (erreur == null) {
-      return const SizedBox();
+      return const SizedBox.shrink();
     } else {
       return Padding(
         padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),

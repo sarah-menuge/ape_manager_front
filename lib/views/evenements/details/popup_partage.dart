@@ -98,13 +98,15 @@ class _PopupPartageState extends State<PopupPartage> {
                 ),
               ),
               if (UniversalPlatform.isIOS || UniversalPlatform.isAndroid) ...[
-                BoutonAction(
-                  text: 'Partager via les réseaux',
-                  fonction: partagerViaReseaux,
-                  themeCouleur: ThemeCouleur.vert,
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: BoutonAction(
+                    text: 'Partager via les réseaux',
+                    fonction: partagerViaReseaux,
+                    themeCouleur: ThemeCouleur.vert,
+                  ),
                 ),
               ],
-              SizedBox(height: 8),
             ],
           ),
         ),

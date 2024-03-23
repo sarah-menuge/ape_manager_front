@@ -33,9 +33,12 @@ class LoginView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Expanded(flex: 1, child: getSectionLogin()),
-          Container(
-            color: Colors.grey,
-            child: const SizedBox(height: 200, width: 2),
+          const SizedBox(
+            height: 200,
+            child: VerticalDivider(
+              color: GRIS_FONCE,
+              width: 1,
+            ),
           ),
           Expanded(child: getSectionSignup(context)),
         ],
@@ -53,11 +56,13 @@ class LoginView extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Text(
-          'Pas de compte ?',
-          style: TextStyle(color: NOIR, fontSize: 17),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: Text(
+            'Pas de compte ?',
+            style: TextStyle(color: NOIR, fontSize: 17),
+          ),
         ),
-        const SizedBox(height: 20),
         getBoutonSignup(context),
       ],
     );

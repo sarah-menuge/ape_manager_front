@@ -74,7 +74,7 @@ class DivPrincipale extends StatelessWidget {
             itemCount: 1,
             itemBuilder: (context, index) {
               return StickyHeader(
-                header: myHeader ?? const SizedBox(),
+                header: myHeader ?? const SizedBox.shrink(),
                 content: Column(
                   children: [body],
                 ),
