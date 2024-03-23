@@ -1,6 +1,5 @@
 import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
@@ -93,9 +92,7 @@ class _AnnulationCommandeFormViewState
       widget.fetchCommande();
       revenirEnArriere(context);
     } else {
-      setState(() {
-        erreur = response['message'];
-      });
+      afficherMessageErreur(context: context, message: response['message']);
     }
     return;
   }
