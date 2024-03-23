@@ -372,7 +372,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
           listing[ligneCommande.article.nom] = ligneCommande.quantite;
         } else {
           listing[ligneCommande.article.nom] =
-              (listing[ligneCommande.article.nom]! + ligneCommande.quantite);
+          (listing[ligneCommande.article.nom]! + ligneCommande.quantite);
         }
       }
     }

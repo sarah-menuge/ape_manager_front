@@ -53,6 +53,29 @@ class CommandeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<dynamic> fetchAllCommandes() async {
+    _commandes = [];
+    commandesRecuperees = false;
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/orders',
+      typeRequeteHttp: TypeRequeteHttp.GET,
+      timeoutSec: 6,
+    );
+
+    commandesRecuperees = true;
+    if (!reponseApi.connexionAPIEtablie) return;
+
+    if (reponseApi.response?.statusCode != 200) return;
+
+    _commandes = (jsonDecode(reponseApi.response!.body) as List)
+        .map((c) => Commande.fromJson(c))
+        .toList();
+
+    afficherLogInfo("Récupération des commandes terminée.");
+
+    notifyListeners();
+  }
+
   /// Récupérer une commande grâce à son identifiant
   Future<dynamic> fetchCommande(String token, int idCommande) async {
     ReponseAPI reponseApi = await callAPI(

@@ -221,13 +221,17 @@ class _TableauState extends State<Tableau> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
-                        "Restez appuyé pour ${widget.editable != null ? "modifier, " : ""} ${widget.consultable != null ? "consulter, " : ""} ${widget.supprimable != null ? "supprimer " : ""} ${widget.nomTableau}.",
-                        style: TextStyle(fontStyle: FontStyle.italic)),
+                      "Restez appuyé pour ${widget.editable != null ? "modifier, " : ""} ${widget.consultable != null ? "consulter, " : ""} ${widget.supprimable != null ? "supprimer " : ""} ${widget.nomTableau}.",
+                      style: FontUtils.getFontApp(
+                          fontstyle: FontStyle.italic,
+                          fontSize: 13,
+                          color: GRIS_FONCE),
+                    ),
                   ),
                 ),
               ],
             ),
-          )
+          ),
       ],
     );
   }

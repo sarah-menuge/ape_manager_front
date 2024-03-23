@@ -79,6 +79,9 @@ class ChampDate extends Champ {
         controller: controller,
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
+          if (readOnly) {
+            return;
+          }
           _selectDate(context);
         },
         validator: (value) {

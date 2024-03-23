@@ -77,16 +77,6 @@ class Article extends DonneeTableau {
   }
 
   @override
-  Map<String, dynamic> pourTableau() {
-    return {
-      "Nom": nom,
-      "Max": quantiteMax,
-      "Prix": prix,
-      "Desc": description,
-    };
-  }
-
-  @override
   bool operator ==(Object other) {
     if (other.runtimeType != Article) return false;
     return (other as Article).id == id;

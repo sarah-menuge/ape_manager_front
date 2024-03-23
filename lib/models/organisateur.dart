@@ -85,13 +85,4 @@ class Organisateur extends DonneeTableau {
   List<String> intitulesHeader() {
     return ["Nom", "Prénom", "Email"];
   }
-
-  @override
-  Map<String, dynamic> pourTableau() {
-    return {
-      "Nom": nom,
-      "Prénom": prenom,
-      "Email": email,
-    };
-  }
 }
