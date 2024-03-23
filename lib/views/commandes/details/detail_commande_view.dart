@@ -53,10 +53,10 @@ class _CommandeViewState extends State<CommandeView> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldAppli(
+      nomUrlRetour: MesCommandesView.routeURL,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            BoutonRetour(nomUrlRetour: MesCommandesView.routeURL),
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: PAGE_WIDTH),
               child: Padding(
