@@ -60,24 +60,44 @@ class DetailEvenementOrganisateur extends StatelessWidget {
             ),
           ),
           Column(
-            children: commandes.map((commande) {
-              return getListeCommandeWidget(context, commande);
-            }).toList(),
+            children: commandes.isEmpty
+                ? [getAucuneCommande(context)]
+                : commandes.map((commande) {
+                    return getListeCommandeWidget(context, commande);
+                  }).toList(),
           ),
-          getBoutonActionEvenement(context),
+          commandes.isEmpty ? Container() : getBoutonActionEvenement(context),
           if (estDesktop(context, 600))
-            Padding(
-              padding: EdgeInsets.only(top: 30),
-              child: Align(
-                alignment: Alignment.center,
-                child: BoutonAction(
-                    text: "Exporter au format Excel",
-                    fonction: () {
-                      exporterListingExcel(context);
-                    }),
-              ),
-            ),
+            commandes.isEmpty
+                ? Container()
+                : Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: BoutonAction(
+                          text: "Exporter au format Excel",
+                          fonction: () {
+                            exporterListingExcel(context);
+                          }),
+                    ),
+                  ),
         ],
+      ),
+    );
+  }
+
+  Widget getAucuneCommande(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 30),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Aucune commande à afficher",
+          style: FontUtils.getFontApp(
+            fontSize: ResponsiveConstraint.getResponsiveValue(
+                context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
+          ),
+        ),
       ),
     );
   }

@@ -5,9 +5,8 @@ import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
-import 'package:ape_manager_front/widgets/scaffold/barre_navigation.dart';
-import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
+import 'package:ape_manager_front/widgets/scaffold/barre_navigation.dart';
 import 'package:ape_manager_front/widgets/scaffold/drawer_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold/footer_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold/header_appli.dart';
@@ -66,9 +65,8 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
         ),
       ),
       body: DefaultTextStyle(
-        style: const TextStyle(fontFamilyFallback: ['Roboto']),
-        child: widget.items != null ? getOnglet() : widget.body,
-      ),
+          style: const TextStyle(fontFamilyFallback: ['Roboto']),
+          child: widget.items != null ? getOnglet() : widget.body),
       drawer: DrawerAppli(
         utilisateurProvider: utilisateurProvider,
       ),

@@ -32,7 +32,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
   final CommandeProvider commandeProvider = CommandeProvider();
   late UtilisateurProvider utilisateurProvider;
 
-  late Panier panier;
+  Panier panier = Panier();
   Evenement? evenement;
 
   @override
@@ -55,7 +55,8 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     setState(() {
       evenement;
       panier = Panier(
-          idEvenement: evenement!.id, idLieuRetrait: evenement!.lieux[0].id);
+          idEvenement: evenement!.id,
+          idLieuRetrait: evenement!.lieux.isEmpty ? 0 : evenement!.lieux[0].id);
     });
   }
 

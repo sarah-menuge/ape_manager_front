@@ -114,7 +114,10 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
                       padding: EdgeInsets.only(top: 20),
                       child: getBoutonRechercheUtilisateur(context),
                     ),
-                    getTableauUtilisateurs(),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: getTableauUtilisateurs(),
+                    ),
                   ],
                 ),
               ),

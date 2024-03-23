@@ -8,7 +8,6 @@ import 'package:ape_manager_front/views/commandes/liste/widget_commande.dart';
 import 'package:ape_manager_front/views/commandes/liste/widget_commande_mobile.dart';
 import 'package:ape_manager_front/widgets/expansion_tile_appli.dart';
 import 'package:ape_manager_front/widgets/scaffold/scaffold_appli.dart';
-import 'package:ape_manager_front/widgets/texte/texte_flexible.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +50,13 @@ class _MesCommandesViewState extends State<MesCommandesView> {
         child: Column(
           children: [
             getImageCommande(context),
-            getListeCommandes(context),
+            Padding(
+              padding: EdgeInsets.only(
+                bottom:
+                    ResponsiveConstraint.getResponsiveValue(context, 20.0, 0.0),
+              ),
+              child: getListeCommandes(context),
+            ),
           ],
         ),
       ),
@@ -138,20 +143,16 @@ class _MesCommandesViewState extends State<MesCommandesView> {
 
   Widget getListeVide() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        children: [
-          TexteFlexible(
-            dejaContenuDansUnRow: true,
-            texte: "Aucune commande",
-            textAlign: TextAlign.center,
-            style: FontUtils.getFontApp(
-              fontSize: ResponsiveConstraint.getResponsiveValue(
-                  context, POLICE_MOBILE_NORMAL_1, POLICE_DESKTOP_NORMAL_1),
-              fontWeight: FONT_WEIGHT_NORMAL,
-            ),
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Aucune commande à afficher",
+          style: FontUtils.getFontApp(
+            fontSize: ResponsiveConstraint.getResponsiveValue(
+                context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
           ),
-        ],
+        ),
       ),
     );
   }
