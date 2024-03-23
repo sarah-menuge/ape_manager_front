@@ -3,14 +3,117 @@ import 'package:flutter/services.dart';
 
 import 'champ.dart';
 
-class ChampInt extends Champ {
+class ChampInt extends StatefulWidget {
+  final String label;
   final Widget? prefixIcon;
+  final int? valeurInitiale;
+  final int valeurMinimale;
+  final int? valeurMaximale;
+  final bool readOnly;
   final int incrementValue;
   final void Function(int?)? onChangedMethodInt;
   final void Function(int?)? onSavedMethodInt;
   final bool peutEtreNul;
 
   const ChampInt({
+    super.key,
+    required this.label,
+    this.prefixIcon,
+    required this.valeurInitiale,
+    this.valeurMinimale = 0,
+    this.valeurMaximale,
+    this.readOnly = false,
+    this.incrementValue = 1,
+    this.onChangedMethodInt,
+    this.onSavedMethodInt,
+    this.peutEtreNul = false,
+  });
+
+  @override
+  State<ChampInt> createState() => _ChampIntState();
+}
+
+class _ChampIntState extends State<ChampInt> {
+  late TextEditingController controller;
+  bool afficherBoutonDecrementer = true;
+  bool afficherBoutonIncrementer = true;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController(
+        text: widget.valeurInitiale != null
+            ? widget.valeurInitiale.toString()
+            : "");
+    gererAffichageBoutons(widget.valeurInitiale);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _ChampInt(
+      label: widget.label,
+      prefixIcon: widget.prefixIcon ?? const Icon(Icons.euro),
+      valeurInitiale: widget.valeurInitiale,
+      readOnly: widget.readOnly,
+      onChangedMethodInt: widget.onChangedMethodInt,
+      onSavedMethodInt: widget.onSavedMethodInt,
+      controller: controller,
+      incrementerValeur: incrementerChamp,
+      decrementerValeur: decrementerChamp,
+      afficherBoutonIncrementer: afficherBoutonIncrementer,
+      afficherBoutonDecrementer: afficherBoutonDecrementer,
+      gererAffichageBoutons: gererAffichageBoutons,
+      peutEtreNul: widget.peutEtreNul,
+    );
+  }
+
+  gererAffichageBoutons(int? value) {
+    setState(() {
+      afficherBoutonDecrementer =
+          value != null ? value > widget.valeurMinimale : false;
+      afficherBoutonIncrementer = value != null
+          ? widget.valeurMaximale == null || value < widget.valeurMaximale!
+          : true;
+    });
+  }
+
+  void setValeur(int value) {
+    value <= 0.00
+        ? controller.text = 0.toString()
+        : controller.text = value.toString();
+
+    if (widget.onChangedMethodInt != null) {
+      int? intValue = int.tryParse(controller.text) ?? 0;
+      widget.onChangedMethodInt!(intValue);
+    }
+    gererAffichageBoutons(value);
+    setState(() => controller.text);
+  }
+
+  void incrementerChamp() {
+    int intValue = int.tryParse(controller.text ?? '') ?? 0;
+    setValeur(intValue + widget.incrementValue);
+  }
+
+  void decrementerChamp() {
+    int intValue = int.tryParse(controller.text ?? '') ?? 0;
+    setValeur(intValue - widget.incrementValue);
+    // setVal(val - incrementValue);
+  }
+}
+
+class _ChampInt extends Champ {
+  final Widget? prefixIcon;
+  final void Function(int?)? onChangedMethodInt;
+  final void Function(int?)? onSavedMethodInt;
+  final Function incrementerValeur;
+  final Function decrementerValeur;
+  final Function gererAffichageBoutons;
+  final bool afficherBoutonIncrementer;
+  final bool afficherBoutonDecrementer;
+  final bool peutEtreNul;
+
+  const _ChampInt({
     super.key,
     required super.label,
     this.prefixIcon,
@@ -20,32 +123,18 @@ class ChampInt extends Champ {
     super.valeurInitiale,
     super.controller,
     super.readOnly,
-    this.incrementValue = 1,
     this.onChangedMethodInt,
     this.onSavedMethodInt,
-    this.peutEtreNul = false,
-  }) : assert(incrementValue > 0,
-            'La valeur d\'incrémentation doit être positive.');
+    required this.incrementerValeur,
+    required this.decrementerValeur,
+    required this.gererAffichageBoutons,
+    required this.afficherBoutonIncrementer,
+    required this.afficherBoutonDecrementer,
+    required this.peutEtreNul,
+  });
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller =
-        controller ?? TextEditingController(text: valeurInitiale?.toString());
-    int val = valeurInitiale ?? 0;
-
-    void _increment() {
-      val += incrementValue;
-      _controller.text = val.toString();
-      onChangedMethodInt?.call(val);
-    }
-
-    void _decrement() {
-      val -= incrementValue;
-      if (val < 0) val = 0;
-      _controller.text = val.toString();
-      onChangedMethodInt?.call(val);
-    }
-
     return SizedBox(
       height: getHeight(context),
       child: Padding(
@@ -53,58 +142,62 @@ class ChampInt extends Champ {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: TextFormField(
-                controller: _controller,
-                readOnly: readOnly,
-                // initialValue: valeurInitiale?.toString(),
-                onSaved: (value) {
-                  int? intValue = int.tryParse(value ?? '');
-                  if (onSavedMethodInt != null && intValue != null) {
-                    onSavedMethodInt!(intValue);
-                  }
-                },
-                validator: (value) {
-                  if (peutEtreNul == false &&
-                      (value == null || value.isEmpty)) {
-                    return 'Veuillez renseigner ce champ.';
-                  }
-                  if (value != null &&
-                      value.isNotEmpty &&
-                      int.tryParse(value) == null) {
-                    return 'Veuillez entrer un nombre valide.';
-                  }
-                  return null;
-                },
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d*'))
-                ],
-                decoration: InputDecoration(
-                  labelText: label,
-                  border: const OutlineInputBorder(),
-                  prefixIcon: prefixIcon,
-                  labelStyle: getTextStyle(context),
-                  contentPadding: getPaddingChamp(),
-                  helperText: " ",
-                  isDense: isDense,
-                ),
-                style: getTextStyle(context),
-              ),
-            ),
+            getChamp(context),
             if (!readOnly) ...[
               IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: _increment,
-              ),
+                  icon: const Icon(Icons.add),
+                  onPressed: afficherBoutonIncrementer
+                      ? () => incrementerValeur()
+                      : null),
               IconButton(
-                icon: const Icon(Icons.remove),
-                onPressed: _decrement,
-              ),
+                  icon: const Icon(Icons.remove),
+                  onPressed: afficherBoutonDecrementer
+                      ? () => decrementerValeur()
+                      : null),
             ]
           ],
         ),
+      ),
+    );
+  }
+
+  Widget getChamp(BuildContext context) {
+    return Expanded(
+      child: TextFormField(
+        controller: controller,
+        readOnly: readOnly,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d*$'))],
+        onSaved: (value) {
+          int? intValue = int.tryParse(value ?? '');
+          if (onSavedMethodInt != null) {
+            if (intValue != null) {
+              onSavedMethodInt!(intValue);
+            } else {
+              onSavedMethodInt!(null);
+            }
+          }
+        },
+        validator: (value) {
+          if ((value == null || value.isEmpty) && !peutEtreNul) {
+            return 'Veuillez renseigner ce champ.';
+          }
+          return null;
+        },
+        onChanged: (value) {
+          int? intValue = int.tryParse(value) ?? 0;
+          gererAffichageBoutons(intValue);
+        },
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+          prefixIcon: prefixIcon,
+          labelStyle: getTextStyle(context),
+          contentPadding: getPaddingChamp(),
+          helperText: " ",
+          isDense: isDense,
+        ),
+        style: getTextStyle(context),
       ),
     );
   }

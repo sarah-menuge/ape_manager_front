@@ -66,15 +66,17 @@ class _AjoutArticleFormViewState extends FormulaireState<AjoutArticleFormView> {
             prefixIcon: const Icon(Icons.euro),
             label: "Prix",
             onSavedMethodDouble: (value) => newArticle.prix = value!,
+            valeurInitiale: 0,
           ),
         ],
         [
           ChampInt(
             prefixIcon: const Icon(Icons.numbers),
             label: "Quantité maximale autorisée",
-            onSavedMethodInt: (value) => newArticle.quantiteMax = value!,
+            onSavedMethodInt: (value) => newArticle.quantiteMax = value ?? -1,
             incrementValue: 1,
             peutEtreNul: true,
+            valeurInitiale: null,
           ),
         ],
       ],
