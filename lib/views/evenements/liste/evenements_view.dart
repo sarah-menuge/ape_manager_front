@@ -62,10 +62,20 @@ class _EvenementsViewState extends State<EvenementsView> {
           children: [
             ImageEvenements(),
             if (utilisateurProvider.perspective == Perspective.PARENT)
-              getVueParents(evenementsEnCours, evenementsAVenir),
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: ResponsiveConstraint.getResponsiveValue(
+                        context, 20.0, 0.0)),
+                child: getVueParents(evenementsEnCours, evenementsAVenir),
+              ),
             if (utilisateurProvider.perspective == Perspective.ORGANIZER)
-              getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
-                  evenementsEnCours, evenementsCloture),
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: ResponsiveConstraint.getResponsiveValue(
+                        context, 20.0, 0.0)),
+                child: getVueOrganisateur(evenementsBrouillon, evenementsAVenir,
+                    evenementsEnCours, evenementsCloture),
+              ),
           ],
         ),
       ),
