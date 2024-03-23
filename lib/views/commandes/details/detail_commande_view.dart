@@ -75,7 +75,7 @@ class _CommandeViewState extends State<CommandeView> {
   }
 
   Widget getCommande(BuildContext context) {
-    if (commande == null) return const SizedBox();
+    if (commande == null) return Container();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

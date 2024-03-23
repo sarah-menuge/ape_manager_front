@@ -58,7 +58,7 @@ class Popup extends StatelessWidget {
           itemCount: 1,
           itemBuilder: (context, index) {
             return StickyHeader(
-              header: header != null ? header! : const SizedBox(height: 20),
+              header: header ?? const SizedBox.shrink(),
               content: Column(
                 children: [
                   TitrePopup(titre: titre),

@@ -109,7 +109,7 @@ class _MesCommandesViewState extends State<MesCommandesView> {
   }
 
   Widget getListeCommandes(BuildContext context) {
-    if (!commandeProvider.commandesRecuperees) return const SizedBox();
+    if (!commandeProvider.commandesRecuperees) return Container();
     return Column(
       children: [
         ExpansionTileAppli(
