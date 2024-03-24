@@ -25,7 +25,7 @@ class Utilisateur extends DonneeTableau {
     id = other.id;
     nom = other.nom;
     prenom = other.prenom;
-    // est_membre = other.est_membre;
+    est_membre = other.est_membre;
     email = other.email;
     telephone = other.telephone;
     role = other.role;
@@ -41,7 +41,12 @@ class Utilisateur extends DonneeTableau {
     nom = json["surname"];
     prenom = json["firstname"];
     email = json["email"];
-    // est_membre = json["member"];
+    
+    try {
+      est_membre = json["member"];
+    } catch (e) {
+      est_membre = false;
+    }
 
     try {
       telephone = json["phone"];

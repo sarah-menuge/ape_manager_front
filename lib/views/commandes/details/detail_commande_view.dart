@@ -48,7 +48,7 @@ class _CommandeViewState extends State<CommandeView> {
     if (utilisateurProvider.perspective == Perspective.PARENT) {
       await commandeProvider.fetchCommandes(utilisateurProvider.token!);
     } else if (utilisateurProvider.perspective == Perspective.ORGANIZER) {
-      await commandeProvider.fetchAllCommandes();
+      await commandeProvider.fetchAllCommandes(utilisateurProvider.token!);
     }
 
     setState(() {
@@ -99,10 +99,11 @@ class _CommandeViewState extends State<CommandeView> {
           return getInfosArticles(context, ligneCommande);
         }),
         getPrixTotal(context),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30),
-          child: getBoutons(context),
-        ),
+        if (utilisateurProvider.perspective == Perspective.PARENT)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: getBoutons(context),
+          ),
       ],
     );
   }
