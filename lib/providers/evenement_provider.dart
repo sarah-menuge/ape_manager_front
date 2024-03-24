@@ -392,7 +392,7 @@ class EvenementProvider extends ChangeNotifier {
     Article article,
   ) async {
     ReponseAPI reponseApi = await callAPI(
-      uri: '/items/${article.id}',
+      uri: '/events/${evenement.id}/items/${article.id}',
       typeRequeteHttp: TypeRequeteHttp.PUT,
       token: token,
       jsonBody: article.toJson(null),
