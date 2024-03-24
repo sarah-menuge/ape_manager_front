@@ -85,13 +85,13 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
                       color: widget.disabled ? NOIR : BLANC),
                 ),
               ),
-              if (!widget.disabled &&
-                  (widget.quantityMax != -1 && quantity < widget.quantityMax))
+              if (widget.quantityMax == -1 ||
+                  (!widget.disabled && quantity < widget.quantityMax))
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
                     setState(() {
-                      if (widget.quantityMax != -1 &&
+                      if (widget.quantityMax == -1 ||
                           quantity < widget.quantityMax) {
                         quantity++;
                         widget.ajouterArticle(widget.article);
@@ -99,7 +99,8 @@ class _QuantiteBoutonState extends State<QuantiteBouton> {
                     });
                   },
                 ),
-              if (widget.disabled || quantity >= widget.quantityMax)
+              if (widget.quantityMax != -1 &&
+                  (widget.disabled || quantity >= widget.quantityMax))
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 7),
                   child: Icon(

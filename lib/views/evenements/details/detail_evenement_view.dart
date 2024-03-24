@@ -55,9 +55,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     await fetchListeCommandes();
     setState(() {
       evenement;
-      panier = Panier(
-          idEvenement: evenement!.id,
-          idLieuRetrait: evenement!.lieux.isEmpty ? 0 : evenement!.lieux[0].id);
+      panier = Panier(idEvenement: evenement!.id, idLieuRetrait: -1);
     });
   }
 
@@ -336,7 +334,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
               ),
               if (utilisateurProvider.perspective == Perspective.PARENT)
                 Padding(
-                  padding: EdgeInsets.only(left: 50, right: 10),
+                  padding: const EdgeInsets.only(left: 50, right: 10),
                   child: QuantiteBouton(
                     quantityMax: article.quantiteMax,
                     ajouterArticle: ajouterArticle,
@@ -372,7 +370,7 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
           listing[ligneCommande.article.nom] = ligneCommande.quantite;
         } else {
           listing[ligneCommande.article.nom] =
-          (listing[ligneCommande.article.nom]! + ligneCommande.quantite);
+              (listing[ligneCommande.article.nom]! + ligneCommande.quantite);
         }
       }
     }

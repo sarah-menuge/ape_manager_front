@@ -64,7 +64,7 @@ class Article extends DonneeTableau {
   @override
   getValeur(String nom_colonne) {
     if (nom_colonne == "Nom") return nom;
-    if (nom_colonne == "Qté.\nmax") {
+    if (nom_colonne == "Qté. max") {
       return quantiteMax == -1 ? "-" : quantiteMax;
     }
     if (nom_colonne == "Prix") return "${prix.toStringAsFixed(2)} €";
@@ -73,7 +73,7 @@ class Article extends DonneeTableau {
 
   @override
   List<String> intitulesHeader() {
-    return ["Nom", "Qté.\nmax", "Prix", "Desc"];
+    return ["Nom", "Qté. max", "Prix", "Desc"];
   }
 
   @override

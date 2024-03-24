@@ -58,8 +58,9 @@ class Panier {
 
     return {
       "eventId": idEvenement,
-      "pickUpPlaceId": idLieuRetrait,
-      "orderLines": lignesCommande
+      "pickUpPlaceId": idLieuRetrait != -1 ? idLieuRetrait : null,
+      "orderLines": lignesCommande,
+      "childId": null,
     };
   }
 }

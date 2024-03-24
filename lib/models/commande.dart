@@ -40,7 +40,7 @@ class Commande extends DonneeTableau {
     prixTotal = 0.0;
     dateCreation = DateTime.now();
     dateRetrait = DateTime.now();
-    lieuRetrait = LieuRetrait(id: 0, lieu: "");
+    lieuRetrait = LieuRetrait();
     estPaye = false;
     statut = StatutCommande.NON_DEFINI;
     utilisateur = Utilisateur();
@@ -54,7 +54,7 @@ class Commande extends DonneeTableau {
     prixTotal = 16.66;
     dateCreation = DateTime(2024, 10, 31);
     dateRetrait = DateTime(2024, 11, 30);
-    lieuRetrait = LieuRetrait(id: 1, lieu: "Face à l'école");
+    lieuRetrait = LieuRetrait();
     estPaye = false;
     statut = StatutCommande.RETIREE;
     Article article = Article.bidon();

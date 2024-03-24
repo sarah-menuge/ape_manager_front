@@ -132,6 +132,7 @@ class EvenementProvider extends ChangeNotifier {
     return {
       "statusCode": 201,
       "message": "L'événement a été créé avec succès.",
+      "id": json.decode(response.body)["id"],
     };
   }
 
