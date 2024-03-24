@@ -16,7 +16,7 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
       body: DefaultTextStyle(
-        style: const TextStyle(fontFamilyFallback: ['Roboto']),
+        style: const TextStyle(fontFamilyFallback: ['Roboto'],color: NOIR),
         child: DivPrincipale(
           maxWidth: 800,
           body: getContenuLoginResponsive(context),

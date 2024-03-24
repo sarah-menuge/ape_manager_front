@@ -29,6 +29,8 @@ import 'package:ape_manager_front/widgets/texte/texte_flexible.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../proprietes/couleurs.dart';
+
 enum DroitEvenement { aucun, consultation, modification }
 
 class ModifierEvenementView extends StatefulWidget {
@@ -218,6 +220,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: POLICE_MOBILE_H2,
+                    color: NOIR,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -227,6 +230,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   child: TexteFlexible(
                     texte:
                         "Titre de l'événement : ${evenementBrouillon!.titre}",
+                    style: TextStyle(color: NOIR),
                   ),
                 ),
                 Padding(
@@ -234,12 +238,15 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   child: TexteFlexible(
                     texte:
                         "Nombre d'organisateurs : ${evenementBrouillon!.organisateurs.length}",
+                    style: TextStyle(color: NOIR),
+
                   ),
                 ),
                 const TexteFlexible(
                   texte: "Liste des organisateurs :",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: NOIR,
                   ),
                 ),
                 const Divider(), // Thin line added here
