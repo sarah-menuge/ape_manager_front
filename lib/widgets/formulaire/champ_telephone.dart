@@ -31,6 +31,12 @@ class ChampTelephone extends Champ {
             if (value == null || value.isEmpty) {
               return 'Veuillez renseigner ce champ.';
             }
+            String pattern =
+                r'(^\+?[0-9]{3,}$)|(^\+?[0-9]{1,}[ -][0-9]{1,}([ -][0-9]{1,})*)$';
+            RegExp regExp = RegExp(pattern);
+            if (!regExp.hasMatch(value)) {
+              return 'Veuillez entrer un numéro de téléphone valide.';
+            }
             return null;
           },
           decoration: InputDecoration(
