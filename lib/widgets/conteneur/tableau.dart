@@ -221,7 +221,7 @@ class _TableauState extends State<Tableau> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
-                      "Restez appuyé pour ${widget.editable != null ? "modifier, " : ""} ${widget.consultable != null ? "consulter, " : ""} ${widget.supprimable != null ? "supprimer " : ""} ${widget.nomTableau}.",
+                      getTexteTableau(),
                       style: FontUtils.getFontApp(
                           fontstyle: FontStyle.italic,
                           fontSize: 13,
@@ -234,6 +234,27 @@ class _TableauState extends State<Tableau> {
           ),
       ],
     );
+  }
+
+  String getTexteTableau() {
+    String result = "Restez appuyé pour ";
+    if (widget.editable != null) {
+      result += "modifier";
+      if (widget.consultable != null || widget.supprimable != null) {
+        result += ", ";
+      }
+    }
+    if (widget.consultable != null) {
+      result += "consulter";
+      if (widget.supprimable != null) {
+        result += ", ";
+      }
+    }
+    if (widget.supprimable != null) {
+      result += "supprimer";
+    }
+    result += ".";
+    return result;
   }
 
   void afficherPopup(BuildContext context, DonneeTableau item) {

@@ -13,7 +13,7 @@ class SignupView extends StatelessWidget {
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
       body: DefaultTextStyle(
-        style: const TextStyle(fontFamilyFallback: ['Roboto']),
+        style: const TextStyle(fontFamilyFallback: ['Roboto'], color: NOIR),
         child: DivPrincipale(
           header: const HeaderDivPrincipale(ajouterBoutonRetour: true),
           maxWidth: 800,
