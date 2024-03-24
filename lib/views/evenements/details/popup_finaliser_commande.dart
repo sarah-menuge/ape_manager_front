@@ -52,21 +52,21 @@ class _FinaliserCommandeFormViewState
       boutons: [
         BoutonAction(
           text: "Valider la commande",
-          fonction: () => appuiBoutonFinaliser(),
+          fonction: () => appuiBoutonFinaliser(context),
           themeCouleur: ThemeCouleur.vert,
         ),
       ],
     );
   }
 
-  void appuiBoutonFinaliser() {
+  void appuiBoutonFinaliser(BuildContext context) {
     resetMessageErreur();
     appelMethodeAsynchrone(() {
-      FinaliserCommande();
+      finaliserCommande();
     });
   }
 
-  Future<void> FinaliserCommande() async {
+  Future<void> finaliserCommande() async {
     final response = await widget.commandeProvider
         .creerCommande(utilisateurProvider.token!, widget.panier);
     if (response["statusCode"] != 201 && mounted) {

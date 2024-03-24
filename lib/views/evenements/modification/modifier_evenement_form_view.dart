@@ -63,8 +63,14 @@ class _ModifierEvenementFormViewState
             label: "Début des commandes",
             valeurInitiale: widget.evenement.getDateDebutString(),
             controller: widget.evenement.dateDebutTEC,
-            onChangedMethod: (value) => widget.evenement.dateDebut =
-                DateFormat('dd-MM-yyyy').parse(value!),
+            onChangedMethod: (value) {
+              try {
+                widget.evenement.dateDebut =
+                    DateFormat('dd-MM-yyyy').parse(value!);
+              } catch (e) {
+                widget.evenement.dateDebut = null;
+              }
+            },
           ),
           ChampDate(
             key: UniqueKey(),
@@ -72,8 +78,14 @@ class _ModifierEvenementFormViewState
             label: "Fin des commandes",
             valeurInitiale: widget.evenement.getDateFinString(),
             controller: widget.evenement.dateFinTEC,
-            onChangedMethod: (value) => widget.evenement.dateFin =
-                DateFormat('dd-MM-yyyy').parse(value!),
+            onChangedMethod: (value) {
+              try {
+                widget.evenement.dateFin =
+                    DateFormat('dd-MM-yyyy').parse(value!);
+              } catch (e) {
+                widget.evenement.dateFin = null;
+              }
+            },
           ),
           ChampDate(
             key: UniqueKey(),
@@ -81,8 +93,14 @@ class _ModifierEvenementFormViewState
             label: "Fin de paiement",
             valeurInitiale: widget.evenement.getDateFinPaiementString(),
             controller: widget.evenement.dateFinPaiementTEC,
-            onChangedMethod: (value) => widget.evenement.dateFinPaiement =
-                DateFormat('dd-MM-yyyy').parse(value!),
+            onChangedMethod: (value) {
+              try {
+                widget.evenement.dateFinPaiement =
+                    DateFormat('dd-MM-yyyy').parse(value!);
+              } catch (e) {
+                widget.evenement.dateFinPaiement = null;
+              }
+            },
           ),
         ],
       ],

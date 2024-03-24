@@ -1,6 +1,7 @@
 import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/lieu_retrait.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -23,13 +24,18 @@ class Evenement {
   late DateTime? dateDebut;
   late DateTime? dateFin;
   late DateTime? dateFinPaiement;
+  late DateTime? semaineSelectionnee;
   late bool finPaiement;
+  late bool uneCommandeParEnfant;
+  late bool evenementTypeSemaine;
+  late List<String>? joursDeLaSemaine;
   late String description;
   late StatutEvenement statut;
   late Organisateur proprietaire;
   late List<Organisateur> organisateurs;
   List<Article> articles = [];
   List<Commande> commandes = [];
+  List<String> utilisateursNotification = [];
 
   Evenement({
     required this.id,
@@ -38,13 +44,18 @@ class Evenement {
     required this.dateDebut,
     required this.dateFin,
     required this.dateFinPaiement,
+    required this.semaineSelectionnee,
     required this.finPaiement,
+    required this.uneCommandeParEnfant,
+    required this.evenementTypeSemaine,
+    required this.joursDeLaSemaine,
     required this.statut,
     required this.description,
     required this.proprietaire,
     required this.organisateurs,
     required this.articles,
     required this.commandes,
+    required this.utilisateursNotification,
   });
 
   Evenement.copie(Evenement other) {
@@ -54,6 +65,10 @@ class Evenement {
     dateDebut = other.dateDebut;
     dateFin = other.dateFin;
     dateFinPaiement = other.dateFinPaiement;
+    semaineSelectionnee = other.semaineSelectionnee;
+    uneCommandeParEnfant = other.uneCommandeParEnfant;
+    evenementTypeSemaine = other.evenementTypeSemaine;
+    joursDeLaSemaine = other.joursDeLaSemaine;
     statut = other.statut;
     description = other.description;
     proprietaire = Organisateur.copie(other.proprietaire);
@@ -61,6 +76,12 @@ class Evenement {
         other.organisateurs.map((o) => Organisateur.copie(o)).toList();
     articles = other.articles.map((a) => Article.copie(a)).toList();
     commandes = other.commandes.map((c) => Commande.copie(c)).toList();
+    utilisateursNotification = other.utilisateursNotification;
+  }
+
+  Evenement.fromValeursInitiales(Map<String, dynamic> valeursInitiales) {
+    statut = StatutEvenement.NON_DEFINI;
+    reinitEvenement(valeursInitiales);
   }
 
   Evenement.fromJson(Map<String, dynamic> json) {
@@ -87,6 +108,21 @@ class Evenement {
     }
 
     finPaiement = json["endOfPayment"];
+    uneCommandeParEnfant = json["onePerChild"] == "true" ? true : false;
+    evenementTypeSemaine = json["weeklyEvent"] == "true" ? true : false;
+
+    if (evenementTypeSemaine) {
+      try {
+        joursDeLaSemaine = json["weeklyEventDays"];
+      } catch (e) {
+        afficherLogDebug(
+            "La liste des jours de la semaine de l'événement $id n'a pas été correctement récupéré ou est vide.");
+        joursDeLaSemaine = [];
+      }
+    } else {
+      joursDeLaSemaine = null;
+    }
+
     description = json["description"] ?? "";
 
     if (json["status"] == "DRAFT") {
@@ -114,20 +150,38 @@ class Evenement {
     organisateurs = (json["organizers"] as List<dynamic>)
         .map((e) => Organisateur.fromJson(e))
         .toList();
+
+    try {
+      utilisateursNotification = json["userNotifications"];
+    } catch (e) {
+      afficherLogDebug(
+          "La liste des utilisateurs à notifier associée à l'événement $id n'a pas été correctement récupéré ou est vide.");
+      utilisateursNotification = [];
+    }
+
+    try {
+      semaineSelectionnee = DateTime.parse(json["selectedWeek"]);
+    } catch (e) {
+      semaineSelectionnee = null;
+    }
   }
 
   Map<String, dynamic> toJsonInfosGenerales() {
     return {
       "title": titre,
+      "onePerChild": uneCommandeParEnfant,
+      "weeklyEvent": evenementTypeSemaine,
+      "weeklyEventDays": joursDeLaSemaine,
+      "places": lieux.map((e) => e.lieu).toList(),
       "startDate":
           dateDebut != null ? DateFormat('yyyy-MM-dd').format(dateDebut!) : "",
       "endDate":
           dateFin != null ? DateFormat('yyyy-MM-dd').format(dateFin!) : "",
+      "selectedWeeks": semaineSelectionnee,
       "endOfPaymentDate": dateFinPaiement != null
           ? DateFormat('yyyy-MM-dd').format(dateFinPaiement!)
           : "",
       "description": description,
-      "places": lieux.map((e) => e.lieu).toList(),
     };
   }
 
@@ -178,6 +232,42 @@ class Evenement {
     }
   }
 
+  bool estDifferent(Map<String, dynamic> valeursInitiales) {
+    return titre != valeursInitiales["titre"] ||
+        description != valeursInitiales["description"] ||
+        dateDebut != valeursInitiales["dateDebut"] ||
+        dateFin != valeursInitiales["dateFin"] ||
+        dateFinPaiement != valeursInitiales["dateFinPaiement"];
+  }
+
+  Map<String, dynamic> getDict() {
+    return {
+      "titre": titre,
+      "uneCommandeParEnfant": uneCommandeParEnfant,
+      "evenementTypeSemaine": evenementTypeSemaine,
+      "joursDeLaSemaine": joursDeLaSemaine,
+      "lieux": lieux,
+      "dateDebut": dateDebut,
+      "dateFin": dateFin,
+      "dateFinPaiement": dateFinPaiement,
+      "semaineSelectionnee": semaineSelectionnee,
+      "description": description,
+    };
+  }
+
+  void reinitEvenement(Map<String, dynamic> valeursInitiales) {
+    titre = valeursInitiales["titre"];
+    uneCommandeParEnfant = valeursInitiales["uneCommandeParEnfant"];
+    evenementTypeSemaine = valeursInitiales["evenementTypeSemaine"];
+    joursDeLaSemaine = valeursInitiales["joursDeLaSemaine"];
+    lieux = valeursInitiales["lieux"];
+    dateDebut = valeursInitiales["dateDebut"];
+    dateFin = valeursInitiales["dateFin"];
+    dateFinPaiement = valeursInitiales["dateFinPaiement"];
+    semaineSelectionnee = valeursInitiales["semaineSelectionnee"];
+    description = valeursInitiales["description"];
+  }
+
   TextEditingController get dateDebutTEC =>
       TextEditingController(text: getDateDebutString());
 
@@ -191,10 +281,10 @@ class Evenement {
   bool operator ==(Object other) {
     if (other.runtimeType != Evenement) return false;
     Evenement e = other as Evenement;
-    return e.titre == other.titre &&
-        e.description == other.description &&
-        e.dateDebut == other.dateDebut &&
-        e.dateFin == other.dateFin &&
-        e.dateFinPaiement == other.dateFinPaiement;
+    return titre == e.titre &&
+        description == e.description &&
+        dateDebut == e.dateDebut &&
+        dateFin == e.dateFin &&
+        dateFinPaiement == e.dateFinPaiement;
   }
 }

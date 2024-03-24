@@ -93,6 +93,7 @@ class _CommandeViewState extends State<CommandeView> {
         getNumeroCommande(context),
         getLibelleEvenement(context),
         getStatutCommande(context),
+        getLieuRetrait(context),
         const Divider(thickness: 0.5),
         ...commande!.listeLigneCommandes.map((ligneCommande) {
           return getInfosArticles(context, ligneCommande);
@@ -154,6 +155,35 @@ class _CommandeViewState extends State<CommandeView> {
                 color: commande!.getStatut() == "Annulé"
                     ? GRIS_CLAIR
                     : const Color.fromRGBO(0, 86, 27, 100),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getLieuRetrait(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: "Lieu de retrait choisi : ",
+              style: FontUtils.getFontApp(
+                fontSize: ResponsiveConstraint.getResponsiveValue(
+                    context, POLICE_MOBILE_NORMAL_1, POLICE_DESKTOP_NORMAL_1),
+                fontWeight: FONT_WEIGHT_NORMAL,
+              ),
+            ),
+            TextSpan(
+              text: commande!.lieuRetrait.toString(),
+              style: FontUtils.getFontApp(
+                fontSize: ResponsiveConstraint.getResponsiveValue(
+                    context, POLICE_MOBILE_NORMAL_1, POLICE_DESKTOP_NORMAL_1),
+                color: BLEU,
                 fontWeight: FontWeight.bold,
               ),
             ),

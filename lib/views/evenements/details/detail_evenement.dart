@@ -1,4 +1,6 @@
+import 'package:ape_manager_front/models/bouton_radio.dart';
 import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/panier.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/proprietes/couleurs.dart';
@@ -6,11 +8,14 @@ import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
+import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/views/evenements/details/detail_evenement_organisateur.dart';
 import 'package:ape_manager_front/views/evenements/details/popup_finaliser_commande.dart';
 import 'package:ape_manager_front/views/evenements/details/popup_partage.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
+import 'package:ape_manager_front/widgets/formulaire/groupe_boutons_radio.dart';
+import 'package:ape_manager_front/widgets/texte/texte_flexible.dart';
 import 'package:flutter/material.dart';
 
 class DetailEvenementWidget extends StatelessWidget {
@@ -69,11 +74,17 @@ class DetailEvenementWidget extends StatelessWidget {
                   getStatutEvenement(context),
                   getBoutonPartagerEvenement(context),
                   const Divider(thickness: 0.5),
+                  if (utilisateurProvider.perspective == Perspective.PARENT &&
+                      evenement.lieux.isNotEmpty) ...[
+                    getLieuxRetrait(),
+                    const Divider(thickness: 0.5),
+                  ],
                   listeView,
-                  if (utilisateurProvider.perspective == Perspective.PARENT)
+                  if (utilisateurProvider.perspective == Perspective.PARENT &&
+                      evenement.articles.isNotEmpty) ...[
                     getPrixTotal(context),
-                  if (utilisateurProvider.perspective == Perspective.PARENT)
                     getBoutonFinaliserCommande(context),
+                  ],
                   if (utilisateurProvider.perspective == Perspective.ORGANIZER)
                     DetailEvenementOrganisateur(
                       listingCommandes: listingCommande,
@@ -224,6 +235,15 @@ class DetailEvenementWidget extends StatelessWidget {
                   text: "Finaliser la commande",
                   themeCouleur: ThemeCouleur.vert,
                   fonction: () {
+                    if (panier.idLieuRetrait == -1 &&
+                        evenement.lieux.isNotEmpty) {
+                      afficherMessageInfo(
+                        context: context,
+                        message:
+                            "Veuillez choisir un lieu de retrait avant de finaliser la commande.",
+                      );
+                      return;
+                    }
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -235,6 +255,28 @@ class DetailEvenementWidget extends StatelessWidget {
                     );
                   },
                 ),
+        ],
+      ),
+    );
+  }
+
+  Widget getLieuxRetrait() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Choisissez un lieu de retrait :",
+              style: FontUtils.getFontApp(fontSize: 20)),
+          GroupeBoutonsRadio(
+            boutonsRadio: [
+              for (LieuRetrait lieuRetrait in evenement.lieux)
+                BoutonRadio(id: lieuRetrait.id, libelle: lieuRetrait.lieu),
+            ],
+            idBoutonRadioSelectionne:
+                panier.idLieuRetrait != -1 ? panier.idLieuRetrait : null,
+            onChangedMethod: (value) => panier.idLieuRetrait = value!,
+          ),
         ],
       ),
     );

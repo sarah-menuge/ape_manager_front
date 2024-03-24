@@ -2,6 +2,7 @@ import 'package:ape_manager_front/forms/creation_modif_evenement_form.dart';
 import 'package:ape_manager_front/models/article.dart';
 import 'package:ape_manager_front/models/barre_navigation_item.dart';
 import 'package:ape_manager_front/models/evenement.dart';
+import 'package:ape_manager_front/models/lieu_retrait.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
@@ -9,15 +10,19 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_form_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_ajout_article.dart';
+import 'package:ape_manager_front/views/evenements/modification/popup_ajout_lieu_retrait.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_ajout_organisateur.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_modifier_article.dart';
+import 'package:ape_manager_front/views/evenements/modification/popup_modifier_lieu_retrait.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_publier_evenement.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_supprimer_article.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_supprimer_evenement.dart';
+import 'package:ape_manager_front/views/evenements/modification/popup_supprimer_lieu_retrait.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_supprimer_organisateur.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/tableau.dart';
@@ -70,13 +75,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
       widget.evenementId,
     );
     evenementBrouillon = evenementProvider.evenement!;
-    valeursInitiales = {
-      "titre": evenementBrouillon!.titre,
-      "description": evenementBrouillon!.description,
-      "dateDebut": evenementBrouillon!.dateDebut,
-      "dateFin": evenementBrouillon!.dateFin,
-      "dateFinPaiement": evenementBrouillon!.dateFinPaiement,
-    };
+    valeursInitiales = evenementBrouillon!.getDict();
 
     await evenementProvider.fetchListeArticles(
       utilisateurProvider.token!,
@@ -182,6 +181,33 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                           child: BoutonAction(
                             text: "Ajouter un article",
                             fonction: () => afficherPopupAjouterArticle(),
+                            themeCouleur: ThemeCouleur.vert,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+        ),
+        BarreNavigationItem(
+          titre: droitEvenement == DroitEvenement.modification
+              ? "Modification de l'événement"
+              : "Consultation de l'événement",
+          label: "Lieux de retrait",
+          icon: const Icon(Icons.place),
+          onglet: evenementBrouillon == null
+              ? const SizedBox.shrink()
+              : Column(
+                  children: [
+                    getTuileTableauLieuxRetrait(context),
+                    if (droitEvenement == DroitEvenement.modification)
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: BoutonAction(
+                            text: "Ajouter un lieu de retrait",
+                            fonction: () {
+                              afficherPopupAjouterLieuRetrait();
+                            },
                             themeCouleur: ThemeCouleur.vert,
                           ),
                         ),
@@ -303,35 +329,9 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
             padding: const EdgeInsets.only(bottom: 20),
             child: getTuileTableauArticles(context),
           ),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              bool isWide = constraints.maxWidth > 800;
-
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (droitEvenement == DroitEvenement.modification)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20),
-                          child: getBoutonSuppression(context),
-                        ),
-                      if (droitEvenement == DroitEvenement.modification &&
-                          evenementBrouillon != null &&
-                          evenementBrouillon!.statut ==
-                              StatutEvenement.BROUILLON)
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: getBoutonPublication(context),
-                        ),
-                    ],
-                  )
-                ],
-              );
-            },
-          ),
+          getTuileTableauLieuxRetrait(context),
+          const SizedBox(height: 20),
+          getBoutonsGlobaux(context),
         ],
       ),
     );
@@ -492,18 +492,67 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
     );
   }
 
+  Widget getTuileTableauLieuxRetrait(BuildContext context) {
+    return Tuile(
+      maxHeight: estDesktop(context, 600) ? 650 : 550,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15),
+            child: Column(
+              children: [
+                TexteFlexible(
+                  texte: "Liste des lieux de retrait",
+                  style: FontUtils.getFontApp(
+                    fontSize: ResponsiveConstraint.getResponsiveValue(
+                      context,
+                      POLICE_MOBILE_H2,
+                      POLICE_DESKTOP_H2,
+                    ),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                Tableau(
+                  modele: LieuRetrait(),
+                  objets: evenementBrouillon!.lieux,
+                  editable: droitEvenement != DroitEvenement.modification
+                      ? null
+                      : (LieuRetrait lieu) =>
+                          afficherPopupModifierLieuRetrait(lieu),
+                  supprimable: droitEvenement != DroitEvenement.modification
+                      ? null
+                      : (LieuRetrait lieuRetrait) =>
+                          afficherPopupSupprimerLieuRetrait(lieuRetrait),
+                ),
+                if (estDesktop(context, 600) &&
+                    droitEvenement == DroitEvenement.modification)
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: BoutonAction(
+                        text: "Ajouter un lieu de retrait",
+                        fonction: () {
+                          afficherPopupAjouterLieuRetrait();
+                        },
+                        themeCouleur: ThemeCouleur.vert,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   /// Publication événement
   Widget getBoutonPublication(BuildContext context) {
     return BoutonAction(
       text: "Publier l'événement",
       fonction: () {
-        if (evenementBrouillon!.titre != valeursInitiales["titre"] ||
-            evenementBrouillon!.description !=
-                valeursInitiales["description"] ||
-            evenementBrouillon!.dateDebut != valeursInitiales["dateDebut"] ||
-            evenementBrouillon!.dateFin != valeursInitiales["dateFin"] ||
-            evenementBrouillon!.dateFinPaiement !=
-                valeursInitiales["dateFinPaiement"]) {
+        if (evenementBrouillon!.estDifferent(valeursInitiales)) {
           afficherMessageInfo(
             context: context,
             message:
@@ -522,6 +571,15 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
             context: context,
             message:
                 "Veuillez renseigner l'intégralité des informations générales avant de publier l'événement.",
+            duree: 4,
+          );
+          return;
+        }
+
+        if (evenementBrouillon!.lieux.isEmpty) {
+          afficherMessageInfo(
+            context: context,
+            message: "Veuillez renseigner au moins un lieu de retrait.",
             duree: 4,
           );
           return;
@@ -739,18 +797,17 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
   /// Annulation des modifications des infos générales
   annulerModificationsInfosGenerales() {
     revenirEnArriere(context);
-    setState(() {
-      evenementBrouillon!.titre = valeursInitiales["titre"];
-      evenementBrouillon!.description = valeursInitiales["description"];
-      evenementBrouillon!.dateDebut = valeursInitiales["dateDebut"];
-      evenementBrouillon!.dateFin = valeursInitiales["dateFin"];
-      evenementBrouillon!.dateFinPaiement = valeursInitiales["dateFinPaiement"];
-    });
+    setState(() => evenementBrouillon!.reinitEvenement(valeursInitiales));
   }
 
   /// Modification des infos générales
   modifierInfosGenerales(Evenement evenement) {
-    futureModifierInfosGenerales(evenement);
+    if (evenementBrouillon!.estDifferent(valeursInitiales)) {
+      futureModifierInfosGenerales(evenement);
+    } else {
+      afficherMessageInfo(
+          context: context, message: "Aucune modification n'a été apportée.");
+    }
   }
 
   Future<void> futureModifierInfosGenerales(Evenement evenement) async {
@@ -761,13 +818,134 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
 
     if (response["statusCode"] == 200 && mounted) {
       afficherMessageSucces(context: context, message: response["message"]);
-      valeursInitiales = {
-        "titre": evenementBrouillon!.titre,
-        "description": evenementBrouillon!.description,
-        "dateDebut": evenementBrouillon!.dateDebut,
-        "dateFin": evenementBrouillon!.dateFin,
-        "dateFinPaiement": evenementBrouillon!.dateFinPaiement,
-      };
+      valeursInitiales = evenementBrouillon!.getDict();
+    } else {
+      afficherMessageErreur(context: context, message: response["message"]);
+    }
+  }
+
+  Widget getBoutonsGlobaux(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (droitEvenement == DroitEvenement.modification)
+                  getBoutonSuppression(context),
+                if (droitEvenement == DroitEvenement.modification)
+                  const SizedBox(width: 20),
+                if (droitEvenement == DroitEvenement.modification &&
+                    evenementBrouillon!.statut == StatutEvenement.BROUILLON)
+                  getBoutonPublication(context),
+              ],
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  /// Ajout d'un lieu de retrait
+  void afficherPopupAjouterLieuRetrait() {
+    showDialog(
+      context: context,
+      builder: (context) => PopupAjouterLieuRetrait(
+        ajouterLieuRetrait: (LieuRetrait lieuRetrait) =>
+            futureAjouterLieuRetrait(lieuRetrait),
+      ),
+    );
+  }
+
+  Future<void> futureAjouterLieuRetrait(LieuRetrait lieuRetrait) async {
+    Evenement evenementInitial =
+        Evenement.fromValeursInitiales(valeursInitiales);
+    evenementInitial.id = evenementBrouillon!.id;
+    evenementInitial.lieux.add(lieuRetrait);
+    final response = await evenementProvider.modifierEvenement(
+      utilisateurProvider.token!,
+      evenementInitial,
+    );
+
+    if (response["statusCode"] == 200 && mounted) {
+      setState(() {
+        evenementBrouillon;
+      });
+      afficherMessageSucces(
+          context: context, message: "Le lieu de retrait a bien été ajouté.");
+      revenirEnArriere(context);
+    } else {
+      afficherMessageErreur(context: context, message: response["message"]);
+    }
+  }
+
+  /// Modification d'un lieu de retrait
+  void afficherPopupModifierLieuRetrait(LieuRetrait lieuRetrait) {
+    showDialog(
+      context: context,
+      builder: (context) => PopupModifierLieuRetrait(
+        modifierLieuRetrait: (LieuRetrait lieuRetrait) =>
+            futureModifierLieuRetrait(lieuRetrait),
+        lieuRetrait: lieuRetrait,
+      ),
+    );
+  }
+
+  Future<void> futureModifierLieuRetrait(LieuRetrait lieuRetrait) async {
+    Evenement evenementInitial =
+        Evenement.fromValeursInitiales(valeursInitiales);
+    evenementInitial.id = evenementBrouillon!.id;
+    evenementInitial.lieux
+        .firstWhere((element) => element == lieuRetrait)
+        .lieu = lieuRetrait.lieu;
+    final response = await evenementProvider.modifierEvenement(
+      utilisateurProvider.token!,
+      evenementInitial,
+    );
+
+    if (response["statusCode"] == 200 && mounted) {
+      setState(() {
+        evenementBrouillon;
+      });
+      afficherMessageSucces(
+          context: context, message: "Le lieu de retrait a bien été modifié.");
+      revenirEnArriere(context);
+    } else {
+      afficherMessageErreur(context: context, message: response["message"]);
+    }
+  }
+
+  /// Suppression d'un lieu de retrait
+  void afficherPopupSupprimerLieuRetrait(LieuRetrait lieuRetrait) {
+    showDialog(
+      context: context,
+      builder: (context) => PopupSupprimerLieuRetrait(
+        supprimerLieuRetrait: (LieuRetrait lieuRetrait) =>
+            futureSupprimerLieuRetrait(lieuRetrait),
+        lieuRetrait: lieuRetrait,
+      ),
+    );
+  }
+
+  Future<void> futureSupprimerLieuRetrait(LieuRetrait lieuRetrait) async {
+    Evenement evenementInitial =
+        Evenement.fromValeursInitiales(valeursInitiales);
+    evenementInitial.id = evenementBrouillon!.id;
+    evenementInitial.lieux.remove(lieuRetrait);
+    final response = await evenementProvider.modifierEvenement(
+      utilisateurProvider.token!,
+      evenementInitial,
+    );
+
+    if (response["statusCode"] == 200 && mounted) {
+      setState(() {
+        evenementBrouillon;
+      });
+      afficherMessageSucces(
+          context: context, message: "Le lieu de retrait a bien été modifié.");
+      revenirEnArriere(context);
     } else {
       afficherMessageErreur(context: context, message: response["message"]);
     }

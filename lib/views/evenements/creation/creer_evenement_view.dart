@@ -10,7 +10,9 @@ import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/creation/popup_ajout_organisateur.dart';
 import 'package:ape_manager_front/views/evenements/creation/popup_suppression_organisateur.dart';
+import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
+import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/tableau.dart';
 import 'package:ape_manager_front/widgets/conteneur/tuile.dart';
@@ -377,7 +379,10 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
         context: context,
         message: response["message"],
       );
-      naviguerVersPage(context, EvenementsView.routeURL);
+      naviguerVersPage(
+          context,
+          ModifierEvenementView.routeURL
+              .replaceAll(":idEvent", response["id"].toString()));
     } else {
       setState(() {
         erreur = response['message'];
