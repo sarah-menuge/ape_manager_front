@@ -55,12 +55,13 @@ class CommandeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> fetchAllCommandes() async {
+  Future<dynamic> fetchAllCommandes(String token) async {
     _commandes = [];
     commandesRecuperees = false;
     ReponseAPI reponseApi = await callAPI(
       uri: '/orders',
       typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
       timeoutSec: 6,
     );
 
