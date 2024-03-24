@@ -315,11 +315,20 @@ class _TableauState extends State<Tableau> {
       if (trie.containsKey(columnName)) {
         bool ascending = trie[columnName] ?? true;
         widget.objets.sort((a, b) {
-          dynamic aValue = a.getValeur(columnName).toString().toUpperCase();
-          dynamic bValue = b.getValeur(columnName).toString().toUpperCase();
-          return ascending
-              ? aValue.compareTo(bValue)
-              : bValue.compareTo(aValue);
+          dynamic aValue = a.getValeur(columnName);
+          dynamic bValue = b.getValeur(columnName);
+
+          if (aValue is int && bValue is int) {
+            return ascending
+                ? aValue.compareTo(bValue)
+                : bValue.compareTo(aValue);
+          } else {
+            String aString = aValue.toString().toUpperCase();
+            String bString = bValue.toString().toUpperCase();
+            return ascending
+                ? aString.compareTo(bValue)
+                : bString.compareTo(aValue);
+          }
         });
         trie[columnName] = !ascending;
       }
