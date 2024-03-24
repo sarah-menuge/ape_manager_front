@@ -65,6 +65,58 @@ class AuthentificationProvider with ChangeNotifier {
     };
   }
 
+  Future<dynamic> signinWithEmailPassword({
+    required String email,
+    required String password,
+    required UtilisateurProvider utilisateurProvider,
+  }) async {
+    // Appel à l'API pour tenter de s'authentifier
+    isLoading = true;
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/auth/login',
+      jsonBody: {
+        "email": email,
+        "password": password,
+      },
+      typeRequeteHttp: TypeRequeteHttp.POST,
+    );
+    isLoading = false;
+
+    // Cas où la connexion avec l'API n'a pas pu être établie
+    if (!reponseApi.connexionAPIEtablie) {
+      isLoggedIn = false;
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    // Authentification OK
+    if (response.statusCode == 200) {
+      afficherLogInfo(
+          "L'utilisateur [${email}] s'est authentifié avec succès sous le role [${json.decode(response.body)["role"]}]");
+      var body = json.decode(response.body);
+      utilisateurProvider.updateUser(Utilisateur.fromJson(body));
+      setValueInHardwareMemory(key: "token", value: body["token"]);
+      isLoggedIn = true;
+      return {
+        "statusCode": 200,
+        "message": null,
+      };
+    }
+    // Authentification KO
+    isLoggedIn = false;
+    afficherLogInfo(
+        "L'utilisateur [${email}] n'a pas pu s'authentifier.");
+    return {
+      "statusCode": response.statusCode,
+      "message": json.decode(response.body)["message"] ??
+          "L'utilisateur n'a pas pu s'authentifier.",
+    };
+  }
+
   // Permet d'interroger l'API pour s'authentifier
   Future<dynamic> signup(
     SignupForm signupForm,

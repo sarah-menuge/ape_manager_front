@@ -87,7 +87,7 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: LoginView.routeURL,
-      builder: (context, state) => const LoginView(),
+      builder: (context, state) => LoginView(),
     ),
     GoRoute(
       path: SignupView.routeURL,

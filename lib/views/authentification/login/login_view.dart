@@ -5,12 +5,23 @@ import 'package:ape_manager_front/views/authentification/signup/signup_view.dart
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/div_principale.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_platform/universal_platform.dart';
+
+import '../../../providers/authentification_provider.dart';
+import '../../../providers/utilisateur_provider.dart';
+import '../../../utils/afficher_message.dart';
+import '../../accueil/accueil_view.dart';
+import 'StockageIdentifiants.dart';
+import 'biometrique.dart';
 
 class LoginView extends StatelessWidget {
   static String routeURL = '/login';
+  final Biometrique _biometrique = Biometrique();
+  final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
 
-  const LoginView({super.key});
-
+  LoginView({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +80,7 @@ class LoginView extends StatelessWidget {
   }
 
   Widget getBoutonSignup(BuildContext context) {
+    print("getBoutonSignup");
     return BoutonNavigationGoRouter(
       text: "S'inscrire",
       themeCouleur: ThemeCouleur.rouge,
