@@ -96,14 +96,25 @@ class _ConsultationModificationUtilisateurFormViewState
           ),
         ],
         [
-          ChampSelectSimple(
+          if (!widget.consultation) ...[
+            ChampSelectSimple(
+                label: "Rôle de l'utilisateur",
+                valeurInitiale:
+                    widget.utilisateur.roleToString(widget.utilisateur.role),
+                prefixIcon: Icon(Icons.manage_accounts),
+                onSavedMethod: (value) => widget.utilisateur.role =
+                    widget.utilisateur.stringToRole(value!),
+                valeursExistantes: widget.utilisateur.roles()),
+          ] else
+            ChampString(
+              prefixIcon: const Icon(Icons.manage_accounts),
               label: "Rôle de l'utilisateur",
               valeurInitiale:
                   widget.utilisateur.roleToString(widget.utilisateur.role),
-              prefixIcon: Icon(Icons.manage_accounts),
               onSavedMethod: (value) => widget.utilisateur.role =
                   widget.utilisateur.stringToRole(value!),
-              valeursExistantes: widget.utilisateur.roles()),
+              readOnly: true,
+            ),
         ],
         [
           CheckboxListTile(

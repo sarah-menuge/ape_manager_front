@@ -205,7 +205,7 @@ class DetailEvenementWidget extends StatelessWidget {
                     titreEvenement: evenement.titre,
                     dateDebut: evenement.dateDebut,
                     dateFin: evenement.dateFin,
-                    lien: "http://localhost:45678/#/evenements/${evenement.id}",
+                    lien: URL_API + "#/evenements/${evenement.id}",
                   );
                 },
               );
