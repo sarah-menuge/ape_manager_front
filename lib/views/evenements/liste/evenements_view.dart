@@ -32,6 +32,11 @@ class _EvenementsViewState extends State<EvenementsView> {
   late String titre_rappel;
   late DateTime date_rappel;
 
+  List<Evenement> evenementsBrouillon = [];
+  List<Evenement> evenementsAVenir = [];
+  List<Evenement> evenementsEnCours = [];
+  List<Evenement> evenementsCloture = [];
+
   @override
   void initState() {
     super.initState();
@@ -43,18 +48,16 @@ class _EvenementsViewState extends State<EvenementsView> {
 
   Future<void> fetchData() async {
     await evenementProvider.fetchEvenements(utilisateurProvider.token!);
-    setState(() {});
+    setState(() {
+      evenementsBrouillon = evenementProvider.getEvenementsBrouillon();
+      evenementsAVenir = evenementProvider.getEvenementsAVenir();
+      evenementsEnCours = evenementProvider.getEvenementsEnCours();
+      evenementsCloture = evenementProvider.getEvenementsCloture();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Evenement> evenementsBrouillon =
-        evenementProvider.getEvenementsBrouillon();
-    List<Evenement> evenementsAVenir = evenementProvider.getEvenementsAVenir();
-    List<Evenement> evenementsEnCours =
-        evenementProvider.getEvenementsEnCours();
-    List<Evenement> evenementsCloture =
-        evenementProvider.getEvenementsCloture();
     return ScaffoldAppli(
       body: SingleChildScrollView(
         child: Column(
@@ -109,9 +112,11 @@ class _EvenementsViewState extends State<EvenementsView> {
               ...evenementsAVenir.map((evenement) {
                 return ListTile(
                   title: WidgetEvenement(
-                      utilisateurProvider: utilisateurProvider,
-                      evenement: evenement,
-                      typeBouton: TypeBouton.Notification),
+                    utilisateurProvider: utilisateurProvider,
+                    evenement: evenement,
+                    typeBouton: TypeBouton.Notification,
+                    modifierUtilisateurNotifie: modifierUtilisateurNotifie,
+                  ),
                 );
               }).toList()
           ],
@@ -220,5 +225,21 @@ class _EvenementsViewState extends State<EvenementsView> {
         ),
       ),
     );
+  }
+
+  void modifierUtilisateurNotifie(int idEvenement, bool utilisateurNotifie) {
+    setState(() {
+      if (utilisateurNotifie) {
+        evenementsAVenir
+            .firstWhere((e) => e.id == idEvenement)
+            .emailUtilisateursNotification
+            .add(utilisateurProvider.utilisateur!.email);
+      } else {
+        evenementsAVenir
+            .firstWhere((e) => e.id == idEvenement)
+            .emailUtilisateursNotification
+            .remove(utilisateurProvider.utilisateur!.email);
+      }
+    });
   }
 }

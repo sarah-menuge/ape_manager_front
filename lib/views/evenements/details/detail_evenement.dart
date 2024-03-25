@@ -15,7 +15,6 @@ import 'package:ape_manager_front/views/evenements/details/popup_finaliser_comma
 import 'package:ape_manager_front/views/evenements/details/popup_partage.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/formulaire/groupe_boutons_radio.dart';
-import 'package:ape_manager_front/widgets/texte/texte_flexible.dart';
 import 'package:flutter/material.dart';
 
 class DetailEvenementWidget extends StatelessWidget {
@@ -202,10 +201,11 @@ class DetailEvenementWidget extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return PopupPartage(
+                    idEvenement: evenement.id,
                     titreEvenement: evenement.titre,
                     dateDebut: evenement.dateDebut,
                     dateFin: evenement.dateFin,
-                    lien: "http://localhost:45678/#/evenements/${evenement.id}",
+                    lien: "${URL_FRONT}/evenements/${evenement.id}",
                   );
                 },
               );

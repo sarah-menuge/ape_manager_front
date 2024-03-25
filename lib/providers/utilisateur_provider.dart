@@ -245,12 +245,34 @@ class UtilisateurProvider with ChangeNotifier {
   }
 
   Future<dynamic> supprimerCompte(String token) async {
-    afficherLogCritical(
-        "[PROVIDER] => SUPPRIMER COMPTE UTILISATEUR - non pris en charge");
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/users',
+      typeRequeteHttp: TypeRequeteHttp.DELETE,
+      token: token,
+    );
 
+    // Cas où la connexion avec l'API n'a pas pu être établie
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    // Authentification OK
+    if (response.statusCode == 204) {
+      return {
+        "statusCode": 204,
+        "message": "Le compte a bien été supprimé.",
+      };
+    }
+
+    // Authentification KO
     return {
-      "statusCode": 400,
-      "message": "La fonctionnalité n'est pas prise en charge."
+      "statusCode": response.statusCode,
+      "message": json.decode(response.body)["message"],
     };
   }
 
@@ -409,6 +431,41 @@ class UtilisateurProvider with ChangeNotifier {
     }
     String err = json.decode(response.body)["message"] ??
         "Une erreur est survenue lors de la modification d'un utilisateur";
+    return {
+      "statusCode": response.statusCode,
+      "message": err,
+    };
+  }
+
+  /// Ajout de l'utilisateur courant dans une liste de diffusion de notification d'événement
+  Future<dynamic> meNotifierParMailEvenement(
+    String token,
+    int evenementId,
+  ) async {
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/users/change-notify-me-start-event/${evenementId}',
+      typeRequeteHttp: TypeRequeteHttp.PUT,
+      token: token,
+    );
+
+    // Cas où la connexion avec l'API n'a pas pu être établie
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    if (response.statusCode == 200) {
+      return {
+        "statusCode": 200,
+        "message": "Vous allez être notifié lorsque l'événement débutera.",
+      };
+    }
+    String err = json.decode(response.body)["message"] ??
+        "Impossible de vous ajouter dans la liste de diffusion.";
     return {
       "statusCode": response.statusCode,
       "message": err,

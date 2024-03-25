@@ -1,3 +1,4 @@
+import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -22,7 +23,6 @@ class _ScanneurQrCodeState extends State<ScanneurQrCode> {
 
   @override
   Widget build(BuildContext context) {
-
     return Popup(
       titre: 'Scanneur de QR code',
       sousTitre: 'Veuillez scanner le QR code de la commande',
@@ -75,7 +75,7 @@ class _ScanneurQrCodeState extends State<ScanneurQrCode> {
         setState(() {
           estScanne = true;
           estValide = scanData.code != null &&
-              scanData.code!.startsWith('http://localhost:45678/#/commandes/');
+              scanData.code!.startsWith('$URL_FRONT/commandes/');
         });
 
         if (estValide) {
