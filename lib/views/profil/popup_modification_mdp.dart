@@ -6,6 +6,9 @@ import 'package:ape_manager_front/widgets/formulaire/champ_mdp.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
 import 'package:flutter/material.dart';
+import 'package:universal_platform/universal_platform.dart';
+
+import '../authentification/login/StockageIdentifiants.dart';
 
 class PopupModificationMdp extends StatelessWidget {
   const PopupModificationMdp({super.key});
@@ -97,7 +100,12 @@ class _ModificationMdpFormViewState
       modifMdpForm,
     );
     if (response["statusCode"] == 200 && mounted) {
+      if (UniversalPlatform.isAndroid || UniversalPlatform.isIOS) {
+        final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
+      _stockageIdentifiants.persistIdentifiants(utilisateurProvider.utilisateur!.email, modifMdpForm.newPassword);
+      }
       afficherMessageSucces(context: context, message: response["message"]);
+
       Navigator.of(context).pop();
     } else {
       setMessageErreur(response["message"]);

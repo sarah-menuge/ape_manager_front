@@ -80,7 +80,6 @@ class LoginView extends StatelessWidget {
   }
 
   Widget getBoutonSignup(BuildContext context) {
-    print("getBoutonSignup");
     return BoutonNavigationGoRouter(
       text: "S'inscrire",
       themeCouleur: ThemeCouleur.rouge,

@@ -33,20 +33,36 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
   late AuthentificationProvider authentificationProvider;
   late LoginForm loginForm = LoginForm();
   bool passerVerification = false;
+  bool afficherBoutonBiometrique = false;
 
   @override
   void initState() {
     super.initState();
     authentificationProvider =
         Provider.of<AuthentificationProvider>(context, listen: false);
-
-    // Permet l'autologin dans un environnement hors production
+    verifierBiometriqueEtIdentifiants();
     if (PROD == "false" && AUTO_LOGIN_TEST == "true") {
       loginForm.email = EMAIL_AUTO_LOGIN_TEST;
       loginForm.password = PASSWORD_AUTO_LOGIN_TEST;
       passerVerification = true;
       appuiBoutonLogin();
     }
+  }
+
+  Future<void> verifierBiometriqueEtIdentifiants() async {
+    final Biometrique _biometrique = Biometrique();
+    final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
+    bool isBiometriqueDisponible = await _biometrique.isBiometricAvailable();
+    Map<String, String> credentials =
+        await _stockageIdentifiants.getIdentifiants();
+    bool hasCredentials = credentials['email']!.isNotEmpty &&
+        credentials['motDePasse']!.isNotEmpty;
+    bool onMobile = UniversalPlatform.isAndroid || UniversalPlatform.isIOS;
+
+    setState(() {
+      afficherBoutonBiometrique =
+          isBiometriqueDisponible && hasCredentials && onMobile;
+    });
   }
 
   @override
@@ -84,7 +100,8 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
             routeName: SignupView.routeURL,
             disable: desactiverBoutons || isLoggedIn,
           ),
-        if(UniversalPlatform.isAndroid || UniversalPlatform.isIOS)
+        //if mobile et biometrique non vide
+        if (afficherBoutonBiometrique)
           BoutonIcon(
             icon: const Icon(Icons.fingerprint),
             onPressed: () => ConnexionBiometrique(context),
@@ -114,11 +131,13 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
     );
     if (response["statusCode"] == 200 && mounted) {
       final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
-      await _stockageIdentifiants.persistIdentifiants(loginForm.email,loginForm.password);
+      await _stockageIdentifiants.persistIdentifiants(
+          loginForm.email, loginForm.password);
       print(await _stockageIdentifiants.getIdentifiants());
       naviguerVersPage(context, AccueilView.routeURL);
       afficherMessageSucces(
-          context: context, message: "Connexion établie avec succès.");
+          context: context,
+          message: "Connexion établie avec succès.");
       if (utilisateurProvider.estAdmin) {
         utilisateurProvider.setPerspective(Perspective.ADMIN);
       } else if (utilisateurProvider.estOrganisateur) {
@@ -161,8 +180,10 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
     print("identifiants");
     print(await _stockageIdentifiants.getIdentifiants());
     if (isAuthenticated) {
-      Map<String, String> credentials = await _stockageIdentifiants.getIdentifiants();
-      if (credentials['email']!.isNotEmpty && credentials['motDePasse']!.isNotEmpty) {
+      Map<String, String> credentials =
+          await _stockageIdentifiants.getIdentifiants();
+      if (credentials['email']!.isNotEmpty &&
+          credentials['motDePasse']!.isNotEmpty) {
         final response = await authentificationProvider.signinWithEmailPassword(
           email: credentials['email']!,
           password: credentials['motDePasse']!,
@@ -170,12 +191,32 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
         );
         if (response["statusCode"] == 200) {
           naviguerVersPage(context, AccueilView.routeURL);
-          afficherMessageSucces(context: context, message: "Connexion établie avec succès.");
+          afficherMessageSucces(
+              context: context,
+              message: "Connexion établie avec succès.");
+          if (utilisateurProvider.estAdmin) {
+            utilisateurProvider.setPerspective(Perspective.ADMIN);
+          } else if (utilisateurProvider.estOrganisateur) {
+            utilisateurProvider.setPerspective(Perspective.ORGANIZER);
+          } else {
+            utilisateurProvider.setPerspective(Perspective.PARENT);
+          }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Erreur de connexion: ${response['message']}")));
+          if (response['message'] == "Mot de passe incorrect !") {
+            afficherMessageErreur(
+                context: context,
+                message:
+                    "Échec de l'authentification. Si vous avez changé de mot de passe sur une autre plateforme, veuillez vous connecter manuellement afin de mettre à jour vos identifiants.");
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Erreur de connexion: ${response['message']}")));
+          }
+          ;
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Aucun identifiant stocké pour la connexion biométrique.")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                "Aucun identifiant stocké pour la connexion biométrique.")));
       }
     }
   }
@@ -188,5 +229,4 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
       body: DemandeReinitMdpFormView(),
     );
   }
-
 }
