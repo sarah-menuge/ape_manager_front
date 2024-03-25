@@ -65,8 +65,19 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
         ),
       ),
       body: DefaultTextStyle(
-          style: const TextStyle(fontFamilyFallback: ['Roboto']),
-          child: widget.items != null ? getOnglet() : widget.body),
+        style: const TextStyle(fontFamilyFallback: ['Roboto']),
+        child: widget.items != null
+            ? getOnglet()
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    if (widget.nomUrlRetour != null)
+                      BoutonRetour(nomUrlRetour: widget.nomUrlRetour!),
+                    widget.body,
+                  ],
+                ),
+              ),
+      ),
       drawer: DrawerAppli(
         utilisateurProvider: utilisateurProvider,
       ),

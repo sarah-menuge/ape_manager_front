@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/views/commandes/retrait/image_gestion_commandes.dart';
 import 'package:ape_manager_front/views/commandes/retrait/popup_consultation_modification_commande.dart';
-import 'package:ape_manager_front/views/commandes/retrait/popup_suppression_commande.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/tableau.dart';
 import 'package:ape_manager_front/widgets/conteneur/tuile.dart';
@@ -42,12 +39,13 @@ class _RetraitCommandeViewState extends State<RetraitCommandeView> {
     super.initState();
     _searchController = TextEditingController();
     commandeProvider = Provider.of<CommandeProvider>(context, listen: false);
-    utilisateurProvider = Provider.of<UtilisateurProvider>(context, listen: false);
+    utilisateurProvider =
+        Provider.of<UtilisateurProvider>(context, listen: false);
     fetchData();
   }
 
   Future<void> fetchData() async {
-    await commandeProvider.fetchAllCommandes();
+    await commandeProvider.fetchAllCommandes(utilisateurProvider.token!);
     setState(() {
       commandes = commandeProvider.commandes;
       commandesFiltres = commandes
@@ -138,7 +136,8 @@ class _RetraitCommandeViewState extends State<RetraitCommandeView> {
                       SizedBox(
                         width: 10,
                       ),
-                      if (UniversalPlatform.isIOS || UniversalPlatform.isAndroid)
+                      if (UniversalPlatform.isIOS ||
+                          UniversalPlatform.isAndroid)
                         BoutonAction(
                           text: "Scanner QR Code",
                           fonction: () {
@@ -146,12 +145,20 @@ class _RetraitCommandeViewState extends State<RetraitCommandeView> {
                               context: context,
                               builder: (BuildContext context) {
                                 return ScanneurQrCode(
-                                      actionScan: (String code) {
-                                        String numeroCommande = code.split('/').last;
-                                        numeroCommande = numeroCommande.padLeft(5, '0');
-                                        Commande commande = commandes.firstWhere((commande) => commande.getNumeroCommande().toString() == numeroCommande);
-                                        consulterModifierCommande( context, commande, true);
-                                      },
+                                  actionScan: (String code) {
+                                    String numeroCommande =
+                                        code.split('/').last;
+                                    numeroCommande =
+                                        numeroCommande.padLeft(5, '0');
+                                    Commande commande = commandes.firstWhere(
+                                        (commande) =>
+                                            commande
+                                                .getNumeroCommande()
+                                                .toString() ==
+                                            numeroCommande);
+                                    consulterModifierCommande(
+                                        context, commande, true);
+                                  },
                                 );
                               },
                             );
@@ -238,12 +245,15 @@ class _RetraitCommandeViewState extends State<RetraitCommandeView> {
           afficherMessageSucces(
               context: context,
               message:
-              "La commande n°${commande.getNumeroCommande()} a été retirée.",
+                  "La commande n°${commande.getNumeroCommande()} a été retirée.",
               duree: 5);
         }
         setState(() {
-          commandes.firstWhere((cmd) => cmd.id == idCommande).statut = StatutCommande.CLOTUREE;
-          commandesFiltres = commandes.where((cmd) => cmd.statut == StatutCommande.A_RETIRER).toList();
+          commandes.firstWhere((cmd) => cmd.id == idCommande).statut =
+              StatutCommande.CLOTUREE;
+          commandesFiltres = commandes
+              .where((cmd) => cmd.statut == StatutCommande.A_RETIRER)
+              .toList();
         });
         await fetchData();
       }

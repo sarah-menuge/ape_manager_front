@@ -34,6 +34,7 @@ class _CommandeViewState extends State<CommandeView> {
   late CommandeProvider commandeProvider;
 
   Commande? commande;
+  late Image? qrCode;
 
   @override
   void initState() {
@@ -48,11 +49,21 @@ class _CommandeViewState extends State<CommandeView> {
     if (utilisateurProvider.perspective == Perspective.PARENT) {
       await commandeProvider.fetchCommandes(utilisateurProvider.token!);
     } else if (utilisateurProvider.perspective == Perspective.ORGANIZER) {
-      await commandeProvider.fetchAllCommandes();
+      await commandeProvider.fetchAllCommandes(utilisateurProvider.token!);
     }
 
     setState(() {
       commande = commandeProvider.getCommande(widget.idCommande);
+    });
+
+    getQRCode();
+  }
+
+  void getQRCode() async {
+    await commandeProvider.getQrCodeCommande(
+        utilisateurProvider.token!, widget.idCommande);
+    setState(() {
+      qrCode = Image.memory(base64Decode(commandeProvider.qrCode));
     });
   }
 
@@ -99,10 +110,11 @@ class _CommandeViewState extends State<CommandeView> {
           return getInfosArticles(context, ligneCommande);
         }),
         getPrixTotal(context),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30),
-          child: getBoutons(context),
-        ),
+        if (utilisateurProvider.perspective == Perspective.PARENT)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: getBoutons(context),
+          ),
       ],
     );
   }
@@ -363,37 +375,32 @@ class _CommandeViewState extends State<CommandeView> {
     );
   }
 
-  Image imageFromBase64String(String base64String) {
-    return Image.memory(base64Decode(base64String));
-  }
-
-  void afficherQRCode() async {
-    await commandeProvider.getQrCodeCommande(
-        utilisateurProvider.token!, commande!.id);
-    Image qrCode = imageFromBase64String(commandeProvider.qrCode);
+  void afficherQRCode() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Popup(
-          titre: "Commande n° ${commande!.getNumeroCommande()}",
-          body: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                      "${commande!.utilisateur.prenom} ${commande!.utilisateur.nom}"),
+        return qrCode == null
+            ? const Text("QR code non disponible")
+            : Popup(
+                titre: "Commande n° ${commande!.getNumeroCommande()}",
+                body: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                            "${commande!.utilisateur.prenom} ${commande!.utilisateur.nom}"),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: qrCode,
+                      ),
+                    ],
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: qrCode,
-                ),
-              ],
-            ),
-          ),
-        );
+              );
       },
     );
   }

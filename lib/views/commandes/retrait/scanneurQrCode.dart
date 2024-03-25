@@ -23,7 +23,6 @@ class _ScanneurQrCodeState extends State<ScanneurQrCode> {
 
   @override
   Widget build(BuildContext context) {
-
     return Popup(
       titre: 'Scanneur de QR code',
       sousTitre: 'Veuillez scanner le QR code de la commande',
@@ -76,7 +75,7 @@ class _ScanneurQrCodeState extends State<ScanneurQrCode> {
         setState(() {
           estScanne = true;
           estValide = scanData.code != null &&
-              scanData.code!.startsWith(URL_API + '#/commandes/');
+              scanData.code!.startsWith('$URL_FRONT/commandes/');
         });
 
         if (estValide) {

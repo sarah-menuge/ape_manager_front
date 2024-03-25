@@ -105,7 +105,7 @@ class Commande extends DonneeTableau {
       dateRetrait = null;
     }
     lieuRetrait = LieuRetrait.fromJson(json["pickUpPlace"]);
-    estPaye = json["isPaid"] == "true" ? true : false;
+    estPaye = json["isPaid"];
     if (json["status"] == "VALIDATED") {
       statut = StatutCommande.VALIDEE;
     } else if (json["status"] == "CANCELED") {

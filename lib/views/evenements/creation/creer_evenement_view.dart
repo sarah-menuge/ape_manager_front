@@ -10,7 +10,6 @@ import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/creation/popup_ajout_organisateur.dart';
 import 'package:ape_manager_front/views/evenements/creation/popup_suppression_organisateur.dart';
-import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
@@ -37,6 +36,7 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
   late EvenementProvider evenementProvider;
   late CreationModifEvenementForm creationEvenementForm;
   late UtilisateurProvider utilisateurProvider;
+  TextEditingController controller = TextEditingController();
   String? erreur;
 
   @override
@@ -109,9 +109,10 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
           Text(
             erreur != null ? erreur! : "",
             style: FontUtils.getFontApp(
-                color: ROUGE_1,
-                fontSize: ResponsiveConstraint.getResponsiveValue(
-                    context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),),
+              color: ROUGE_1,
+              fontSize: ResponsiveConstraint.getResponsiveValue(
+                  context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
+            ),
           ),
           getTuileFormulaireTitre(context),
           Padding(
@@ -169,8 +170,11 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
               label: "Titre de l'événement",
               prefixIcon: const Icon(Icons.title),
               onChangedMethod: (value) {
-                creationEvenementForm.titreEvenement = value!;
+                setState(() {
+                  creationEvenementForm.titreEvenement = value!;
+                });
               },
+              controller: controller,
             ),
           ),
         ],
@@ -204,8 +208,8 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                   child: TexteFlexible(
                     texte: "Elle sera modifiable plus tard",
                     style: FontUtils.getFontApp(
-                      fontSize: ResponsiveConstraint.getResponsiveValue(
-                          context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
+                      fontSize: ResponsiveConstraint.getResponsiveValue(context,
+                          POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -252,17 +256,17 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                 Text(
                   "Récapitulatif de l'événement",
                   style: FontUtils.getFontApp(
-            fontSize: ResponsiveConstraint.getResponsiveValue(
-                context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
-          ),
+                    fontSize: ResponsiveConstraint.getResponsiveValue(
+                        context, POLICE_MOBILE_H2, POLICE_DESKTOP_H2),
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   erreur != null ? erreur! : "",
                   style: FontUtils.getFontApp(
                     color: ROUGE_1,
-                    fontSize: ResponsiveConstraint.getResponsiveValue(
-                        context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
+                    fontSize: ResponsiveConstraint.getResponsiveValue(context,
+                        POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
                   ),
                 ),
                 const Divider(),
@@ -270,8 +274,8 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                   texte:
                       "Titre de l'événement : ${creationEvenementForm.titreEvenement}",
                   style: FontUtils.getFontApp(
-                    fontSize: ResponsiveConstraint.getResponsiveValue(
-                        context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
+                    fontSize: ResponsiveConstraint.getResponsiveValue(context,
+                        POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -279,16 +283,17 @@ class _CreerEvenementViewState extends State<CreerEvenementView> {
                   texte:
                       "Nombre d'organisateurs : ${creationEvenementForm.organisateursSelectionnes.length}",
                   style: FontUtils.getFontApp(
-                    fontSize: ResponsiveConstraint.getResponsiveValue(
-                        context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
+                    fontSize: ResponsiveConstraint.getResponsiveValue(context,
+                        POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
                   ),
                 ),
                 TexteFlexible(
                   texte: "Liste des organisateurs :",
                   style: FontUtils.getFontApp(
-                    fontSize: ResponsiveConstraint.getResponsiveValue(
-                        context, POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
-                  ),                ),
+                    fontSize: ResponsiveConstraint.getResponsiveValue(context,
+                        POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2),
+                  ),
+                ),
                 const Divider(),
                 SizedBox(
                   height: 200,

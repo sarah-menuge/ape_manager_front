@@ -110,23 +110,10 @@ class _ConsultationModificationCommandeFormViewState
         ],
         [
           ChampString(
-              prefixIcon: const Icon(Icons.event),
-              label: "Statut de la commande",
-              readOnly: true,
-              valeurInitiale:
-                  widget.commande.statut.toString().split('.').last),
-        ],
-        [
-          CheckboxListTile(
-            value: widget.commande.estPaye,
-            onChanged: widget.consultation
-                ? null
-                : (bool? value) {
-                    setState(() {
-                      widget.commande.estPaye = value!;
-                    });
-                  },
-            title: const Text('Est Payée ?'),
+            prefixIcon: const Icon(Icons.event),
+            label: "Statut de la commande",
+            readOnly: true,
+            valeurInitiale: widget.commande.getStatut(),
           ),
         ],
       ],
