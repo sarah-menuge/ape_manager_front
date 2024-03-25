@@ -1,5 +1,6 @@
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
+import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
@@ -46,12 +47,23 @@ class WidgetCommande extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              "Commande effectuée le ${dateCrea}",
+              "Effectuée le ${dateCrea}",
               textAlign: TextAlign.left,
               style: FontUtils.getFontApp(
                 fontWeight: FONT_WEIGHT_NORMAL,
                 fontSize: POLICE_DESKTOP_NORMAL_2,
               ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              commande.getStatut(),
+              textAlign: TextAlign.left,
+              style: FontUtils.getFontApp(
+                  fontWeight: FONT_WEIGHT_NORMAL,
+                  fontSize: POLICE_DESKTOP_NORMAL_2,
+                  color: BLEU_1),
             ),
           ),
         ],

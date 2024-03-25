@@ -1,5 +1,6 @@
 import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/proprietes/constantes.dart';
+import 'package:ape_manager_front/proprietes/couleurs.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:flutter/material.dart';
@@ -54,16 +55,28 @@ class WidgetCommandeMobile extends StatelessWidget {
 
   Widget getTotauxCommande(BuildContext context) {
     return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        "${commande.getPrixTotal()}€",
-        textAlign: TextAlign.left,
-        style: FontUtils.getFontApp(
-          fontSize: POLICE_MOBILE_NORMAL_1,
-          fontWeight: FONT_WEIGHT_NORMAL,
-        ),
-      ),
-    );
+        alignment: Alignment.centerLeft,
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: "${commande.getPrixTotal()}€ - ",
+                style: FontUtils.getFontApp(
+                  fontSize: POLICE_MOBILE_NORMAL_1,
+                  fontWeight: FONT_WEIGHT_NORMAL,
+                ),
+              ),
+              TextSpan(
+                text: commande.getStatut(),
+                style: FontUtils.getFontApp(
+                  fontSize: POLICE_MOBILE_NORMAL_1,
+                  fontWeight: FONT_WEIGHT_NORMAL,
+                  color: BLEU_1,
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget getBoutonDetail() {

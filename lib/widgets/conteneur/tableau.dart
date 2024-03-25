@@ -326,8 +326,8 @@ class _TableauState extends State<Tableau> {
             String aString = aValue.toString().toUpperCase();
             String bString = bValue.toString().toUpperCase();
             return ascending
-                ? aString.compareTo(bValue)
-                : bString.compareTo(aValue);
+                ? aString.compareTo(bString)
+                : bString.compareTo(aString);
           }
         });
         trie[columnName] = !ascending;

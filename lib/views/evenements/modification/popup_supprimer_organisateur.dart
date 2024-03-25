@@ -1,6 +1,4 @@
 import 'package:ape_manager_front/models/organisateur.dart';
-import 'package:ape_manager_front/utils/afficher_message.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
@@ -20,8 +18,9 @@ class PopupSupprimerOrganisateur extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Popup(
-      titre: "Suppression d'un organisateur",
-      sousTitre: "Êtes-vous sûr de vouloir supprimer l'organisateur ?",
+      titre: "Retirer un organisateur de la liste",
+      sousTitre:
+          "Vous vous apprêtez à retirer l'organisateur ${organisateur.toString()} de la liste.",
       body: SuppressionOrganisateurFormView(
         organisateur: organisateur,
         supprimerOrganisateur: supprimerOrganisateur,
@@ -55,7 +54,7 @@ class _SuppressionOrganisateurFormViewState
       champs: const [],
       boutons: [
         BoutonAction(
-          text: "Supprimer l'organisateur",
+          text: "Retirer l'organisateur de la liste",
           fonction: () => appuiBoutonSupprimer(),
           themeCouleur: ThemeCouleur.rouge,
         ),

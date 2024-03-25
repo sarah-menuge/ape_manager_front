@@ -1,6 +1,4 @@
 import 'package:ape_manager_front/models/article.dart';
-import 'package:ape_manager_front/utils/afficher_message.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
@@ -21,7 +19,7 @@ class PopupSupprimerArticle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Popup(
       titre: "Suppression d'un article",
-      sousTitre: "Êtes-vous sûr de vouloir supprimer l'article ?",
+      sousTitre: "Vous vous apprêtez à supprimer l'article ${article.nom}.",
       body: SuppressionArticleFormView(
         article: article,
         supprimerArticle: supprimerArticle,

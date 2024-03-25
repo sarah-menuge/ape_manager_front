@@ -1,6 +1,4 @@
 import 'package:ape_manager_front/models/evenement.dart';
-import 'package:ape_manager_front/utils/afficher_message.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
@@ -20,8 +18,9 @@ class PopupSupprimerEvenement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Popup(
-      titre: "Suppression d'un evenement",
-      sousTitre: "Êtes-vous sûr de vouloir supprimer l'evenement ?",
+      titre: "Suppression d'un événement",
+      sousTitre:
+          "Vous vous apprêtez à supprimer l'événement ${evenement.titre}.",
       body: SuppressionEvenementFormView(
         evenement: evenement,
         supprimerEvenement: supprimerEvenement,

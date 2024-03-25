@@ -23,7 +23,7 @@ class PopupAnnulationCommande extends StatelessWidget {
   Widget build(BuildContext context) {
     return Popup(
       titre: "Annulation d'une commande",
-      sousTitre: "Êtes-vous sûr de vouloir annuler votre commande ?",
+      sousTitre: "Vous vous apprêtez à annuler votre commande.",
       body: AnnulationCommandeFormView(
         commandeProvider: commandeProvider,
         idCommande: idCommande,
