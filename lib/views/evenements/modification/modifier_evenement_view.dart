@@ -10,7 +10,6 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
-import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/evenements/liste/evenements_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_form_view.dart';
@@ -121,7 +120,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
     if (droitEvenement == DroitEvenement.aucun) {
       return PageNonAccessible(nomUrlRetour: EvenementsView.routeURL);
     }
-
+    print("Build view : ${evenementBrouillon!.titre}");
     return ScaffoldAppli(
       body: getBodyDesktop(context),
       nomUrlRetour: EvenementsView.routeURL,
@@ -265,7 +264,6 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     texte:
                         "Nombre d'organisateurs : ${evenementBrouillon!.organisateurs.length}",
                     style: TextStyle(color: NOIR),
-
                   ),
                 ),
                 const TexteFlexible(
@@ -797,7 +795,9 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
   /// Annulation des modifications des infos générales
   annulerModificationsInfosGenerales() {
     revenirEnArriere(context);
-    setState(() => evenementBrouillon!.reinitEvenement(valeursInitiales));
+    setState(() {
+      evenementBrouillon!.reinitEvenement(valeursInitiales);
+    });
   }
 
   /// Modification des infos générales
