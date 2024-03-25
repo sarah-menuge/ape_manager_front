@@ -187,11 +187,15 @@ class _RetraitCommandeViewState extends State<RetraitCommandeView> {
                   .getNumeroCommande()
                   .toString()
                   .contains(searchText.toLowerCase()) ||
-              commande.statut.toString().contains(searchText.toLowerCase()))
+              commande.lieuRetrait
+                  .toString()
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()))
           .toList();
       commandesFiltres = commandesFiltres
           .where((commande) => commande.statut == StatutCommande.A_RETIRER)
           .toList();
+      print(commandesFiltres);
     });
   }
 
