@@ -74,7 +74,7 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
       }
       if (u != null) {
         setState(() {
-          utilisateurProvider.utilisateurs.remove(u);
+          utilisateursFiltres.remove(u);
         });
       }
       afficherMessageSucces(context: context, message: response["message"]);
@@ -83,13 +83,13 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
 
   /// Modifier un utilisateur depuis la vue administrateur
   Future<void> modifierUtilisateurAPI(Utilisateur u) async {
-    revenirEnArriere(context);
     final response = await utilisateurProvider.modifierUtilisateurAdmin(
         utilisateurProvider.token!, u);
 
     if (response["statusCode"] != 200 && mounted) {
       afficherMessageErreur(context: context, message: response["message"]);
     } else {
+      revenirEnArriere(context);
       afficherMessageSucces(context: context, message: response["message"]);
       for (Utilisateur utilisateur in utilisateurProvider.utilisateurs) {
         if (utilisateur.id == u.id) setState(() => utilisateur = u);
