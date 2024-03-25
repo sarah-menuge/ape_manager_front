@@ -30,7 +30,7 @@ class CommandeProvider with ChangeNotifier {
     return null;
   }
 
-  /// Récupérer toutes les commandes
+  /// Récupérer toutes mes commandes
   Future<dynamic> fetchCommandes(String token) async {
     _commandes = [];
     commandesRecuperees = false;
@@ -42,19 +42,34 @@ class CommandeProvider with ChangeNotifier {
     );
 
     commandesRecuperees = true;
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
-    if (reponseApi.response?.statusCode != 200) return;
+    if (reponseApi.response?.statusCode == 200) {
+      _commandes = (jsonDecode(reponseApi.response!.body) as List)
+          .map((c) => Commande.fromJson(c))
+          .toList();
 
-    _commandes = (jsonDecode(reponseApi.response!.body) as List)
-        .map((c) => Commande.fromJson(c))
-        .toList();
+      afficherLogInfo("Récupération des commandes terminée.");
+    }
 
-    afficherLogInfo("Récupération des commandes terminée.");
+    if (reponseApi.response!.statusCode != 200) {
+      afficherLogError("La récupération des commandes a échoué.");
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La récupération des commandes a échoué.",
+      };
+    }
 
     notifyListeners();
   }
 
+  /// Récupère toutes les commandes qui existent
   Future<dynamic> fetchAllCommandes(String token) async {
     _commandes = [];
     commandesRecuperees = false;
@@ -66,15 +81,29 @@ class CommandeProvider with ChangeNotifier {
     );
 
     commandesRecuperees = true;
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
-    if (reponseApi.response?.statusCode != 200) return;
+    if (reponseApi.response?.statusCode == 200) {
+      _commandes = (jsonDecode(reponseApi.response!.body) as List)
+          .map((c) => Commande.fromJson(c))
+          .toList();
 
-    _commandes = (jsonDecode(reponseApi.response!.body) as List)
-        .map((c) => Commande.fromJson(c))
-        .toList();
+      afficherLogInfo("Récupération des commandes terminée.");
+    }
 
-    afficherLogInfo("Récupération des commandes terminée.");
+    if (reponseApi.response!.statusCode != 200) {
+      afficherLogError("La récupération des commandes a échoué.");
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La récupération des commandes a échoué.",
+      };
+    }
 
     notifyListeners();
   }
@@ -88,14 +117,26 @@ class CommandeProvider with ChangeNotifier {
       timeoutSec: 5,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    if (reponseApi.response?.statusCode == 200) {
+      _commande = Commande.fromJson(jsonDecode(reponseApi.response!.body));
+      afficherLogInfo("Récupération de la commande terminée.");
+    }
 
     if (reponseApi.response!.statusCode != 200) {
       afficherLogError("La récupération de la commande a échoué.");
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La récupération de la commande a échoué.",
+      };
     }
-
-    _commande = Commande.fromJson(jsonDecode(reponseApi.response!.body));
-    afficherLogInfo("Récupération de la commande terminée.");
 
     notifyListeners();
   }
@@ -119,15 +160,10 @@ class CommandeProvider with ChangeNotifier {
 
     http.Response response = reponseApi.response as http.Response;
     if (response.statusCode != 201) {
-      String err;
-      try {
-        err = json.decode(response.body)["message"];
-      } catch (e) {
-        err = "La création de la commande n'a pas pu aboutir.";
-      }
       return {
         "statusCode": response.statusCode,
-        "message": err,
+        "message": json.decode(response.body)["message"] ??
+            "La création de la commande n'a pas pu aboutir.",
       };
     }
 
@@ -148,7 +184,12 @@ class CommandeProvider with ChangeNotifier {
       timeoutSec: 6,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     if (reponseApi.response?.statusCode == 204) {
       return {
@@ -158,7 +199,8 @@ class CommandeProvider with ChangeNotifier {
     }
     return {
       "statusCode": reponseApi.response?.statusCode,
-      "message": json.decode(reponseApi.response!.body)["message"],
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "La commande n'a pas pu être annulée.",
     };
   }
 
@@ -171,7 +213,12 @@ class CommandeProvider with ChangeNotifier {
       timeoutSec: 6,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     if (reponseApi.response?.statusCode == 204) {
       return {
@@ -181,7 +228,8 @@ class CommandeProvider with ChangeNotifier {
     }
     return {
       "statusCode": reponseApi.response?.statusCode,
-      "message": json.decode(reponseApi.response!.body)["message"],
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Un erreur est survenue, le paiement n'a pas été validé.",
     };
   }
 
@@ -194,7 +242,12 @@ class CommandeProvider with ChangeNotifier {
       timeoutSec: 6,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     if (reponseApi.response?.statusCode == 204) {
       return {
@@ -205,7 +258,8 @@ class CommandeProvider with ChangeNotifier {
     }
     return {
       "statusCode": reponseApi.response?.statusCode,
-      "message": json.decode(reponseApi.response!.body)["message"],
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, les commandes ne sont pas passées au statut en attente retrait",
     };
   }
 
@@ -235,7 +289,8 @@ class CommandeProvider with ChangeNotifier {
     }
     return {
       "statusCode": reponseApi.response?.statusCode,
-      "message": json.decode(reponseApi.response!.body)["message"],
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, la commande n'a pas été retirée.",
     };
   }
 
@@ -248,7 +303,12 @@ class CommandeProvider with ChangeNotifier {
       timeoutSec: 6,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     if (reponseApi.response?.statusCode == 204) {
       return {
@@ -258,7 +318,8 @@ class CommandeProvider with ChangeNotifier {
     }
     return {
       "statusCode": reponseApi.response?.statusCode,
-      "message": json.decode(reponseApi.response!.body)["message"],
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, la commande n'a pas été clôturé.",
     };
   }
 
@@ -295,12 +356,18 @@ class CommandeProvider with ChangeNotifier {
       timeoutSec: 6,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     if (reponseApi.response?.statusCode != 200) {
       return {
         "statusCode": reponseApi.response?.statusCode,
-        "message": json.decode(reponseApi.response!.body)["message"],
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "Une erreur est survenue, le Qr Code n'a pas été récupéré",
       };
     }
 

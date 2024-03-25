@@ -6,7 +6,6 @@ import 'package:ape_manager_front/models/enfant.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../forms/modification_mdp_form.dart';
 import '../models/utilisateur.dart';
@@ -52,6 +51,7 @@ class UtilisateurProvider with ChangeNotifier {
   UnmodifiableListView<Organisateur> get organisateurs =>
       UnmodifiableListView(_organisateurs);
 
+  /// Récupération de la liste des organisateurs
   Future<dynamic> fetchListeOrganisateurs(String token) async {
     // Appel à l'API
     ReponseAPI reponseApi = await callAPI(
@@ -61,20 +61,24 @@ class UtilisateurProvider with ChangeNotifier {
     );
 
     // Cas où la connexion avec l'API n'a pas pu être établie
-    if (!reponseApi.connexionAPIEtablie) return;
-
-    http.Response response = reponseApi.response as http.Response;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     // Un problème avec la requête
-    if (response.statusCode != 200) {
+    if (reponseApi.response?.statusCode != 200) {
       return {
-        "statusCode": response.statusCode,
-        "message": json.decode(response.body)["message"],
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "Une erreur est survenue, la liste des organisateurs n'a pas pu être récupéré.",
       };
     }
 
     // Récupération de la liste des orgas
-    _organisateurs = (json.decode(response.body) as List)
+    _organisateurs = (json.decode(reponseApi.response!.body) as List)
         .map((e) => Organisateur.fromJson(e))
         .toList();
 
@@ -87,6 +91,7 @@ class UtilisateurProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Récupération de tous les utilisateurs
   Future<dynamic> fetchUtilisateurs(String token) async {
     // Appel à l'API
     ReponseAPI reponseApi = await callAPI(
@@ -95,7 +100,21 @@ class UtilisateurProvider with ChangeNotifier {
       token: token,
     );
     // Cas où la connexion avec l'API n'a pas pu être établie
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    if (reponseApi.response?.statusCode != 200) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "Une erreur est survenue, la liste des utilisateurs n'a pas pu être récupéré.",
+      };
+    }
+
     _utilisateurs = (jsonDecode(reponseApi.response!.body) as List)
         .map((u) => Utilisateur.fromJson(u))
         .toList();
@@ -110,7 +129,13 @@ class UtilisateurProvider with ChangeNotifier {
       token: token,
     );
     // Cas où la connexion avec l'API n'a pas pu être établie
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
     try {
       _utilisateur!.setEnfants(jsonDecode(reponseApi.response!.body) as List);
     } catch (_) {
@@ -141,7 +166,8 @@ class UtilisateurProvider with ChangeNotifier {
       "statusCode": reponseApi.response?.statusCode,
       "message": reponseApi.response?.statusCode == 200
           ? "La demande de réinitialisation de mot de passe a bien été prise en compte. Veuillez vérifier vos mails."
-          : json.decode(reponseApi.response!.body)["message"],
+          : json.decode(reponseApi.response!.body)["message"] ??
+              "Une erreur est sruvenue, le demande de réinitialisation du mot da passe n'a pas été prise en compte",
     };
   }
 
@@ -166,7 +192,8 @@ class UtilisateurProvider with ChangeNotifier {
       "statusCode": reponseApi.response?.statusCode,
       "message": reponseApi.response?.statusCode == 200
           ? "Le mot de passe a été modifié avec succès."
-          : json.decode(reponseApi.response!.body)["message"],
+          : json.decode(reponseApi.response!.body)["message"] ??
+              "Une erreur est survenue, le mot de passe n'a pas été modifié.",
     };
   }
 
@@ -191,9 +218,8 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
     // Authentification OK
-    if (response.statusCode == 200) {
+    if (reponseApi.response?.statusCode == 200) {
       return {
         "statusCode": 200,
         "message": "Le mot de passe a bien été modifié.",
@@ -202,8 +228,9 @@ class UtilisateurProvider with ChangeNotifier {
 
     // Authentification KO
     return {
-      "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, le mot de passe n'a pas été modifié.",
     };
   }
 
@@ -226,10 +253,8 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
     // Authentification OK
-    if (response.statusCode == 200) {
+    if (reponseApi.response?.statusCode == 200) {
       return {
         "statusCode": 200,
         "message": "Les modifications ont bien été apportées.",
@@ -238,11 +263,13 @@ class UtilisateurProvider with ChangeNotifier {
 
     // Authentification KO
     return {
-      "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, les modifications n'ont pas été apportées",
     };
   }
 
+  /// Permet de supprimer son compte
   Future<dynamic> supprimerCompte(String token) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/users',
@@ -258,10 +285,8 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
     // Authentification OK
-    if (response.statusCode == 204) {
+    if (reponseApi.response?.statusCode == 204) {
       return {
         "statusCode": 204,
         "message": "Le compte a bien été supprimé.",
@@ -270,9 +295,9 @@ class UtilisateurProvider with ChangeNotifier {
 
     // Authentification KO
     return {
-      "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"] ??
-          "La suppression du compte a échoué.",
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, le compte n'a pas été supprimé.",
     };
   }
 
@@ -292,20 +317,20 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
     // Authentification OK
-    if (response.statusCode == 201) {
+    if (reponseApi.response?.statusCode == 201) {
       fetchEnfants(token);
       return {
-        "statusCode": response.statusCode,
+        "statusCode": reponseApi.response?.statusCode,
         "message": "L'enfant a bien été ajouté.",
       };
     }
 
     // Authentification KO
     return {
-      "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Un erreur est survenue, l'enfant n'a pas été ajouté.",
     };
   }
 
@@ -325,9 +350,8 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
     // Authentification OK
-    if (response.statusCode == 200) {
+    if (reponseApi.response?.statusCode == 200) {
       fetchEnfants(token);
       return {
         "statusCode": 200,
@@ -337,8 +361,9 @@ class UtilisateurProvider with ChangeNotifier {
 
     // Authentification KO
     return {
-      "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, les informations de l'enfant n'ont pas été mise à jour.",
     };
   }
 
@@ -357,9 +382,8 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
     // Authentification OK
-    if (response.statusCode == 204) {
+    if (reponseApi.response?.statusCode == 204) {
       return {
         "statusCode": 200,
         "message": "L'enfant a bien été détaché de votre compte.",
@@ -368,8 +392,9 @@ class UtilisateurProvider with ChangeNotifier {
 
     // Authentification KO
     return {
-      "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, l'enfant n'a pas été détaché de votre compte.",
     };
   }
 
@@ -390,8 +415,7 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-    if (response.statusCode == 204) {
+    if (reponseApi.response?.statusCode == 204) {
       return {
         "statusCode": 204,
         "message": "Le compte de l'utilisateur a bien été supprimé.",
@@ -399,8 +423,9 @@ class UtilisateurProvider with ChangeNotifier {
     }
 
     return {
-      "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue, le compte de l'utilisateur n'a pas été supprimé.",
     };
   }
 
@@ -420,20 +445,17 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode == 200) {
+    if (reponseApi.response?.statusCode == 200) {
       return {
         "statusCode": 200,
         "message":
             "Les informations de l'utilisateur ont bien été mises à jour.",
       };
     }
-    String err = json.decode(response.body)["message"] ??
-        "Une erreur est survenue lors de la modification d'un utilisateur";
     return {
-      "statusCode": response.statusCode,
-      "message": err,
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Une erreur est survenue lors de la modification d'un utilisateur",
     };
   }
 
@@ -456,19 +478,16 @@ class UtilisateurProvider with ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode == 200) {
+    if (reponseApi.response?.statusCode == 200) {
       return {
         "statusCode": 200,
         "message": "Vous allez être notifié lorsque l'événement débutera.",
       };
     }
-    String err = json.decode(response.body)["message"] ??
-        "Impossible de vous ajouter dans la liste de diffusion.";
     return {
-      "statusCode": response.statusCode,
-      "message": err,
+      "statusCode": reponseApi.response?.statusCode,
+      "message": json.decode(reponseApi.response!.body)["message"] ??
+          "Impossible de vous ajouter dans la liste de diffusion.",
     };
   }
 }
