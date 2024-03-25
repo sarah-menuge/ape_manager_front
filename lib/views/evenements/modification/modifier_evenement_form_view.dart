@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ape_manager_front/models/evenement.dart';
 import 'package:ape_manager_front/views/evenements/modification/modifier_evenement_view.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_annuler_modifications.dart';
@@ -8,6 +6,9 @@ import 'package:ape_manager_front/widgets/formulaire/champ_date.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_string.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire_state.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class ModifierEvenementFormView extends StatefulWidget {
   final Evenement evenement;
@@ -24,25 +25,28 @@ class ModifierEvenementFormView extends StatefulWidget {
   });
 
   @override
-  State<ModifierEvenementFormView> createState() => _ModifierEvenementFormViewState();
+  State<ModifierEvenementFormView> createState() =>
+      _ModifierEvenementFormViewState();
 }
 
-class _ModifierEvenementFormViewState extends FormulaireState<ModifierEvenementFormView> {
-  final Key titreChampKey = UniqueKey();
-  final Key descriptionChampKey = UniqueKey();
+class _ModifierEvenementFormViewState
+    extends FormulaireState<ModifierEvenementFormView> {
   final Key dateDebutChampKey = UniqueKey();
   final Key dateFinChampKey = UniqueKey();
   final Key dateFinPaiementChampKey = UniqueKey();
 
   @override
   Formulaire setFormulaire(BuildContext context) {
+    print("Build setFormulaire : ${widget.evenement.titre}");
     return Formulaire(
       formKey: formKey,
       erreur: erreur,
       champs: [
         [
           ChampString(
-            key: titreChampKey,
+            key: (UniversalPlatform.isAndroid || UniversalPlatform.isIOS)
+                ? ValueKey(widget.evenement.titre)
+                : UniqueKey(),
             label: "Titre de l'événement",
             prefixIcon: const Icon(Icons.title),
             valeurInitiale: widget.evenement.titre,
@@ -52,7 +56,9 @@ class _ModifierEvenementFormViewState extends FormulaireState<ModifierEvenementF
         ],
         [
           ChampString(
-            key: descriptionChampKey,
+            key: (UniversalPlatform.isAndroid || UniversalPlatform.isIOS)
+                ? ValueKey(widget.evenement.description)
+                : UniqueKey(),
             label: "Description de l'événement",
             prefixIcon: const Icon(Icons.description),
             valeurInitiale: widget.evenement.description,
@@ -65,11 +71,11 @@ class _ModifierEvenementFormViewState extends FormulaireState<ModifierEvenementF
             key: dateDebutChampKey,
             readOnly: widget.droitEvenement != DroitEvenement.modification,
             label: "Début des commandes",
-            valeurInitiale: widget.evenement.getDateDebutString(),
             controller: widget.evenement.dateDebutTEC,
             onChangedMethod: (value) {
               try {
-                widget.evenement.dateDebut = DateFormat('dd-MM-yyyy').parse(value!);
+                widget.evenement.dateDebut =
+                    DateFormat('dd-MM-yyyy').parse(value!);
               } catch (e) {
                 widget.evenement.dateDebut = null;
               }
@@ -79,11 +85,11 @@ class _ModifierEvenementFormViewState extends FormulaireState<ModifierEvenementF
             key: dateFinChampKey,
             readOnly: widget.droitEvenement != DroitEvenement.modification,
             label: "Fin des commandes",
-            valeurInitiale: widget.evenement.getDateFinString(),
             controller: widget.evenement.dateFinTEC,
             onChangedMethod: (value) {
               try {
-                widget.evenement.dateFin = DateFormat('dd-MM-yyyy').parse(value!);
+                widget.evenement.dateFin =
+                    DateFormat('dd-MM-yyyy').parse(value!);
               } catch (e) {
                 widget.evenement.dateFin = null;
               }
@@ -93,11 +99,11 @@ class _ModifierEvenementFormViewState extends FormulaireState<ModifierEvenementF
             key: dateFinPaiementChampKey,
             readOnly: widget.droitEvenement != DroitEvenement.modification,
             label: "Fin de paiement",
-            valeurInitiale: widget.evenement.getDateFinPaiementString(),
             controller: widget.evenement.dateFinPaiementTEC,
             onChangedMethod: (value) {
               try {
-                widget.evenement.dateFinPaiement = DateFormat('dd-MM-yyyy').parse(value!);
+                widget.evenement.dateFinPaiement =
+                    DateFormat('dd-MM-yyyy').parse(value!);
               } catch (e) {
                 widget.evenement.dateFinPaiement = null;
               }
@@ -113,7 +119,8 @@ class _ModifierEvenementFormViewState extends FormulaireState<ModifierEvenementF
               showDialog(
                 context: context,
                 builder: (context) => PopupAnnulerModifications(
-                  annulerModificationsInfosGenerales: widget.annulerModificationsInfosGenerales,
+                  annulerModificationsInfosGenerales:
+                      widget.annulerModificationsInfosGenerales,
                 ),
               );
             },
