@@ -159,25 +159,32 @@ class DetailEvenementOrganisateur extends StatelessWidget {
     if (commande.getStatut() == "En attente de paiement") {
       return Padding(
         padding: EdgeInsets.only(right: estDesktop(context, 600) ? 10.0 : 0.0),
-        child: BoutonAction(
-          text: "Valider le paiement",
-          themeCouleur: ThemeCouleur.vert,
-          fonction: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return PopupGestionCommande(
-                  commande: commande,
-                  fonctionAEffectuer: validerPaiementFonction,
-                  texteBouton: "Valider le paiement",
-                  titrePopup: "Confirmer le paiement d'une commande",
-                  sousTitrePopup:
-                      "Vous vous apprêtez à valider le paiement de la commande n°${commande.getNumeroCommande()}.",
-                );
-              },
-            );
-          },
-        ),
+        child: (utilisateurProvider.utilisateur!.email !=
+                commande.utilisateur.email)
+            ? BoutonAction(
+                text: "Valider le paiement",
+                themeCouleur: ThemeCouleur.vert,
+                fonction: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return PopupGestionCommande(
+                        commande: commande,
+                        fonctionAEffectuer: validerPaiementFonction,
+                        texteBouton: "Valider le paiement",
+                        titrePopup: "Confirmer le paiement d'une commande",
+                        sousTitrePopup:
+                            "Vous vous apprêtez à valider le paiement de la commande n°${commande.getNumeroCommande()}.",
+                      );
+                    },
+                  );
+                },
+              )
+            : const BoutonAction(
+                text: "Valider le paiement",
+                disable: true,
+                fonction: null,
+              ),
       );
     }
     if (commande.getStatut() == "Payée") {
