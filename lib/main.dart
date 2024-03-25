@@ -1,7 +1,9 @@
+import 'package:ape_manager_front/proprietes/constantes.dart';
 import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
+import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
@@ -19,6 +21,7 @@ import 'package:ape_manager_front/views/evenements/modification/modifier_eveneme
 import 'package:ape_manager_front/views/profil/profil_view.dart';
 import 'package:ape_manager_front/widgets/not_found.dart';
 import 'package:ape_manager_front/widgets/scaffold/aucune_transition.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -46,6 +49,8 @@ class MainApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
 
+    bool isReleaseMode = kReleaseMode;
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: authentificationProvider),
@@ -54,7 +59,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: commandeProvider),
       ],
       child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: PROD == "false" || !isReleaseMode,
         routerConfig: _router,
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
@@ -87,7 +92,10 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: LoginView.routeURL,
-      builder: (context, state) => LoginView(),
+      builder: (context, state) {
+        bool compteValide = state.queryParameters['success'] == 'true';
+        return LoginView(compteValide: compteValide);
+      },
     ),
     GoRoute(
       path: SignupView.routeURL,
@@ -147,7 +155,7 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: RetraitCommandeView.routeURL,
-      builder: (context, state)  => const RetraitCommandeView(),
+      builder: (context, state) => const RetraitCommandeView(),
     ),
   ],
   // Permet d'imposer l'authentification
@@ -158,6 +166,8 @@ final _router = GoRouter(
 
     if (state.location == SignupView.routeURL ||
         state.location == LoginView.routeURL ||
+        state.location.contains(LoginView.routeURLValidationCompte
+            .replaceAll("?success=true", "")) ||
         state.location
             .contains(ModificationMdpView.routeURL.replaceAll(":token", ""))) {
       afficherLogDebug("Accès autorisé.");

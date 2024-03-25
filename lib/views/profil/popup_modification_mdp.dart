@@ -52,12 +52,14 @@ class _ModificationMdpFormViewState
           ChampMdp(
             label: "Ancien mot de passe",
             onSavedMethod: (value) => modifMdpForm.oldPassword = value!,
+            controlerRobustesse: false,
           ),
         ],
         [
           ChampMdp(
             label: "Nouveau mot de passe",
             onSavedMethod: (value) => modifMdpForm.newPassword = value!,
+            controlerRobustesse: true,
           ),
         ],
         [
@@ -65,6 +67,7 @@ class _ModificationMdpFormViewState
             label: "Confirmer mot de passe",
             onSavedMethod: (value) =>
                 modifMdpForm.confirmerNewPassword = value!,
+            controlerRobustesse: false,
           ),
         ],
       ],

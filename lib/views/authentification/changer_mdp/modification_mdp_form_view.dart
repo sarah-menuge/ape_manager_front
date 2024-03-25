@@ -36,12 +36,14 @@ class _ModificationMdpFormViewState
           ChampMdp(
             label: "Nouveau mot de passe",
             onSavedMethod: (value) => reinitMdpForm.nouveauMdp = value,
+            controlerRobustesse: true,
           ),
         ],
         [
           ChampMdp(
             label: "Confirmer mot de passe",
             onSavedMethod: (value) => reinitMdpForm.confirmerNouveauMdp = value,
+            controlerRobustesse: false,
           ),
         ],
       ],
