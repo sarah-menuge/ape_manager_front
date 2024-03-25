@@ -1,4 +1,5 @@
 import 'package:ape_manager_front/providers/authentification_provider.dart';
+import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/formulaire.dart';
@@ -62,9 +63,16 @@ class _SuppressionCompteFormViewState
   }
 
   Future<void> supprimerCompte() async {
-    final response =
-        await utilisateurProvider.supprimerCompte(utilisateurProvider.token!);
-    if (mounted && response["statusCode"] == 200) {
+    final response = await utilisateurProvider.supprimerCompte(
+      utilisateurProvider.token!,
+    );
+    if (mounted && response["statusCode"] == 204) {
+      afficherMessageInfo(
+        context: context,
+        message:
+            "Le compte associé à l'adresse email ${utilisateurProvider.utilisateur!.email} a bien été supprimé.",
+        duree: 6,
+      );
       authentificationProvider.logout(
         context,
         utilisateurProvider,

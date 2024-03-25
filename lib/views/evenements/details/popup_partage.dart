@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:ape_manager_front/proprietes/constantes.dart';
+import 'package:ape_manager_front/providers/evenement_provider.dart';
+import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import '../../../utils/partage_reseau.dart';
@@ -9,14 +12,17 @@ import '../../../widgets/button_appli.dart';
 import '../../../widgets/conteneur/popup.dart';
 
 class PopupPartage extends StatefulWidget {
+  final int idEvenement;
   final String titreEvenement;
   final DateTime? dateDebut;
   final DateTime? dateFin;
   final String lien;
-  final String b64QRCode = B64QRCODE;
+
+  // final String b64QRCode = B64QRCODE;
 
   const PopupPartage({
     Key? key,
+    required this.idEvenement,
     required this.titreEvenement,
     required this.dateDebut,
     required this.dateFin,
@@ -28,41 +34,59 @@ class PopupPartage extends StatefulWidget {
 }
 
 class _PopupPartageState extends State<PopupPartage> {
-  Image imageFromBase64String(String base64String) {
-    return Image.memory(base64Decode(base64String));
+  late UtilisateurProvider utilisateurProvider;
+  late EvenementProvider evenementProvider;
+  late Image? qrCode;
+
+  @override
+  void initState() {
+    super.initState();
+    utilisateurProvider =
+        Provider.of<UtilisateurProvider>(context, listen: false);
+    evenementProvider = Provider.of<EvenementProvider>(context, listen: false);
+    getQRCode();
+  }
+
+  void getQRCode() async {
+    await evenementProvider.getQrCodeEvenement(
+        utilisateurProvider.token!, widget.idEvenement);
+    setState(() {
+      qrCode = Image.memory(base64Decode(evenementProvider.qrCode));
+    });
   }
 
   void partagerAvecQRCode() {
-    Image test = imageFromBase64String(widget.b64QRCode);
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Popup(
-          titre: 'QR Code',
-          body: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: test,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Scannez ce QR code pour accéder à l\'événement',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+        return qrCode == null
+            ? const Text("QR code non disponible")
+            : Popup(
+                titre: 'QR Code',
+                body: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: qrCode,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Scannez ce QR code pour accéder à l\'événement',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        );
+              );
       },
     );
   }

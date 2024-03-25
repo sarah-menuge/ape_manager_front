@@ -21,13 +21,13 @@ class LoginView extends StatelessWidget {
   final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
 
   LoginView({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
       body: DefaultTextStyle(
-        style: const TextStyle(fontFamilyFallback: ['Roboto'],color: NOIR),
+        style: const TextStyle(fontFamilyFallback: ['Roboto'], color: NOIR),
         child: DivPrincipale(
           maxWidth: 800,
           body: getContenuLoginResponsive(context),
@@ -80,7 +80,6 @@ class LoginView extends StatelessWidget {
   }
 
   Widget getBoutonSignup(BuildContext context) {
-    print("getBoutonSignup");
     return BoutonNavigationGoRouter(
       text: "S'inscrire",
       themeCouleur: ThemeCouleur.rouge,

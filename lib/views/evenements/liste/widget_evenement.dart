@@ -18,12 +18,14 @@ class WidgetEvenement extends StatelessWidget {
   final UtilisateurProvider utilisateurProvider;
   final Evenement evenement;
   final TypeBouton typeBouton;
+  final Function? modifierUtilisateurNotifie;
 
   const WidgetEvenement({
     super.key,
     required this.typeBouton,
     required this.evenement,
     required this.utilisateurProvider,
+    this.modifierUtilisateurNotifie,
   });
 
   @override
@@ -98,8 +100,13 @@ class WidgetEvenement extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) {
                       return NotificationPopup(
+                        idEvenement: evenement.id,
                         titreEvenement: evenement.titre,
                         dateDebut: evenement.dateDebut!,
+                        utilisateurNotifie: evenement
+                            .emailUtilisateursNotification
+                            .contains(utilisateurProvider.utilisateur?.email),
+                        modifierUtilisateurNotifie: modifierUtilisateurNotifie,
                       );
                     },
                   );

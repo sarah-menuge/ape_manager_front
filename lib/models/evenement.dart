@@ -35,7 +35,7 @@ class Evenement {
   late List<Organisateur> organisateurs;
   List<Article> articles = [];
   List<Commande> commandes = [];
-  List<String> utilisateursNotification = [];
+  List<String> emailUtilisateursNotification = [];
 
   Evenement({
     required this.id,
@@ -55,7 +55,7 @@ class Evenement {
     required this.organisateurs,
     required this.articles,
     required this.commandes,
-    required this.utilisateursNotification,
+    required this.emailUtilisateursNotification,
   });
 
   Evenement.copie(Evenement other) {
@@ -76,7 +76,7 @@ class Evenement {
         other.organisateurs.map((o) => Organisateur.copie(o)).toList();
     articles = other.articles.map((a) => Article.copie(a)).toList();
     commandes = other.commandes.map((c) => Commande.copie(c)).toList();
-    utilisateursNotification = other.utilisateursNotification;
+    emailUtilisateursNotification = other.emailUtilisateursNotification;
   }
 
   Evenement.fromValeursInitiales(Map<String, dynamic> valeursInitiales) {
@@ -152,11 +152,11 @@ class Evenement {
         .toList();
 
     try {
-      utilisateursNotification = json["userNotifications"];
+      emailUtilisateursNotification = (json["userNotifications"] as List)
+          .map((u) => u["email"] as String)
+          .toList();
     } catch (e) {
-      afficherLogDebug(
-          "La liste des utilisateurs à notifier associée à l'événement $id n'a pas été correctement récupéré ou est vide.");
-      utilisateursNotification = [];
+      emailUtilisateursNotification = [];
     }
 
     try {
