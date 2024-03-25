@@ -71,7 +71,8 @@ class DetailEvenementWidget extends StatelessWidget {
                   getTitreEvenement(context),
                   getDescriptionEvenement(context),
                   getStatutEvenement(context),
-                  getBoutonPartagerEvenement(context),
+                  if (evenement.statut != StatutEvenement.CLOTURE)
+                    getBoutonPartagerEvenement(context),
                   const Divider(thickness: 0.5),
                   if (utilisateurProvider.perspective == Perspective.PARENT &&
                       evenement.lieux.isNotEmpty) ...[

@@ -20,7 +20,8 @@ class PopupSuppressionEnfant extends StatelessWidget {
   Widget build(BuildContext context) {
     return Popup(
       titre: "Détachement d'un enfant",
-      sousTitre: "Êtes-vous sûr de vouloir détacher l'enfant de votre compte ?",
+      sousTitre:
+          "Vous vous apprêtez à détacher l'enfant ${enfant.toString()} de votre compte.",
       body: SuppressionEnfantFormView(
         enfant: enfant,
         fetchEnfants: fetchEnfants,

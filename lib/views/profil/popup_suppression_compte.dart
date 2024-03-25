@@ -14,7 +14,7 @@ class PopupSuppressionCompte extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Popup(
       titre: "Suppression du compte",
-      sousTitre: "Êtes-vous sûr de vouloir supprimer votre compte ?",
+      sousTitre: "Vous vous apprêtez à supprimer votre compte.",
       body: SuppressionCompteFormView(),
     );
   }

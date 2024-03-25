@@ -48,9 +48,7 @@ class _GestionUtilisateursViewState extends State<GestionUtilisateursView> {
     setState(() {
       utilisateurs = utilisateurProvider.utilisateurs
           .where((utilisateur) =>
-              (utilisateur.nom != utilisateurCourant.nom) &&
-              (utilisateur.prenom != utilisateurCourant.prenom) &&
-              (utilisateur.email != utilisateurCourant.email))
+              utilisateur.email != utilisateurProvider.utilisateur!.email)
           .toList();
       utilisateursFiltres = utilisateurs;
     });

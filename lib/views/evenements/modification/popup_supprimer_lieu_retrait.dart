@@ -20,7 +20,7 @@ class PopupSupprimerLieuRetrait extends StatelessWidget {
     return Popup(
       titre: "Suppression d'un lieu de retrait",
       sousTitre:
-          "Vous vous apprêtez à supprimer le lieu de retrait suivant :\n${lieuRetrait.lieu}",
+          "Vous vous apprêtez à supprimer le lieu de retrait ${lieuRetrait.lieu}.",
       body: SupprimerLieuRetraitFormView(
         supprimerLieuRetrait: supprimerLieuRetrait,
         lieuRetrait: lieuRetrait,

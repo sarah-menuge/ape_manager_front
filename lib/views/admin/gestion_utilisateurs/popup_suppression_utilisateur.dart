@@ -22,7 +22,7 @@ class PopupSuppressionUtilisateur extends StatelessWidget {
     return Popup(
       titre: "Suppression d'un utilisateur",
       sousTitre:
-          "Êtes-vous sûr de vouloir supprimer l'utilisateur ${utilisateur.prenom} ${utilisateur.nom} ?",
+          "Vous vous apprêtez à supprimer l'utilisateur ${utilisateur.toString()}.",
       body: SuppressionUtilisateurFormView(
         utilisateur: utilisateur,
         fetchUtilisateurs: fetchUtilisateurs,

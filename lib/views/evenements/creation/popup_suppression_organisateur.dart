@@ -18,8 +18,9 @@ class PopupSuppressionOrganisateur extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Popup(
-      titre: "Suppression d'un organisateur",
-      sousTitre: "Êtes-vous sûr de vouloir supprimer l'organisateur ?",
+      titre: "Retirer un organisateur de la liste",
+      sousTitre:
+          "Vous vous apprêtez à retirer l'organisateur ${organisateur.toString()} de la liste.",
       body: SuppressionOrganisateurFormView(
         organisateur: organisateur,
         supprimerOrganisateur: supprimerOrganisateur,
@@ -53,7 +54,7 @@ class _SuppressionOrganisateurFormViewState
       champs: const [],
       boutons: [
         BoutonAction(
-          text: "Supprimer l'organisateur",
+          text: "Retirer l'organisateur de la liste",
           fonction: () => widget.supprimerOrganisateur(widget.organisateur),
           themeCouleur: ThemeCouleur.rouge,
         ),

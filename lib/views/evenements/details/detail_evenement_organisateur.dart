@@ -111,7 +111,7 @@ class DetailEvenementOrganisateur extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  "Commande n° ${commande.getNumeroCommande()} - ${commande.utilisateur.prenom} ${commande.utilisateur.nom}",
+                  "Commande n° ${commande.getNumeroCommande()} - ${commande.utilisateur.toString()}",
                   style: FontUtils.getFontApp(
                       fontSize: ResponsiveConstraint.getResponsiveValue(context,
                           POLICE_MOBILE_NORMAL_2, POLICE_DESKTOP_NORMAL_2)),
@@ -315,7 +315,7 @@ class DetailEvenementOrganisateur extends StatelessWidget {
       return Align(
         alignment: Alignment.center,
         child: BoutonAction(
-          text: "Clôturé l'événement",
+          text: "Clôturer l'événement",
           fonction: () {
             showDialog(
               context: context,
