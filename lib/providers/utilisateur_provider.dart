@@ -2,7 +2,6 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:ape_manager_front/forms/reinit_mdp_form.dart';
-import 'package:ape_manager_front/models/commande.dart';
 import 'package:ape_manager_front/models/enfant.dart';
 import 'package:ape_manager_front/models/organisateur.dart';
 import 'package:ape_manager_front/utils/logs.dart';
@@ -272,7 +271,8 @@ class UtilisateurProvider with ChangeNotifier {
     // Authentification KO
     return {
       "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "message": json.decode(response.body)["message"] ??
+          "La suppression du compte a échoué.",
     };
   }
 

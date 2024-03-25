@@ -84,6 +84,7 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
           ChampMdp(
             label: "Votre mot de passe",
             onSavedMethod: (value) => loginForm.password = value!,
+            controlerRobustesse: false,
           ),
         ],
       ],

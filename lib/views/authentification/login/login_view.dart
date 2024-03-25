@@ -17,13 +17,25 @@ import 'biometrique.dart';
 
 class LoginView extends StatelessWidget {
   static String routeURL = '/login';
+  static String routeURLValidationCompte = '/login?success=true';
   final Biometrique _biometrique = Biometrique();
   final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
+  final bool compteValide;
 
-  LoginView({super.key});
+  LoginView({
+    super.key,
+    this.compteValide = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (compteValide == true) {
+      afficherMessageInfo(
+          context: context,
+          message:
+              "Votre compte a bien été activé. Vous pouvez dès à présent vous connecter.");
+    }
+
     return Scaffold(
       backgroundColor: BEIGE_FONCE,
       body: DefaultTextStyle(
