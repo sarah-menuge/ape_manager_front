@@ -24,81 +24,138 @@ class EvenementProvider extends ChangeNotifier {
 
   Evenement? get evenement => _evenement;
 
-  Future<void> fetchEvenements(String token) async {
+  /// Récupération des événements
+  Future<dynamic> fetchEvenements(String token) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/events',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
-    _evenements = (jsonDecode(reponseApi.response!.body) as List)
-        .map((e) => Evenement.fromJson(e))
-        .toList();
+    if (reponseApi.response?.statusCode == 200) {
+      _evenements = (jsonDecode(reponseApi.response!.body) as List)
+          .map((e) => Evenement.fromJson(e))
+          .toList();
 
-    notifyListeners();
+      afficherLogInfo("Récupération des événements terminée.");
+
+      notifyListeners();
+    }
+
+    if (reponseApi.response!.statusCode != 200) {
+      afficherLogError("La récupération des événements a échoué.");
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La récupération des événements a échoué.",
+      };
+    }
   }
 
   /// Récupération d'un événement
-  Future<void> fetchEvenement(String token, int eventId) async {
+  Future<dynamic> fetchEvenement(String token, int eventId) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/events/$eventId',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     http.Response response = reponseApi.response as http.Response;
 
-    if (response.statusCode == 200) {
+    if (reponseApi.response!.statusCode == 200) {
       var body = json.decode(response.body);
       _evenement = Evenement.fromJson(body);
       afficherLogDebug("L'évènement $eventId a bien été récupéré.");
     } else {
       afficherLogError("L'évènement $eventId n'a pas pu être récupéré.");
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "L'évènement $eventId n'a pas pu être récupéré.",
+      };
     }
 
     notifyListeners();
   }
 
-  Future<void> fetchListeArticles(String token, Evenement evenement) async {
+  /// Récupération de la liste des articles d'un évenement
+  Future<dynamic> fetchListeArticles(String token, Evenement evenement) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/events/${evenement.id}/items',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     if (reponseApi.response?.statusCode == 200) {
       evenement.setArticles((jsonDecode(reponseApi.response!.body) as List)
           .map((a) => Article.fromJson(a))
           .toList());
-    }
 
-    notifyListeners();
+      notifyListeners();
+    } else {
+      afficherLogError(
+          "La liste des articles de l'événement ${evenement.id} n'a pas pu être récupéré.");
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La liste des articles de l'événement ${evenement.id} n'a pas pu être récupéré.",
+      };
+    }
   }
 
-  Future<void> fetchListeCommandes(String token, Evenement evenement) async {
+  /// Récupération de la liste des commandes d'un événement
+  Future<dynamic> fetchListeCommandes(String token, Evenement evenement) async {
     ReponseAPI reponseApi = await callAPI(
       uri: '/events/${evenement.id}/orders',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     if (reponseApi.response?.statusCode == 200) {
       evenement.setCommandes((jsonDecode(reponseApi.response!.body) as List)
           .map((c) => Commande.fromJson(c))
           .toList());
+      notifyListeners();
+    } else {
+      afficherLogError(
+          "La liste des commandes de l'événement ${evenement.id} n'a pas pu être récupéré.");
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La liste des commandes de l'événement ${evenement.id} n'a pas pu être récupéré.",
+      };
     }
-
-    notifyListeners();
   }
 
+  /// Permet de créer un événement
   Future<dynamic> creerEvenement(
       String token, CreationModifEvenementForm creationEvenementForm) async {
     ReponseAPI reponseApi = await callAPI(
@@ -115,24 +172,18 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-    if (response.statusCode != 201) {
-      String err;
-      try {
-        err = json.decode(response.body)["message"];
-      } catch (e) {
-        err = "La création de l'événement n'a pas pu aboutir.";
-      }
+    if (reponseApi.response?.statusCode != 201) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "L'événemant n'a pas été crée.",
       };
     }
 
     return {
       "statusCode": 201,
       "message": "L'événement a été créé avec succès.",
-      "id": json.decode(response.body)["id"],
+      "id": json.decode(reponseApi.response!.body)["id"],
     };
   }
 
@@ -145,11 +196,14 @@ class EvenementProvider extends ChangeNotifier {
       token: token,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode == 204) {
+    if (reponseApi.response?.statusCode == 204) {
       return {
         "statusCode": reponseApi.response?.statusCode,
         "message": "La commande a été payée.",
@@ -157,7 +211,8 @@ class EvenementProvider extends ChangeNotifier {
     } else {
       return {
         "statusCode": reponseApi.response?.statusCode,
-        "message": "La commande a été payée.",
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La commande a été payée.",
       };
     }
   }
@@ -171,11 +226,16 @@ class EvenementProvider extends ChangeNotifier {
       token: token,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     http.Response response = reponseApi.response as http.Response;
 
-    if (response.statusCode == 204) {
+    if (reponseApi.response?.statusCode == 204) {
       return {
         "statusCode": reponseApi.response?.statusCode,
         "message": "La commande a été payée.",
@@ -183,7 +243,8 @@ class EvenementProvider extends ChangeNotifier {
     } else {
       return {
         "statusCode": reponseApi.response?.statusCode,
-        "message": json.decode(reponseApi.response!.body)["message"],
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "Un erreur est survenue, la commande n'a pas été payée",
       };
     }
   }
@@ -197,11 +258,14 @@ class EvenementProvider extends ChangeNotifier {
       token: token,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode == 204) {
+    if (reponseApi.response?.statusCode == 204) {
       return {
         "statusCode": reponseApi.response?.statusCode,
         "message": "Les commandes non payées ont été annulées.",
@@ -209,7 +273,8 @@ class EvenementProvider extends ChangeNotifier {
     } else {
       return {
         "statusCode": reponseApi.response?.statusCode,
-        "message": json.decode(reponseApi.response!.body)["message"],
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "Une erreur est survenue, les commandes non payées n'ont pas été annulées.",
       };
     }
   }
@@ -221,11 +286,14 @@ class EvenementProvider extends ChangeNotifier {
       token: token,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode == 204) {
+    if (reponseApi.response?.statusCode == 204) {
       return {
         "statusCode": reponseApi.response?.statusCode,
         "message": "La fin de paiement a été établie.",
@@ -233,7 +301,8 @@ class EvenementProvider extends ChangeNotifier {
     } else {
       return {
         "statusCode": reponseApi.response?.statusCode,
-        "message": json.decode(reponseApi.response!.body)["message"],
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "Une erreur est survenue, la fin des paiements n'a pas été établie.",
       };
     }
   }
@@ -254,15 +323,11 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode != 200) {
-      String err = json.decode(response.body)["message"] ??
-          "La modification de l'événement n'a pas pu aboutir.";
-
+    if (reponseApi.response?.statusCode != 200) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La modification de l'événement n'a pas pu aboutir."
       };
     }
 
@@ -291,15 +356,11 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode != 200) {
-      String err = json.decode(response.body)["message"] ??
-          "L'ajout de l'organisateur à l'événement n'a pas pu aboutir.";
-
+    if (reponseApi.response?.statusCode != 200) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "L'ajout de l'organisateur à l'événement n'a pas pu aboutir.",
       };
     }
 
@@ -328,15 +389,11 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode != 200) {
-      String err = json.decode(response.body)["message"] ??
-          "L'organisateur n'a pas pu être supprimé de l'événement.";
-
+    if (reponseApi.response?.statusCode != 200) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "L'organisateur n'a pas pu être supprimé de l'événement."
       };
     }
 
@@ -366,22 +423,18 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode != 201) {
-      String err = json.decode(response.body)["message"] ??
-          "La création de l'article a échoué.";
-
+    if (reponseApi.response?.statusCode != 201) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La création de l'article a échoué.",
       };
     }
 
     return {
       "statusCode": 201,
       "message": "La création de l'article a bien été effectuée.",
-      "id": json.decode(response.body)["id"],
+      "id": json.decode(reponseApi.response!.body)["id"],
     };
   }
 
@@ -405,15 +458,11 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode != 200) {
-      String err = json.decode(response.body)["message"] ??
-          "La modification de l'article a échoué.";
-
+    if (reponseApi.response?.statusCode != 200) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response!.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La modification de l'article a échoué.",
       };
     }
 
@@ -442,15 +491,11 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode != 204) {
-      String err = json.decode(response.body)["message"] ??
-          "La suppression de l'article a échoué.";
-
+    if (reponseApi.response?.statusCode != 204) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La suppression de l'article a échoué.",
       };
     }
 
@@ -478,15 +523,11 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode != 204) {
-      String err = json.decode(response.body)["message"] ??
-          "La suppression de l'événement a échoué.";
-
+    if (reponseApi.response?.statusCode != 204) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "La suppression de l'événement a échoué.",
       };
     }
 
@@ -514,15 +555,11 @@ class EvenementProvider extends ChangeNotifier {
       };
     }
 
-    http.Response response = reponseApi.response as http.Response;
-
-    if (response.statusCode != 204) {
-      String err = json.decode(response.body)["message"] ??
-          "L'événement n'a pas pu être publié.";
-
+    if (reponseApi.response?.statusCode != 204) {
       return {
-        "statusCode": response.statusCode,
-        "message": err,
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "L'événement n'a pas pu être publié.",
       };
     }
 
@@ -569,12 +606,25 @@ class EvenementProvider extends ChangeNotifier {
       timeoutSec: 6,
     );
 
-    if (!reponseApi.connexionAPIEtablie) return;
+    if (!reponseApi.connexionAPIEtablie) {
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
 
     if (reponseApi.response?.statusCode != 200) {
       return {
         "statusCode": reponseApi.response?.statusCode,
         "message": json.decode(reponseApi.response!.body)["message"],
+      };
+    }
+
+    if (reponseApi.response?.statusCode != 200) {
+      return {
+        "statusCode": reponseApi.response?.statusCode,
+        "message": json.decode(reponseApi.response!.body)["message"] ??
+            "Une erreur est survenue, le Qr Code n'a pas été récupéré",
       };
     }
 

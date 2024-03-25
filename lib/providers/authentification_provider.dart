@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ape_manager_front/forms/login_form.dart';
 import 'package:ape_manager_front/forms/signup_form.dart';
 import 'package:ape_manager_front/models/utilisateur.dart';
@@ -7,9 +9,8 @@ import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/utils/stockage_hardware.dart';
 import 'package:ape_manager_front/views/authentification/login/login_view.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
+
 import 'call_api.dart';
 
 class AuthentificationProvider with ChangeNotifier {
@@ -108,8 +109,7 @@ class AuthentificationProvider with ChangeNotifier {
     }
     // Authentification KO
     isLoggedIn = false;
-    afficherLogInfo(
-        "L'utilisateur [${email}] n'a pas pu s'authentifier.");
+    afficherLogInfo("L'utilisateur [${email}] n'a pas pu s'authentifier.");
     return {
       "statusCode": response.statusCode,
       "message": json.decode(response.body)["message"] ??
@@ -156,7 +156,8 @@ class AuthentificationProvider with ChangeNotifier {
         "La tentative de création d'un compte pour [${signupForm.prenom} ${signupForm.nom}] a échoué.");
     return {
       "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"],
+      "message": json.decode(response.body)["message"] ??
+          "La tentative de connexion a échoué.",
     };
   }
 

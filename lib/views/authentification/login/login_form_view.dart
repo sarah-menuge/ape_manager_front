@@ -134,11 +134,9 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
       final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
       await _stockageIdentifiants.persistIdentifiants(
           loginForm.email, loginForm.password);
-      print(await _stockageIdentifiants.getIdentifiants());
       naviguerVersPage(context, AccueilView.routeURL);
       afficherMessageSucces(
-          context: context,
-          message: "Connexion établie avec succès.");
+          context: context, message: "Connexion établie avec succès.");
       if (utilisateurProvider.estAdmin) {
         utilisateurProvider.setPerspective(Perspective.ADMIN);
       } else if (utilisateurProvider.estOrganisateur) {
@@ -178,8 +176,6 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
     final Biometrique _biometrique = Biometrique();
     final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
     bool isAuthenticated = await _biometrique.isAuthenticated();
-    print("identifiants");
-    print(await _stockageIdentifiants.getIdentifiants());
     if (isAuthenticated) {
       Map<String, String> credentials =
           await _stockageIdentifiants.getIdentifiants();
@@ -193,8 +189,7 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
         if (response["statusCode"] == 200) {
           naviguerVersPage(context, AccueilView.routeURL);
           afficherMessageSucces(
-              context: context,
-              message: "Connexion établie avec succès.");
+              context: context, message: "Connexion établie avec succès.");
           if (utilisateurProvider.estAdmin) {
             utilisateurProvider.setPerspective(Perspective.ADMIN);
           } else if (utilisateurProvider.estOrganisateur) {
