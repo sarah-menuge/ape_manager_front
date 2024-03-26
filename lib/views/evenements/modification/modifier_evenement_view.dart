@@ -16,6 +16,7 @@ import 'package:ape_manager_front/views/evenements/modification/modifier_eveneme
 import 'package:ape_manager_front/views/evenements/modification/popup_ajout_article.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_ajout_lieu_retrait.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_ajout_organisateur.dart';
+import 'package:ape_manager_front/views/evenements/modification/popup_changement_proprietaire.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_modifier_article.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_modifier_lieu_retrait.dart';
 import 'package:ape_manager_front/views/evenements/modification/popup_publier_evenement.dart';
@@ -159,6 +160,14 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                           ),
                         ),
                       ),
+                    if (utilisateurProvider.estAdmin)
+                      BoutonAction(
+                            text: "Changer propriétaire",
+                            fonction: () {
+                              afficherPopupChangerProprietaire();
+                            },
+                            themeCouleur: ThemeCouleur.rouge,
+                      )
                   ],
                 ),
         ),
@@ -258,6 +267,39 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     style: TextStyle(color: NOIR),
                   ),
                 ),
+                //liste des lieux de retrait
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: TexteFlexible(
+                    texte:
+                        "Nombre de lieux de retrait : ${evenementBrouillon!.lieux.length}",
+                    style: TextStyle(color: NOIR),
+                  ),
+                ),
+                const TexteFlexible(
+                  texte: "Liste des lieux de retrait :",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: NOIR,
+                  ),
+                ),
+                const Divider(), // Thin line added here
+                SizedBox(
+                  height: 100,
+                  // Hauteur fixe pour la liste déroulante des lieux de retrait
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: evenementBrouillon!.lieux.length,
+                    itemBuilder: (context, index) {
+                      final lieuRetrait = evenementBrouillon!.lieux[index];
+                      return ListTile(
+                        leading: const Icon(Icons.place),
+                        title: Text(lieuRetrait.lieu),
+                      );
+                    },
+                  ),
+                ),
+                Divider(),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
                   child: TexteFlexible(
@@ -275,7 +317,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const Divider(), // Thin line added here
                 SizedBox(
-                  height: 250,
+                  height: 100,
                   // Hauteur fixe pour la liste déroulante des organisateurs
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -288,6 +330,41 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                         title:
                             Text("${organisateur.prenom} ${organisateur.nom}"),
                         subtitle: Text(organisateur.email),
+                      );
+                    },
+                  ),
+                ),
+                Divider(),
+                //liste des articles
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: TexteFlexible(
+                    texte:
+                        "Nombre d'articles : ${evenementBrouillon!.articles.length}",
+                    style: TextStyle(color: NOIR),
+                  ),
+                ),
+                const TexteFlexible(
+                  texte: "Liste des articles :",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: NOIR,
+                  ),
+                ),
+                const Divider(), // Thin line added here
+                SizedBox(
+                  height: 100,
+                  // Hauteur fixe pour la liste déroulante des articles
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: evenementBrouillon!.articles.length,
+                    itemBuilder: (context, index) {
+                      final article = evenementBrouillon!.articles[index];
+                      return ListTile(
+                        leading: const Icon(Icons.article),
+                        title: Text(article.nom),
+                        subtitle: Text(
+                            "Quantité : ${article.quantiteMax} - Prix : ${article.prix} €"),
                       );
                     },
                   ),
@@ -410,7 +487,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   supprimable: droitEvenement != DroitEvenement.modification
                       ? null
                       : (Organisateur organisateur) {
-                          afficherPopupSupprimerOrganisateur(organisateur);
+                          afficherPopupSupprimerOrganisateur(organisateur,evenementBrouillon!.proprietaire.email == organisateur.email);
                         },
                 ),
                 if (estDesktop(context, 600) &&
@@ -426,6 +503,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                       ),
                     ),
                   ),
+
               ],
             ),
           ),
@@ -673,7 +751,11 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
   }
 
   /// Suppression d'un organisateur
-  void afficherPopupSupprimerOrganisateur(Organisateur organisateur) {
+  void afficherPopupSupprimerOrganisateur(Organisateur organisateur,bool isProprietaire) {
+    if(isProprietaire){
+      afficherMessageInfo(context: context, message: "Vous ne pouvez pas supprimer le propriétaire de l'événement.");
+      return;
+    }
     showDialog(
       context: context,
       builder: (context) => PopupSupprimerOrganisateur(
@@ -949,5 +1031,16 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
     } else {
       afficherMessageErreur(context: context, message: response["message"]);
     }
+  }
+
+  void afficherPopupChangerProprietaire() {
+    showDialog(
+      context: context,
+      builder: (context) => PopupChangementProprietaire(
+        organisateursSelect: modifEvenementForm.organisateursSelected,
+        ajouterOrganisateur: (Organisateur organisateur) =>
+            evenementProvider.evenement?.proprietaire = organisateur,
+      ),
+    );
   }
 }

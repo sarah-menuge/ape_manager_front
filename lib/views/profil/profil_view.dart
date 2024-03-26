@@ -46,6 +46,7 @@ class _ProfilViewState extends State<ProfilView> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldAppli(
+      padding: 30,
       body: getBodyDesktop(context),
       items: [
         BarreNavigationItem(
