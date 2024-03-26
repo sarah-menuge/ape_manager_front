@@ -121,7 +121,6 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
     if (droitEvenement == DroitEvenement.aucun) {
       return PageNonAccessible(nomUrlRetour: EvenementsView.routeURL);
     }
-    print("Build view : ${evenementBrouillon!.titre}");
     return ScaffoldAppli(
       body: getBodyDesktop(context),
       nomUrlRetour: EvenementsView.routeURL,

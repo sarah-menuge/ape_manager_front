@@ -52,7 +52,9 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     );
     evenement = evenementProvider.evenement!;
     await fetchListeArticles();
-    await fetchListeCommandes();
+    if (utilisateurProvider.estOrganisateur || utilisateurProvider.estAdmin) {
+      await fetchListeCommandes();
+    }
     setState(() {
       evenement;
       panier = Panier(idEvenement: evenement!.id, idLieuRetrait: -1);

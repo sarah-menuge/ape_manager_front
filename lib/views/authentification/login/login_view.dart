@@ -5,13 +5,8 @@ import 'package:ape_manager_front/views/authentification/signup/signup_view.dart
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/div_principale.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:universal_platform/universal_platform.dart';
 
-import '../../../providers/authentification_provider.dart';
-import '../../../providers/utilisateur_provider.dart';
 import '../../../utils/afficher_message.dart';
-import '../../accueil/accueil_view.dart';
 import 'StockageIdentifiants.dart';
 import 'biometrique.dart';
 

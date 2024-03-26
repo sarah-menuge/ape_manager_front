@@ -195,7 +195,6 @@ class _RetraitCommandeViewState extends State<RetraitCommandeView> {
       commandesFiltres = commandesFiltres
           .where((commande) => commande.statut == StatutCommande.A_RETIRER)
           .toList();
-      print(commandesFiltres);
     });
   }
 

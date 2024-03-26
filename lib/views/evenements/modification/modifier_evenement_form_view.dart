@@ -37,7 +37,6 @@ class _ModifierEvenementFormViewState
 
   @override
   Formulaire setFormulaire(BuildContext context) {
-    print("Build setFormulaire : ${widget.evenement.titre}");
     return Formulaire(
       formKey: formKey,
       erreur: erreur,

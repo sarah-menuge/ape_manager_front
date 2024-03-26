@@ -3,9 +3,9 @@ import 'package:ape_manager_front/providers/authentification_provider.dart';
 import 'package:ape_manager_front/providers/commande_provider.dart';
 import 'package:ape_manager_front/providers/evenement_provider.dart';
 import 'package:ape_manager_front/providers/utilisateur_provider.dart';
-import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
+import 'package:ape_manager_front/utils/stockage_hardware.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/admin/gestion_utilisateurs/gestion_utilisateurs_view.dart';
 import 'package:ape_manager_front/views/authentification/changer_mdp/modification_mdp_view.dart';
@@ -27,22 +27,24 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
+
+final AuthentificationProvider authentificationProvider =
+    AuthentificationProvider();
+final EvenementProvider evenementProvider = EvenementProvider();
+final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
+final CommandeProvider commandeProvider = CommandeProvider();
 
 void main() async {
   await dotenv.load(fileName: ".env");
   setHashUrlStrategy();
+  // setPathUrlStrategy();
   runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  final AuthentificationProvider authentificationProvider =
-      AuthentificationProvider();
-  final EvenementProvider evenementProvider = EvenementProvider();
-  final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
-  final CommandeProvider commandeProvider = CommandeProvider();
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -159,10 +161,31 @@ final _router = GoRouter(
     ),
   ],
   // Permet d'imposer l'authentification
-  redirect: (BuildContext context, GoRouterState state) {
+  redirect: (BuildContext context, GoRouterState state) async {
     afficherLogDebug(
-      "Tentative d'accès à la page '${state.location.toString()}'.",
-    );
+        "Tentative d'accès à la page '${state.location.toString()}'.");
+
+    if (Provider.of<AuthentificationProvider>(context, listen: false)
+        .isLoggedIn) {
+      afficherLogDebug("Accès autorisé : utilisateur authentifié.");
+      if (state.location == LoginView.routeURL) {
+        return AccueilView.routeURL;
+      }
+      return null;
+    }
+
+    // Tentative de récupération de la session depuis le token stocké en local
+    bool connexionOk = await tentativeConnexionDepuisTokenLocal();
+    afficherLogDebug("Tentative de connexion depuis le token local.");
+    if (connexionOk) {
+      afficherLogDebug("Tentative de connexion depuis le token local : sucès.");
+      if (state.location == LoginView.routeURL) {
+        return AccueilView.routeURL;
+      }
+      return null;
+    } else {
+      afficherLogDebug("Tentative de connexion depuis le token local : échec.");
+    }
 
     if (state.location == SignupView.routeURL ||
         state.location == LoginView.routeURL ||
@@ -170,7 +193,8 @@ final _router = GoRouter(
             .replaceAll("?success=true", "")) ||
         state.location
             .contains(ModificationMdpView.routeURL.replaceAll(":token", ""))) {
-      afficherLogDebug("Accès autorisé.");
+      afficherLogDebug(
+          "Accès autorisé : Page ne nécessitant pas d'être authentifié.");
       return null;
     }
     if (state.location == "/logout") {
@@ -180,15 +204,21 @@ final _router = GoRouter(
           false;
       naviguerVersPage(context, LoginView.routeURL);
     }
-    if (!Provider.of<AuthentificationProvider>(context, listen: false)
-        .isLoggedIn) {
-      afficherLogWarning(
-        "Utilisateur non authentifié : redirection vers le login.",
-      );
-      return LoginView.routeURL;
-    } else {
-      afficherLogDebug("Accès autorisé.");
-      return null;
-    }
+
+    afficherLogWarning("Utilisateur non authentifié.");
+
+    afficherLogWarning("Redirection vers le login");
+    return LoginView.routeURL;
   },
 );
+
+Future<bool> tentativeConnexionDepuisTokenLocal() async {
+  afficherLogDebug("Tentative connexion depuis le token local");
+  String? token = await getValueInHardwareMemory(key: "token");
+  afficherLogDebug("token existant : ${token != null}");
+  if (token == null) return false;
+  final response = await authentificationProvider.recupererConnexionDepuisToken(
+      token, utilisateurProvider);
+  if (response["statusCode"] == 200) return true;
+  return false;
+}

@@ -59,6 +59,7 @@ class AuthentificationProvider with ChangeNotifier {
     isLoggedIn = false;
     afficherLogInfo(
         "L'utilisateur [${loginForm.email}] n'a pas pu s'authentifier.");
+    unsetValueInHardwareMemory(key: "token");
     return {
       "statusCode": response.statusCode,
       "message": json.decode(response.body)["message"] ??
@@ -109,11 +110,59 @@ class AuthentificationProvider with ChangeNotifier {
     }
     // Authentification KO
     isLoggedIn = false;
+    unsetValueInHardwareMemory(key: "token");
     afficherLogInfo("L'utilisateur [${email}] n'a pas pu s'authentifier.");
     return {
       "statusCode": response.statusCode,
       "message": json.decode(response.body)["message"] ??
           "L'utilisateur n'a pas pu s'authentifier.",
+    };
+  }
+
+  // Permet d'interroger l'API pour s'authentifier
+  Future<dynamic> recupererConnexionDepuisToken(
+    String token,
+    UtilisateurProvider utilisateurProvider,
+  ) async {
+    // Appel à l'API pour tenter de s'authentifier
+    isLoading = true;
+    ReponseAPI reponseApi = await callAPI(
+      uri: '/auth/refresh',
+      typeRequeteHttp: TypeRequeteHttp.GET,
+      token: token,
+    );
+    isLoading = false;
+
+    // Cas où la connexion avec l'API n'a pas pu être établie
+    if (!reponseApi.connexionAPIEtablie) {
+      isLoggedIn = false;
+      return {
+        "statusCode": ReponseAPI.STATUS_CODE_API_KO,
+        "message": ReponseAPI.MESSAGE_ERREUR_API_KO,
+      };
+    }
+
+    http.Response response = reponseApi.response as http.Response;
+
+    // Authentification OK
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      afficherLogInfo(
+          "Succès : Appel au provider pour récupération du compte à partir du token.");
+      utilisateurProvider.updateUser(Utilisateur.fromJson(body));
+      utilisateurProvider.utilisateur!.token = token;
+      isLoggedIn = true;
+      return {
+        "statusCode": 200,
+        "message": "Récupération du compte : OK",
+      };
+    }
+    // Authentification KO
+    isLoggedIn = false;
+    unsetValueInHardwareMemory(key: "token");
+    return {
+      "statusCode": response.statusCode,
+      "message": "Récupération du compte : KO"
     };
   }
 
@@ -165,6 +214,7 @@ class AuthentificationProvider with ChangeNotifier {
   void logout(context, UtilisateurProvider utilisateurProvider) {
     utilisateurProvider.updateUser(null);
     isLoggedIn = false;
+    unsetValueInHardwareMemory(key: "token");
     naviguerVersPage(context, LoginView.routeURL);
   }
 }
