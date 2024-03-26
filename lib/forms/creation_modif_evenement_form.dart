@@ -10,6 +10,8 @@ class CreationModifEvenementForm {
       .where((o) => !organisateursSelectionnes.contains(o))
       .toList();
 
+  List<Organisateur> get organisateursSelected => organisateursSelectionnes;
+
   String? estValide() {
     if (titreEvenement == "") return "Le titre de l'événement est obligatoire";
     return null;

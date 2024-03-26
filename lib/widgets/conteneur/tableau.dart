@@ -116,100 +116,100 @@ class _TableauState extends State<Tableau> {
           constraints: BoxConstraints(maxHeight: widget.tailleTableau - 50),
           child: widget.objets.isEmpty
               ? Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          "Aucune donnée à afficher",
-                          textAlign: TextAlign.center,
-                          style: FontUtils.getFontApp(
-                              fontSize: ResponsiveConstraint.getResponsiveValue(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                    "Aucune donnée à afficher",
+                    textAlign: TextAlign.center,
+                    style: FontUtils.getFontApp(
+                        fontSize: ResponsiveConstraint.getResponsiveValue(
+                            context,
+                            POLICE_MOBILE_NORMAL_2,
+                            POLICE_DESKTOP_NORMAL_2)),
+                  ),
+                ),
+              ),
+            ],
+          )
+              : ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.objets.length,
+            itemBuilder: (context, index) {
+              final item = widget.objets[index];
+              return Container(
+                color: index.isOdd ? Colors.grey[200] : null,
+                child: ListTile(
+                  onLongPress: () {
+                    if (estMobile(context, 600) &&
+                        (widget.editable != null ||
+                            widget.supprimable != null ||
+                            widget.consultable != null))
+                      afficherPopup(context, item);
+                  },
+                  title: Row(
+                    children: [
+                      for (var nom_colonne in _intitulesHeader)
+                        item.getValeur(nom_colonne).runtimeType == bool
+                            ? Expanded(
+                          child: Checkbox(
+                            tristate: true,
+                            value: item.getValeur(nom_colonne),
+                            onChanged: null,
+                          ),
+                        )
+                            : Expanded(
+                          child: Text(
+                            item
+                                .getValeur(nom_colonne)
+                                .toString() ==
+                                "null"
+                                ? '-'
+                                : item
+                                .getValeur(nom_colonne)
+                                .toString(),
+                            textAlign: TextAlign.center,
+                            style: FontUtils.getFontApp(
+                              fontSize: ResponsiveConstraint
+                                  .getResponsiveValue(
                                   context,
                                   POLICE_MOBILE_NORMAL_2,
-                                  POLICE_DESKTOP_NORMAL_2)),
+                                  POLICE_DESKTOP_NORMAL_2),
+                              fontWeight: FONT_WEIGHT_NORMAL,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: widget.objets.length,
-                  itemBuilder: (context, index) {
-                    final item = widget.objets[index];
-                    return Container(
-                      color: index.isOdd ? Colors.grey[200] : null,
-                      child: ListTile(
-                        onLongPress: () {
-                          if (estMobile(context, 600) &&
-                              (widget.editable != null ||
-                                  widget.supprimable != null ||
-                                  widget.consultable != null))
-                            afficherPopup(context, item);
-                        },
-                        title: Row(
-                          children: [
-                            for (var nom_colonne in _intitulesHeader)
-                              item.getValeur(nom_colonne).runtimeType == bool
-                                  ? Expanded(
-                                      child: Checkbox(
-                                        tristate: true,
-                                        value: item.getValeur(nom_colonne),
-                                        onChanged: null,
-                                      ),
-                                    )
-                                  : Expanded(
-                                      child: Text(
-                                        item
-                                                    .getValeur(nom_colonne)
-                                                    .toString() ==
-                                                "null"
-                                            ? '-'
-                                            : item
-                                                .getValeur(nom_colonne)
-                                                .toString(),
-                                        textAlign: TextAlign.center,
-                                        style: FontUtils.getFontApp(
-                                          fontSize: ResponsiveConstraint
-                                              .getResponsiveValue(
-                                                  context,
-                                                  POLICE_MOBILE_NORMAL_2,
-                                                  POLICE_DESKTOP_NORMAL_2),
-                                          fontWeight: FONT_WEIGHT_NORMAL,
-                                        ),
-                                      ),
-                                    ),
-                            if (widget.consultable != null &&
-                                estDesktop(context, 600))
-                              BoutonIcon(
-                                icon: const Icon(Icons.search),
-                                onPressed: () {
-                                  widget.consultable!(item);
-                                },
-                              ),
-                            if (widget.editable != null &&
-                                estDesktop(context, 600))
-                              BoutonIcon(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {
-                                  widget.editable!(item);
-                                },
-                              ),
-                            if (widget.supprimable != null &&
-                                estDesktop(context, 600))
-                              BoutonIcon(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  widget.supprimable!(item);
-                                },
-                              ),
-                          ],
+                      if (widget.consultable != null &&
+                          estDesktop(context, 600))
+                        BoutonIcon(
+                          icon: const Icon(Icons.search),
+                          onPressed: () {
+                            widget.consultable!(item);
+                          },
                         ),
-                      ),
-                    );
-                  },
+                      if (widget.editable != null &&
+                          estDesktop(context, 600))
+                        BoutonIcon(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            widget.editable!(item);
+                          },
+                        ),
+                      if (widget.supprimable != null &&
+                          estDesktop(context, 600))
+                        BoutonIcon(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            widget.supprimable!(item);
+                          },
+                        ),
+                    ],
+                  ),
                 ),
+              );
+            },
+          ),
         ),
         if (estMobile(context, 600))
           Padding(

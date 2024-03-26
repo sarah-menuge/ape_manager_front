@@ -18,12 +18,14 @@ class ScaffoldAppli extends StatefulWidget {
   final Widget body;
   final List<BarreNavigationItem>? items;
   final String? nomUrlRetour;
+  final double? padding;
 
   const ScaffoldAppli({
     super.key,
     required this.body,
     this.items,
     this.nomUrlRetour,
+    this.padding,
   });
 
   @override
@@ -91,6 +93,7 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
   }
 
   Widget getOnglet() {
+    double padding = widget.padding ?? 5;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -99,7 +102,7 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
           Align(
             alignment: Alignment.topCenter,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: EdgeInsets.symmetric(vertical: padding),
               child: Text(
                 widget.items![_selectedIndex].titre,
                 textAlign: TextAlign.center,
@@ -110,7 +113,7 @@ class _ScaffoldAppliState extends State<ScaffoldAppli> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 10),
             child: Center(
               child: widget.items![_selectedIndex].onglet,
             ),
