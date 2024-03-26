@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 String URL_API = "${dotenv.env['URL_API']}";
 String URL_FRONT = "${dotenv.env['URL_FRONT']}";
 String PROD = "${dotenv.env['PROD']}";
+String NGROK = "${dotenv.env['NGROK']}";
 String AUTO_LOGIN_TEST = "${dotenv.env['AUTO_LOGIN_TEST']}";
 String EMAIL_AUTO_LOGIN_TEST = "${dotenv.env['EMAIL_AUTO_LOGIN_TEST']}";
 String PASSWORD_AUTO_LOGIN_TEST = "${dotenv.env['PASSWORD_AUTO_LOGIN_TEST']}";

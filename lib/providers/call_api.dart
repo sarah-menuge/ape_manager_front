@@ -126,7 +126,10 @@ Future<ReponseAPI> _tentativeAppelAPI({
   if (token != null) {
     HEADERS.addAll({HttpHeaders.authorizationHeader: 'Bearer $token'});
   }
-
+  if (NGROK == "true") {
+    HEADERS.addAll({"ngrok-skip-browser-warning": '69420'});
+  }
+  
   // Appel à l'API
   try {
     if (jsonBody != null) {
