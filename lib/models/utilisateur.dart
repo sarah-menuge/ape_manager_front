@@ -41,7 +41,7 @@ class Utilisateur extends DonneeTableau {
     nom = json["surname"];
     prenom = json["firstname"];
     email = json["email"];
-    
+
     try {
       est_membre = json["member"];
     } catch (e) {
@@ -82,7 +82,7 @@ class Utilisateur extends DonneeTableau {
       "email": email,
       "surname": nom,
       "firstname": prenom,
-      "phone": telephone,
+      "phone": telephone.isNotEmpty ? telephone : null,
     };
   }
 

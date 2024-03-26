@@ -147,7 +147,7 @@ class _NotificationPopupState extends State<NotificationPopup> {
           message: utilisateurNotifie == true
               ? "Vous avez bien été ajouté à la liste de diffusion de l'événement."
               : "Vous avez bien été retiré de la liste de diffusion de l'événement.");
-    } else {
+    } else if (mounted) {
       afficherMessageErreur(context: context, message: response["message"]);
     }
   }

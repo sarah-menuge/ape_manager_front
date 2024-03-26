@@ -85,7 +85,9 @@ class _TableauState extends State<Tableau> {
                 padding: const EdgeInsets.only(right: 10),
                 child: Row(
                   children: [
-                    if (widget.consultable != null && estDesktop(context, 600))
+                    if (widget.consultable != null &&
+                        estDesktop(context, 600) &&
+                        widget.objets.isNotEmpty)
                       const Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: Icon(
@@ -93,12 +95,16 @@ class _TableauState extends State<Tableau> {
                           color: Colors.transparent,
                         ),
                       ),
-                    if (widget.editable != null && estDesktop(context, 600))
+                    if (widget.editable != null &&
+                        estDesktop(context, 600) &&
+                        widget.objets.isNotEmpty)
                       const Icon(
                         Icons.edit,
                         color: Colors.transparent,
                       ),
-                    if (widget.supprimable != null && estDesktop(context, 600))
+                    if (widget.supprimable != null &&
+                        estDesktop(context, 600) &&
+                        widget.objets.isNotEmpty)
                       const Padding(
                         padding: EdgeInsets.only(left: 20),
                         child: Icon(

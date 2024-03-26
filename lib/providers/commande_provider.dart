@@ -58,11 +58,14 @@ class CommandeProvider with ChangeNotifier {
     }
 
     if (reponseApi.response!.statusCode != 200) {
-      afficherLogError("La récupération des commandes a échoué.");
+      reponseApi.response!.statusCode == 204
+          ? afficherLogInfo("Aucune commande n'est associée à l'utilisateur.")
+          : afficherLogError("La récupération des commandes a échoué.");
       return {
         "statusCode": reponseApi.response?.statusCode,
-        "message": json.decode(reponseApi.response!.body)["message"] ??
-            "La récupération des commandes a échoué.",
+        "message": reponseApi.response!.statusCode == 204
+            ? "Aucune commande n'a été trouvée."
+            : "La récupération des commandes a échoué.",
       };
     }
 
