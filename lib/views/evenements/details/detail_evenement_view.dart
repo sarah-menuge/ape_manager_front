@@ -77,6 +77,38 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    if (evenement != null &&
+        evenement!.statut != StatutEvenement.EN_COURS &&
+        utilisateurProvider.perspective == Perspective.PARENT) {
+      naviguerVersPage(context, EvenementsView.routeURL);
+      return ScaffoldAppli(
+        nomUrlRetour: EvenementsView.routeURL,
+        body: const SizedBox(),
+      );
+    }
+    return ScaffoldAppli(
+      nomUrlRetour: EvenementsView.routeURL,
+      body: evenement == null
+          ? const SizedBox()
+          : DetailEvenementWidget(
+              commandeProvider: commandeProvider,
+              evenementProvider: evenementProvider,
+              utilisateurProvider: utilisateurProvider,
+              listingCommande: getListingCommande(),
+              evenement: evenement!,
+              listeView: getInfosArticles(),
+              panier: panier,
+              validerPaiementFonction: validerPaiement,
+              validerRetraitFonction: validerRetrait,
+              evenementCloturerFonction: passerEvenementACloturer,
+              evenementRetirerFonction: passerEvenementARetirer,
+              forcerFinPaiement: forcerFinPaiement,
+            ),
+    );
+  }
+
   /// Valider le paiement d'une commande
   Future<void> validerPaiement(int idCommande) async {
     final response = await commandeProvider.passerCommandePayee(
@@ -219,29 +251,6 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
       afficherMessageSucces(
           context: context, message: "L'événement a été clôturé", duree: 5);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ScaffoldAppli(
-      nomUrlRetour: EvenementsView.routeURL,
-      body: evenement == null
-          ? const SizedBox()
-          : DetailEvenementWidget(
-              commandeProvider: commandeProvider,
-              evenementProvider: evenementProvider,
-              utilisateurProvider: utilisateurProvider,
-              listingCommande: getListingCommande(),
-              evenement: evenement!,
-              listeView: getInfosArticles(),
-              panier: panier,
-              validerPaiementFonction: validerPaiement,
-              validerRetraitFonction: validerRetrait,
-              evenementCloturerFonction: passerEvenementACloturer,
-              evenementRetirerFonction: passerEvenementARetirer,
-              forcerFinPaiement: forcerFinPaiement,
-            ),
-    );
   }
 
   Widget getInfosArticles() {

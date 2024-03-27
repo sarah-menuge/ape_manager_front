@@ -51,7 +51,11 @@ class _EvenementsViewState extends State<EvenementsView> {
     setState(() {
       evenementsBrouillon = evenementProvider.getEvenementsBrouillon();
       evenementsAVenir = evenementProvider.getEvenementsAVenir();
-      evenementsEnCours = evenementProvider.getEvenementsEnCours();
+      if (utilisateurProvider.perspective == Perspective.PARENT) {
+        evenementsEnCours = evenementProvider.getEvenementsEnCoursParent();
+      } else {
+        evenementsEnCours = evenementProvider.getEvenementsEnCoursOrga();
+      }
       evenementsCloture = evenementProvider.getEvenementsCloture();
     });
   }
@@ -71,7 +75,8 @@ class _EvenementsViewState extends State<EvenementsView> {
                         context, 20.0, 0.0)),
                 child: getVueParents(evenementsEnCours, evenementsAVenir),
               ),
-            if (utilisateurProvider.perspective == Perspective.ORGANIZER)
+            if (utilisateurProvider.perspective == Perspective.ORGANIZER ||
+                utilisateurProvider.perspective == Perspective.ADMIN)
               Padding(
                 padding: EdgeInsets.only(
                     bottom: ResponsiveConstraint.getResponsiveValue(

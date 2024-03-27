@@ -582,12 +582,18 @@ class EvenementProvider extends ChangeNotifier {
         .toList();
   }
 
-  List<Evenement> getEvenementsEnCours() {
+  List<Evenement> getEvenementsEnCoursOrga() {
     return _evenements
         .where((evenement) =>
             evenement.statut == StatutEvenement.EN_COURS ||
             evenement.statut == StatutEvenement.TRAITEMENT ||
             evenement.statut == StatutEvenement.RETRAIT)
+        .toList();
+  }
+
+  List<Evenement> getEvenementsEnCoursParent() {
+    return _evenements
+        .where((evenement) => evenement.statut == StatutEvenement.EN_COURS)
         .toList();
   }
 
