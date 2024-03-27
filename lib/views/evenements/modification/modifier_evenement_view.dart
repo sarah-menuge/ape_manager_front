@@ -444,6 +444,14 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
               textAlign: TextAlign.center,
             ),
           ),
+          if (evenementBrouillon?.statut == StatutEvenement.A_VENIR)
+            Text(
+              "L'événement débutera le ${evenementBrouillon!.getDateDebutString()} à 00h00.",
+              style: FontUtils.getFontApp(
+                fontSize: 18,
+                color: VERT_1,
+              ),
+            ),
           ModifierEvenementFormView(
             evenement: evenementBrouillon!,
             annulerModificationsInfosGenerales: () =>
