@@ -603,7 +603,6 @@ class EvenementProvider extends ChangeNotifier {
       uri: '/events/qrcode/$idEvenement',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
-      timeoutSec: 6,
     );
 
     if (!reponseApi.connexionAPIEtablie) {

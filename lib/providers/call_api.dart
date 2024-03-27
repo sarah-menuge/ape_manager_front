@@ -33,7 +33,7 @@ Future<ReponseAPI> callAPI({
   required String uri,
   required TypeRequeteHttp typeRequeteHttp,
   Object? jsonBody,
-  int timeoutSec = 3,
+  int timeoutSec = 20,
   String? token,
 }) async {
   // Récupération des informations relatives au type d'appareil
@@ -129,7 +129,7 @@ Future<ReponseAPI> _tentativeAppelAPI({
   if (NGROK == "true") {
     HEADERS.addAll({"ngrok-skip-browser-warning": '69420'});
   }
-  
+
   // Appel à l'API
   try {
     if (jsonBody != null) {

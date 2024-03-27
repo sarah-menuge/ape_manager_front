@@ -38,7 +38,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/users/orders',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
-      timeoutSec: 6,
     );
 
     commandesRecuperees = true;
@@ -80,7 +79,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/orders',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
-      timeoutSec: 6,
     );
 
     commandesRecuperees = true;
@@ -117,7 +115,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/users/orders/$idCommande',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
-      timeoutSec: 5,
     );
 
     if (!reponseApi.connexionAPIEtablie) {
@@ -184,7 +181,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/orders/$idCommande/cancel',
       typeRequeteHttp: TypeRequeteHttp.PATCH,
       token: token,
-      timeoutSec: 6,
     );
 
     if (!reponseApi.connexionAPIEtablie) {
@@ -213,7 +209,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/orders/$idCommande/pay',
       typeRequeteHttp: TypeRequeteHttp.PATCH,
       token: token,
-      timeoutSec: 6,
     );
 
     if (!reponseApi.connexionAPIEtablie) {
@@ -242,7 +237,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/orders/$idEvenement/collect',
       typeRequeteHttp: TypeRequeteHttp.PATCH,
       token: token,
-      timeoutSec: 6,
     );
 
     if (!reponseApi.connexionAPIEtablie) {
@@ -272,7 +266,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/orders/$idCommande/collected',
       typeRequeteHttp: TypeRequeteHttp.PATCH,
       token: token,
-      timeoutSec: 6,
     );
 
     if (!reponseApi.connexionAPIEtablie) {
@@ -303,7 +296,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/orders/$idCommande/close',
       typeRequeteHttp: TypeRequeteHttp.PATCH,
       token: token,
-      timeoutSec: 6,
     );
 
     if (!reponseApi.connexionAPIEtablie) {
@@ -356,7 +348,6 @@ class CommandeProvider with ChangeNotifier {
       uri: '/orders/qrcode/$idCommande',
       typeRequeteHttp: TypeRequeteHttp.GET,
       token: token,
-      timeoutSec: 6,
     );
 
     if (!reponseApi.connexionAPIEtablie) {
