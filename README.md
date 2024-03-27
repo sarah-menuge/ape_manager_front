@@ -51,7 +51,7 @@ au serveur local en utilisant localhost ou 10.0.2.2.
 
 1. S'assurer que le téléphone et la machine hébergeant le serveur sont sur le même réseau local.
 
-2. Lancer l'API en indiquant d'ouvrir les ports sur le réseau local :
+2. Lancer l'API en d'ouvrir les ports sur le réseau local :
    `./mvnw quarkus:dev -Dquarkus.http.host=0.0.0.0`
 
 3. S'il n'existe pas, créer un fichier .env à l'image du fichier .env_template

@@ -11,10 +11,10 @@ class MessageErreur extends StatelessWidget {
       return const SizedBox.shrink();
     } else {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10),
+        padding: const EdgeInsets.only(bottom: 25, left: 10, right: 10),
         child: Text(
           erreur!,
-          textAlign: TextAlign.start,
+          textAlign: TextAlign.center,
           style: TextStyle(color: Colors.red[900]),
         ),
       );

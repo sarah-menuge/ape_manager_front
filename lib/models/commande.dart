@@ -184,6 +184,6 @@ class Commande extends DonneeTableau {
 
   @override
   String toString() {
-    return "Commande $id : $libelleEvenement";
+    return "Commande n°${getNumeroCommande()} : $libelleEvenement";
   }
 }
