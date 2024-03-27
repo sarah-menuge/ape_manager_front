@@ -159,6 +159,13 @@ class AuthentificationProvider with ChangeNotifier {
           "Succès : Appel au provider pour récupération du compte à partir du token.");
       utilisateurProvider.updateUser(Utilisateur.fromJson(body));
       utilisateurProvider.utilisateur!.token = token;
+      if (utilisateurProvider.estAdmin) {
+        utilisateurProvider.setPerspective(Perspective.ADMIN);
+      } else if (utilisateurProvider.estOrganisateur) {
+        utilisateurProvider.setPerspective(Perspective.ORGANIZER);
+      } else {
+        utilisateurProvider.setPerspective(Perspective.PARENT);
+      }
       isLoggedIn = true;
       return {
         "statusCode": 200,
