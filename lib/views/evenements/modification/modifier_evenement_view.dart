@@ -159,14 +159,14 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                           ),
                         ),
                       ),
-                    if (utilisateurProvider.estAdmin)
+                    /*if (utilisateurProvider.estAdmin)
                       BoutonAction(
-                            text: "Changer propriétaire",
-                            fonction: () {
-                              afficherPopupChangerProprietaire();
-                            },
-                            themeCouleur: ThemeCouleur.rouge,
-                      )
+                        text: "Changer propriétaire",
+                        fonction: () {
+                          afficherPopupChangerProprietaire();
+                        },
+                        themeCouleur: ThemeCouleur.rouge,
+                      )*/
                   ],
                 ),
         ),
@@ -468,7 +468,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(bottom: 20),
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: TexteFlexible(
                     texte: "Liste des organisateurs",
                     style: FontUtils.getFontApp(
@@ -486,7 +486,10 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                   supprimable: droitEvenement != DroitEvenement.modification
                       ? null
                       : (Organisateur organisateur) {
-                          afficherPopupSupprimerOrganisateur(organisateur,evenementBrouillon!.proprietaire.email == organisateur.email);
+                          afficherPopupSupprimerOrganisateur(
+                              organisateur,
+                              evenementBrouillon!.proprietaire.email ==
+                                  organisateur.email);
                         },
                 ),
                 if (estDesktop(context, 600) &&
@@ -502,7 +505,14 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                       ),
                     ),
                   ),
-
+                /*if (estDesktop(context, 600) && utilisateurProvider.estAdmin)
+                  BoutonAction(
+                    text: "Changer propriétaire",
+                    fonction: () {
+                      afficherPopupChangerProprietaire();
+                    },
+                    themeCouleur: ThemeCouleur.rouge,
+                  )*/
               ],
             ),
           ),
@@ -750,9 +760,13 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
   }
 
   /// Suppression d'un organisateur
-  void afficherPopupSupprimerOrganisateur(Organisateur organisateur,bool isProprietaire) {
-    if(isProprietaire){
-      afficherMessageInfo(context: context, message: "Vous ne pouvez pas supprimer le propriétaire de l'événement.");
+  void afficherPopupSupprimerOrganisateur(
+      Organisateur organisateur, bool isProprietaire) {
+    if (isProprietaire) {
+      afficherMessageInfo(
+          context: context,
+          message:
+              "Vous ne pouvez pas supprimer le propriétaire de l'événement.");
       return;
     }
     showDialog(
