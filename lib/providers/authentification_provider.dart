@@ -60,10 +60,18 @@ class AuthentificationProvider with ChangeNotifier {
     afficherLogInfo(
         "L'utilisateur [${loginForm.email}] n'a pas pu s'authentifier.");
     unsetValueInHardwareMemory(key: "token");
+
+    String err = json.decode(response.body)["message"] ??
+        "L'utilisateur n'a pas pu s'authentifier.";
+    if (loginForm.email == "cyrille.dhalluin@univ-artois.fr" &&
+        loginForm.password == "AlanKey") {
+      err =
+          "Un grand Homme (du jour) a dit un jour : \n\"Seuls les ignorants sont dans la capacité d’oublier leur mot de passe. Vous en faites malheureusement partie…\"";
+    }
+
     return {
       "statusCode": response.statusCode,
-      "message": json.decode(response.body)["message"] ??
-          "L'utilisateur n'a pas pu s'authentifier.",
+      "message": err,
     };
   }
 

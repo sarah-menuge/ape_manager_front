@@ -259,20 +259,21 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const Divider(),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: TexteFlexible(
                     texte:
                         "Titre de l'événement : ${evenementBrouillon!.titre}",
-                    style: TextStyle(color: NOIR),
+                    style: const TextStyle(color: NOIR),
                   ),
                 ),
+                const Divider(),
                 //liste des lieux de retrait
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: TexteFlexible(
                     texte:
                         "Nombre de lieux de retrait : ${evenementBrouillon!.lieux.length}",
-                    style: TextStyle(color: NOIR),
+                    style: const TextStyle(color: NOIR),
                   ),
                 ),
                 const TexteFlexible(
@@ -282,7 +283,6 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     color: NOIR,
                   ),
                 ),
-                const Divider(), // Thin line added here
                 SizedBox(
                   height: evenementBrouillon!.lieux.length > 0 ? 100 : 0,
                   // Hauteur fixe pour la liste déroulante des lieux de retrait
@@ -298,13 +298,13 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     },
                   ),
                 ),
-                Divider(),
+                const Divider(),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: TexteFlexible(
                     texte:
                         "Nombre d'organisateurs : ${evenementBrouillon!.organisateurs.length}",
-                    style: TextStyle(color: NOIR),
+                    style: const TextStyle(color: NOIR),
                   ),
                 ),
                 const TexteFlexible(
@@ -314,9 +314,9 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     color: NOIR,
                   ),
                 ),
-                const Divider(), // Thin line added here
                 SizedBox(
-                  height: evenementBrouillon!.organisateurs.length > 0 ? 100 : 0,
+                  height:
+                      evenementBrouillon!.organisateurs.length > 0 ? 100 : 0,
                   // Hauteur fixe pour la liste déroulante des organisateurs
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -333,14 +333,14 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     },
                   ),
                 ),
-                Divider(),
+                const Divider(),
                 //liste des articles
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   child: TexteFlexible(
                     texte:
                         "Nombre d'articles : ${evenementBrouillon!.articles.length}",
-                    style: TextStyle(color: NOIR),
+                    style: const TextStyle(color: NOIR),
                   ),
                 ),
                 const TexteFlexible(
@@ -350,7 +350,6 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     color: NOIR,
                   ),
                 ),
-                const Divider(), // Thin line added here
                 SizedBox(
                   height: evenementBrouillon!.articles.length > 0 ? 100 : 0,
                   // Hauteur fixe pour la liste déroulante des articles
@@ -368,6 +367,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                     },
                   ),
                 ),
+                const Divider(),
               ],
             ),
           ),
