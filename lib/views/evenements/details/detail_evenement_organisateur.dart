@@ -349,7 +349,7 @@ class DetailEvenementOrganisateur extends StatelessWidget {
     ExportExcel excel = ExportExcel();
     excel.ajouterFeuille("Feuille 1", true);
     excel.ajouterValeurs("Feuille 1",
-        ["Nom de l'article", "Quantité total à commander"], listingCommandes);
+        ["Nom de l'article", "Quantité totale à commander"], listingCommandes);
     excel.enregistrerExcel(context, "Listing_des_commandes_$libelleEvenement");
   }
 }
