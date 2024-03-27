@@ -367,12 +367,14 @@ class _DetailEvenementViewState extends State<DetailEvenementView> {
   Map<String, int> getListingCommande() {
     Map<String, int> listing = {};
     for (Commande commande in evenement!.commandes) {
-      for (LigneCommande ligneCommande in commande.listeLigneCommandes) {
-        if (listing[ligneCommande.article.nom] == null) {
-          listing[ligneCommande.article.nom] = ligneCommande.quantite;
-        } else {
-          listing[ligneCommande.article.nom] =
-              (listing[ligneCommande.article.nom]! + ligneCommande.quantite);
+      if (commande.statut == StatutCommande.VALIDEE) {
+        for (LigneCommande ligneCommande in commande.listeLigneCommandes) {
+          if (listing[ligneCommande.article.nom] == null) {
+            listing[ligneCommande.article.nom] = ligneCommande.quantite;
+          } else {
+            listing[ligneCommande.article.nom] =
+                (listing[ligneCommande.article.nom]! + ligneCommande.quantite);
+          }
         }
       }
     }
