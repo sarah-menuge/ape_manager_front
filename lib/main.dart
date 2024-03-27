@@ -96,7 +96,11 @@ final _router = GoRouter(
       path: LoginView.routeURL,
       builder: (context, state) {
         bool compteValide = state.queryParameters['success'] == 'true';
-        return LoginView(compteValide: compteValide);
+        String? lienRedirection = state.queryParameters['next'];
+        return LoginView(
+          compteValide: compteValide,
+          lienRedirection: lienRedirection,
+        );
       },
     ),
     GoRoute(
@@ -206,9 +210,8 @@ final _router = GoRouter(
     }
 
     afficherLogWarning("Utilisateur non authentifié.");
-
     afficherLogWarning("Redirection vers le login");
-    return LoginView.routeURL;
+    return "${LoginView.routeURL}?next=${state.location}";
   },
 );
 

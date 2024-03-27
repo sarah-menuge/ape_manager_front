@@ -5,11 +5,15 @@ import 'package:ape_manager_front/providers/utilisateur_provider.dart';
 import 'package:ape_manager_front/responsive/responsive_layout.dart';
 import 'package:ape_manager_front/utils/afficher_message.dart';
 import 'package:ape_manager_front/utils/font_utils.dart';
+import 'package:ape_manager_front/utils/logs.dart';
 import 'package:ape_manager_front/utils/routage.dart';
 import 'package:ape_manager_front/utils/stockage_hardware.dart';
 import 'package:ape_manager_front/views/accueil/accueil_view.dart';
 import 'package:ape_manager_front/views/authentification/login/demande_reinit_form_view.dart';
 import 'package:ape_manager_front/views/authentification/signup/signup_view.dart';
+import 'package:ape_manager_front/views/commandes/details/detail_commande_view.dart';
+import 'package:ape_manager_front/views/commandes/liste/mes_commandes_view.dart';
+import 'package:ape_manager_front/views/evenements/details/detail_evenement_view.dart';
 import 'package:ape_manager_front/widgets/button_appli.dart';
 import 'package:ape_manager_front/widgets/conteneur/popup.dart';
 import 'package:ape_manager_front/widgets/formulaire/champ_email.dart';
@@ -24,7 +28,9 @@ import 'StockageIdentifiants.dart';
 import 'biometrique.dart';
 
 class LoginFormView extends StatefulWidget {
-  const LoginFormView({super.key});
+  final String? lienRedirection;
+
+  const LoginFormView({super.key, this.lienRedirection});
 
   @override
   State<LoginFormView> createState() => _LoginFormViewState();
@@ -134,16 +140,35 @@ class _LoginFormViewState extends FormulaireState<LoginFormView> {
     if (response["statusCode"] == 200 && mounted) {
       final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
       await _stockageIdentifiants.persistIdentifiants(
-          loginForm.email, loginForm.password);
-      naviguerVersPage(context, AccueilView.routeURL);
-      afficherMessageSucces(
-          context: context, message: "Connexion établie avec succès.");
+        loginForm.email,
+        loginForm.password,
+      );
+      // Gestion de la perspective par défaut
       if (utilisateurProvider.estAdmin) {
         utilisateurProvider.setPerspective(Perspective.ADMIN);
       } else if (utilisateurProvider.estOrganisateur) {
         utilisateurProvider.setPerspective(Perspective.ORGANIZER);
       } else {
         utilisateurProvider.setPerspective(Perspective.PARENT);
+      }
+
+      afficherMessageSucces(
+          context: context, message: "Connexion établie avec succès.");
+
+      // Cas particulier de gestion de la perspective quand on veut aller sur partage évent
+      if (widget.lienRedirection != null &&
+          widget.lienRedirection!.isNotEmpty) {
+        afficherLogInfo("Redirection vers '${widget.lienRedirection}'");
+
+        // Redirection vers l'URL initialement interrogé
+        if (DetailEvenementView.routeURL.contains(widget.lienRedirection!)) {
+          utilisateurProvider.setPerspective(Perspective.PARENT);
+        }
+        naviguerVersPage(context, widget.lienRedirection!);
+        //}
+      } else {
+        afficherLogInfo("Redirection vers '${AccueilView.routeURL}'");
+        naviguerVersPage(context, AccueilView.routeURL);
       }
     } else {
       setMessageErreur(response['message']);

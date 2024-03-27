@@ -16,10 +16,12 @@ class LoginView extends StatelessWidget {
   final Biometrique _biometrique = Biometrique();
   final StockageIdentifiants _stockageIdentifiants = StockageIdentifiants();
   final bool compteValide;
+  final String? lienRedirection;
 
   LoginView({
     super.key,
     this.compteValide = false,
+    this.lienRedirection,
   });
 
   @override
@@ -65,8 +67,8 @@ class LoginView extends StatelessWidget {
   }
 
   Widget getSectionLogin() {
-    return const SingleChildScrollView(
-      child: LoginFormView(),
+    return SingleChildScrollView(
+      child: LoginFormView(lienRedirection: lienRedirection),
     );
   }
 
