@@ -96,7 +96,7 @@ class _RetraitCommandeViewState extends State<RetraitCommandeView> {
                     padding: EdgeInsets.only(right: 10),
                     child: ChampString(
                       controller: _searchController,
-                      label: "",
+                      label: "Rechercher une commande",
                       prefixIcon: Icon(Icons.search),
                     ),
                   ),

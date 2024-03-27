@@ -181,4 +181,9 @@ class Commande extends DonneeTableau {
   List<String> intitulesHeader() {
     return getDonneesTableau().keys.toList();
   }
+
+  @override
+  String toString() {
+    return "Commande $id : $libelleEvenement";
+  }
 }

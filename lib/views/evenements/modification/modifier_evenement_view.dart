@@ -284,7 +284,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const Divider(), // Thin line added here
                 SizedBox(
-                  height: 100,
+                  height: evenementBrouillon!.lieux.length > 0 ? 100 : 0,
                   // Hauteur fixe pour la liste déroulante des lieux de retrait
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -316,7 +316,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const Divider(), // Thin line added here
                 SizedBox(
-                  height: 100,
+                  height: evenementBrouillon!.organisateurs.length > 0 ? 100 : 0,
                   // Hauteur fixe pour la liste déroulante des organisateurs
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -352,7 +352,7 @@ class _ModifierEvenementViewState extends State<ModifierEvenementView> {
                 ),
                 const Divider(), // Thin line added here
                 SizedBox(
-                  height: 100,
+                  height: evenementBrouillon!.articles.length > 0 ? 100 : 0,
                   // Hauteur fixe pour la liste déroulante des articles
                   child: ListView.builder(
                     shrinkWrap: true,
