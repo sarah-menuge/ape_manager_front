@@ -32,9 +32,6 @@ class ExportPdf {
                           style: TextStyle(font: font)),
                       Text(commande.utilisateur.email,
                           style: TextStyle(font: font)),
-                      if (commande.utilisateur.telephone != null)
-                        Text(commande.utilisateur.telephone,
-                            style: TextStyle(font: font)),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.start,
                   ),
