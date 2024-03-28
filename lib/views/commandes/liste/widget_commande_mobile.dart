@@ -21,6 +21,7 @@ class WidgetCommandeMobile extends StatelessWidget {
             getInfosCommandes(context),
             getLibelleEvenementCommande(context),
             getTotauxCommande(context),
+            getStatutCommande(),
           ],
         ),
         getBoutonDetail(),
@@ -60,12 +61,23 @@ class WidgetCommandeMobile extends StatelessWidget {
           TextSpan(
             children: [
               TextSpan(
-                text: "${commande.getPrixTotal()}€ - ",
+                text: "${commande.getPrixTotal()}€",
                 style: FontUtils.getFontApp(
                   fontSize: POLICE_MOBILE_NORMAL_1,
                   fontWeight: FONT_WEIGHT_NORMAL,
                 ),
               ),
+            ],
+          ),
+        ));
+  }
+
+  Widget getStatutCommande() {
+    return Align(
+        alignment: Alignment.centerLeft,
+        child: Text.rich(
+          TextSpan(
+            children: [
               TextSpan(
                 text: commande.getStatut(),
                 style: FontUtils.getFontApp(
