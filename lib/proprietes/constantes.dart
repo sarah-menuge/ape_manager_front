@@ -2,14 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-String URL_API = "${dotenv.env['URL_API']}";
-String URL_FRONT = "${dotenv.env['URL_FRONT']}";
-String PROD = "${dotenv.env['PROD']}";
-String NGROK = "${dotenv.env['NGROK']}";
-String AUTO_LOGIN_TEST = "${dotenv.env['AUTO_LOGIN_TEST']}";
-String EMAIL_AUTO_LOGIN_TEST = "${dotenv.env['EMAIL_AUTO_LOGIN_TEST']}";
-String PASSWORD_AUTO_LOGIN_TEST = "${dotenv.env['PASSWORD_AUTO_LOGIN_TEST']}";
-String LOG_LEVEL = "${dotenv.env['LOG_LEVEL']}";
+String URL_API = "https://7859-2001-861-5602-8430-655-31f1-8e75-c9e3.ngrok-free.app";
+String URL_FRONT = "https://sarah-menuge.github.io/ape_manager/";
+String PROD = "true";
+String NGROK = "true";
+String AUTO_LOGIN_TEST = "false";
+String EMAIL_AUTO_LOGIN_TEST = "sarah@yopmail.com";
+String PASSWORD_AUTO_LOGIN_TEST = "string";
+String LOG_LEVEL = "INFO";
 
 // HEADER
 const double HEADER_HEIGHT = 80;

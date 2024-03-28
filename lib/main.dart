@@ -38,7 +38,6 @@ final UtilisateurProvider utilisateurProvider = UtilisateurProvider();
 final CommandeProvider commandeProvider = CommandeProvider();
 
 void main() async {
-  await dotenv.load(fileName: ".env");
   setHashUrlStrategy();
   // setPathUrlStrategy();
   runApp(MainApp());

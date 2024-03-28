@@ -81,5 +81,4 @@ flutter:
     - assets/images/ecole.jpg
     - assets/images/colis.jpg
     - assets/images/page_introuvable.png
-    - .env
     - assets/fonts/Oswald-VariableFont_wght.ttf
